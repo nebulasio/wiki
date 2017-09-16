@@ -41,7 +41,7 @@ For more information about Goline, please visit https://github.com/golang/lint.
 
 The project welcomes submissions but please let everyone know what you're working on if you want to change or add to the go-nebulas project.
 
-Before undertaking to write something new for the go-nebulas, please [file an issue](https://github.com/nebulasio/go-nebulas/issues/new) (or claim an [existing issue](https://github.com/nebulasio/go-nebulas/issues)). Significant changes must go through the [change proposal process](https://github.com/nebulasio/wiki/change_proposal_process.md) before they can be accepted.
+Before undertaking to write something new for the go-nebulas, please [file an issue](https://github.com/nebulasio/go-nebulas/issues/new) (or claim an [existing issue](https://github.com/nebulasio/go-nebulas/issues)). Significant changes must go through the [change proposal process](https://github.com/nebulasio/wiki/blob/master/change_proposal_process.md) before they can be accepted.
 
 This process gives everyone a chance to validate the design, helps prevent duplication of effort, and ensures that the idea fits inside the goals for the language and tools. It also checks that the design is sound before code is written; the code review tool is not the place for high-level discussions.
 
@@ -65,7 +65,7 @@ $ cd go-nebulas
 #### Contributing to the main repo
 
 Most Go installations project use a release branch, but new changes should only be made based on the **develop** branch.
-(They may be applied later to a release branch as part of the [release process](https://github.com/nebulasio/wiki/release_process.md), but most contributors won't do this themselves.) Before making a change, make sure you start on the **develop** branch:
+(They may be applied later to a release branch as part of the [release process](https://github.com/nebulasio/wiki/blob/master/release_process.md), but most contributors won't do this themselves.) Before making a change, make sure you start on the **develop** branch:
 
 ```
 $ git checkout develop
