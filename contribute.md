@@ -129,7 +129,7 @@ $ make test
 
 ### Commit your changes
 
-The most importance of commiting changes is the commit message. Git will open an editor for a commit message. The file will look like:
+The most importance of committing changes is the commit message. Git will open an editor for a commit message. The file will look like:
 
 ```
 # Please enter the commit message for your changes. Lines starting
