@@ -29,7 +29,7 @@ For more information, please visit https://github.com/golang/dep
 
 [Golint](https://github.com/golang/lint) is official linter for Go source code. Every Go source file in go-nebulas must be satisfied the style guideline. The mechanically checkable items in style guideline are listed in [Effective Go](https://golang.org/doc/effective_go.html) and the [CodeReviewComments wiki page](https://golang.org/wiki/CodeReviewComments).
 
-For more information about Goline, please visit https://github.com/golang/lint.
+For more information about Golint, please visit https://github.com/golang/lint.
 
 #### 3. XUnit output for Go Test
 
