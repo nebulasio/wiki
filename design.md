@@ -225,59 +225,75 @@ Initialization:with either a public key, which initializes the signature for ver
 Signing or Verifying a signature on all input bytes.
 
 
-Network Protocol(@Leon)
-
+## 5 P2P Network(@Leon)
+### 5.1 Network Protocol
 
 We build our peer-to-peer network connection based on libp2p and realize the basic  peer-to-peer connection，routing table update , node discovery and Simple implementation of message broadcast.
 
 We always use Big-endian for our network transport protocol。
-In go-nebulas version 0.1.0, we just build a simplest implementation of p2p network.
-We defined three kinds of protocols  for different scenarios
-Ping : nebulas/ping/1.0.0
-Lookup: nebulas/lookup/1.0.0
-Block: nebulas/block/1.0.0
 
-For each of these different protocols, we will register the corresponding handler.
+In go-nebulas version 0.1.0, we just build a simplest implementation of p2p network.we defined several kinds of protocols  for different scenarios.
+
 Perhaps we just need one protocol in the future, we can put the content of protocol to the packet data. so we only need to parse the message body to know the specific protocol.
 
 In go-nebulas version 0.2.0, we will define specific protocol formats.
-
-    01234567890123456789012345678901
-   +------------------------------+
-   |ptl_id|                       |
-   +------------------------------+
-   |            data_size         |
-   +------------------------------+
-   |             data             |
-   +------------------------------+
-
 ```
-[protocol_id][data_size][data]
-```
-The protocol_id take 1 byte and the data_size take 4 bytes.
-E.g. 
+ 0       1       2       3       (bytes)
+ 01234567890123456789012345678901
++-----------------------+--------+
+|version|    protocol   | sub_v  |
++-----------------------+--------+
+|            data_size           |
++---------------+----------------+
+|  checksum     |  data_checksum |
++---------------+----------------+
+|                                |
+|              data              |
+|                                |
++--------------------------------+
+
+version: 8 bits 
+The Version field indicates the format of the whole protocol
+
+protocol: 16 bits
+The identification of protocol 
+
+sub_v: 8 bits
+The specific protocol version
+
+data_size: 32 bits
+The total size of packet data
+
+checksum: 16 bits
+The checksum of the protocol header
+
+checksum: 16 bits
+The checksum of the packet data
+
+E.g.
 Ping:
-[1][0 0 0 16][...]
-Pong:
-[2][0 0 0 16][...]
-GetRoutes:
-[3][0 0 0 250][...]
-NewBlock:
-[4][0 0 1 18][...]
-GetBlocks:
-[5][0 0 0 40][...]
-Blocks:
-[6][0 0 1 80][...]
+[1][ping][1][32][xxxxx][xxxxx][xxxxxxxxxxxxxx]
 
+Pong:
+[1][pong][1][32][xxxxx][xxxxx][xxxxxxxxxxxxxxx]
+
+SyncRouteReq:
+[1][sync_route][1][128][xxxxxx][xxxxxx][xxxxxxxxx]
+
+SyncRouteRes:
+[2][sync_route][1][1024][xxxxxx][xxxxxx][xxxxxxxxxxxxx]
+
+```
+### 5.2 Network architecture
 Our network simply provides the simplest peer-to-peer data propagation without the business.we threw our specific business to the top dispatcher.we use p2p_manager to manage our p2p message and message broadcast.
 
-## 5 Smart Contract (TBD)
+## 6 Smart Contract (TBD)
 
-## 6 NF (TBD)
+## 7 NF (TBD)
 
-### 6.1 NVM (TBD)
+### 7.1 NVM (TBD)
 
-## 7 NR (TBD)
+## 8 NR (TBD)
 
-## 8 DIP (TBD)
+## 9 DIP (TBD)
 
