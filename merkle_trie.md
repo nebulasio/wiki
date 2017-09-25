@@ -34,16 +34,21 @@ In order to reduce the storage of Radix Tree. The nodes in Merkle Patricia Tree 
 ## How to store Merkle Patricia Tree
 
 **Key/Value Storage**
+
 hash(value) = sha3(serialize(value))
+
 key = hash(value)
 
 ## How to update Merkle Patricia Tree
 
 **Query** 
+
 DFS from top to bottom
 
 **Update, Delete or Insert**
+
 1.Query the node from top to bottom
+
 2.update the hash along the path from bottom to top
 
 ![](resources/merkle_tree_update.png)
@@ -54,10 +59,14 @@ Each operation costs O(log(n))
 ## How to verify using Merkle Patricia Tree
 
 **Theorems**
+
 1.Same merkle trees must have same root hash.
+
 2.Different merkle trees must have different root hash.
+
 
 Using the theorems, we can verify the result of the execution of transactions.
 
 **Quick Verification**
+
 A light client, without sync huge transactions, can immediately determine the exact balance and status of any account by simply asking the network for a path from the root to the account node.
