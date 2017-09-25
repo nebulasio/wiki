@@ -267,7 +267,7 @@ The total size of packet data
 checksum: 16 bits
 The checksum of the protocol header
 
-checksum: 16 bits
+data_checksum: 16 bits
 The checksum of the packet data
 
 E.g.
