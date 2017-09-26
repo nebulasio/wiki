@@ -1,32 +1,41 @@
 # crypto spec
 
-## Hash
+Similar to Bitcoin and Ethereum, Nebulas also adopts elliptic curve algorithm as its basic encryption algorithm for Nebulas transaction. A user’s private key stored in keystore, which is designed like java keystore. The private key gets needed a passphrase, which encrypted with pbkdf2 algorithm.
 
-## Keystore
+### 4.1 Hash
 
-Keystore represents a storage facility for cryptographic keys, similar to java keystore.
-Each key in a keystore is identified by an "alias" string. In the case of private keys, these strings distinguish among the different ways in which the key may authenticate itself.  keys storage can be unlock with passphrase and a duration. After the duration is timeout, users can only getkey with passphrase or unlock it again.
-key
+Contains generic data hash algorithm, like sha256,sha3256 and ripemd160 etc.
+
+### 4.2 Keystore
+
+The Keystore system is designed like java and android keystore, which lets you store cryptographic keys in a container to make it more difficult to extract from the device. Once keys are in the keystore, they can be used for cryptographic operations with the key material remaining non-exportable. Moreover, it offers facilities to restrict when and how keys can be used.
+
+Keystore support multiple providers to holds the keys,like memory provider, which keep encrypted keys in memory , or persistence provider, which serialize the encrypted key to the file.TPM, TEE and hardware low level security protection will be supported as a provider later.
+
+
+####key
+
 Keystore manages different types of keys. Each type of key implements the Key interface.For asymmetric encryption, privateKey and publicKey basic key interface are provided:
 
-PrivateKey: This type of key holds a cryptographic PrivateKey, which is optionally stored in a protected format to prevent unauthorized access. 
+* `PrivateKey`: This type of key holds a cryptographic PrivateKey, which is optionally stored in a protected format to prevent unauthorized access. 
 
-PublicKey:This type of key contains a single public key PublicKey belonging to another party. The keystore owner trusts that the public key indeed belongs to the identity identified by the subject (owner) of the certificate.This type of key can be used to authenticate other parties.
+* `PublicKey`:This type of key contains a single public key belonging to another party. The keystore owner trusts that the public key indeed belongs to the identity identified by the subject (owner) of the private key.
 
-provider
+####provider
 
-Teh keystore has different providers to save keys. Currently we provide two ways to save keys, memory_provider and persistence_provider.Before saving, key has been encrypted in keystore. TPM and hardware low level security protection will be supported as a provider later.
+Teh keystore has different providers to save keys. Currently we provide two ways to save keys, memory_provider and persistence_provider.Before saving, key has been encrypted in keystore. 
 
-memory provider:This type of provider keep keys in memory.After the key has been encrypted with the passphrase when user setkey or load, it cached in memory provider.
+* `memory provider`:This type of provider keep keys in memory.After the key has been encrypted with the passphrase when user setkey or load, it cached in memory provider.
 
-persistence provider:This type of provider serialize the encrypted key to the file.The file is compatible with the ethereum's keystore file，users can backup the address with it's privatekey in it.
+* `persistence provider`:This type of provider serialize the encrypted key to the file.The file is compatible with the ethereum's keystore file，users can back up the address with it's privatekey in it.
 
-signature
+####signature
 
-The Signature interface is used to provide applications the functionality of a digital signature algorithm. Digital signatures are used for authentication and integrity assurance of digital data. A Signature object can be used to generate and verify digital signatures.
+The Signature interface is used to provide applications the functionality of a digital signature algorithm. A Signature object can be used to generate and verify digital signatures.
 
 There are two phases to the use of a Signature object for either signing data or verifying a signature:
 
-Initialization:with either a public key, which initializes the signature for verification (see initVerify), or a private key, which initializes the signature for signing (see initSign).
+* Initialization:with either a public key, which initializes the signature for verification (see initVerify), or a private key, which initializes the signature for signing (see initSign).
 
-Signing or Verifying a signature on all input bytes.
+* Signing or Verifying a signature on all input bytes.
+
