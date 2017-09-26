@@ -228,9 +228,9 @@ Signing or Verifying a signature on all input bytes.
 ## 5 P2P Network(@Leon)
 ### 5.1 Network Protocol
 
-We build our peer-to-peer network connection based on libp2p and realize the basic  peer-to-peer connection，routing table update , node discovery and Simple implementation of message broadcast.
+We build our peer-to-peer network connection based on libp2p and realize the basic  peer-to-peer connection,routing table update, node discovery and Simple implementation of message broadcast.
 
-We always use Big-endian for our network transport protocol。
+We always use Big-endian for our network transport protocol.
 
 In go-nebulas version 0.1.0, we just build a simplest implementation of p2p network.we defined several kinds of protocols  for different scenarios.
 
@@ -238,54 +238,119 @@ Perhaps we just need one protocol in the future, we can put the content of proto
 
 In go-nebulas version 0.2.0, we will define specific protocol formats.
 ```
- 0       1       2       3       (bytes)
- 01234567890123456789012345678901
-+-----------------------+--------+
-|version|    protocol   | sub_v  |
-+-----------------------+--------+
-|            data_size           |
-+---------------+----------------+
-|  checksum     |  data_checksum |
-+---------------+----------------+
-|                                |
-|              data              |
-|                                |
-+--------------------------------+
+ 0               1               2               3              (bytes)
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         magic number                          |
++------------------------------------------------+------+-------+
+|                   Chain ID                     | msg_l| msg_v |
++------------------------------------------------+------+-------+
+|                         message name                          |
++---------------------------------------------------------------+
+|                          data_length                          |
++---------------------------------------------------------------+
+|                         data_checksum                         |
++---------------------------------------------------------------+
+|                        header_checksum                        |
+|---------------------------------------------------------------+
+|                                                               |
++                             data                              +
+|                                                               |
++---------------------------------------------------------------+
 
-version: 8 bits 
-The Version field indicates the format of the whole protocol
+magic number: 32 bits(4 CHAR) 
+The protocol magic number, A constant numerical or text value used to identify protocol, such as "NEB1".
 
-protocol: 16 bits
-The identification of protocol 
+Chain ID: 24 bits
+The Chain ID is used to distinguish the test network and the main network.
 
-sub_v: 8 bits
-The specific protocol version
+msg_l: 4 bits
+The msg_l is the length of message name.
 
-data_size: 32 bits
-The total size of packet data
+msg_v: 4 bits
+The msg_v is the specific version of protocol.
 
-checksum: 16 bits
-The checksum of the protocol header
+message name: (variable length)
+The identification or the message name of protocol.
 
-checksum: 16 bits
+data_length: 32 bits
+The total length of packet data
+
+data_checksum: 32 bits
 The checksum of the packet data
 
-E.g.
-Ping:
-[1][ping][1][32][xxxxx][xxxxx][xxxxxxxxxxxxxx]
+header_checksum: 32 bits
+The checksum of the whole protocol header except header_checksum
 
-Pong:
-[1][pong][1][32][xxxxx][xxxxx][xxxxxxxxxxxxxxx]
+data: (variable length)
+The packet data.
+```
 
-SyncRouteReq:
-[1][sync_route][1][128][xxxxxx][xxxxxx][xxxxxxxxx]
+### 5.2 Message List
 
-SyncRouteRes:
-[2][sync_route][1][1024][xxxxxx][xxxxxx][xxxxxxxxxxxxx]
+* Hello
+
+is used to build connection and shake hands between two peers.
+
 
 ```
-### 5.2 Network architecture
-Our network simply provides the simplest peer-to-peer data propagation without the business.we threw our specific business to the top dispatcher.we use p2p_manager to manage our p2p message and message broadcast.
+version: 0x1
+
+data: struct {
+    string node_id  // eg.
+    string client_version // x.y.z, eg 0.1.0
+}
+
+resp message: Olleh
+```
+
+* Olleh
+
+response for Hello.
+
+```
+version: 0x1
+
+data: struct {
+    string node_version
+    string node_id
+}
+```
+
+* Bye
+
+close a connection.
+
+```
+version: 0x1
+data: struct {
+    string reason
+}
+```
+
+* GetRoutes
+
+send message for routing table update.
+
+```
+version: 0x1
+```
+
+* Routes
+
+response for GetRoutes.
+
+```
+version: 0x1
+data: struct {
+    []string peer_ids
+}
+```
+
+
+### 5.3 Network architecture
+Our network simply provides the simplest peer-to-peer data propagation without the business. we threw our specific business to the top dispatcher. we use p2p_manager to manage our p2p message and message broadcast.
+
 
 ## 6 Smart Contract (TBD)
 
