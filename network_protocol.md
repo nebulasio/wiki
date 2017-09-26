@@ -1,8 +1,14 @@
-# Network Design Document
+# Network Protocol
 
-## Network Protocol
+For the network protocol, there are lots of existing solution. However, the Nebulas Team finally decides to define our own wire protocol, ensures the following principles to design the protocol:
 
-We build our peer-to-peer network connection based on [libp2p](https://libp2p.io). [Libp2p](https://libp2p.io) is the foundamental network library of [IPFS](https://ipfs.io), with high performance and stability.
+* the protocol should be simple and straight.
+* the message can be verified before receiving all package, fail early.
+* the protocol should be debugging friendly, developer can easily understand the raw message.
+
+
+
+## Protocol
 
 In Nebulas, we define our own wire protocol, as the following:
 ```
@@ -29,7 +35,7 @@ In Nebulas, we define our own wire protocol, as the following:
 
 * Magic Number: 32 bits (4 chars)
   * The protocol magic number, A constant numerical or text value used to identify protocol.
-  * Default: "NEB1"
+  * Default: 0x4e, 0x45, 0x42, 0x31
 
 * Chain ID: 24 bits
   * The Chain ID is used to distinguish the test network and the main network.
@@ -125,6 +131,3 @@ struct PeerID {
 ## Nebulas Messages
 
 TBD.
-
-## Network architecture
-Our network simply provides the simplest peer-to-peer data propagation without the business. we threw our specific business to the top dispatcher. we use p2p_manager to manage our p2p message and message broadcast.
