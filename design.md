@@ -228,9 +228,9 @@ Signing or Verifying a signature on all input bytes.
 ## 5 P2P Network(@Leon)
 ### 5.1 Network Protocol
 
-We build our peer-to-peer network connection based on libp2p and realize the basic  peer-to-peer connection，routing table update , node discovery and Simple implementation of message broadcast.
+We build our peer-to-peer network connection based on libp2p and implement the basic peer-to-peer connection, routing table update, node discovery and Simple implementation of message broadcast.
 
-We always use Big-endian for our network transport protocol.
+We always use Big-Endian for our network transport protocol.
 
 In go-nebulas version 0.1.0, we just build a simplest implementation of p2p network.we defined several kinds of protocols  for different scenarios.
 
