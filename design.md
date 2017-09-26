@@ -1,6 +1,6 @@
 # Go-Nebulas Design Doc
 
-Singularity, Version: 0.1.0
+Version: Singularity (0.1.0)
 
 ## 1 Design Overview
 
@@ -10,16 +10,16 @@ Singularity, Version: 0.1.0
 
 ### 1.1 Core Dataflow
 
-Here is a core workflow example to explain how Nebulas works at version 0.1.0.
+Here is a core workflow example to explain how Nebulas works in current version.
 For each Nebulas node, it keeps receiving blocks or transactions from network and mining new block locally.
 
 #### 1.1.1 A new block from network, steps 1~4
 
-once a new block received, the node will search the new block’s parent block in current blockchain. If not found, the new block will be cached in blocks pool. Otherwise, the node will try to verify the new block. If the new block is valid, it will be linked to current blockchain.
+Once a new block received, the node will search the new block’s parent block in current blockchain. If not found, the new block will be cached in blocks pool. Otherwise, the node will try to verify the new block. If the new block is valid, it will be linked to current blockchain.
 
 #### 1.1.2 A new block from local miners, steps 5~7
 
-once a new block minted, the node will broadcast the new block to the Internet.
+Once a new block minted, the node will broadcast the new block to the network.
 
 ![](resources/workflow.png)
 
@@ -60,7 +60,7 @@ Transaction Structure
 
 ### 2.2 Block Pool
 
-We use block pool to cache all valid blocks whose parents cannot be found in current blockchain yet. As for a new block received, we follow the below steps to process it.
+A Nebulas node uses block pool to cache all valid blocks whose parents cannot be found in current blockchain yet. When a new block is received, the node uses the following steps to process it.
 
 ![](resources/blockpool.png)
 
@@ -131,9 +131,9 @@ We verify these states using merkle patricia tree, more details in [merkle pacit
 
 ### 2.4 Serialization
 
-At version 0.1.0, we use json serializer to make things work at first.
+At current version, we use json serializer to make things work at first.
 
-> TODO: use Protobuf serializer instead
+> TODO: use Protocol Buffer instead.
 
 ### 2.5 Sync（TBD）
 
@@ -189,7 +189,7 @@ PoW \-\-> [*] : stop
 
 ### 3.2 Fork Choice
 
-Always choose the longest chain as the canonical chain
+Always choose the longest chain as the canonical chain.
 
 ## 4 crypto spec
 
@@ -228,9 +228,9 @@ Signing or Verifying a signature on all input bytes.
 ## 5 P2P Network(@Leon)
 ### 5.1 Network Protocol
 
-We build our peer-to-peer network connection based on libp2p and realize the basic  peer-to-peer connection,routing table update, node discovery and Simple implementation of message broadcast.
+We build our peer-to-peer network connection based on libp2p and implement the basic peer-to-peer connection, routing table update, node discovery and Simple implementation of message broadcast.
 
-We always use Big-endian for our network transport protocol.
+We always use Big-Endian for our network transport protocol.
 
 In go-nebulas version 0.1.0, we just build a simplest implementation of p2p network.we defined several kinds of protocols  for different scenarios.
 
@@ -291,7 +291,6 @@ The packet data.
 * Hello
 
 is used to build connection and shake hands between two peers.
-
 
 ```
 version: 0x1
