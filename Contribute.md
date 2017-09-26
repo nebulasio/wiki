@@ -10,11 +10,6 @@ Before you can contribute to the go-nebulas project you need to setup a few prer
 
 TBD.
 
-Reference:
- - https://github.com/cla-assistant/cla-assistant
- - https://golang.org/doc/contribute.html
-
-
 ## Preparing a Development Environment for Contributing
 
 ### Setting up dependent tools
@@ -104,9 +99,9 @@ New files that you contribute should use the standard copyright header:
 
 Files in the repository are copyright the year they are added. Do not update the copyright year on files that you change.
 
-### Gofmt, Golint and Govet
+### Goimports, Golint and Govet
 
-Every Go source file in go-nebulas must pass Gofmt, Golint and Govet check. Golint check the style mistakes, we should fix all style mistakes, including comments/docs. Govet reports suspicious constructs, we should fix all issues as well.
+Every Go source file in go-nebulas must pass Goimports, Golint and Govet check. Golint check the style mistakes, we should fix all style mistakes, including comments/docs. Govet reports suspicious constructs, we should fix all issues as well.
 
 Run following command to check your code:
 
