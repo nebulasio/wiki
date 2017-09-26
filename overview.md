@@ -66,7 +66,7 @@ Once a new block minted, the node will broadcast the new block to the network.
 
 [Crypto Design Doc](./crypto.md)
 
-[Net Design Doc](./net.md)
+[Net Design Doc](./network_protocol.md)
 
 Smart Contracts (TBD)
 
