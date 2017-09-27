@@ -16,10 +16,16 @@ In Nebulas, we define our own wire protocol, as the following:
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Magic Number                          |
-+-----------------------------------------------+-------+-------+
-|                         Chain ID              |Length |Version|
-+-----------------------------------------------+-------+-------+
-|                         Message Name                          |
++-----------------------------------------------+---------------+
+|                         Chain ID              |    Version    |
++-----------------------------------------------+---------------+
+|                                                               |
++                                                               +
+|                                                               |
++                         Message Name                          +
+|                                                               |
++                                                               +
+|                                                               |
 +---------------------------------------------------------------+
 |                         Data Length                           |
 +---------------------------------------------------------------+
@@ -40,13 +46,10 @@ In Nebulas, we define our own wire protocol, as the following:
 * Chain ID: 24 bits
   * The Chain ID is used to distinguish the test network and the main network.
 
-* Length: 4 bits
-  * The length of the Message Name.
-
-* Version: 4 bits
+* Version: 8 bits
   * The version of the Message Name.
 
-* Message Name: variable length, max 16 chars
+* Message Name: 16 chars
   * The identification or the name of the Message.
 
 * Data Length: 32 bits
