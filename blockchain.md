@@ -28,7 +28,7 @@ from: sha3-256 hash, 256 bits
 to: sha3-256 hash, 256 bits
 value: uint64, 64 bits
 nonce: sha3-256 hash, 256 bits
-timestamp: uint64, 64 bits. The number of nanoseconds elapsed since January 1, 1970 UTC.
+timestamp: int64, 64 bits. The number of seconds elapsed since January 1, 1970 UTC.
 sign: bytes array
 payload: bytes array
 ```
