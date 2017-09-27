@@ -16,14 +16,14 @@ In Nebulas, we define our own wire protocol, as the following:
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                         Magic Number                          |
++---------------------------------------------------------------+
+|                         Chain ID                              |
 +-----------------------------------------------+---------------+
-|                         Chain ID              |    Version    |
+|                         Reserved              |   Version     |
 +-----------------------------------------------+---------------+
 |                                                               |
 +                                                               +
-|                                                               |
-+                         Message Name                          +
-|                                                               |
+|                         Message Name                          |
 +                                                               +
 |                                                               |
 +---------------------------------------------------------------+
@@ -34,7 +34,7 @@ In Nebulas, we define our own wire protocol, as the following:
 |                         Header Checksum                       |
 |---------------------------------------------------------------+
 |                                                               |
-+                             Data                              +
++                         Data ......                           +
 |                                                               |
 +---------------------------------------------------------------+
 ```
@@ -43,13 +43,16 @@ In Nebulas, we define our own wire protocol, as the following:
   * The protocol magic number, A constant numerical or text value used to identify protocol.
   * Default: 0x4e, 0x45, 0x42, 0x31
 
-* Chain ID: 24 bits
+* Chain ID: 32 bits
   * The Chain ID is used to distinguish the test network and the main network.
+
+* Reserved: 24 bits
+  * reserved field.
 
 * Version: 8 bits
   * The version of the Message Name.
 
-* Message Name: 16 chars
+* Message Name: 96 bites (12 chars)
   * The identification or the name of the Message.
 
 * Data Length: 32 bits
@@ -59,7 +62,7 @@ In Nebulas, we define our own wire protocol, as the following:
   * The CRC32 checksum of the Data.
 
 * Header Checksum: 32 bits
-  * The CRC32 checksum of the fields from Magic Number to Data Checksum.
+  * The CRC32 checksum of the fields from Magic Number to Data Checksum, totally 256 bites.
 
 * Data: variable length, max 4G.
   * The message data.

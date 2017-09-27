@@ -77,7 +77,7 @@ Core
 
 NVM
 
-*  Integrate LLVM as Smart Contract execution engine.
+* Integrate LLVM as Smart Contract execution engine.
 
 
 ### v0.5.0
