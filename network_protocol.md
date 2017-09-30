@@ -52,7 +52,7 @@ In Nebulas, we define our own wire protocol, as the following:
 * Version: 8 bits
   * The version of the Message Name.
 
-* Message Name: 96 bites (12 chars)
+* Message Name: 96 bits (12 chars)
   * The identification or the name of the Message.
 
 * Data Length: 32 bits
