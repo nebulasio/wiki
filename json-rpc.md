@@ -13,15 +13,19 @@ http://localhost:8080
 you can update the `gateway_port` in config.pb.txt to change HTTP default port.
 
 ## JSON-RPC methods
-* [GetNebState](#GetNebState)
-* [Accounts](#Accounts)
-* [GetAccountState](#GetAccountState)
-* [BlockDump](#BlockDump)
-* [SendTransaction](#SendTransaction)
-* [Call](#Call)
+
+* [get_neb_state](#get_neb_state)
+* [accounts](#accounts)
+* [get_account_state](#get_account_state)
+* [block_dump](#block_dump)
+* [send_transaction](#send_transaction)
+* [call](#call)
+
+## JSON RPC API Reference
 
 ***
-#### GetNebState
+
+#### get_neb_state
 get the state of the neb
 
 ##### Parameters
@@ -44,10 +48,12 @@ curl -i -H Accept:application/json -X GET http://localhost:8080/v1/neb/state
     "coinbase":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
 }
 ```
+
 ***
 
 ***
-#### Accounts
+
+#### accounts
 get the accounts info
 
 ##### Parameters
@@ -73,7 +79,8 @@ curl -i -H Accept:application/json -X GET http://localhost:8080/v1/accounts
 ***
 
 ***
-#### GetAccountState
+
+#### get_account_state
 get the account state
 
 ##### Parameters
@@ -94,10 +101,11 @@ curl -i -H Accept:application/json -X POST http://localhost:8080/v1/account/stat
    "balance": "AAAAAAAAAAAAAAAAAAAACA=="
 }
 ```
+
 ***
 
 ***
-#### BlockDump
+#### block_dump
 get the block dump info.
 
 ##### Parameters
@@ -118,7 +126,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8080/v1/block/dump -
 ***
 
 ***
-#### SendTransaction
+#### send_transaction
 send transaction or deploy a smart contract.
 
 ##### Parameters
@@ -148,7 +156,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8080/v1/transaction 
 ***
 
 ***
-#### Call
+#### call
 call a smart contract.
 
 ##### Parameters
