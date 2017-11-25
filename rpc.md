@@ -43,16 +43,16 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/block/dum
 
 ## RPC methods
 
-* [GetNebState](#GetNebState)
-* [NodeInfo](#NodeInfo)
-* [BlockDump](#BlockDump)
-* [Accounts](#Accounts)
-* [GetAccountState](#GetAccountState)
-* [SendTransaction](#SendTransaction)
+* [GetNebState](#getnebstate)
+* [NodeInfo](#nodeinfo)
+* [BlockDump](#blockdump)
+* [Accounts](#accounts)
+* [GetAccountState](#getaccountstate)
+* [SendTransaction](#sendtransaction)
 * [Call](#call)
-* [SendRawTransaction](#SendRawTransaction)
-* [GetBlockByHash](#GetBlockByHash)
-* [GetTransactionReceipt](#GetTransactionReceipt)
+* [SendRawTransaction](#sendrawtransaction)
+* [GetBlockByHash](#getblockbyhash)
+* [GetTransactionReceipt](#gettransactionreceipt)
 
 ## RPC API Reference
 
