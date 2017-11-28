@@ -12,7 +12,7 @@ They are supported by integration of [Chrome V8](https://developers.google.com/v
 
 The diagram below is the Execution Model of Smart Contract:
 
-![Smart Contract Execution Model](resources/smart_contract_execution_model.png "Logo Title Text 1")
+![Smart Contract Execution Model](resources/smart_contract_execution_model.png "Smart Contract Execution Model")
 
 1. All src of Smart Contract and calling parameters are packaged in Transaction and be deployed on Nebulas.
 2. The execution of Smart Contract are divided into two phase:
@@ -107,9 +107,66 @@ Print ```args``` to Nebulas Logger at level ```error```.
 
 ### LocalContractStorage
 
-The ```LocalContractStorage``` module provides a state trie based storage capability.
+The ```LocalContractStorage``` module provides a state trie based storage capability. It accepts string only key value pairs. And all data are stored to a private state trie associate with current contract address, only the contract can access that their data.
 
-### GlobalContractStorage
+```typescript
+interface Descriptor {
+    // serialize value to string;
+    stringify?(value: any): string;
+
+    // deserialize value from string;
+    parse?(value: string): any;
+}
+
+interface DescriptorMap {
+    [fieldName: string]: Descriptor;
+}
+
+interface ContractStorage {
+    // get and return value by key from Native Storage.
+    rawGet(key: string): string;
+    // set key and value pair to Native Storage, return 0 for success, otherwise failure.
+    rawSet(key: string, value: string): number;
+
+    // define a object property named `fieldname` to `obj` with descriptor. Default descriptor is JSON.parse and JSON.stringify.
+    // return this.
+    defineProperty(obj: any, fieldName: string, descriptor?: Descriptor): any;
+
+    // define object properties to `obj` from `props`. Default descriptor is JSON.parse and JSON.stringify.
+    // return this.
+    defineProperties(obj: any, props: DescriptorMap): any;
+
+    // define a StorageMap property named `fieldname` to `obj` with descriptor. Default descriptor is JSON.parse and JSON.stringify.
+    // return this.
+    defineMapProperty(obj: any, fieldName: string, descriptor?: Descriptor): any;
+
+    // define StorageMap properties to `obj` from `props`. Default descriptor is JSON.parse and JSON.stringify.
+    // return this.
+    defineMapProperties(obj: any, props: DescriptorMap): any;
+
+    // delete key from Native Storage, return 0 for success, otherwise failure.
+    del(key: string): number;
+
+    // get value by key from Native Storage, convert by calling `descriptor.parse` and return.
+    get(key: string): any;
+
+    // set key and value pair to Native Storage, the value will be convert to string by calling `descriptor.stringify`.
+    // return 0 for success, otherwise failure.
+    set(key: string, value: any): number;
+}
+
+interface StorageMap {
+    // delete key from Native Storage, return 0 for success, otherwise failure.
+    del(key: string): number;
+
+    // get value by key from Native Storage, convert by calling `descriptor.parse` and return.
+    get(key: string): any;
+
+    // set key and value pair to Native Storage, the value will be convert to string by calling `descriptor.stringify`.
+    // return 0 for success, otherwise failure.
+    set(key: string, value: any): number;
+}
+```
 
 ### BigNumber
 
