@@ -68,9 +68,9 @@ Once a new block minted, the node will broadcast the new block to the network.
 
 [Net Design Doc](./network_protocol.md)
 
-Smart Contracts (TBD)
+[Smart Contract] (./smart_contract.md)
 
-NVM (TBD)
+[NVM] (./nvm.md)
 
 NR (TBD)
 
