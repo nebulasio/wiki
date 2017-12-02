@@ -2,7 +2,6 @@
 
 ## Milestones
 
-**Updates:**
 * In 2017 December, Nebulas test-net will be online.
 * In 2018 Q1, Nebulas v1.0 will be released and main-net will be online (ahead of the original schedules).
 
