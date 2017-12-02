@@ -2,20 +2,20 @@
 
 ## Milestones
 
-### v1.0 (expecting 2018 Q1)
+Updates: In 2017 December, Nebulas test-net will be online. In 2018 Q1, Nebulas v1.0 will be released and main-net will be online (ahead of the original schedules).
 
-The 1.0 of Nebulas is expected to release at 2018 Q1, main-net is online. And the test-net will be online at Nov 2017. In an other words, we are ahead of the original schedule.
+### v1.0 (2018 Q1)
 
 * Fully functional blockchain, with JavaScript and TypeScript as the languages of Smart Contract.
 * A user-friendly Nebulas Wallet for both desktop and mobile device to manage their own assets on Nebulas.
 * A web-based Nebulas Block Explorer to let developers and users search and view all the data on Nebulas.
 
-### v2.0 (expecting 2018 Q4)
+### v2.0 (2018 Q4)
 
 * Add Nebulas Rank (NR) to each addresses on Nebulas, help users and developers finding more values inside.
 * Implement Developer Incentive Protocol (DIP) to encourage developers build more valuable decentralized applications on Nebulas.
 
-### v3.0 (expecting 2019 Q4)
+### v3.0 (2019 Q4)
 
 * Fully functional Nebulas Force and PoD implementation.
 
