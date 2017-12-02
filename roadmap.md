@@ -1,28 +1,33 @@
 # Roadmap of Nebulas
 
-## Goals
+## Milestones
 
-### v1.0
+### v1.0 (expecting 2018 Q1)
 
-* Fully functional blockchain, with NR, PoD and Smart Contract (Solidity-compatible).
+The 1.0 of Nebulas is expected to release at 2018 Q1, main-net is online. And the test-net will be online at Nov 2017. In an other words, we are ahead of the original schedule.
 
-### v2.0
+* Fully functional blockchain, with JavaScript and TypeScript as the languages of Smart Contract.
+* A user-friendly Nebulas Wallet for both desktop and mobile device to manage their own assets on Nebulas.
+* A web-based Nebulas Block Explorer to let developers and users search and view all the data on Nebulas.
 
-* Fully functional NF, with NVM, Protocol Code Upgrading, DIP and more smart contract languages support.
+### v2.0 (expecting 2018 Q4)
 
-### Long term goals
+* Add Nebulas Rank (NR) to each addresses on Nebulas, help users and developers finding more values inside.
+* Implement Developer Incentive Protocol (DIP) to encourage developers build more valuable decentralized applications on Nebulas.
+
+### v3.0 (expecting 2019 Q4)
+
+* Fully functional Nebulas Force and PoD implementation.
+
+## Long term goals
 
 * Scalability for large transaction volume.
 * Subchain support.
 * Zero-knowledge Proof integration.
 
-## v1.0
+## Versions
 
-* Test-net is online in 2018 Q1.
-* Main-net is online in 2018 Q2.
-
-
-### v0.1.0
+### v0.1.0 [done]
 
 Goals
 
@@ -30,8 +35,9 @@ Goals
 * In-memory blockchain with PoW consensus.
 * Fully P2P network support.
 
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.1.0).
 
-### v0.2.0
+### v0.2.0 [done]
 
 Goals
 
@@ -59,16 +65,16 @@ API
 Crypto
 
 * Support Ethereum-keystore file.
-* Support multi keystore files management in KeyStore.
+* Support multi key files management in KeyStore.
 
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.2.0).
 
-### v0.3.0
+### v0.3.0 [done]
 
 Goals
 
 * Support disk storage for all blockchain data.
-* Add smart contract execution engine, based on LLVM.
-* Support Solidity language.
+* Add smart contract execution engine, based on Chrome V8.
 
 Core
 
@@ -77,76 +83,77 @@ Core
 
 NVM
 
-* Integrate LLVM as Smart Contract execution engine.
+* Integrate Chrome V8 as Smart Contract execution engine.
 
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.3.0).
+
+### v0.4.0 [done]
+
+Goals
+
+* Implement Gas calculating in Smart Contract Execution Engine.
+* Support more API.
+* Add repl in neb application.
+* Add metrics and reporting capability.
+
+Core
+
+* Add Gas related fields in Transaction.
+* Implemented Gas calculation mechanism.
+
+NVM
+
+* Add execution limits to V8 Engine.
+* Add Gas calculation mechanism.
+
+CMD
+
+* Add repl in neb application
+
+Misc
+* Add more API.
+* Add metrics and reporting capability.
+
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.4.0).
 
 ### v0.5.0
 
 Goals
 
-* Implement NR algorithm.
-* Implement PoD consensus algorithm.
-* Support more API.
-* Add repl in neb application.
+* Prepare for test-net releasing, improve stability.
 
 Core
 
-* Implement Vote mechanism and NR transactions.
-* Implement NR algorithm.
+* Improve stability and missing functions if we miss anything.
 
 Consensus
 
-* Implement PoD algorithm.
+* Implement DPoS consensus algorithm and keep developing PoD algorithm.
 
-CMD
+NVM
 
-* Add repl in neb application.
+* Finalize the Gas Cost Matrix.
+* Support Event liked pubsub functionality.
 
-API
+Misc
 
-* Add more API.
-* Support JSON-RPC.
-
+* Add more metrics to monitor the stability of neb applications.
 
 ### v0.8.0
 
-Expected release date: 2018 Q1
-
 Goals
 
-* Ready for Test-net.
-* Core features are all implemented except fully functional NVM.
-* Release a simple wallet of Nebulas.
-
-Core
-
-* Implement DIP algorithm.
-
-Debugging
-
-*  Anonymous log collection and analysis system.
-
-Wallet
-
-* A simple wallet.
-
+* New Nebulas Block Explorer.
+* New Nebulas Wallet.
+* New web-based Playground tools to interactive with Nebulas.
 
 ### v1.0.0
 
-Expected release date: 2018 Q2
-
 Goals
 
-* Ready for Main-net.
-* Achieve production quality, especially in robust performance and stability.
-
-neb (nebulas client)
-
-* Fully functional blockchain with local storage.
-* Implement NR, PoD and DIP algorithm and protocols.
-* Safety smart contract execution env with Solidity language support.
-* Fully functional API (RPC and JSON-RPC) and repl.
-
-Wallet
-
-* A simple wallet client for nebulas.
+* Ready for main-net.
+* Support JavaScript and TypeScript as Smart Contract Language.
+* Stable and high performance blockchain system.
+* Release new Nebulas Block Explorer.
+* Release new Nebulas Wallet for both desktop and mobile device.
+* A web-based playground tools for developer.
