@@ -1,4 +1,4 @@
-# Cryto Design Doc
+# Crypto Design Doc
 
 Similar to Bitcoin and Ethereum, Nebulas also adopts elliptic curve algorithm as its basic encryption algorithm for Nebulas transactions. Users' private key will be encrypted with user's passphrases and stored in keystore.
 
