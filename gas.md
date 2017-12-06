@@ -1,15 +1,14 @@
 # Transaction Gas
 
-In Nebulas, either a normal transaction which transfer balance or a smart contract deploy & call burns gas.  A transaction contains two gas parameters `gasPrice` and `gasLimit` :
+In Nebulas, either a normal transaction which transfer balance or a smart contract deploy & call burns gas, and charged from the balance of `from` address.  A transaction contains two gas parameters `gasPrice` and `gasLimit` :
 
 * `gasPrice`: the price of per gas.
 * `gasLimit`: the limit of gas use. 
 
-The actual gas consumption of a transaction is the value: `gasPrice` * `gasUse`, which will be the reward to the miner coinbase. The `gasUse` value must below the `gasLimit`.
+The actual gas consumption of a transaction is the value: `gasPrice` * `gasUsed`, which will be the reward to the miner coinbase. The `gasUsed` value must less than or equal to the `gasLimit`.
 
 ## Normal transaction
-When users send a normal transaction, which only transfer from address balance to the to address, will burn a stationary gas. The stationary gas value is:
-
+When users submit a normal transaction, which only transfer balance from one address to the others, will burn a fixed number of gas, that would be defined in code as the following:
 ```
 // TransactionGas default gas for normal transaction
 TransactionGas
