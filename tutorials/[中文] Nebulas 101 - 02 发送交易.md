@@ -23,8 +23,8 @@ Repeat passphrase:
 Address: 9341709022928b38dae1f9e1cfbad25611e81f736fd192c5
 ```
 Passphrase提示：创建coinbase地址的过程中需要输入一个密码，请牢记这个密码，该密码会用来解锁我们的账户并完成转帐交易等后续操作。
-执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下生成该地址对应的Keystore文件，如图所示：
-
+执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下生成该地址对应的Key文件，如图所示：
+![key](../resources/101-02-key.png)
 
 2. 创建转账的接收地址
 现在我们通过同样的方式创建一个转帐交易接收地址。
@@ -35,11 +35,12 @@ Passphrase:
 Repeat passphrase:
 Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 ```
-执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下新生成该地址对应的Keystore文件，如图所示：
+执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：
+![key](../resources/101-02-new-key.png)
 
 3. 配置coinbase
 需要把新产生的coinbase地址`9341709022928b38dae1f9e1cfbad25611e81f736fd192c5`替换掉配置文件`config-seed.pb.txt`里面的`pow`属性里面的coinbase（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
-
+![key](../resources/101-02-coinbase.png)
 
 ### 启动neb应用
 完成所有的准备工作后，就可以启动neb应用。启动neb应用的方式非常简单：
@@ -71,7 +72,9 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/stat
 
 ### 发送并验证转账交易
 发送转账交易，可以按照如下步骤来进行：
+
 1. 获取账户信息；
+
 ```
 // Request
 curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
@@ -85,7 +88,9 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 }
 ```
 这个接口返回了当前启动的节点里面所有的账户信息，我们可以从中找到我们之前创建的coinbase账户地址（红色标识）以及我们接受转账的账户地址（蓝色标识）。
+
 2. 找到账户余额大于0的账户，并解锁该账户；
+
 ```
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5", "passphrase":"passphrase"}'
@@ -95,7 +100,10 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlo
    "result":true
 }
 ```
-这个接口就是准备工作提到的转账交易时候需要先对发送方地址进行解锁，解锁账户需要使用创建地址时候的密码。3. 使用已经解锁的账户向另一个账户发起一笔转账交易；
+这个接口就是准备工作提到的转账交易时候需要先对发送方地址进行解锁，解锁账户需要使用创建地址时候的密码。
+
+3. 使用已经解锁的账户向另一个账户发起一笔转账交易；
+
 ```
 // Request
 curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transaction -H 'Content-Type: application/json' -d '{"from":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
@@ -106,7 +114,9 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transacti
 }
 ```
 转账交易接口：账户`0fba`向账户`6c05` 转账金额10。这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户余额信息获取。该接口返回值是交易的hash值，这个hash值可以用来对这笔交易进行查询。
+
 4. 等待大约30s，然后查询该转账交易信息（因为转账交易需要矿工打包才能成功，所以会有一定的延时，并不是实时立马成功）；
+
 ```
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
@@ -122,7 +132,9 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransacti
 }
 ```
 这个接口可以对之前的转账交易进行查询，请求参数是之前转账交易的hash值。如果查询到交易信息，说明该交易执行成功。
+
 5. 查询转账接收账户余额，验证转账交易是否成功；
+
 ```
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
