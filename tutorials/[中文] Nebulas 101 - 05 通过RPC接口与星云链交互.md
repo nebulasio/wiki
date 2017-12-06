@@ -44,7 +44,7 @@ rpc {
 
 go的gRPC访问代码如下：
 
-```
+```go
 // gRPC服务器连接地址配置
 addr := fmt.Sprintf("127.0.0.1:%d", uint32(52520))
 conn, err := grpc.Dial(addr, grpc.WithInsecure())

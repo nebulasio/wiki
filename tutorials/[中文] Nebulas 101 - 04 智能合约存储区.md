@@ -30,7 +30,7 @@ LocalContractStorage.delete(key);
 ```
 下面是一些使用例子：
 
-```
+```js
 'use strict';
 
 var SampleContract = function () {
@@ -137,7 +137,7 @@ SampleContract.prototype = {
 
 在智能合约中，如果需要存储key-value时，可以将合约属性定义为Map集合，并保存到链上。使用Map的合约可以用下面的方式来写：
 
-```
+```js
 'use strict';
 
 var SampleContract = function () {
