@@ -10,7 +10,7 @@
 ## 星云链环境搭建
 星云链使用go语言开发，首先需要安装go语言的开发环境。推荐使用Mac搭建星云链环境。星云链对go版本的要求`>=1.8`。
 
-*由于星云链的NVM(星云链虚拟机)使用了JavaScript的v8引擎，目前官方代码提供的v8依赖库只有Mac和Linux版本；星云链现阶段只能在Mac和Linux上运行，后续应该会推出windows版本。*
+*由于星云链的NVM(星云链虚拟机)使用了JavaScript的v8引擎，目前官方代码提供的v8依赖库只有Mac和Linux版本；星云链现阶段只能在Mac和Linux上运行，后续会推出windows版本。*
 
 [官方go安装文档](https://golang.org/doc/install)
 
@@ -41,10 +41,10 @@ Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上�
 ## 星云链编译
 
 #### 源代码下载：
-首先从github网站conle代码到本地
+首先从github网站conle代码到本地(本教程使用[v0.4.0版本](https://github.com/nebulasio/go-nebulas/tree/v0.4.0))
 
 ```
-git clone -b master https://github.com/nebulasio/go-nebulas.git --depth=1
+git clone -b v0.4.0 https://github.com/nebulasio/go-nebulas.git --depth=1
 ```
 如果需要完整代码的提交历史，可以全部clone到本地：
 
@@ -69,6 +69,7 @@ cd <path>/go-nebulas
 make dep
 ```
 **PS：make dep需要下载的依赖较多，初次下载较慢，部分依赖库国内网络下载可能失败。若无法下载，可以直接将dep后生成的文件[vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)下载后解压到代码根目录中。**
+
 ```
 vendor.tar.gz
 SHA1: a0417c109f35ddb78c97839dec6feb7212568aef
@@ -82,7 +83,7 @@ MD5: 0c261dafcb9cef477ced637323b4b309
 make build
 ```
 编译成功后，在根目录生成`neb`可执行文件。
-
+![make build](../resources/101-01-make-build.png)
 
 
 ## 节点启动
@@ -195,7 +196,7 @@ metrics {
 ./neb -c <path>/config-seed1.pb.txt
 ```
 在完成配置文件修改后可以启动节点。启动后可以在终端上看到类似如下信息：
-
+![seed node start](../resources/101-01-seed-node-start.png)
 
 #### 节点启动
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
@@ -226,6 +227,6 @@ p2p {
 ./neb -c config-normal.pb.txt
 ```
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
-
+![node start](../resources/101-01-node-start.png)
 
 

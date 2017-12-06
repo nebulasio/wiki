@@ -7,22 +7,22 @@
 ## LocalContractStorage存储使用存储介绍
 星云链的智能合约运行环境内置了存储对象`LocalContractStorage`,可以存储数字，字符串，JavaScript对象，存储数据只能在智能合约内使用，其他合约不能读取存储的内容。
 
-#### 简单基础用法
+#### 基础用法
 `LocalContractStorage`的简单接口包括`set`,`get`,`del`接口，实现了存储，读取，删除数据功能。存储可以是数字，字符串，对象。
 
-##### `LocalContractStorage `存储数据方法：
+##### `LocalContractStorage `存储数据：
 
 ```js
 // 存储数据，数据会被json序列化成字符串保存
 LocalContractStorage.put(key, value);
 LocalContractStorage.set(key, value);
 ```
-##### `LocalContractStorage `读取数据方法：
+##### `LocalContractStorage `读取数据：
 ```js
 // 获取数据
 LocalContractStorage.get(key);
 ```
-##### `LocalContractStorage `删除数据方法：
+##### `LocalContractStorage `删除数据：
 ```js
 // 删除数据, 数据删除后无法读取
 LocalContractStorage.del(key);
@@ -39,18 +39,25 @@ var SampleContract = function () {
 SampleContract.prototype = {
     init: function () {
     },
-    testStorage: function () {
+    set: function (name, value) {
         // 存储字符串
-        LocalContractStorage.set("name","sample");
+        LocalContractStorage.set("name",name);
         // 存储数字
-        LocalContractStorage.set("value", 1);
+        LocalContractStorage.set("value", value);
         // 存储对象
-        LocalContractStorage.set("obj", {name:"sample",value:1});
-
-        // 获取数据
-        LocalContractStorage.get("name");
-
-        LocalContractStorage.del("obj");
+        LocalContractStorage.set("obj", {name:name,value:value});
+    },
+    get: function () {
+        var name = LocalContractStorage.get("name");
+        console.log("name:"+name)
+        var value = LocalContractStorage.get("value");
+        console.log("value:"+value)
+        var obj = LocalContractStorage.get("obj");
+        console.log("obj:"+JSON.stringify(obj))
+    },
+    del: function () {
+        var result = LocalContractStorage.del("name");
+        console.log("del result:"+result)
     }
 };
 
