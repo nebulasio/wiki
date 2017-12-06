@@ -119,16 +119,15 @@ store current rank result
 
 ## Serialization
 
-At current version, we use json serializer to make things work at first.
+We choose Protocol Buffer to do general serialization in consideration of the following benefits:
 
-> TODO: use Protocol Buffer instead.
-
-> We may consider to use Protocol Buffer considering following benefits:
 > - Large scale proven.
 > - Efficiency. It omits key literals and use varints encoding.
 > - Multi types and multilangue client support. Easy to use API.
 > - Schema is good format for communication.
 > - Schema is good for versioning/extension, i.e., adding new message fields or deprecating unused ones.
+
+Specially, we use json to do serialization in smart contract codes instead of protobuf for the sake of readability.
 
 ## Sync
 
