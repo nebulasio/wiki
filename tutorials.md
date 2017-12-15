@@ -4,7 +4,11 @@
 
 ### English
 
-TBD.
+1. [Installation](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)
+2. Sending Transaction (help wanted)
+3. Writing Smart Contract in JavaScript (help wanted)
+4. Introducing Smart Contract Storage (hep wanted)
+5. Interacting with Nebulas by RPC API (help wanted)
 
 ### 中文
 1. [编译安装及运行neb](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B中文%5D%20Nebulas%20101%20-%2001%20编译安装.md)
