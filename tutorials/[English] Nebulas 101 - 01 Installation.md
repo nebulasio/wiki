@@ -3,9 +3,9 @@
 
 The project code for [Nebulas](https://nebulas.io/) has been released in several versions and tested to run locally. You can download the Nebulas source code to compile the private chain locally.
 
-To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaperZh.pdf).
+To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf).
 
-To learn about the technology, please read the Nebulas [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaperZh.pdf) and the Nebulas [github code](https://github.com/nebulasio/go-nebulas).
+To learn about the technology, please read the Nebulas [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf) and the Nebulas [github code](https://github.com/nebulasio/go-nebulas).
 
 ## Nebulas Environment Set Up
 
@@ -18,26 +18,28 @@ Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang v
 #### Install Go Environment on Mac
 `brew` is recommended for installation. To install `brew`, pleace go to [homebrew](https://brew.sh/).
 
-Installation command: ([Guide](http://www.jianshu.com/p/358cbc939569))
+Installation command: 
 
 ```
 brew install go
 ```
 
-After installation, use `go env` to check version for Go.
+After installation, use `go env` to check version for Go
+![go env](resources/101-01-go-env.png)
 
 The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. Add `GOBIN` to `PATH`.
 
 Edit `~/.bash_profile`:
 
 ```
-    export GOPATH=/usr/local/Cellar/go/1.7.6
+    export GOPATH=<gopath>
     export GOBIN=$GOPATH/bin
     export PATH=$PATH:$GOBIN
 ```
+**Notice:GOPATH is a local go work directory and can be configured on its own. After GOPATH is configured, go project needs to be placed in GOPATH directory.**
 
 #### Install Go Environment on Linux：
-It is recommended to install Go from source. Guide: [Go Installation on Linux](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/02.3.md)。
+It is recommended to install Go from source. Guide: [Go Installation on Linux](https://golang.org/doc/install#install).
 
 ## Compile Nebulas
 
@@ -88,7 +90,7 @@ make build
 ```
 
 Once the build is complete，generate `neb` file at the root directory.
-![make build](../resources/101-01-make-build.png)
+![make build](resources/101-01-make-build.png)
 
 
 ## Starting Node
@@ -207,7 +209,7 @@ If using different configuration file, just add the `-c` flag at startup to spec
 ```
 
 Node can be started after configuration file modification. After starting, the following would be in the terminal:
-![seed node start](../resources/101-01-seed-node-start.png)
+![seed node start](resources/101-01-seed-node-start.png)
 
 #### Starting Node
 
@@ -240,5 +242,5 @@ When starting an normal child node, use this configuration file to start the nod
 ```
 
 After the node starts, if the connection with the seed node is successful, you can see the following log:
-![node start](../resources/101-01-node-start.png)
+![node start](resources/101-01-node-start.png)
 

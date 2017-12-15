@@ -23,17 +23,19 @@ Mac系统下安装go环境推荐使用`brew`安装。系统未安装`brew`的请
 brew install go
 ```
 
-成功安装后可以使用`go env`查看go的版本信息。
+成功安装后可以使用`go env`查看go的版本信息
+![go env](resources/101-01-go-env.png)
 
 安装完成后需要设置的环境变量包括:`GOPATH ` ,`GOBIN ` 以及把`GOBIN`加入到`PATH`中。
 
 编辑`~/.bash_profile`:
 
 ```
-    export GOPATH=/usr/local/Cellar/go/1.7.6
+    export GOPATH=<gopath>
     export GOBIN=$GOPATH/bin
     export PATH=$PATH:$GOBIN
 ```
+**注意：GOPATH是本地的go工作目录，可以自行配置，在GOPATH配置完后，go项目工程需要放置到GOPATH目录中。**
 
 #### Linux系统安装go：
 Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上安装Go](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/02.3.md)。
@@ -83,7 +85,7 @@ MD5: 0c261dafcb9cef477ced637323b4b309
 make build
 ```
 编译成功后，在根目录生成`neb`可执行文件。
-![make build](../resources/101-01-make-build.png)
+![make build](resources/101-01-make-build.png)
 
 
 ## 节点启动
@@ -196,7 +198,7 @@ metrics {
 ./neb -c <path>/config-seed1.pb.txt
 ```
 在完成配置文件修改后可以启动节点。启动后可以在终端上看到类似如下信息：
-![seed node start](../resources/101-01-seed-node-start.png)
+![seed node start](resources/101-01-seed-node-start.png)
 
 #### 节点启动
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
@@ -227,6 +229,6 @@ p2p {
 ./neb -c config-normal.pb.txt
 ```
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
-![node start](../resources/101-01-node-start.png)
+![node start](resources/101-01-node-start.png)
 
 

@@ -24,7 +24,7 @@ Address: 9341709022928b38dae1f9e1cfbad25611e81f736fd192c5
 ```
 Passphrase提示：创建coinbase地址的过程中需要输入一个密码，请牢记这个密码，该密码会用来解锁我们的账户并完成转帐交易等后续操作。
 执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下生成该地址对应的Key文件，如图所示：
-![key](../resources/101-02-key.png)
+![key](resources/101-02-key.png)
 
 2. 创建转账的接收地址
 现在我们通过同样的方式创建一个转帐交易接收地址。
@@ -36,11 +36,11 @@ Repeat passphrase:
 Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 ```
 执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：
-![key](../resources/101-02-new-key.png)
+![key](resources/101-02-new-key.png)
 
 3. 配置coinbase
 需要把新产生的coinbase地址`9341709022928b38dae1f9e1cfbad25611e81f736fd192c5`替换掉配置文件`config-seed.pb.txt`里面的`pow`属性里面的coinbase（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
-![key](../resources/101-02-coinbase.png)
+![key](resources/101-02-coinbase.png)
 
 ### 启动neb应用
 完成所有的准备工作后，就可以启动neb应用。启动neb应用的方式非常简单：

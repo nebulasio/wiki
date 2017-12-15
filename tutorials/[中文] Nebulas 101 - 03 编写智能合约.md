@@ -158,7 +158,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/transacti
 
 ## 验证合约是否部署成功
 在部署智能合约的时候得到了合约的地址`contract_address`，我们可以很方便的使用console控制台查询合约的地址信息来验证合约是否部署成功。
-![key](../resources/101-03-state.png)
+![key](resources/101-03-state.png)
 如上图所示，如果我们通过合约的地址可以查询到合约的信息，就表示合约部署成功了。
 
 ## 调用智能合约
@@ -188,7 +188,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/call -H '
 智能合约的调用本质也是提交一个transation，所以也依赖矿工打包，矿工将交易打包成功以后调用才算成功，所以智能合约的调用也不是立即生效。我们需要等待一段时间（约一分钟），然后可以验证我们的调用是否成功。
 上面我们调用save()方法向银行保险柜存储了金额100的资金，需要先从用户的余额扣除100，所以有个转账的过程，转账的金额需要通过value字段来传递。合约调用之后，只需要验证智能合约的地址余额是否是100。
 通过console控制台可以很方便的查询到当前智能合约地址的金额：
-![key](../resources/101-03-save-state.png)
+![key](resources/101-03-save-state.png)
 
 调用智能合约的takeout()方法：
 
@@ -203,6 +203,6 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/call -H '
 ```
 上面takeout()方法与save()方法有所不同，只是从保险柜取出50的金额，将取出的金额转给用户是智能合约内部的操作，所以value参数不需要有值，取出的金额是操作的智能合约相关的参数，所以通过args参数来传递。
 然后我们需要验证当前智能合约地址的余额是不是50：
-![key](../resources/101-03-takeout-state.png)
+![key](resources/101-03-takeout-state.png)
 
 上图可以看到智能合约调用结果无误，智能合约的部署到调用都是成功的。
