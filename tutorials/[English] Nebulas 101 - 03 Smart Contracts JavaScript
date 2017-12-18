@@ -41,6 +41,7 @@ This smart contract needs to fulfill the following functions:
 Smart contract example:
 
 ```js
+
 "use strict";
 
 var BankVaultContract = function() {
@@ -49,8 +50,12 @@ var BankVaultContract = function() {
    LocalContractStorage.defineMapProperty(this, "bankVault");
 };
 
+
+
+
 BankVaultContract.prototype = {
     init:function() {},
+
 
             // Check the contract balance information from the bank vault
     save:function() {
@@ -105,7 +110,8 @@ BankVaultContract.prototype = {
 };
 
 module.exports = BankVaultContract;
- `` `
+
+ ```
 
 ## Deploy smart contracts
 Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
