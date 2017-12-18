@@ -5,7 +5,7 @@
 ### English
 
 1. [Installation](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md) (thanks [Victor](https://github.com/victorychain))
-2. Sending Transaction (help wanted)
+2. [Sending Transaction](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md) (thanks [Victor](https://github.com/victorychain))
 3. Writing Smart Contract in JavaScript (help wanted)
 4. Introducing Smart Contract Storage (hep wanted)
 5. Interacting with Nebulas by RPC API (help wanted)
