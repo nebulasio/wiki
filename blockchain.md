@@ -136,17 +136,20 @@ Specially, we use json to do serialization in smart contract codes instead of pr
 Here is a entire blockchain synchronization policy to be implemented.
 We starts synchronization from the snapshot of the blockchain in local storage. All blocks generated after the snapshot will be synchronized from peers and replayed locally.
 
-``` pseudo
-push all tails of current blockchain into a queue, as Q
-loop if Q is not empty
-  set t as Q.pop()
-  if t is on canonical chain on peers' blockchains
-    if t is the tail on peers' blockchains
-      ask local miners to start mining
-    else
-      Q.push(t.children)
-  else
-    Q.push(t.parent)
+``` 
+1. send my tail to remote peers and then find the common ancestor
+2. the remote peers will return the common ancestor and 10 blocks after the common ancestor if exist
+3. compare the common ancestors, if over n+1 are the same, suppose the ancestor is the right ancestor
+4. find overlapping blocks in 10 blocks who has the same ancestors
+5. give the overlapping blocks to block pool one by one, if return false, go to next sync
+6. if all remote peers return the number of blocks less than 10, end sync
+```
+### Downloader
+```
+1. block_pool receive a block(new block) and found that can not link to parent.
+2. compare the height fo tail block and the new block. if the tail block heigher than the new block, abandon the new block, else trigger a event of new block coming but can not link.
+3. downloader will subscribe the event of new block coming but can not link. 
+4. downloader go downloader from the node who send the new block.
 ```
 
 ### Fast Sync (TBD)
