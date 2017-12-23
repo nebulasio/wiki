@@ -29,13 +29,27 @@ After installation, use `go env` to check version for Go
 
 The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. Add `GOBIN` to `PATH`.
 
+Find you .bash_profile in Mac- Users/myUserName/.bash_profile   
+If you you dont see the file you need to go to open up termial and type
+
+```
+defaults write com.apple.finder AppleShowAllFiles TRUE
+```
+
+Open up .bash_profile and copy paste this below.
+
 Edit `~/.bash_profile`:
 
 ```
-    export GOPATH=<gopath>
+    export GOPATH=/user/myUserName/go-nebulas
     export GOBIN=$GOPATH/bin
     export PATH=$PATH:$GOBIN
 ```
+ **Note the export GOPATH=/Your/location/of/go-nebulas you must get the exact location then add it to the .bash_profile
+ 
+# Save the changes to your .bash_profile file.
+Now restart the terminal: this is important to continue in the next step 
+
 **Notice:GOPATH is a local go work directory and can be configured on its own. After GOPATH is configured, go project needs to be placed in GOPATH directory.**
 
 #### Install Go Environment on Linux：
@@ -83,13 +97,18 @@ MD5: 0c261dafcb9cef477ced637323b4b309
 
 #### Make Build
 
-After completing the Go dependencies and v8 dependencies,  build for Nebulas. The Nebulas Go main function is in `cmd / neb / main.go`, run the make command to build:
+Go to the go-nebulas folder in your terminal
 
 ```
+cd location/of/your/go-nebulas
 make build
 ```
 
-Once the build is complete，generate `neb` file at the root directory.
+Developers note: The Nebulas Go main function is in `cmd / neb / main.go`
+ 
+
+
+Once the build is complete，you will see a generated `neb` file in go-nebulas folder, which is the root directory.
 ![make build](resources/101-01-make-build.png)
 
 
@@ -97,7 +116,7 @@ Once the build is complete，generate `neb` file at the root directory.
 
 #### Install V8
 
-Nebulas's NVM (Nebulas Virtual Machine) uses JavaScript V8 engine, and the V8 dependencies for NVM need to be run with `neb` installed. The Mac version of the dynamic link library `libnebulasv8.dylib` and the Linux version of the static link library` libnebulasv8.so` and other so libraries are provided by the official V8 Dependency Library for Nebulas. A make command to install V8 dependency libraries has been added. Execute the installation command in the project root directory:
+Nebulas's NVM (Nebulas Virtual Machine) uses JavaScript V8 engine, and the V8 dependencies for NVM need to be run with `neb` installed. The Mac version of the dynamic link library `libnebulasv8.dylib` and the Linux version of the static link library` libnebulasv8.so` and other so libraries are provided by the official V8 Dependency Library for Nebulas. A make command to install V8 dependency libraries has been added. Execute the installation command in the go-nebulas folder which is the project root directory using the terminal:
 
 ```
 make deploy-v8
@@ -219,7 +238,7 @@ After starting the seed node, if you need to start a normal node network connect
 time="2017-11-22T15:01:43+08:00" level=info msg="node start" addrs="[/ip4/192.168.1.13/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=665
 
 ```
-In the log above, the address information is `/ip4/192.168.1.13/tcp/51413`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
+In the log above, the address information is `/ip4/192.168.1.13/tcp/51413`,id `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
 
 ```
 <address>/ipfs/<id>
