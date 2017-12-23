@@ -5,12 +5,13 @@ so the whole community can help improving the quality of Nebulas.
 
 
 ## Overview
-We, the Nebulas Team and the Nebulas community always try our best to ensure
+We, the Nebulas Team and the Nebulas community, always try our best to ensure
 the stability of Nebulas, since people put their faith and properties on it.
 That means critical bugs are unacceptable, and we are aware of that.
-However, we can't blindly think Nebulas is stable enough or there won't have
+However, we can't blindly think Nebulas is stable enough or there won't be
 any bugs. Thus, we have plan B, the crash reporter, to collect crash report and
-send it back to Nebulas community.
+send it back to Nebulas community. We hope the whole community can leverage the
+crash reports and keep improving Nebulas.
 
 Using crash reporter is a very common practice. For example, Microsoft Windows includes a crash reporting service called Windows Error Reporting that prompts users to send crash reports to Microsoft for online analysis. The information goes to a central database run by Microsoft. Apple also involves a standard crash reporter in macOS, named Crash Reporter. The Crash Reporter can send the crash logs to Apple Inc, for their engineers to review. Opensource community also have their own crash reporter, like Bug Buddy for Gnome, Crashpad for Chrome, Talkback for Mozilla, and etc.
 
