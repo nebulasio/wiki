@@ -111,24 +111,25 @@ BankVaultContract.prototype = {
 
 module.exports = BankVaultContract;
 
- ```
+```
 
 ## Deploy smart contracts
 Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
 Earlier, I introduced how users made an account transaction in Nebulas, and we used the sendTransation () interface to initiate an account transaction. Deploying a smart contract in Nebulas is actually sending a transaction, just by calling the sendTransation () interface.
 
 ```js
-
 sendTransation (from, to, nonce, source, args)
 ```
 We agree that if from and to are the same address, we assume that we are deploying a smart contract.
 
 source: Source code for the smart contract to be deployed
+
 args: Parameters used to deploy smart contracts
 
 Example of deploying a smart contract using curl:
 
-`` `
+```js
+
 // Request
 curl -i -H 'Accept: application / json' -X POST http: // localhost: 8090 / v1 / transaction -H 'Content-Type: application / json' -d '{ "from": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", " to ":" 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf "," nonce ": 1," source ":" \ "use strict \"; var BankVaultContract = function () {LocalContractStorage.defineMapProperty (this, \ "bankVault \")}; BankVaultContract.prototype = {init: function () {}, save: function () {var deposit = this.bankVault.get (Blockchain.transaction.from); var value = new BigNumber (Blockchain.transaction.value); if (deposit! = null && deposit var balance = new BigNumber (deposit.balance); value = value.plus (balance)} var content = {balance: value.toString ()}; this.bankVault.put (Blockchain.transaction .from, content)}, takeout: function (amount) {var deposit = this.bankVault.get (Blockchain.transaction.from); if (deposit == null) {return 0} var balance = new BigNumber (deposit.balance var value = new BigNumber (amount); if (balance.lessThan (value)) {return 0} var result = Blockchain.tr ansfer (Blockchain.transaction.from, value); if (result> 0) {deposit.balance = balance.dividedBy (value) .toString (); this.bankVault.put (Blockchain.transaction.from, deposit)} return result result }}; module.exports = BankVaultContract; "," args ":" "} '
 
@@ -136,6 +137,4 @@ curl -i -H 'Accept: application / json' -X POST http: // localhost: 8090 / v1 / 
 {
     "txhash": "9ea7c434f717123ef335fc4e74671996a95b3dcef7873cbe77dc679d6b500a8c",
     "contract_address": "a111489535426e9
-
-
-
+```
