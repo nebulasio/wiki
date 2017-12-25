@@ -40,15 +40,15 @@ Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 ![key](resources/101-02-new-key.png)
 
 3. 配置coinbase
-需要把新产生的coinbase地址`9341709022928b38dae1f9e1cfbad25611e81f736fd192c5`替换掉配置文件`config-seed.pb.txt`里面的`pow`属性里面的coinbase（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
+需要把新产生的coinbase地址`9341709022928b38dae1f9e1cfbad25611e81f736fd192c5`替换掉配置文件`conf/default/seed.conf`里面的`chain`属性里面的coinbase（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
 ![key](resources/101-02-coinbase.png)
 
 ### 启动neb应用
 完成所有的准备工作后，就可以启动neb应用。启动neb应用的方式非常简单：
 ```
-$ ./neb -c config-seed.pb.txt
+$ ./neb -c conf/default/seed.conf
 ```
-neb应用会加载我们先前设置的`config-seed.pb.txt`配置文件。neb应用启动之后会默认进入挖矿状态，一段时间以后（1~2分钟），挖矿产生的奖励会在我们刚刚设置的coinbase账户地址上面。当前开发代码的挖矿奖励为16 NAS（后续会根据白皮书的要求进行调整修正），平均出块时间大约10秒钟。
+neb应用会加载我们先前设置的`seed.conf`配置文件。neb应用启动之后会默认进入挖矿状态，一段时间以后（1~2分钟），挖矿产生的奖励会在我们刚刚设置的coinbase账户地址上面。当前开发代码的挖矿奖励为16 NAS（后续会根据白皮书的要求进行调整修正），平均出块时间大约10秒钟。
 
 ### 查询余额
 
