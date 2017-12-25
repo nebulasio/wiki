@@ -13,11 +13,9 @@ The gRPC API for Nebulas is developed using Golang and provides a client written
 gRPC defines services using ProtoBuf, which is defined in the official code in [/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb):
 
 ```
-// Defines APIs for node and account address information access, sending transaction, etc. for external users
+// Defines APIs for node and account address information access, sending transaction, etc.
 api_rpc.proto
 
-// Management API, which defines node management functions such as creating an account address, unlocking addresses, etc.
-management_rpc.proto
 ```
 Use `make` in `rpc/pb` folder:
 
@@ -26,28 +24,25 @@ cd rpc/pb
 make
 ```
 
-Generate the corresponding Golang version of the gRPC API code. The official Golang code has been generated, re-generation is not needed. The gRPC port can be modified in the configuration file (eg: `config-seed.pb.txt`). Configuration items in the port configuration items:
+Generate the corresponding Golang version of the gRPC API code. The official Golang code has been generated, re-generation is not needed. The gRPC port can be modified in the configuration file (eg: `conf/default/seed.conf`). Configuration items in the port configuration items:
 
 ```
 # Service configuration of interactions between the user and nodes. When multiple ports are started on the same machine, make sure to modify the port to prevent override
 rpc {
-  # gRPC API for users
-  api_port: 51510
-  # gRPC Management API, for Admins
-  management_port: 52520
-  # HTTP API, for users
-  api_http_port: 8090
-  # HTTP Management API, for Admins
-  management_http_port: 8191
+    # gRPC API for users
+    rpc_listen: ["127.0.0.1:51510"]
+    # HTTP API for users
+    http_listen: ["127.0.0.1:8090"]
+    # The module that user can access by HTTP
+    http_module: ["api","admin"]
 }
 ```
-The default configuration ports are the above `API: 51510` and `management: 52520`. The API port provides the API interface service, the Management port provides the management interface service, and managmenr can also access the API interface service.
-
+The default configuration ports are the above `API: 51510`. The API port provides the API interface service.
 Golang gRPC access code:
 
 ```go
 // gRPC server connection address configuration
-addr := fmt.Sprintf("127.0.0.1:%d", uint32(52520))
+addr := fmt.Sprintf("127.0.0.1:%d", uint32(51510))
 conn, err := grpc.Dial(addr, grpc.WithInsecure())
 if err != nil {
 	log.Warn("rpc.Dial() failed: ", err)
@@ -74,16 +69,15 @@ if err != nil {
 	log.Println("LockAccount", from, "result", resp)
 }
 ```
-The API and management interfaces are defined in the Golang interface files generated from the proto file:
-`api_rpc.pb.go` and `management_rpc.pb.go`.
+The API interfaces are defined in the Golang interface files generated from the proto file:
+`api_rpc.pb.go`
 
 ## HTTP Access
 Nebulas' HTTP access uses RESTful-like API. Using the HTTP interface, you can easily access node information, account address balance, send transactions, and deploy and call smart contracts. Currently Nebulas also provides two ports, respectively, for ordinary users and administrators to access. The default port setting is at the port where gRPC was previously set.
 
 Official default ports：
 
-* 8090: The default API port, to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface for getting node information, sending transactions, etc.; can be accessed by external users.
-* 8191: The default management port, to access [Management RPC](https://github.com/nebulasio/wiki/blob/master/management_rpc.md) interface, for creating accounts, transaction signatures, etc.; generally not accessible to external users.
+* 8090: The default API port, to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface for getting node information, sending transactions, etc.
 
 Examples of using the HTTP access interface:
 
@@ -92,7 +86,7 @@ Return node information.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | GET |  /v1/node/info |
+| HTTP | GET |  /v1/user/nodeinfo |
 
 ###### Parameters
 none
@@ -130,7 +124,7 @@ message RouteTable {
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/node/info
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
 
 // Result
 {
@@ -149,7 +143,7 @@ Returns the list of accounts that the nodes exist on.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | GET |  /v1/accounts |
+| HTTP | GET |  /v1/user/accounts |
 
 ##### Parameters
 None
@@ -160,7 +154,7 @@ None
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
 
 // Result
 {
@@ -177,7 +171,7 @@ Returns account information, including account address balance and current trans
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/account/state |
+| HTTP | POST |  /v1/user/accountstate |
 
 ###### Parameters
 `address` address hash.
@@ -190,7 +184,7 @@ Returns account information, including account address balance and current trans
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
 
 // Result
 {
@@ -203,7 +197,7 @@ Use passphrase to unlock account.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/account/unlock |
+| HTTP | POST |  /v1/admin/account/unlock |
 
 
 ###### Parameters
@@ -217,7 +211,7 @@ Use passphrase to unlock account.
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -230,7 +224,7 @@ Send Transactions, contract submission port
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/transaction |
+| HTTP | POST |  /v1/user/transaction |
 
 ###### Parameters
 `from` Sender account address hash.
@@ -259,7 +253,7 @@ If deploying contract, would also return contract address information:
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
 
 // Result
 {
@@ -272,7 +266,7 @@ Return transaction information using hash.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/getTransactionReceipt |
+| HTTP | POST |  /v1/user/getTransactionReceipt |
 
 ###### Parameters
 `hash` 交易哈希. Transaction hash.
@@ -298,7 +292,7 @@ Return transaction information using hash.
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
 
 // Result
 {
@@ -312,4 +306,4 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransacti
 ```
 
 
-For detailed API and parameter documentation, please refer to the official documentations of [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) and [Management RPC](https://github.com/nebulasio/wiki/blob/master/management_rpc.md).
+For detailed API and parameter documentation, please refer to the official documentations of [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md).

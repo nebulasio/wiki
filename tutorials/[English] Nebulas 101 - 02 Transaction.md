@@ -52,7 +52,7 @@ After the system starts, we can query the balance information of the account by 
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 // Result
 {
@@ -70,7 +70,7 @@ To send a transfer transaction, follow these steps:
 
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
 
 // Result
 {
@@ -86,7 +86,7 @@ This port returns all the account information in the currently started node, fro
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -99,7 +99,7 @@ This port unlock the sender's address which is needed for the transfer transacti
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
 
 // Result
 {
@@ -112,7 +112,7 @@ Transfer transaction port: account `0fba` to account `6c05`, transfer amount 10.
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
 
 // Result
 {
@@ -130,7 +130,7 @@ This port can query the previous transfer transactions. The request parameter is
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
 
 // Result
 {

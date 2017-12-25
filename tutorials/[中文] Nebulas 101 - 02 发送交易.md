@@ -51,7 +51,7 @@ Nebulas提供了RPC接口，让开发者通过HTTP或gPRC协议与星云链进�
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 // Result
 {
@@ -68,7 +68,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/stat
 
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
 
 // Result
 {
@@ -84,7 +84,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -97,7 +97,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlo
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
 
 // Result
 {
@@ -110,7 +110,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transacti
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
 
 // Result
 {
@@ -128,7 +128,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransacti
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
 
 // Result
 {

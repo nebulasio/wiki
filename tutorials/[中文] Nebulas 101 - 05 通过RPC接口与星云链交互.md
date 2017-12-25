@@ -13,11 +13,9 @@ gRPC是一个高性能、通用的开源RPC框架，由Google主要面向移动�
 gRPC使用ProtoBuf来定义服务,protobuf的定义在官方代码的[/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb)中：
 
 ```
-// API接口，定义了节点、账号地址信息获取，发送交易等接口，供外部用户使用
+// API接口，定义了节点、账号地址信息获取，发送交易等接口
 api_rpc.proto
 
-// management接口，定义了创建账号地址，解锁地址等节点管理方法。
-management_rpc.proto
 ```
 使用的时候可以在`rpc/pb`文件夹中执行`make`：
 
@@ -25,35 +23,33 @@ management_rpc.proto
 cd rpc/pb
 make
 ```
-生成对应的go版本grpc接口代码。官方代码go版本已经生成了，使用的时候可以不用重新生成。gRPC的端口可以在配置文件(eg:`config-seed.pb.txt`)中修改。配置文件的中的端口配置项如下：
+生成对应的go版本grpc接口代码。官方代码go版本已经生成了，使用的时候可以不用重新生成。gRPC的端口可以在配置文件(eg:`conf/default/seed.conf`)中修改。配置文件的中的端口配置项如下：
 
 ```
 # 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
 rpc {
-  # gRPC API服务端口，供用户连接使用
-  api_port: 51510
-  # gRPC Management服务端口，供管理人员使用
-  management_port: 52520
-  # HTTP API服务端口，供用户连接使用
-  api_http_port: 8090
-  # HTTP Management服务端口，供管理人员使用
-  management_http_port: 8191
+    # gRPC API服务端口
+    rpc_listen: ["127.0.0.1:51510"]
+    # HTTP API服务端口
+    http_listen: ["127.0.0.1:8090"]
+    # 开放可对外提供http服务的模块
+    http_module: ["api","admin"]
 }
 ```
-默认的配置端口为上述的`API:51510`和`management:52520`。API端口中提供了API接口的服务，Management端口中提了管理接口服务，同时也可以访问到API接口服务。
+默认的配置端口为上述的`API:51510`。
 
 go的gRPC访问代码如下：
 
 ```go
 // gRPC服务器连接地址配置
-addr := fmt.Sprintf("127.0.0.1:%d", uint32(52520))
+addr := fmt.Sprintf("127.0.0.1:%d", uint32(51510))
 conn, err := grpc.Dial(addr, grpc.WithInsecure())
 if err != nil {
 	log.Warn("rpc.Dial() failed: ", err)
 }
 defer conn.Close()
 
-// API接口访问，或者节点状态信息
+// API接口访问，获取节点状态信息
 api := rpcpb.NewAPIServiceClient(conn)
 resp, err := ac.GetNebState(context.Background(), &rpcpb.GetNebStateRequest{})
 if err != nil {
@@ -63,7 +59,7 @@ if err != nil {
 	log.Println("GetNebState tail", resp)
 }
 
-//management接口访问,锁定账号地址
+// API接口访问,锁定账号地址
 management := rpcpb.NewManagementServiceClient(conn)
 from := "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
 resp, err = management.LockAccount(context.Background(), &rpcpb.LockAccountRequest{Address: from})
@@ -73,16 +69,15 @@ if err != nil {
 	log.Println("LockAccount", from, "result", resp)
 }
 ```
-API和management的接口定义在通过proto文件生成的go接口文件中:
-`api_rpc.pb.go`和`management_rpc.pb.go`。
+API的接口定义在通过proto文件生成的go接口文件中:
+`api_rpc.pb.go`
 
 ## HTTP访问
-星云链的HTTP访问使用了RESTful风格的API。使用HTTP接口可以很方便的获取节点的信息，账号地址的余额，发送交易和部署调用智能合约。目前星云链也提供了两个端口，分别为普通用户和管理员访问。默认的端口设置在前面设置gRPC的端口处。
+星云链的HTTP访问使用了RESTful风格的API。使用HTTP接口可以很方便的获取节点的信息，账号地址的余额，发送交易和部署调用智能合约。
 
 官方默认端口：
 
 * 8090：默认API端口，可以访问[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)的接口，有获取节点信息，发送交易等功能；可以对外部用户开放。
-* 8191：默认Management端口，可以访问[Management RPC](https://github.com/nebulasio/wiki/blob/master/management_rpc.md)的接口，有创建账号，交易签名等功能；一般不对外部用户开放。
 
 一些使用HTTP访问接口的例子：
 
@@ -91,7 +86,7 @@ API和management的接口定义在通过proto文件生成的go接口文件中:
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | GET |  /v1/node/info |
+| HTTP | GET |  /v1/user/nodeinfo |
 
 ###### Parameters
 none
@@ -129,7 +124,7 @@ message RouteTable {
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/node/info
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
 
 // Result
 {
@@ -148,7 +143,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/node/info
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | GET |  /v1/accounts |
+| HTTP | GET |  /v1/user/accounts |
 
 ##### Parameters
 无
@@ -159,7 +154,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/node/info
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
 
 // Result
 {
@@ -176,7 +171,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/account/state |
+| HTTP | POST |  /v1/user/accountstate |
 
 ###### Parameters
 `address` 地址哈希.
@@ -189,7 +184,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
 
 // Result
 {
@@ -202,7 +197,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/stat
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/account/unlock |
+| HTTP | POST |  /v1/admin/account/unlock |
 
 
 ###### Parameters
@@ -216,7 +211,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/stat
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -229,7 +224,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlo
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/transaction |
+| HTTP | POST |  /v1/user/transaction |
 
 ###### Parameters
 `from` 发送账号地址哈希.
@@ -258,7 +253,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlo
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
 
 // Result
 {
@@ -271,7 +266,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/transacti
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | POST |  /v1/getTransactionReceipt |
+| HTTP | POST |  /v1/user/getTransactionReceipt |
 
 ###### Parameters
 `hash` 交易哈希.
@@ -296,7 +291,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/transacti
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
 
 // Result
 {
