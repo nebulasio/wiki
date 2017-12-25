@@ -38,7 +38,7 @@ After executing this command, the neb program will generate a new Key file corre
 ### Start the Neb App
 After completing all the preparations, you can start the neb app:
 ```
-$ ./neb -c config-seed.pb.txt
+$ ./neb -c conf/default/seed.conf
 ```
 The neb app loads the `conf/default/seed.conf` configuration file we set earlier. After starting, neb app will enter mining mode by defult. After a period of time (1 to 2 minutes), mining reward will be sent to the coinbase account address we set before. The current development code mining reward is 16 NAS (which will be adjusted according to the requirements of the white paper). The average block time is about 10 seconds.
 
