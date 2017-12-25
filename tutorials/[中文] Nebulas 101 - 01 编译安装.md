@@ -227,7 +227,7 @@ network {
 启动普通子节点时，使用此配置文件启动节点：
 
 ```
-./neb -c config.conf
+./neb -c conf/default/config.conf
 ```
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
 ![node start](resources/101-01-node-start.png)

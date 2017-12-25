@@ -14,18 +14,12 @@ Nebulas提供了三种方式去发送我们的交易：
 2. 修改节点的配置文件，配置coinbase地址。
 
 #### 准备工作细节
-1. 创建挖矿钱包地址coinbase 
-coinbase 对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。我们用如下的方式来生成一个新的钱包地址，然后设置为coinbase地址，在终端（Terminal）中执行如下命令：
-```sh
-$ ./neb account new
-Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
-Passphrase:
-Repeat passphrase:
-Address: 9341709022928b38dae1f9e1cfbad25611e81f736fd192c5
-```
-Passphrase提示：创建coinbase地址的过程中需要输入一个密码，请牢记这个密码，该密码会用来解锁我们的账户并完成转帐交易等后续操作。
-执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下生成该地址对应的Key文件，如图所示：
-![key](resources/101-02-key.png)
+1. 配置挖矿钱包地址coinbase 
+coinbase 对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。我们可以从genesis.conf里面consensus-> dpos-> dynasty里面前六个地址选取一个地址作为coinbase的地址。当前我们的版本是六个地址作为一个dynasty，轮流出块，所以只有前六个地址可以配置成coinbase地址。
+![key](resources/101-02-genesis.png)
+
+把我们选取的coinbase地址`1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c`替换掉配置文件`conf/default/seed.conf`里面的`chain`属性里面的coinbase 和 miner（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
+![key](resources/101-02-coinbase.png)
 
 2. 创建转账的接收地址
 现在我们通过同样的方式创建一个转帐交易接收地址。
@@ -38,10 +32,6 @@ Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 ```
 执行完这个命令以后，neb程序会在当前目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：
 ![key](resources/101-02-new-key.png)
-
-3. 配置coinbase
-需要把新产生的coinbase地址`9341709022928b38dae1f9e1cfbad25611e81f736fd192c5`替换掉配置文件`conf/default/seed.conf`里面的`chain`属性里面的coinbase（如下图所示）。后面用户启动neb应用后挖矿产生的奖励就会进入这个地址。
-![key](resources/101-02-coinbase.png)
 
 ### 启动neb应用
 完成所有的准备工作后，就可以启动neb应用。启动neb应用的方式非常简单：
@@ -61,7 +51,7 @@ Nebulas提供了RPC接口，让开发者通过HTTP或gPRC协议与星云链进�
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5"}'
+curl -i -H Accept:application/json -X POST http://localhost:8090/v1/account/state -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 // Result
 {
@@ -83,7 +73,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 // Result
 {
    "addresses":[
-       "9341709022928b38dae1f9e1cfbad25611e81f736fd192c5",
+       "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
        "e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"
    ]
 }
@@ -94,7 +84,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/accounts
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -107,7 +97,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/account/unlo
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transaction -H 'Content-Type: application/json' -d '{"from":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
 
 // Result
 {
@@ -125,7 +115,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/getTransacti
 // Result
 {
    "hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace",
-   "from":"9341709022928b38dae1f9e1cfbad25611e81f736fd192c5",
+   "from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
    "to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88",
    "nonce":"1",
    "timestamp":"1511519091",
