@@ -9,7 +9,7 @@ Today we will learn how to write, deploy, and execute smart contracts in Nebulas
 Before making a smart contract, first we need to review the following:
 
 1. Install, compile and start neb application
-2. Create wallet address, set coinbase, and start mining
+2. Create a wallet address, set coinbase, and start mining
 3. Query neb node information, wallet address balance
 4. Make a transfer and verify the transaction was successful
 
