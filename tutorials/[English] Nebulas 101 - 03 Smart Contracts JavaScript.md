@@ -1,6 +1,7 @@
 
 # Nebulas 101 - 03 Write and run a smart contract with JavaScript
 
+
 Today we will learn how to write, deploy, and execute smart contracts in Nebulas using JavaScript
 
 ## First things first
@@ -100,10 +101,10 @@ The contract code above uses the built-in `Blockchain` object and the built-in` 
 
 ```js
 
-  // Check the contract balance information from the bank vault 
+// Check the contract balance information from the bank vault 
 save ():
 
-            // The amount of money this user will deposit into the bank vault
+// The amount of money this user will deposit into the bank vault
 var deposit = this.bankVault.get (Blockchain.transaction.from);
 
 // The amount of money this user saves
@@ -161,7 +162,6 @@ sendTransation (from, to, nonce, source, args)
 We agree that if from and to are the same address, we assume that we are deploying a smart contract.
 
 source: Source code for the smart contract to be deployed
-
 args: Parameters used to deploy smart contracts
 
 ## Example of deploying a smart contract using curl:
