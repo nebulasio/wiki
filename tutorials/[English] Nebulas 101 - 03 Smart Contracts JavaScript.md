@@ -1,4 +1,6 @@
-## Nebulas 101 - 03 Write and run a smart contract
+
+# Nebulas 101 - 03 Write and run a smart contract with JavaScript
+
 
 Today we will learn how to write, deploy, and execute smart contracts in Nebulas using JavaScript
 
@@ -27,11 +29,13 @@ Like Ethereum, Nebulas implements NVM virtual machines to run smart contracts an
 Write a brief description of a smart contract:
 
 1. The smart contract code must be a Prototype object;
+
 2. Smart contract code must have a init () method, this method will only be executed once deployed;
 
 Devlopers note: smart contract inside the private method is _ at the beginning of the method, the private method can not be externally called directly;
 
 Below we use JavaScript to write the first smart contract: bank safes.
+
 This smart contract needs to fulfill the following functions:
 
 1. The user can save money to his bank vault.
@@ -97,10 +101,10 @@ The contract code above uses the built-in `Blockchain` object and the built-in` 
 
 ```js
 
-  // Check the contract balance information from the bank vault 
+// Check the contract balance information from the bank vault 
 save ():
 
-            // The amount of money this user will deposit into the bank vault
+// The amount of money this user will deposit into the bank vault
 var deposit = this.bankVault.get (Blockchain.transaction.from);
 
 // The amount of money this user saves
@@ -149,6 +153,7 @@ if (result> 0) {
 
 ## Deploy smart contracts
 Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
+
 Earlier, I introduced how users made an account transaction in Nebulas, and we used the sendTransation () interface to initiate an account transaction. Deploying a smart contract in Nebulas is actually just sending a transaction, just with different parameters.
 
 ```js
@@ -177,7 +182,7 @@ Get the return value does not guarantee a successful deployment of the contract,
 
 ## Verify the deployment of the contract is successful
 We get the contract address `contract_address` when deploying the smart contract, and we can easily check the contract's address information using the console to verify whether the contract has been deployed successfully.
-![key] (resources / 101-03-state.png)
+! [key] (resources / 101-03-state.png)
 As shown above, if we can get the contract information by the address of the contract, it means the contract has been deployed successfully.
 
 ## call smart contract
