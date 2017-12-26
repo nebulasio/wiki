@@ -1,5 +1,5 @@
 
-# Nebulas 101 - 01 Compile and Install Nebulas
+# Nebulas 101 - 01 Compile and Install Nebulas (This tutorial applies to the latest develop branch)
 
 The project code for [Nebulas](https://nebulas.io/) has been released in several versions and tested to run locally. You can download the Nebulas source code to compile the private chain locally.
 
@@ -149,73 +149,73 @@ Seed node configuration file:
 
 ```
 # Node network configuration, configurations of seed node and node distiguishes here.
-p2p {
-  # If this is seed node, configuration is not needed. The normal node needs the seed node seed information to be configured.
+network {
+  # If this is seed node, configuration is not needed. The normal node needs the seed node seed
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  # p2p network service port. Be sure to modify this when the same machine is starting multiple nodes, to prevent overriding
-  port: 51413
+  # p2p network service host. support mutiple ip and ports.
+  listen: ["127.0.0.1:51413"]
+  # the private key is used to generate a node ID. if don't use the private key, the node will get a new ID.
+  #private_key: "id_ed25519"
+  # network group ID. nodes can't connect to each other in different network groups.
+  network_id: 1
+}
+
+# configuration of blockchain.
+chain {
   # Network chain ID. defult: 100
   chain_id: 100
-  # Network protocol version. default: 1
-  version: 1
-}
-
-# Service configuration of interaction between user and node. Be sure to modify the port when the same machine is starting multiple nodes, to prevent overriding
-rpc {
-  # gRPC API port, for user connection
-  api_port: 51510
-  # gRPC Management port, for admin
-  management_port: 52520
-  # HTTP API port, for user connection
-  api_http_port: 8090
-  # HTTP Management port, for admin
-  management_http_port: 8191
-}
-
-# Mining machine mining configuration
-pow {
-  # Mining machine's mining address, the reward will be send to a Coinbase address
-  coinbase: "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-}
-
-# Nebulas Database Configuration
-storage {
   # Database storage location
-  location: "seed.db"
-}
-
-# Nebulas Account Configuration
-account {
-  # Node signature algorithm enumeration
-  # keystore.SECP256K1 = 1
-  signature: 1
-
-  # Node encryption algorithm enumeration
-  # keystore.SCRYPT = 1 << 4
-  encrypt: 16
-
+  datadir: "seed.db"
   # Node private key location
-  key_dir: "keydir"
-
-  test_passphrase: "passphrase"
+  keydir: "keydir"
+  # The genesis block configuration
+  genesis: "conf/default/genesis.conf"
+  # Mining machine's mining address, the reward will be send to a Coinbase address
+  coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  # Node signature algorithm
+  signature_ciphers: ["ECC_SECP256K1"]
+  # Mining machine's mining address
+  miner: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  # The passphrase used to unlock account
+  passphrase: "passphrase"
 }
 
-# Node Metrics Database Configuration
-influxdb {
-  host: "http://localhost:8086"
-  db: "nebulas"
-  username: "test"
-  password: "test"
+# Service configuration of interaction between user and node.
+rpc {
+    # GRPC API port
+    rpc_listen: ["127.0.0.1:51510"]
+    # HTTP API port
+    http_listen: ["127.0.0.1:8090"]
+    # The module that user can access by HTTP
+    http_module: ["api","admin"]
 }
 
-# Node Metrics Enabling
-metrics {
-  enable: false
+# Configuration of log
+app {
+    # Log level {debug, info, warn, error, fatal}
+    log_level: "info"
+    # The output path of Log
+    log_file: "logs/seed"
+    # Crash log enabling
+    enable_crash_report: false
+}
+
+# Other Configuration
+stats {
+    # Node Metrics Enabling
+    enable_metrics: false
+    # Configuration of influxdb
+    influxdb: {
+        host: "http://localhost:8086"
+        db: "nebulas"
+        user: "admin"
+        password: "admin"
+    }
 }
 
 ```
 
-By default, `config-seed.pb.txt` in the root directory of the project is read to start seed node if no configuration file is specified. The default start seed node command:
+By default, `seed.conf` in the root directory of the project is read to start seed node if no configuration file is specified. The default start seed node command:
 
 ```
 ./neb
@@ -224,7 +224,7 @@ By default, `config-seed.pb.txt` in the root directory of the project is read to
 If using different configuration file, just add the `-c` flag at startup to specify the configuration file. For example, to specify a node configuration file when starting a seed node:
 
 ```
-./neb -c <path>/config-seed1.pb.txt
+./neb -c <path>/seed.conf
 ```
 
 Node can be started after configuration file modification. After starting, the following would be in the terminal:
@@ -235,20 +235,21 @@ Node can be started after configuration file modification. After starting, the f
 After starting the seed node, if you need to start a normal node network connected with the seed node, configure the seed node address information in the normal node configuration file. The seed node address can be found from the seed node log: **node start**:
 
 ```
-time="2017-11-22T15:01:43+08:00" level=info msg="node start" addrs="[/ip4/192.168.1.13/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=665
-
+INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
 ```
-In the log above, the address information is `/ip4/192.168.1.13/tcp/51413`,id `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
+In the log above, the address information is `/ip4/127.0.0.1/tcp/51413`,id `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
 
 ```
 <address>/ipfs/<id>
 ```
-The configuration in the normal seed configuration file `config-normal.pb.txt`：
+The configuration in the normal seed configuration file `conf/default/config.conf`：
 
 ```
-p2p {
-  seed: "/ip4/192.168.1.13/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"
-  port: 51415
+network {
+  # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
+  seed: ["/ip4/127.0.0.1/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  listen: ["127.0.0.1:10000"]
+  network_id: 1
 }
 ...
 ```
@@ -257,7 +258,7 @@ p2p {
 When starting an normal child node, use this configuration file to start the node:
 
 ```
-./neb -c config-normal.pb.txt
+./neb -c conf/default/config.conf
 ```
 
 After the node starts, if the connection with the seed node is successful, you can see the following log:

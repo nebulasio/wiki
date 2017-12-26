@@ -1,3 +1,4 @@
+
 # Nebulas 101 - 03 Write and run a smart contract with JavaScript
 
 Today we will learn how to write, deploy, and execute smart contracts in Nebulas using JavaScript
@@ -27,11 +28,13 @@ Like Ethereum, Nebulas implements NVM virtual machines to run smart contracts an
 Write a brief description of a smart contract:
 
 1. The smart contract code must be a Prototype object;
+
 2. Smart contract code must have a init () method, this method will only be executed once deployed;
 
 Devlopers note: smart contract inside the private method is _ at the beginning of the method, the private method can not be externally called directly;
 
 Below we use JavaScript to write the first smart contract: bank safes.
+
 This smart contract needs to fulfill the following functions:
 
 1. The user can save money to his bank vault.
@@ -149,6 +152,7 @@ if (result> 0) {
 
 ## Deploy smart contracts
 Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
+
 Earlier, I introduced how users made an account transaction in Nebulas, and we used the sendTransation () interface to initiate an account transaction. Deploying a smart contract in Nebulas is actually just sending a transaction, just with different parameters.
 
 ```js
@@ -157,6 +161,7 @@ sendTransation (from, to, nonce, source, args)
 We agree that if from and to are the same address, we assume that we are deploying a smart contract.
 
 source: Source code for the smart contract to be deployed
+
 args: Parameters used to deploy smart contracts
 
 ## Example of deploying a smart contract using curl:

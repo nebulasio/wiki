@@ -1,5 +1,5 @@
 
-# Nebulas 101 - 01 编译安装星云链
+# Nebulas 101 - 01 编译安装星云链（本教程适用于最新develop分支的代码）
 
 [星云链](https://nebulas.io/)的项目代码已经发布了几个版本，经过测试可以在本地运行，大家可以下载星云链源代码在本地编译私有链。
 
@@ -115,79 +115,79 @@ make deploy-v8
 #### 启动种子节点
 星云链的节点启动需要配置文件提供部分配置参数。配置文件使用了使用[Protocol Buffer](https://github.com/google/protobuf)的格式读取配置信息。工程根目录下有默认种子节点配置文件：
 
-`config-seed.pb.txt`
+`conf/default/seed.conf`
 
 种子节点配置文件内容如下：
 
 ```
 # 节点网络配置，种子节点和节点的配置在此区分
-p2p {
+network {
   # 若为种子节点，不需要配置seed，普通节点需要配置种子节点seed信息
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  # p2p网络服务端口，同一台机器启动多个节点时注意修改，防止占用
-  port: 51413
-  # 网络中链的ID，默认100
+  # p2p网络服务ip和端口，服务启动的时候可以listen多组不同的ip和端口
+  listen: ["127.0.0.1:51413"]
+  # 生成节点ID时候用到的私钥路径，如果不配置，每次都会生成新的不同的节点ID；配置了，会使用配置的私钥生成节点ID
+  #private_key: "id_ed25519"
+  # 网络分组ID，不同网络分组ID的节点不能互相通讯
+  network_id: 1
+}
+
+# blockchain相关配置
+chain {
+  # 网络中的chainID
   chain_id: 100
-  # 网络协议版本，默认为1
-  version: 1
-}
-
-# 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
-rpc {
-  # gRPC API服务端口，供用户连接使用
-  api_port: 51510
-  # gRPC Management服务端口，供管理人员使用
-  management_port: 52520
-  # HTTP API服务端口，供用户连接使用
-  api_http_port: 8090
-  # HTTP Management服务端口，供管理人员使用
-  management_http_port: 8191
-}
-
-# 矿机挖矿配置
-pow {
-  # 矿机的挖矿地址，获取的奖励将发放给coinbase
-  coinbase: "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-}
-
-# 星云链数据库配置
-storage {
-  # 数据库存放位置
-  location: "seed.db"
-}
-
-# 星云链账号配置
-account {
-  # 节点签名算法枚举
-  # keystore.SECP256K1 = 1
-  signature: 1
-
-  # 节点加密算法枚举
-  # keystore.SCRYPT = 1 << 4
-  encrypt: 16
-
+  # 数据库存放的位置
+  datadir: "seed.db"
   # 节点私钥保存位置
-  key_dir: "keydir"
-
-  test_passphrase: "passphrase"
+  keydir: "keydir"
+  # genesis创世区块的默认配置
+  genesis: "conf/default/genesis.conf"
+  # 矿机的挖矿地址，获取的奖励将发放给coinbase
+  coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  # 节点签名算法
+  signature_ciphers: ["ECC_SECP256K1"]
+  # 节点挖矿的地址
+  miner: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  # 用于解锁账户的passphrase
+  passphrase: "passphrase"
 }
 
-# 节点统计信息数据库配置
-influxdb {
-  host: "http://localhost:8086"
-  db: "nebulas"
-  username: "test"
-  password: "test"
+# 用户与节点交互的服务配置
+rpc {
+    # gRPC API服务端口
+    rpc_listen: ["127.0.0.1:51510"]
+    # HTTP API服务端口
+    http_listen: ["127.0.0.1:8090"]
+    # 开放可对外提供http服务的模块
+    http_module: ["api","admin"]
 }
 
-# 节点统计开关
-metrics {
-  enable: false
+# app日志相关配置
+app {
+    # 配置记录的log级别{debug, info, warn, error, fatal}
+    log_level: "info"
+    # 配置log的输出文件
+    log_file: "logs/seed"
+    # 配置是否输出crash日志
+    enable_crash_report: false
+}
+
+# 其他配置信息
+stats {
+    # 是否开启节点监控数据统计
+    enable_metrics: false
+    # 节点监控数据统计用到的inluxdb的配置
+    influxdb: {
+        host: "http://localhost:8086"
+        db: "nebulas"
+        user: "admin"
+        password: "admin"
+    }
 }
 
 ```
 
-在不指定配置文件时默认读取工程根目录下的`config-seed.pb.txt`启动种子节点。默认启动种子节点命令:
+在不指定配置文件时默认读取工程根目录下的`conf/default/seed.conf`启动种子节点。默认启动种子节点命令:
 
 ```
 ./neb
@@ -195,7 +195,7 @@ metrics {
 若需要使用不同的配置文件，仅需在启动时添加`-c`标记，指定配置文件。例如启动种子节点时指定节点配置文件：
 
 ```
-./neb -c <path>/config-seed1.pb.txt
+./neb -c <path>/seed.conf
 ```
 在完成配置文件修改后可以启动节点。启动后可以在终端上看到类似如下信息：
 ![seed node start](resources/101-01-seed-node-start.png)
@@ -204,20 +204,21 @@ metrics {
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
 
 ```
-time="2017-11-22T15:01:43+08:00" level=info msg="node start" addrs="[/ip4/192.168.1.13/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=665
-
+INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
 ```
-上面的log中，地址信息为`/ip4/192.168.1.13/tcp/51413`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
+上面的log中，地址信息为`/ip4/127.0.0.1/tcp/51413`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
 
 ```
 <address>/ipfs/<id>
 ```
-在普通节点配置文件`config-normal.pb.txt`中配置如下：
+在普通节点配置文件`config.conf`中配置如下：
 
 ```
-p2p {
-  seed: "/ip4/192.168.1.13/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"
-  port: 51415
+network {
+  # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
+  seed: ["/ip4/127.0.0.1/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  listen: ["127.0.0.1:10001"]
+  network_id: 1
 }
 ...
 ```
@@ -226,7 +227,7 @@ p2p {
 启动普通子节点时，使用此配置文件启动节点：
 
 ```
-./neb -c config-normal.pb.txt
+./neb -c conf/default/config.conf
 ```
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
 ![node start](resources/101-01-node-start.png)

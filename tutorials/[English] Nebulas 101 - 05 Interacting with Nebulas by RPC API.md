@@ -1,47 +1,47 @@
 
-# Nebulas 101 - 05 通过RPC接口与星云链交互
+# Nebulas 101 - 05 Interacting with Nebulas by RPC API
 
-星云链节点启动后可以通过RPC远程控制访问。星云链提供了一系列API来获取节点的信息，账号余额，发送交易和部署调用智能合约。
+Nebulas node, after starting, can be accessed remotely through RPC. Nebulas provides APIs to get the node information, account balances, send transactions and deploy and call smart contracts.
 
-星云链的远程访问是[gRPC](https://grpc.io)实现的，通过代理([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway))也可以通过HTTP访问。HTTP访问是RESTful实现的接口，参数与gRPC的调用接口参数相同。
+The remote access to Nebulas is done by [gRPC](https://grpc.io), via proxy ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)) or HTTP. HTTP access is a RESTful API, with the same parameters as the gRPC API.
 
-## gRPC访问
-gRPC是一个高性能、通用的开源RPC框架，由Google主要面向移动应用开发并基于HTTP/2协议标准而设计，基于[ProtoBuf](https://github.com/google/protobuf)序列化协议开发，且支持众多开发语言。
+## gRPC Access
+gRPC is a high-performance, general, and open-source RPC framework developed by Google primarily for mobile applications and designed based on the HTTP/2 protocol standard, based on [ProtoBuf](https://github.com/google/protobuf) serialization protocol, and it supports many development languages.
 
-星云链的gRPC接口是用go语言开发的，并提供了一个go语言写的客户端[demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go)。这里就主要介绍使用go实现的gRPC接口使用。（gRPC支持多种语言，也可以使用其他语言访问gRPC。）
+The gRPC API for Nebulas is developed using Golang and provides a client written in Golang [demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go). Here we mainly introduce the use of Golang to implement gRPC API. (gRPC supports multiple languages, and gRPC can be accessed in other languages.)
 
-gRPC使用ProtoBuf来定义服务,protobuf的定义在官方代码的[/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb)中：
+gRPC defines services using ProtoBuf, which is defined in the official code in [/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb):
 
 ```
-// API接口，定义了节点、账号地址信息获取，发送交易等接口
+// Defines APIs for node and account address information access, sending transaction, etc.
 api_rpc.proto
 
 ```
-使用的时候可以在`rpc/pb`文件夹中执行`make`：
+Use `make` in `rpc/pb` folder:
 
 ```
 cd rpc/pb
 make
 ```
-生成对应的go版本grpc接口代码。官方代码go版本已经生成了，使用的时候可以不用重新生成。gRPC的端口可以在配置文件(eg:`conf/default/seed.conf`)中修改。配置文件的中的端口配置项如下：
+
+Generate the corresponding Golang version of the gRPC API code. The official Golang code has been generated, re-generation is not needed. The gRPC port can be modified in the configuration file (eg: `conf/default/seed.conf`). Configuration items in the port configuration items:
 
 ```
-# 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
+# Service configuration of interactions between the user and nodes. When multiple ports are started on the same machine, make sure to modify the port to prevent override
 rpc {
-    # gRPC API服务端口
+    # gRPC API for users
     rpc_listen: ["127.0.0.1:51510"]
-    # HTTP API服务端口
+    # HTTP API for users
     http_listen: ["127.0.0.1:8090"]
-    # 开放可对外提供http服务的模块
+    # The module that user can access by HTTP
     http_module: ["api","admin"]
 }
 ```
-默认的配置端口为上述的`API:51510`。
-
-go的gRPC访问代码如下：
+The default configuration ports are the above `API: 51510`. The API port provides the API interface service.
+Golang gRPC access code:
 
 ```go
-// gRPC服务器连接地址配置
+// gRPC server connection address configuration
 addr := fmt.Sprintf("127.0.0.1:%d", uint32(51510))
 conn, err := grpc.Dial(addr, grpc.WithInsecure())
 if err != nil {
@@ -49,7 +49,7 @@ if err != nil {
 }
 defer conn.Close()
 
-// API接口访问，获取节点状态信息
+// API interface access, or node status information
 api := rpcpb.NewAPIServiceClient(conn)
 resp, err := ac.GetNebState(context.Background(), &rpcpb.GetNebStateRequest{})
 if err != nil {
@@ -59,7 +59,7 @@ if err != nil {
 	log.Println("GetNebState tail", resp)
 }
 
-// API接口访问,锁定账号地址
+//Management interface access, locking account address
 management := rpcpb.NewManagementServiceClient(conn)
 from := "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
 resp, err = management.LockAccount(context.Background(), &rpcpb.LockAccountRequest{Address: from})
@@ -69,20 +69,20 @@ if err != nil {
 	log.Println("LockAccount", from, "result", resp)
 }
 ```
-API的接口定义在通过proto文件生成的go接口文件中:
+The API interfaces are defined in the Golang interface files generated from the proto file:
 `api_rpc.pb.go`
 
-## HTTP访问
-星云链的HTTP访问使用了RESTful风格的API。使用HTTP接口可以很方便的获取节点的信息，账号地址的余额，发送交易和部署调用智能合约。
+## HTTP Access
+Nebulas' HTTP access uses RESTful-like API. Using the HTTP interface, you can easily access node information, account address balance, send transactions, and deploy and call smart contracts. Currently Nebulas also provides two ports, respectively, for ordinary users and administrators to access. The default port setting is at the port where gRPC was previously set.
 
-官方默认端口：
+Official default ports：
 
-* 8090：默认API端口，可以访问[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)的接口，有获取节点信息，发送交易等功能；可以对外部用户开放。
+* 8090: The default API port, to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface for getting node information, sending transactions, etc.
 
-一些使用HTTP访问接口的例子：
+Examples of using the HTTP access interface:
 
-##### 获取节点信息
-返回节点信息。
+##### Get Node Information
+Return node information.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -92,27 +92,27 @@ API的接口定义在通过proto文件生成的go接口文件中:
 none
 
 ###### Returns
-`id` 节点ID.
+`id` node ID.
 
-`chain_id` 区块链ID.
+`chain_id` Blockchain ID.
 
-`version` 节点版本.
+`version` node version.
 
-`peer_count` 当前连接的节点数.
+`peer_count` current node count.
 
-`synchronized` 节点同步状态.
+`synchronized` node sychronization status.
 
-`bucket_size` 节点路由表保存节点个数.
+`bucket_size` number of node saved in node route table.
 
-`relay_cache_size` 转播缓存大小.
+`relay_cache_size` relay cache size.
 
-`stream_store_size` 节点流数据仓库size.
+`stream_store_size` node stream store size.
 
-`stream_store_extend_size` 节点流数据仓库扩展size.
+`stream_store_extend_size` node stream store extend size.
 
-`protocol_version` 网络协议版本.
+`protocol_version` network protocol version.
 
-`RouteTable route_table` 路由表
+`RouteTable route_table` route table.
 
 ```
 message RouteTable {
@@ -138,18 +138,18 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
     "protocol_version":"/neb/1.0.0"
 }
 ```
-##### 账号列表
-返回节点存在的账号列表。
+##### Account List
+Returns the list of accounts that the nodes exist on.
 
 | Protocol | Method | API |
 |----------|--------|-----|
 | HTTP | GET |  /v1/user/accounts |
 
 ##### Parameters
-无
+None
 
 ##### Returns
-`addresses` 账号列表
+`addresses` account list
 
 ##### HTTP Example
 ```
@@ -166,20 +166,20 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
     ]
 }
 ```
-#### 获取账号信息
-返回账号信息，包括账号地址的余额和当前交易nonce。
+#### Ger Account Information
+Returns account information, including account address balance and current transaction nonce.
 
 | Protocol | Method | API |
 |----------|--------|-----|
 | HTTP | POST |  /v1/user/accountstate |
 
 ###### Parameters
-`address` 地址哈希.
+`address` address hash.
 
 ###### Returns
-`balance` 当前余额 单位： 1/(10^18) nas.
+`balance` current balance. Unit:： 1/(10^18) NAS.
 
-`nonce` 当前交易nonce.
+`nonce` current transaction nonce.
 
 ###### HTTP Example
 ```
@@ -192,8 +192,8 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/account
     "nonce": "0"
 }
 ```
-#### 解锁账号
-使用密码解锁账号.
+#### Unlock Account
+Use passphrase to unlock account.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -201,12 +201,12 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/account
 
 
 ###### Parameters
-`address` 账号地址哈希.
+`address` account address hash.
 
-`passphrase` 账号密码.
+`passphrase` account passphrase.
 
 ###### Returns
-`result` 解锁结果.
+`result` unlock results.
 
 ###### HTTP Example
 ```
@@ -219,36 +219,36 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/accoun
 }
 
 ```
-#### 发送交易
-发送交易，提交合约接口
+#### Send Transactions
+Send Transactions, contract submission port
 
 | Protocol | Method | API |
 |----------|--------|-----|
 | HTTP | POST |  /v1/user/transaction |
 
 ###### Parameters
-`from` 发送账号地址哈希.
+`from` Sender account address hash.
 
-`to` 接收账号地址哈希.
+`to` Receiver account address hash.
 
-`value` 金额，单位 1/(10^18)nas.
+`value` Value. Unit: 1/(10^18) NAS.
 
-`nonce` 交易nonce.
+`nonce` Transaction nonce.
 
-`source` 合约代码.
+`source` Contract code.
 
-`args` 合约参数.
+`args` Contract arguments.
 
-`gas_price` 交易gas价格.
+`gas_price` Transaction gas price.
 
-`gas_limit` 交易gas使用上限.
+`gas_limit` Transaction gas limit.
 
 ###### Returns
-`txhash` 交易hash;
+`txhash` Transaction hash;
 
-如果是部署合约，还有合约地址信息：
+If deploying contract, would also return contract address information:
 
-`contract_address` 合约地址信息；
+`contract_address` contract address information；
 
 ###### Example
 ```
@@ -261,32 +261,33 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/tran
     "contract_address":"695392515cfb8fbfc1f50b7eec02e79a1fbb31e710178b0f"
 }
 ```
-#### 获取交易信息
-通过交易哈希返回交易信息.
+#### Get Transaction Information
+Return transaction information using hash.
 
 | Protocol | Method | API |
 |----------|--------|-----|
 | HTTP | POST |  /v1/user/getTransactionReceipt |
 
 ###### Parameters
-`hash` 交易哈希.
+`hash` 交易哈希. Transaction hash.
 
 ###### Returns
-`hash` 交易哈希.
 
-`from` 交易发送地址哈希.
+`hash` 交易哈希. Transaction hash.
 
-`to` 交易接收地址哈希.
+`from` Sender account address hash.
 
-`nonce` 交易nonce.
+`to` Receiver account address hash.
 
-`timestamp` 交易时间戳.
+`nonce` Transaction nonce.
 
-`data` 交易数据.
+`timestamp` Transaction timestamp.
 
-`chainId` 交易链ID.
+`data` Transaction data.
 
-`contract_address`合约地址.
+`chainId` Transaction ID.
+
+`contract_address` Contract address.
 
 ###### HTTP Example
 ```
@@ -305,5 +306,4 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTran
 ```
 
 
-详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Management RPC](https://github.com/nebulasio/wiki/blob/master/management_rpc.md)。
-
+For detailed API and parameter documentation, please refer to the official documentations of [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md).
