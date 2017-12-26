@@ -74,8 +74,8 @@ make dep
 
 ```
 vendor.tar.gz
-SHA1: a0417c109f35ddb78c97839dec6feb7212568aef
-MD5: 0c261dafcb9cef477ced637323b4b309
+SHA1: 9292af2dcb905c92a0aff3b9052a275f513efe3c
+MD5: 341144001217f72b08b97ae1ef2521f2
 ```
 
 #### 编译可执行文件
