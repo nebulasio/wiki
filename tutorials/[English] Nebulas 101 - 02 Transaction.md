@@ -99,7 +99,7 @@ This port unlock the sender's address which is needed for the transfer transacti
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": 10}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8191/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": "10"}'
 
 // Result
 {
