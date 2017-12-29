@@ -16,8 +16,16 @@ Genesis.conf should be as same as [here](resources/conf/genesis.conf) exactly.
 
 Refer to neb.conf [here](resources/conf/neb.conf).
 
-#### Api List
+#### API List
+* [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
+* [Accounts](https://github.com/nebulasio/wiki/blob/master/rpc.md#accounts): list accounts on the neb node.
+* [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate): returns the account balance and nonce.
+* [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction): submit unsigned transaction. The transaction's from address must be unlocked before send.
+* [Call](https://github.com/nebulasio/wiki/blob/master/rpc.md#call): submit smart contract call transaction. The transaction's from address must be unlocked before send.
+* [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit the signed transaction.
+* [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt): get transaction receipt info by tansaction hash.
 
+More Nebulas APIs at [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md).
 
 #### Token Claim
 
