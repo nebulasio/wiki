@@ -76,4 +76,4 @@ NR (TBD)
 
 DIP (TBD)
 
-RPC (TBD)
+[RPC](./rpc.md)
