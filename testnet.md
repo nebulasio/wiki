@@ -29,7 +29,7 @@ More Nebulas APIs at [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)
 
 #### Token Claim
 
-Every email can claim some tokens every day at [here](https://claim.nebulas.io).
+Every email can claim some tokens every day at [here](https://testnet.nebulas.io/claim).
 
 ## Tutorials
 
