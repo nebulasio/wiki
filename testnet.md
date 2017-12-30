@@ -22,7 +22,7 @@ Test Endpoint:
 
 | API | URL | Protocol |
 |-------|:------------:|:------------:|
-| RESTful | http://testnet.nebulas.io/ | HTTP |
+| RESTful | https://testnet.nebulas.io/ | HTTP |
 
 * [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
 * [Accounts](https://github.com/nebulasio/wiki/blob/master/rpc.md#accounts): list accounts on the neb node.
