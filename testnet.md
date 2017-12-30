@@ -17,6 +17,13 @@ Genesis.conf should be as same as [here](resources/conf/genesis.conf) exactly.
 Refer to neb.conf [here](resources/conf/neb.conf).
 
 #### API List
+
+Test Endpoint:
+
+| API | URL | Protocol |
+|-------|:------------:|:------------:|
+| RESTful | http://testnet.nebulas.io/ | HTTP |
+
 * [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
 * [Accounts](https://github.com/nebulasio/wiki/blob/master/rpc.md#accounts): list accounts on the neb node.
 * [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate): returns the account balance and nonce.
