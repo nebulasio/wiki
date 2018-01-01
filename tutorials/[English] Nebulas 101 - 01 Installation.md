@@ -145,12 +145,13 @@ If you do not use make to integrate V8 link library, you can also install it sep
 
 ## Edit seed.conf
 
-Now we need to edit the seed.conf file which is located in go-nebulas/conf/default/seed.conf 
+Now we need to edit the seed.conf file which is located in 
+```go-nebulas/conf/default/seed.conf```
 
 
-## Your file should look something like this:
-# configuration of blockchain.
+Your file should look something like this:
 
+```json
 network {
   # If this is seed node, configuration is not needed. The normal node needs the seed node seed
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
@@ -213,6 +214,7 @@ stats {
         password: "admin"
     }
 }
+```
 
 
 #### Node
