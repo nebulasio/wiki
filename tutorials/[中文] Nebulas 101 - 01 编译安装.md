@@ -115,7 +115,7 @@ make deploy-v8
 #### 启动种子节点
 星云链的节点启动需要配置文件提供部分配置参数。配置文件使用了使用[Protocol Buffer](https://github.com/google/protobuf)的格式读取配置信息。工程根目录下有默认种子节点配置文件：
 
-`conf/default/seed.conf`
+`conf/default/config.conf`
 
 种子节点配置文件内容如下：
 
@@ -125,7 +125,7 @@ network {
   # 若为种子节点，不需要配置seed，普通节点需要配置种子节点seed信息
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
   # p2p网络服务ip和端口，服务启动的时候可以listen多组不同的ip和端口
-  listen: ["127.0.0.1:51413"]
+  listen: ["127.0.0.1:8680"]
   # 生成节点ID时候用到的私钥路径，如果不配置，每次都会生成新的不同的节点ID；配置了，会使用配置的私钥生成节点ID
   #private_key: "id_ed25519"
   # 网络分组ID，不同网络分组ID的节点不能互相通讯
@@ -187,7 +187,7 @@ stats {
 
 ```
 
-在不指定配置文件时默认读取工程根目录下的`conf/default/seed.conf`启动种子节点。默认启动种子节点命令:
+在不指定配置文件时默认读取工程根目录下的`conf/default/config.conf`启动种子节点。默认启动种子节点命令:
 
 ```
 ./neb
@@ -195,7 +195,7 @@ stats {
 若需要使用不同的配置文件，仅需在启动时添加`-c`标记，指定配置文件。例如启动种子节点时指定节点配置文件：
 
 ```
-./neb -c <path>/seed.conf
+./neb -c <path>/config.conf
 ```
 在完成配置文件修改后可以启动节点。启动后可以在终端上看到类似如下信息：
 ![seed node start](resources/101-01-seed-node-start.png)
@@ -204,19 +204,19 @@ stats {
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
 
 ```
-INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
+INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/8680]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
 ```
-上面的log中，地址信息为`/ip4/127.0.0.1/tcp/51413`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
+上面的log中，地址信息为`/ip4/127.0.0.1/tcp/8680`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
 
 ```
 <address>/ipfs/<id>
 ```
-在普通节点配置文件`config.conf`中配置如下：
+在普通节点配置文件`config.1a2635.conf`中配置如下：
 
 ```
 network {
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  seed: ["/ip4/127.0.0.1/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
   listen: ["127.0.0.1:10001"]
   network_id: 1
 }
@@ -227,7 +227,7 @@ network {
 启动普通子节点时，使用此配置文件启动节点：
 
 ```
-./neb -c conf/default/config.conf
+./neb -c conf/example/config.1a2635.conf
 ```
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
 ![node start](resources/101-01-node-start.png)

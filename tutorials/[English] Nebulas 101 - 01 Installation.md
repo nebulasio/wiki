@@ -146,7 +146,7 @@ If you do not use make to integrate V8 link library, you can also install it sep
 ## Edit seed.conf
 
 Now we need to edit the seed.conf file which is located in 
-```go-nebulas/conf/default/seed.conf```
+```go-nebulas/conf/default/config.conf```
 
 
 Your file should look something like this:
@@ -156,7 +156,7 @@ network {
   # If this is seed node, configuration is not needed. The normal node needs the seed node seed
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
   # p2p network service host. support mutiple ip and ports.
-  listen: ["127.0.0.1:51413"]
+  listen: ["127.0.0.1:8680"]
   # the private key is used to generate a node ID. if don't use the private key, the node will get a new ID.
   #private_key: "id_ed25519"
   # network group ID. nodes can't connect to each other in different network groups.
@@ -230,7 +230,7 @@ Nebulas seed nodes and nodes are distinguished by the configuration files. The s
 
 To start Nebulas nodes, some configuration parameters are needed provided by the configuration file. The configuration file uses [Protocol Buffer](https://github.com/google/protobuf) format to read the configuration information. Project root directory has the default seed node configuration file:
 
-`seed.conf file is located in go-nebulas/conf/default/seed.conf `
+`config.conf file is located in go-nebulas/conf/default/config.conf `
 
 Seed node configuration file:
 
@@ -241,7 +241,7 @@ network {
   # If this is seed node, configuration is not needed. The normal node needs the seed node seed
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
   # p2p network service host. support mutiple ip and ports.
-  listen: ["127.0.0.1:51413"]
+  listen: ["127.0.0.1:8680"]
   # the private key is used to generate a node ID. if don't use the private key, the node will get a new ID.
   #private_key: "id_ed25519"
   # network group ID. nodes can't connect to each other in different network groups.
@@ -250,10 +250,6 @@ network {
 
 
 ```
-
-By default, `seed.conf` in the root directory of the project is read to start seed node if no configuration file is specified. 
-
-
 
 ## The final step 
 
@@ -266,12 +262,12 @@ The default start seed node command:
 If using different configuration file, just add the `-c` flag at startup to specify the configuration file. For example, to specify a node configuration file when starting a seed node:
 
 ```
-./neb -c <path>/seed.conf
+./neb -c <path>/config.conf
 
 ```
 ## Example neb
 ```
-./neb conf/default/seed.conf
+./neb conf/default/config.conf
 
 ```
 
@@ -284,19 +280,19 @@ Node can be started after configuration file modification. After starting, the f
 After starting the seed node, if you need to start a normal node network connected with the seed node, configure the seed node address information in the normal node configuration file. The seed node address can be found from the seed node log: **node start**:
 
 ```
-INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/51413]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
+INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/8680]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
 ```
-In the log above, the address information is `/ip4/127.0.0.1/tcp/51413`,id `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
+In the log above, the address information is `/ip4/127.0.0.1/tcp/8680`,id `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `, Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address:
 
 ```
 <address>/ipfs/<id>
 ```
-The configuration in the normal seed configuration file `conf/default/config.conf`：
+The configuration in the normal seed configuration file `conf/example/config.1a2635.conf`：
 
 ```
 network {
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  seed: ["/ip4/127.0.0.1/tcp/51413/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
   listen: ["127.0.0.1:10000"]
   network_id: 1
 }
@@ -307,7 +303,7 @@ network {
 When starting an normal child node, use this configuration file to start the node:
 
 ```
-./neb -c conf/default/config.conf
+./neb -c conf/example/config.1a2635.conf
 ```
 
 After the node starts, if the connection with the seed node is successful, you can see the following log:
