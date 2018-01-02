@@ -43,10 +43,10 @@ Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上�
 ## 星云链编译
 
 #### 源代码下载：
-首先从github网站conle代码到本地(本教程使用[v0.4.0版本](https://github.com/nebulasio/go-nebulas/tree/v0.4.0))
+首先从github网站conle代码到本地(本教程使用[v0.5.0版本](https://github.com/nebulasio/go-nebulas/tree/v0.5.0))
 
 ```
-git clone -b v0.4.0 https://github.com/nebulasio/go-nebulas.git --depth=1
+git clone -b v0.5.0 https://github.com/nebulasio/go-nebulas.git --depth=1
 ```
 如果需要完整代码的提交历史，可以全部clone到本地：
 
@@ -88,7 +88,7 @@ make build
 ![make build](resources/101-01-make-build.png)
 
 
-## 节点启动
+## 搭建本地测试环境
 
 #### 安装v8
 Nebulas的NVM(星云链虚拟机)使用了JavaScript的v8引擎，为NVM编译的v8依赖库需要安装后`neb`才能运行。v8依赖库星云链官方目前提供了Mac版本的动态链接库`libnebulasv8.dylib`和Linux版本的静态链接库`libnebulasv8.so`及其他so库。项目中已经添加了make命令安装v8依赖库，在项目根目录执行安装指令：
@@ -103,6 +103,63 @@ make deploy-v8
 * Linux系统
 	* `sudo install nf/nvm/native-lib/*.so /usr/local/lib/`
 	* `sudo /sbin/ldconfig`
+
+#### 创世区块配置
+星云链启动时要配置创世区块的信息，在第一次启动时会使用创世区块配置初始化区块信息。目前星云链暂时使用dpos作为共识算法，初始挖矿成员和NAS的预分配可以在创世区块配置中设置。
+
+配置信息：
+
+```
+# Neb genesis text file. Scheme is defined in core/pb/genesis.proto.
+#
+
+meta {
+  # 星云链ID，私有网络默认为100，测试网络为1001
+  chain_id: 100
+}
+
+consensus {
+  # dpos 初始挖矿成员配置
+  dpos {
+    dynasty: [
+    "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
+    "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+    "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
+    "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
+    "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
+    "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+    "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
+    "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
+    "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
+    "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
+    "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
+    "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
+    "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
+    "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
+    "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
+    "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
+    "d1abde197e97398864ba74511f02832726edad596775420a",
+    "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
+    "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
+    "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
+    "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
+    ]
+  }
+}
+
+# NAS预分配地址金额，
+token_distribution [
+  {
+    address: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
+    value: "10000000000000000000000"
+  },
+  {
+    address: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8"
+    value: "10000000000000000000000"
+  }
+]
+```
+创世区块配置默认放在`conf/default/genesis.conf`中，配置创世区块路径在下面的配置中可以设置。
 
 #### 节点
 星云链节点可以通过执行编译后的`neb`可执行文件启动。节点启动需在终端执行，Neb节点包括种子节点和节点：
@@ -127,17 +184,17 @@ network {
   # p2p网络服务ip和端口，服务启动的时候可以listen多组不同的ip和端口
   listen: ["127.0.0.1:8680"]
   # 生成节点ID时候用到的私钥路径，如果不配置，每次都会生成新的不同的节点ID；配置了，会使用配置的私钥生成节点ID
-  #private_key: "id_ed25519"
+  #private_key: "conf/network/id_ed25519"
   # 网络分组ID，不同网络分组ID的节点不能互相通讯
   network_id: 1
 }
 
 # blockchain相关配置
 chain {
-  # 网络中的chainID
+  # 网络中的chainID,测试网络为1001，此处ID需要与创世区块配置中的ID一致
   chain_id: 100
   # 数据库存放的位置
-  datadir: "seed.db"
+  datadir: "data.db"
   # 节点私钥保存位置
   keydir: "keydir"
   # genesis创世区块的默认配置
@@ -146,18 +203,18 @@ chain {
   coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
   # 节点签名算法
   signature_ciphers: ["ECC_SECP256K1"]
-  # 节点挖矿的地址
+  # 节点挖矿的地址，key文件需要放在`keydir`中
   miner: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
-  # 用于解锁账户的passphrase
+  # 用于解锁挖矿账户的passphrase
   passphrase: "passphrase"
 }
 
 # 用户与节点交互的服务配置
 rpc {
     # gRPC API服务端口
-    rpc_listen: ["127.0.0.1:51510"]
+    rpc_listen: ["127.0.0.1:8684"]
     # HTTP API服务端口
-    http_listen: ["127.0.0.1:8090"]
+    http_listen: ["127.0.0.1:8685"]
     # 开放可对外提供http服务的模块
     http_module: ["api","admin"]
 }
@@ -166,8 +223,8 @@ rpc {
 app {
     # 配置记录的log级别{debug, info, warn, error, fatal}
     log_level: "info"
-    # 配置log的输出文件
-    log_file: "logs/seed"
+    # 配置log的输出文件夹
+    log_file: "logs"
     # 配置是否输出crash日志
     enable_crash_report: false
 }
@@ -200,7 +257,7 @@ stats {
 在完成配置文件修改后可以启动节点。启动后可以在终端上看到类似如下信息：
 ![seed node start](resources/101-01-seed-node-start.png)
 
-#### 节点启动
+#### 启动节点
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
 
 ```
@@ -232,4 +289,121 @@ network {
 节点启动后，如果与种子节点连接成功，可以看到下面的log：
 ![node start](resources/101-01-node-start.png)
 
+## 连接测试网络
+星云链的测试网络有特定的chainID,在连接测试网络时需要将创世区块配置`genesis.conf`更新为测试网络的创世区块配置，同时更新配置信息。官方的介绍[testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
 
+配置步骤：
+
+* 更新创世区块配置为测试网络的创世区块配置`testnet-genesis.conf`(必须与此保持一致):
+
+```
+meta {
+  # Each Nebulas Net will have an unique chain id.
+  # 1001-2000 are reserved for Nebulas TestNets.
+  # Current chain ids of official TestNets only include 1001.
+  chain_id: 1001
+}
+
+consensus {
+  # Before PoD consensus is ready, Nebulas will use Dpos consensus instead.
+  dpos {
+    # Here is the initial validators in the first dynasty.
+    dynasty: [
+    "d06d3cce5ddd122bdfb245cd581244513b88d3b4b60b5269",
+    "d1e142b8233acb243e7246f72f78443043e805ec4dfd1b80",
+    "6cf0c56ddba75a23ae3c69ac9a0b8f84b1ecd5e7d94d0700",
+    "190152c4c7caff32e3e26caf1cd9967e0af324cf4099e0f9",
+    "fd4cc8b6481490a8ff3f9c67fc1bb62c72337b3c97c7cf52",
+    "1e9aa5a2d9d2f24ed08defd755261dd9a1076866340753e2",
+    "c27e4c91e8ca0dfcdd894be955fec93aa44cccd712576359",
+    "afde759c73591600e5855039b12c6a5f9a8950cc5da952a3",
+    "f27c2086c59617ae31366e7a7ce6697d05d0192d3ba3dad1",
+    "8e597e6dc45dca8b34a61ec2fc383081b605b73fd3edc348",
+    "6b4a660a49014232d0a91e078b87301c982b017b499633af",
+    "a12e917e9518344c39d0baa6b7ae9fd460a05ab46afd4e7b",
+    "a59da2431ef695f14c39ca030b85da3af24900d98524d548",
+    "955b7e78c6034ffdb021a48ec351d676aac6e730e38747ad",
+    "9684b3d17cd7467c454066da86f7cc16f917d49ddc7e05fa",
+    "ad2c359ad3b6f552b26461cefa47df7c1d2d534713b2e1a2",
+    "a7115c6e605587e5f442ef2e3c55e5f7e2fd917cd44a76e1",
+    "a5f1a47fe5e43b76a7a66da5e0427e5ef22f9f520753363d",
+    "5cfdd8be8a9cf26ff34a6fa499a0a5bb2e9f7bd9e4922fd6",
+    "c220a3c759caf1de6d6262f4352d2b64447733c5a2c00296",
+    "233805a3b6eb9e5501ecbf53df90978e62302142b2d52806"
+    ]
+  }
+}
+
+# Initial Token Distribution is described here
+token_distribution [
+  {
+    address: "0b9cd051a6d7129ab44b17833c63fe4abead40c3714cde6d"
+    value: "10000000000000000000000000"
+  },
+  {
+    address: "4aa6312b10dd81f68eb62a90e234a48eb83c6b0e568b5eb8"
+    value: "10000000000000000000000000"
+  }
+]
+```
+
+* 更新配置文件内容并保存到`testnet-config.conf`：
+
+```
+# Neb configuration text file. Scheme is defined in neblet/pb/config.proto:Config.
+#
+
+network {
+  # 测试网络的种子节点
+  seed: ["/ip4/13.56.18.241/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  listen: ["0.0.0.0:8680"]
+  private_key: "conf/network/ed25519key"
+  network_id: 1
+}
+
+chain {
+  # 测试网络的chainID
+  chain_id: 1001
+  # 测试网络的数据保存位置，需要与本地网络做区分
+  datadir: "testnet.db"
+  keydir: "keydir"
+  # 测试网络的创世区块配置，内容为上面的测试创世区块配置
+  genesis: "conf/default/testnet-genesis.conf"
+  coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  signature_ciphers: ["ECC_SECP256K1"]
+  miner: "9341709022928b38dae1f9e1cfbad25611e81f736fd192c5"
+  passphrase: "passphrase"
+}
+
+rpc {
+    rpc_listen: ["127.0.0.1:8684"]
+    http_listen: ["127.0.0.1:8685"]
+    http_module: ["api","admin"]
+}
+
+app {
+    log_level: "info"
+    # 测试网络的log文件夹，可以修改做区分
+    log_file: "logs/testnet"
+    enable_crash_report: false
+}
+
+stats {
+    enable_metrics: false
+    influxdb: {
+        host: "http://localhost:8086"
+        db: "nebulas"
+        user: "admin"
+        password: "admin"
+    }
+}
+
+```
+
+* 使用上面的配置文件启动节点:
+
+```
+./neb -c <path>/testnet-config.conf
+```
+
+测试网络的NAS可以从官方的网站分发获取，用于测试。分发地址[https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
