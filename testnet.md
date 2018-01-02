@@ -10,11 +10,23 @@ If you want to run your own nodes, please use testnet configuration to join Nebu
 
 > Genesis.conf
 
-Genesis.conf should be as same as [here](resources/conf/genesis.conf) exactly.
+Genesis.conf should be as same as [here](resources/conf/testnet-genesis.conf) exactly.
 
 > neb.conf
 
 Refer to neb.conf [here](resources/conf/neb.conf).
+
+Notice:
+
+* testnet seed node:
+
+```
+seed: ["/ip4/13.56.18.241/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+```
+* `chain_id` should be 1001, as same as [genesis.conf](resources/conf/testnet-genesis.conf).
+* `datadir` should be different with private chain.
+
+The example of testnet conf [here](resources/conf/testnet-config.conf).
 
 #### API List
 
