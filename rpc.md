@@ -483,7 +483,6 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 ```
 ***
 
-
 #### GetGasPrice
 Return current gasPrice.
 
@@ -509,7 +508,6 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/getGasPr
 }
 ```
 ***
-
 
 #### EstimateGas
 Return the estimate gas of transaction.

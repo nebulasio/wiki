@@ -77,7 +77,7 @@ API的接口定义在通过proto文件生成的go接口文件中:
 
 官方默认端口：
 
-* 8090：默认API端口，可以访问[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)的接口，有获取节点信息，发送交易等功能；可以对外部用户开放。
+* 8685：默认API端口，可以访问[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)的接口，有获取节点信息，发送交易等功能；可以对外部用户开放。
 
 一些使用HTTP访问接口的例子：
 
@@ -235,13 +235,11 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/accoun
 
 `nonce` 交易nonce.
 
-`source` 合约代码.
+`gasPrice` 交易gas价格.
 
-`args` 合约参数.
+`gasLimit` 交易gas上限.
 
-`gas_price` 交易gas价格.
-
-`gas_limit` 交易gas使用上限.
+`contract` 合约信息，发布和调用智能合约使用.
 
 ###### Returns
 `txhash` 交易hash;
@@ -253,14 +251,14 @@ curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/accoun
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
-    "txhash":"896f813a4560732793cdceb9133682277de20df502a35f7af2a845e6606c450b",
-    "contract_address":"695392515cfb8fbfc1f50b7eec02e79a1fbb31e710178b0f"
+    "txhash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
 }
 ```
+
 #### 获取交易信息
 通过交易哈希返回交易信息.
 
@@ -305,5 +303,5 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTran
 ```
 
 
-详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Management RPC](https://github.com/nebulasio/wiki/blob/master/management_rpc.md)。
+详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)。
 
