@@ -290,7 +290,7 @@ network {
 ![node start](resources/101-01-node-start.png)
 
 ## 连接测试网络
-星云链的测试网络有特定的chainID,在连接测试网络时需要将创世区块配置`genesis.conf`更新为测试网络的创世区块配置，同时更新配置信息。官方的介绍[testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
+星云链的测试网络有特定的chainID,在连接测试网络时需要将创世区块配置`genesis.conf`更新为测试网络的创世区块配置，同时更新配置信息。官方的介绍[Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
 
 配置步骤：
 
@@ -355,7 +355,7 @@ token_distribution [
 
 network {
   # 测试网络的种子节点
-  seed: ["/ip4/13.56.18.241/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  seed:["/ip4/13.56.18.241/tcp/8680/ipfs/QmYcBY52pnuNQNMtsLUdKYQeLzDHZqfTj1RQGYs4Gujuqi", "/ip4/54.206.110.30/tcp/8680/ipfs/QmcFzHfFRHbp6o2WbTYvxv7uLH5mjSJXpRDMc3jKfy5ze4", "/ip4/54.238.223.81/tcp/8680/ipfs/Qmac11jvtGpFt9Ptevn4SHHQpvJjNsC17ZX7VmuHvsHM8o", "/ip4/13.250.10.239/tcp/8680/ipfs/QmY6d8qdHaa1XoMs76uQt8UpCcNJL77kx9R5ACwQPhZCF4", "/ip4/47.52.174.176/tcp/8680/ipfs/QmUQ77Jmqs99R8gjrJHNmz8LEf6HQMghUxbZNzwviR1LJn", "/ip4/35.182.48.19/tcp/8680/ipfs/QmW5HY9ef16pGvdryyJSDCz42ZiHEEmpmFuzYHpEBWvySG", "/ip4/35.177.86.207/tcp/8680/ipfs/QmYpPgrwzxcE1jbVfwqQmM7eSGd6LufpRmV76nGKT2kY7M"]
   listen: ["0.0.0.0:8680"]
   private_key: "conf/network/ed25519key"
   network_id: 1
@@ -406,4 +406,4 @@ stats {
 ./neb -c <path>/testnet-config.conf
 ```
 
-测试网络的NAS可以从官方的网站分发获取，用于测试。分发地址[https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
+测试网络的NAS可以从官方的网站分发获取，用于测试。分发地址：[https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
