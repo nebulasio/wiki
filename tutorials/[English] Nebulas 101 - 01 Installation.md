@@ -158,12 +158,12 @@ Configuration Information:
 #
 
 meta {
-  # 星云链ID，私有网络默认为100，测试网络为1001
+  # chainID，private default 100，Testnet 1001
   chain_id: 100
 }
 
 consensus {
-  # dpos 初始挖矿成员配置
+  # dpos genesis miner
   dpos {
     dynasty: [
     "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
@@ -191,7 +191,7 @@ consensus {
   }
 }
 
-# NAS预分配地址金额，
+# NAS dispatch，
 token_distribution [
   {
     address: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
@@ -422,7 +422,7 @@ Update the profile and save it to ```testnet-config.conf```:
 #
 
 network {
-  # 测试网络的种子节点
+  # Testnet seed node config
   seed:["/ip4/13.56.18.241/tcp/8680/ipfs/QmYcBY52pnuNQNMtsLUdKYQeLzDHZqfTj1RQGYs4Gujuqi", "/ip4/54.206.110.30/tcp/8680/ipfs/QmcFzHfFRHbp6o2WbTYvxv7uLH5mjSJXpRDMc3jKfy5ze4", "/ip4/54.238.223.81/tcp/8680/ipfs/Qmac11jvtGpFt9Ptevn4SHHQpvJjNsC17ZX7VmuHvsHM8o", "/ip4/13.250.10.239/tcp/8680/ipfs/QmY6d8qdHaa1XoMs76uQt8UpCcNJL77kx9R5ACwQPhZCF4", "/ip4/47.52.174.176/tcp/8680/ipfs/QmUQ77Jmqs99R8gjrJHNmz8LEf6HQMghUxbZNzwviR1LJn", "/ip4/35.182.48.19/tcp/8680/ipfs/QmW5HY9ef16pGvdryyJSDCz42ZiHEEmpmFuzYHpEBWvySG", "/ip4/35.177.86.207/tcp/8680/ipfs/QmYpPgrwzxcE1jbVfwqQmM7eSGd6LufpRmV76nGKT2kY7M"]
   listen: ["0.0.0.0:8680"]
   private_key: "conf/network/ed25519key"
@@ -430,12 +430,12 @@ network {
 }
 
 chain {
-  # 测试网络的chainID
+  # Testnet chainID
   chain_id: 1001
-  # 测试网络的数据保存位置，需要与本地网络做区分
+  # Testnet data storage, different with private network
   datadir: "testnet.db"
   keydir: "keydir"
-  # 测试网络的创世区块配置，内容为上面的测试创世区块配置
+  # Testnet genesis conf
   genesis: "conf/default/testnet-genesis.conf"
   coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
   signature_ciphers: ["ECC_SECP256K1"]
@@ -451,7 +451,7 @@ rpc {
 
 app {
     log_level: "info"
-    # 测试网络的log文件夹，可以修改做区分
+    # Testnet log file dir
     log_file: "logs/testnet"
     enable_crash_report: false
 }
