@@ -1,4 +1,4 @@
-# How to Join Nebulas TestNet
+# How to Join Nebulas Testnet
 
 ## Introduction
 
@@ -6,7 +6,7 @@ We are glad to release Nebulas Testnet here. It simulate the Nebulas network and
 
 #### Configuration
 
-If you want to run your own nodes, please use testnet configuration to join Nebulas TestNet.
+If you want to run your own nodes, please use testnet configuration to join Nebulas Testnet.
 
 > Genesis.conf
 
@@ -70,7 +70,7 @@ Every email can claim some tokens every day at [here](https://testnet.nebulas.io
 
 ## Contribution
 
-Feel free to join Nebulas TestNet. If you did find something wrong, please [submit a issue](https://github.com/nebulasio/go-nebulas/issues/new) or [submit a pull request](https://github.com/nebulasio/go-nebulas/pulls) to let us know, we will add your name and url to this page soon.
+Feel free to join Nebulas Testnet. If you did find something wrong, please [submit a issue](https://github.com/nebulasio/go-nebulas/issues/new) or [submit a pull request](https://github.com/nebulasio/go-nebulas/pulls) to let us know, we will add your name and url to this page soon.
 
 ## Updates
 

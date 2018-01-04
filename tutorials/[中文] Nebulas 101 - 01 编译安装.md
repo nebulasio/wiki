@@ -299,8 +299,8 @@ network {
 ```
 meta {
   # Each Nebulas Net will have an unique chain id.
-  # 1001-2000 are reserved for Nebulas TestNets.
-  # Current chain ids of official TestNets only include 1001.
+  # 1001-2000 are reserved for Nebulas Testnets.
+  # Current chain ids of official Testnets only include 1001.
   chain_id: 1001
 }
 
