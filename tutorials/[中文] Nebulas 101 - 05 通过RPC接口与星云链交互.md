@@ -29,20 +29,20 @@ make
 # 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
 rpc {
     # gRPC API服务端口
-    rpc_listen: ["127.0.0.1:51510"]
+    rpc_listen: ["127.0.0.1:8684"]
     # HTTP API服务端口
-    http_listen: ["127.0.0.1:8090"]
+    http_listen: ["127.0.0.1:8685"]
     # 开放可对外提供http服务的模块
     http_module: ["api","admin"]
 }
 ```
-默认的配置端口为上述的`API:51510`。
+默认的配置端口为上述的`API:8685`。
 
 go的gRPC访问代码如下：
 
 ```go
 // gRPC服务器连接地址配置
-addr := fmt.Sprintf("127.0.0.1:%d", uint32(51510))
+addr := fmt.Sprintf("127.0.0.1:%d", uint32(8684))
 conn, err := grpc.Dial(addr, grpc.WithInsecure())
 if err != nil {
 	log.Warn("rpc.Dial() failed: ", err)
@@ -124,7 +124,7 @@ message RouteTable {
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nodeinfo
 
 // Result
 {
@@ -154,7 +154,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/accounts
 
 // Result
 {
@@ -184,7 +184,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
 
 // Result
 {
@@ -211,7 +211,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/account
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -289,7 +289,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
 
 // Result
 {
