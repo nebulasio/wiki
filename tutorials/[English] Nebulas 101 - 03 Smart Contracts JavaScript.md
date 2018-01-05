@@ -44,55 +44,102 @@ This smart contract needs to fulfill the following functions:
 Smart contract example:
 
 ```js
-"use strict";
+'use strict';
 
-var BankVaultContract = function () {
-   // LocalContractStorage is a built in storage to store JavaScript objects. With LocalContractStorage, you can store JavaScript objects.
-   LocalContractStorage.defineMapProperty (this, "bankVault");
+var DepositeContent = function (text) {
+	if (text) {
+		let o = JSON.parse(text);
+		this.balance = new BigNumber(o.balance);
+		this.expiryHeight = new BigNumber(o.expiryHeight);
+	} else {
+		this.balance = new BigNumber(0);
+		this.expiryHeight = new BigNumber(0);
+	}
 };
 
+DepositeContent.prototype = {
+	toString: function () {
+		return JSON.stringify(this);
+	}
+};
+
+var BankVaultContract = function () {
+	LocalContractStorage.defineMapProperty(this, "bankVault", {
+		parse: function (text) {
+			return new DepositeContent(text);
+		},
+		stringify: function (o) {
+			return o.toString();
+		}
+	});
+};
+
+// save value to contract, only after height of block, users can takeout
 BankVaultContract.prototype = {
-   init: function () {},
-   save: function () {
-       var deposit = this.bankVault.get (Blockchain.transaction.from);
-       var value = new BigNumber (Blockchain.transaction.value);
-       if (deposit! = null && deposit.balance.length> 0) {
-           var balance = new BigNumber (deposit.balance);
-           value = value.plus (balance);
-       }
-       var content = {
-           balance: value.toString ()
-       };
-       this.bankVault.put (Blockchain.transaction.from, content);
-   },
-   takeout: function (amount) {
-       var deposit = this.bankVault.get (Blockchain.transaction.from);
-       if (deposit == null) {
-           return 0;
-       }
-       var balance = new BigNumber (deposit.balance);
-       var value = new BigNumber (amount);
-       if (balance.lessThan (value)) {
-           return 0;
-       }
-       var result = Blockchain.transfer (Blockchain.transaction.from, value);
-       if (result> 0) {
-           deposit.balance = balance.dividedBy (value) .toString ();
-           this.bankVault.put (Blockchain.transaction.from, deposit);
-       }
-       return result;
-   }
+	init: function () {
+		//TODO:
+	},
+
+	save: function (height) {
+		var from = Blockchain.transaction.from;
+		var value = Blockchain.transaction.value;
+		var bk_height = new BigNumber(Blockchain.block.height);
+
+		var orig_deposit = this.bankVault.get(from);
+		if (orig_deposit) {
+			value = value.plus(balance);
+		}
+
+		var deposit = new DepositeContent();
+		deposit.balance = value;
+		deposit.expiryHeight = bk_height.plus(height);
+
+		this.bankVault.put(from, deposit);
+	},
+
+	takeout: function (value) {
+		var from = Blockchain.transaction.from;
+		var bk_height = new BigNumber(Blockchain.block.height);
+		var amount = new BigNumber(value);
+
+		var deposit = this.bankVault.get(from);
+		if (!deposit) {
+			throw new Error("No deposit before.");
+		}
+
+		if (bk_height.lt(deposit.expiryHeight)) {
+			throw new Error("Can't takeout before expiryHeight.");
+		}
+
+		if (amount.gt(deposit.balance)) {
+			throw new Error("Insufficient balance.");
+		}
+
+		var result = Blockchain.transfer(from, amount);
+		if (result != 0) {
+			throw new Error("transfer failed.");
+		}
+        Event.Trigger("BankVault", {
+            Transfer: {
+                from: Blockchain.transaction.to,
+                to: from,
+                value: amount.toString(),
+            }
+        });
+
+		deposit.balance = deposit.balance.sub(amount);
+		this.bankVault.put(from, deposit);
+	}
 };
 
 module.exports = BankVaultContract;
-
 ```
 
-As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init () method that satisfies what we call the most basic description for writing smart contracts.
+As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an `init ()` method that satisfies what we call the most basic description for writing smart contracts.
 
 BankVaultContract implements two other methods:
-- save (): The user can save money to the bank vault by calling the save () function;
-- takeout (): Users can withdraw money from bank vault by calling takeout () function;
+- `save ()`: The user can save money to the bank vault by calling the save () function;
+- `takeout ()`: Users can withdraw money from bank vault by calling `takeout ()` function;
 
 The contract code above uses the built-in `Blockchain` object and the built-in` BigNumber () `function.
 
@@ -101,54 +148,75 @@ The contract code above uses the built-in `Blockchain` object and the built-in` 
 
 ```js
 
-// Check the contract balance information from the bank vault 
-save ():
+	// Put the amount into the safe 
+	save: function (height) {
+	    // Get the address of the current invocation contract 
+		var from = Blockchain.transaction.from;
+		 // Get the current transaction value (value is Bignumber object) amount transferred to the contract address, safe deposit 	
+		var value = Blockchain.transaction.value;
+		// current block height 	
+		var bk_height = new BigNumber(Blockchain.block.height);
+		
+		// Get deposit information 
+		var orig_deposit = this.bankVault.get(from);
+		if (orig_deposit) {
+			value = value.plus(balance);
+		}
+		
+		// Update deposit information
+		var deposit = new DepositeContent();
+		deposit.balance = value;
+		deposit.expiryHeight = bk_height.plus(height);
 
-// The amount of money this user will deposit into the bank vault
-var deposit = this.bankVault.get (Blockchain.transaction.from);
-
-// The amount of money this user saves
-var value = new BigNumber (Blockchain.transaction.value);
-
-// Update the Vault balance information (new balance = previous balance + amount of money deposited)
-if (deposit! = null && deposit.balance.length> 0) {
-   var balance = new BigNumber (deposit.balance);
-  value = value.plus (balance);
-}
-var content = {
-   balance: value.toString ()
-};
-// Store the new balance information on the chain
-this.bankVault.put (Blockchain.transaction.from, content);
+		this.bankVault.put(from, deposit);
+	},
 ```
 
 takeout ():
 
 ```js
-// balance from the safe
-var deposit = this.bankVault.get (Blockchain.transaction.from);
+//  removed from the safe deposit
+	takeout: function (value) {
+		//  depositor address 
+		var from = Blockchain.transaction.from;
+		// current block height 
+		var bk_height = new BigNumber(Blockchain.block.height);
+		//teller Amount 
+		var amount = new BigNumber(value);
+		
+		// Deposit information
+		var deposit = this.bankVault.get(from);
+		if (!deposit) {
+			throw new Error("No deposit before.");
+		}
 
-// If the balance does not exist or has no value, return no value or 0.
-if (deposit == null) {
-   return 0;
-}
-var balance = new BigNumber (deposit.balance);
-var value = new BigNumber (amount);
+		if (bk_height.lt(deposit.expiryHeight)) {
+			throw new Error("Can't takeout before expiryHeight.");
+		}
 
-// If the vault balance is less than the amount fetched, return no value or 0
-if (balance.lessThan (value)) {
-   return 0;
-}
+		if (amount.gt(deposit.balance)) {
+			throw new Error("Insufficient balance.");
+		}
 
-// The value amount transferred to the user’s wallet address
-var result = Blockchain.transfer (Blockchain.transaction.from, value);
-if (result> 0) {
-
-   	// Update Vault Balance (New Balance = Previous Balance - pending Amount)
-   deposit.balance = balance.dividedBy (value).toString ();
-   	// Store the new balance information on the chain
-   this.bankVault.put (Blockchain.transaction.from, deposit);
-}
+		// Call blockchain's transfer interface to make the amount to be waived to the user's wallet address 
+		var result = Blockchain.transfer(from, amount);
+		if (result != 0) {
+			throw new Error("transfer failed.");
+		}
+		
+		// Add transfer event listener 
+        Event.Trigger("BankVault", {
+            Transfer: {
+                from: Blockchain.transaction.to,
+                to: from,
+                value: amount.toString(),
+            }
+        });
+        
+        // update information Deposit 
+		deposit.balance = deposit.balance.sub(amount);
+		this.bankVault.put(from, deposit);
+	}
 ```
 
 ## Deploy smart contracts
@@ -157,25 +225,37 @@ Here's how to write a smart contract in Nebulas, and now we need to deploy the s
 Earlier, I introduced how users made a transaction in Nebulas, and we used the sendTransation () interface to initiate a transaction. Deploying a smart contract in Nebulas is actually just sending a transaction, just with different parameters.
 
 ```js
-sendTransation (from, to, nonce, source, args)
+sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 If “FROM” and “TO” are the same address, that means your deploying a smart contract.
 
-source: Source code for the smart contract to be deployed
-args: Parameters used to deploy smart contracts
+- value: when deploying contract `"0"`;
 
-## Example of deploying a smart contract using curl:
-Note: if you get error: 500 Internal Privoxy Error, open up a new terminal and type: unset https_proxy
+- gasPrice: The gasPrice used to deploy the smart contract, which can be `GetGasPrice` used by default, or by using an empty string.
 
-```
+- gasLimit: gasLimit [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)
+ to deploy the contract, can not use the default value through the gas consumption that can get the deployment contract, or set a larger value, which is calculated based on the actual usage.
+
+- contract: contract information, the parameters passed in when the contract is deployed
+    - `source`: Contract code
+    - `sourceType`: Contract code type, support `js` and `ts` (corresponding javaScript and typeScript code)
+    - `args`: Contract initialization method parameters, no parameters for the empty string, a parameter for the JSON array
+
+Detailed interface documentation [API](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction)
+
+
+#### Example of deploying a smart contract using curl:
+Note: if you get error: 500 Internal Privoxy Error, open up a new terminal and type: `unset https_proxy`
+
+```js
 // Request
-curl -i -H 'Accept: application / json' -X POST http://localhost:8090/v1/transaction -H 'Content-Type: application / json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"," nonce ": 1," source ":" \ "use strict \"; var BankVaultContract = function () {LocalContractStorage.defineMapProperty (this, \ "bankVault \")}; BankVaultContract.prototype = {init: function () {}, save: function () {var deposit = this.bankVault.get (Blockchain.transaction.from); var value = new BigNumber (Blockchain.transaction.value); if (deposit != null && deposit var balance = new BigNumber (deposit.balance); value = value.plus (balance)} var content = {balance: value.toString ()}; this.bankVault.put (Blockchain.transaction.from, content)}, takeout: function (amount) {var deposit = this.bankVault.get (Blockchain.transaction.from); if (deposit == null) {return 0} var balance = new BigNumber (deposit.balance var value = new BigNumber (amount); if (balance.lessThan (value)) {return 0} var result = Blockchain.transfer (Blockchain.transaction.from, value); if (result > 0) {deposit.balance = balance.dividedBy (value) .toString (); this.bankVault.put (Blockchain.transaction.from, deposit)} return result}}; module.exports = BankVaultContract; "," args ":" "}'
-
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
+"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
 
 // Result
 {
-    "txhash": "9ea7c434f717123ef335fc4e74671996a95b3dcef7873cbe77dc679d6b500a8c",
-    "contract_address": "a111489535426e93883981f6a3de84ada9bdf2fbab714079"
+    "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
+    "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
 }
 ```
 
@@ -191,24 +271,26 @@ As shown above, if we can get the contract information by the address of the con
 The way to call a smart contract in Nebulas is also very simple, you can call the smart contract through the rpc interface call () function.
 
 ```js
-call (from, to, nonce, value, function_name, args)
+call(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
-from: user wallet address
-to: smart contract address
-nonce: user transaction ID, to ascending order
-value: The amount of money to transfer 
-function_name: function to be called
-args: Parameters used by the smart contract function
-
-Call smart contract save () function:
+- from: user wallet address
+- to: smart contract address
+- value: The amount of money used to transfer a smart contract
+- nonce: user transaction ID, the order of growth
+- gasPrice: The gasPrice used to deploy the smart contract, which can be `GetGasPrice` used by default, or by using an empty string.
+- gasLimit: gasLimit [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas) to deploy the contract, can not use the default value through the gas consumption that can get the deployment contract, or set a larger value, which is calculated based on the actual usage.
+- contract: contract information, the parameters passed in when the contract is deployed
+    function: Call contract method
+    args: Contract initialization method parameters, no parameters for the empty string, a parameter for the JSON array
+Call smart contract save () method:
 
 ```js
 // Request
-curl -i -H 'Accept: application / json' -X POST http://localhost:8090/v1/call -H 'Content-Type: application / json' -d '{"from": "9341709022928b38dae1f9e1cfbad25611e81f736fd192c5", " to ":"a111489535426e93883981f6a3de84ada9bdf2fbab714079"," value ":" 100 "," nonce ": 2," function ":" save "," args ":" "} '
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"100","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
 
 // Result
 {
-  "hash": "b425abe633c4a8896aac0d02d7c75ae5eaa38318dd4c19ba3eec2f8be4bd5050"
+   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
 }
 ```
 The essence of a smart contract call is to submit a transaction, it depends on the miners to package the transaction, the miners will be successful after the transaction package call is considered successful, so the call to the smart contract is not immediately effective. We need to wait (about a minute) and than we can verify that our call was successful.
@@ -220,11 +302,11 @@ Call the smart contract takeout () function:
 
 ```js
 // Request
-curl -i -H 'Accept: application / json' -X POST http://localhost:8090/v1/call -H 'Content-Type: application / json' -d '{"from": "9341709022928b38dae1f9e1cfbad25611e81f736fd192c5", " to ":"a111489535426e93883981f6a3de84ada9bdf2fbab714079"," nonce ": 3," function ":" takeout "," args ":" [50] "} '
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":4,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
 
 // Result
 {
-  "hash": "03bd2bbeafa03e2432d774a2b52e570b0f2e615b8a6c457b0e1ae4668faf1a15"
+   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
 }
 ```
 The above takeout () function is different from the save () function except that the value of 50 is taken out of the vault, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation of the Smart contract related parameters, so they are passed through args parameters.
