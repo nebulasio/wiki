@@ -12,14 +12,14 @@ Here is an introduction to sending a transaction in Nebulas through the three me
 Before starting neb app, some preparations are needed:
 
 1. Create two wallet addresses: 
-    * One wallet address as the mining coin wallet address on Coinbase to receive mining awards and also as the sender address of the transfer transactions. 
-    * Another wallet address as the receiving address of transfer transactions.
+    * One wallet address as the mining coin wallet address on Coinbase to receive mining awards and also as the sender address of the transfer. 
+    * Another wallet address as the receiving address of transfer.
 
 2. Modify the node's configuration file, and configure the coinbase address.
 
 #### Preparations Detail
 1. Create a mining wallet address on Coinbase.
-Coinbase corresponds to the reward address of the miner's mining. The reward that the miner gets will go to this address. So before starting the node, you need to configure the Coinbase address first. We can select one address as the address of coinbase from the six addresses in the `conf/default/genesis.conf`[`consensus-> dpos-> dynasty`]. Currently, our version is six addresses as a dynasty, rotating generate blocks, so only the first six addresses can be configured as coinbase addresses. For this tutorial were be going to be using the first address.
+Coinbase corresponds to the reward address of the miner's mining reward. The reward that the miner gets will go to this address. So before starting the node, you need to configure the Coinbase address first. We can select one address as the address of coinbase from the six addresses in the `conf/default/genesis.conf`[`consensus-> dpos-> dynasty`]. Currently, our version is six addresses as a dynasty, rotating generate blocks, so only the first six addresses can be configured as coinbase addresses. For this tutorial were be going to be using the first address.
 ![key](resources/101-02-genesis.png)
 
 For Example: The generated coinbase address `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c` needs to replace the coinbase address and miner address in the` chain` attribute in the `conf/default/seed.conf` configuration file. The example below will show the coinbase and miner having the same address - (shown below). 
@@ -36,10 +36,10 @@ Repeat passphrase:
 Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 ```
 
-The command above will generate a json file at this location: go-nebulas/keydir/  
+The command above will generate a json file at this location: `src/github/go-nebulas/keydir/  `
 
 ## Important Notice
-The next step is to go to go-nebulas/conf/default/seed.conf and open up seed.conf and add the location of the json file which is: /location/of/Nebulas/go-nebulas/keydir/
+The next step is to go to go-nebulas/conf/default/seed.conf and open up seed.conf and add the location of the json file which is: `src/github/go-nebulas/keydir/`
 
 Here is an example on how you seed.conf chain attribute should look: 
 
@@ -54,39 +54,38 @@ chain {
   miner: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
   passphrase: "passphrase"
 }
+```
 
-```	
 Note: for this tutorial make sure your seed.conf looks similar to the example above.
 
 ### Start the Neb App
 After completing all the preparations, you can start the neb app:
-```
-$ ./neb -c conf/default/seed.conf
-```
+
+`$ ./neb -c conf/default/seed.conf`
+
 The neb app loads the `conf/default/seed.conf` configuration file we set earlier. After starting, neb app will enter mining mode by default. After a period of time (1 to 2 minutes), mining reward will be sent to the coinbase account address we set before. The current development code mining reward is 16 NAS (which will be adjusted according to the requirements of the white paper). The average block time is about 10 seconds.
 
 ### Check Balance
-Nebulas provides the RPC port, allowing developers to interact with the Nebulas via HTTP or gPRC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of HTTP protocol. The Nebulas HTTP port's address and port is configured via the `api_http_port` attribute in the configuration file. The default port is 8090.
+Nebulas provides the RPC port, allowing developers to interact with the Nebulas via HTTP or gPRC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of HTTP protocol. The Nebulas HTTP port's address and port is configured via the `api_http_port` attribute in the configuration file. The default port is `8685`.
 
-Next, we use curl to show the RPC calls.
+Next, we use `curl` to show the RPC calls.
 
 We can check this Coinbase address account balance's port to see this user's mining reward. When the Coinbase account address has a balance, transfer transactions can be made.
 After the system starts, we can query the balance information of the account by sending an http request by curl. The following return value indicates that the balance of this address is 64:
 
 
 # Step 1: In the terminal type:
-Note: This command is just a precaution but I recommend using it.
+Note: This command is just a precaution but I recommend using it if you get any proxy errors.
 
-```
-unset https_proxy 
-```
+`unset https_proxy `
+
 
 # Step 2: In the terminal type:
 Note: the address below is an example address from above and will work for the rest of this tutorial.
                                   
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 
 // Result
@@ -110,7 +109,7 @@ To send a transfer, follow these steps:
 
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/accounts
 
 // Result
 
@@ -129,7 +128,7 @@ Note: when you used the “./neb account new” it created the address or addres
  
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -146,7 +145,7 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"bf9f8c6d12797d44ea5213988aaad87e964eef32e4fab0dd","nonce": 1,"value": “10”}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"bf9f8c6d12797d44ea5213988aaad87e964eef32e4fab0dd","nonce": 1,"value": “10”}'
 
 //Result
 
@@ -162,7 +161,7 @@ Note: After the “from” and “to” addresses there is “nonce” and “va
 Example 2:
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": “10”}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": “10”}'
 
 // Result
 {
@@ -178,7 +177,7 @@ Let’s get the nonce value now
 
 the nonce value of the user can be obtained by querying the account balance information with:
 ```
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 {
 "balance":"10234719999999999999990",
@@ -198,13 +197,13 @@ The port return value is the hash value of the transaction. This hash value can 
 Note: Use your txHash that you generated above. The txHash you see below is mine and only used for an example. 
 
 ```
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"your TxHash Goes Here"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"your TxHash Goes Here"}'
 
 ```
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"}'
 
 // Result
 {
@@ -225,14 +224,14 @@ Hopefully you didn’t forget it. So now let’s plug it in to our code below.
 
 Example 1
 ```
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"Your ./neb account new generated address from earlier goes here"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"Your ./neb account new generated address from earlier goes here"}'
 
 ```
 
 Example 2
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
 
 // Result
 {
@@ -271,22 +270,39 @@ admin.sendTransactionWithPassphrase admin.unlockAccount
 
 ##### Check Account Addresses
 ```js
-> api.accounts()
+>  api . accounts ()
 {
-   "addresses": [
-       "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-       "5cdadc1cfe3da0a3d067e9f1b195b90c5aebfb5afc8d43b4",
-       "83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511",
-       "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-   ]
+    " Addresses " : [
+         " 1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c " ,
+         " 2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8 " ,
+         " 333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700 " ,
+         " 48f981ed38910f1232c1bab124f650c482a57271632db9e3 " ,
+         " 59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232 " ,
+         " 75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f " ,
+         "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080 ",
+         " 98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51 " ,
+         " a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569 " ,
+         " b040353ec0f2c113d5639444f7253681aecda1f8b91f179f " ,
+         " b414432e15f21237013017fa6ee90fc99433dec82c1c8370 " ,
+         " b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903 " ,
+         " b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f " ,
+         " ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22 " ,
+         "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a " ,
+         " c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d " ,
+         " d1abde197e97398864ba74511f02832726edad596775420a " ,
+         " d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf " ,
+         " e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49 " ,
+         " f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848 " ,
+         " fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6 "
+    ]
 }
 ```
 
 ##### Unlock Account
 
 ```js
-> admin.unlockAccount("8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf")
-Unlock account 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf
+> admin.unlockAccount("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c")
+Unlock account "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
 Passphrase:
 {
    "result": true
@@ -296,23 +312,27 @@ Passphrase:
 ##### Send Transaction
 
 ```js
-> api.sendTransaction("8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09","5",13)
+ >  api . sendTransaction ( " 1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c " , " b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903 " , " 1000000000000000000 " , 1 )
 {
-   "txhash": "93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"
+    " txhash " :  " 4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22 " 
 }
 ```
 
 ##### Check Transactions
 
 ```js
-> api.getTransactionReceipt("93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace")
+>  api . getTransactionReceipt ( " 4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22 " )
 {
-   "chainId": 1,
-   "from": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-   "hash": "93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace",
-   "nonce": "13",
-   "timestamp": "1511754470",
-   "to": "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"
+    " chainId " :  100 ,
+     " from " :  " 1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c " ,
+     " gas_limit " :  " 20000 " ,
+     " gas_price " :  " 1000000 " ,
+     " hash " :  " 4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22 " ,
+     " nonce " :  " 1 ",
+     "timestamp " :  " 1514898795 " ,
+     " to " :  " b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903 " ,
+     " type " :  " binary " ,
+     " value " :  " 1000000000000000000 " 
 }
 ```
 
