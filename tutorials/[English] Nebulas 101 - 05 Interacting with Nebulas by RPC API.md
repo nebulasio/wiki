@@ -1,92 +1,91 @@
-
 # Nebulas 101 - 05 Interacting with Nebulas by RPC API
 
-Nebulas node, after starting, can be accessed remotely through RPC. Nebulas provides APIs to get the node information, account balances, send transactions and deploy and call smart contracts.
+Nebulas chain node can be accessed remotely through RPC remote control. Nebulas chain provides a series of APIs to get node information, account balances, send transactions and deploy calls to smart contracts.
 
-The remote access to Nebulas is done by [gRPC](https://grpc.io), via proxy ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)) or HTTP. HTTP access is a RESTful API, with the same parameters as the gRPC API.
+The remote access to the Nebulas chain is done by [gRPC](https://grpc.io),via the proxy ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)) HTTP access. HTTP access is a RESTful interface, with the same arguments as the gRPC call interface.
 
-## gRPC Access
-gRPC is a high-performance, general, and open-source RPC framework developed by Google primarily for mobile applications and designed based on the HTTP/2 protocol standard, based on [ProtoBuf](https://github.com/google/protobuf) serialization protocol, and it supports many development languages.
+## gRPC access
+gRPC is a high-performance, generic open-source RPC framework developed by Google primarily for mobile applications and designed based on the HTTP/ 2 protocol standard, based on [ProtoBuf](https://github.com/google/protobuf) serialization protocol development, And supports many development languages.
 
-The gRPC API for Nebulas is developed using Golang and provides a client written in Golang [demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go). Here we mainly introduce the use of Golang to implement gRPC API. (gRPC supports multiple languages, and gRPC can be accessed in other languages.)
+The gRPC interface for Nebulas chain was developedusing go language and provides a client written in go language [demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go). Here mainly introduces the use of g to achieve gRPC interface.(GRPC supports multiple languages, or gRPC can be accessed in other languages.)
 
-gRPC defines services using ProtoBuf, which is defined in the official code in [/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb):
+gRPC defines the serviceusing ProtoBuf, which is defined in the official code at [/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb):
 
 ```
-// Defines APIs for node and account address information access, sending transaction, etc.
+// API interface, defines the node, account address information acquisition, send transactions and other interfaces
 api_rpc.proto
 
 ```
-Use `make` in `rpc/pb` folder:
+Use `make` in` rpc/ pb` folder when using:
 
 ```
-cd rpc/pb
+cd rpc/ pb
 make
 ```
-
-Generate the corresponding Golang version of the gRPC API code. The official Golang code has been generated, re-generation is not needed. The gRPC port can be modified in the configuration file (eg: `conf/default/seed.conf`). Configuration items in the port configuration items:
+Generate the corresponding go version of the grpc interface code. Go version of the official code has been generated, the use of time can not be re-generated. The gRPC port can be modified in the configuration file(eg: `conf/ default/ seed.conf`). Configuration items in the port configuration items are as follows:
 
 ```
-# Service configuration of interactions between the user and nodes. When multiple ports are started on the same machine, make sure to modify the port to prevent override
+# Service configuration of interaction between user and node, when multiple ports are started on the same machine, pay attention to modify the port to prevent occupancy
 rpc {
-    # gRPC API for users
-    rpc_listen: ["127.0.0.1:51510"]
-    # HTTP API for users
-    http_listen: ["127.0.0.1:8090"]
-    # The module that user can access by HTTP
-    http_module: ["api","admin"]
+    # gRPC API service port
+    rpc_listen: ["127.0.0.1:51510"]
+    # HTTP API service port
+    http_listen: ["127.0.0.1:8090"]
+    # Open module that can provide http service to outside
+    http_module: ["api", "admin"]
 }
 ```
-The default configuration ports are the above `API: 51510`. The API port provides the API interface service.
-Golang gRPC access code:
+The default configuration port is the above `API: 51510`.
+
+go gRPC access code is as follows:
 
 ```go
 // gRPC server connection address configuration
-addr := fmt.Sprintf("127.0.0.1:%d", uint32(51510))
-conn, err := grpc.Dial(addr, grpc.WithInsecure())
-if err != nil {
-	log.Warn("rpc.Dial() failed: ", err)
+addr: = fmt.Sprintf("127.0.0.1:%d",uint32(51510))
+conn, err: = grpc.Dial(addr, grpc.WithInsecure())
+if err! = nil {
+log.Warn("rpc.Dial() failed:", err)
 }
 defer conn.Close()
 
-// API interface access, or node status information
-api := rpcpb.NewAPIServiceClient(conn)
-resp, err := ac.GetNebState(context.Background(), &rpcpb.GetNebStateRequest{})
-if err != nil {
-	log.Println("GetNebState", "failed", err)
+// API interface to access node status information
+api: = rpcpb.NewAPIServiceClient(conn)
+resp, err: = ac.GetNebState(context.Background(), & rpcpb.GetNebStateRequest {})
+if err! = nil {
+log.Println("GetNebState", "failed", err)
 } else {
-	//tail := r.GetTail()
-	log.Println("GetNebState tail", resp)
+// tail: = r.GetTail()
+log.Println("GetNebState tail", resp)
 }
 
-//Management interface access, locking account address
-management := rpcpb.NewManagementServiceClient(conn)
-from := "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-resp, err = management.LockAccount(context.Background(), &rpcpb.LockAccountRequest{Address: from})
-if err != nil {
-	log.Println("LockAccount", from, "failed", err)
+// API interface to access, lock account address
+management: = rpcpb.NewManagementServiceClient(conn)
+from: = "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
+resp, err = management.LockAccount(context.Background(), & rpcpb.LockAccountRequest {Address: from})
+if err! = nil {
+log.Println("LockAccount", from, "failed", err)
 } else {
-	log.Println("LockAccount", from, "result", resp)
+log.Println("LockAccount", from, "result", resp)
 }
 ```
-The API interfaces are defined in the Golang interface files generated from the proto file:
+API interface defined in the go interface file generated by the proto file:
 `api_rpc.pb.go`
 
-## HTTP Access
-Nebulas' HTTP access uses RESTful-like API. Using the HTTP interface, you can easily access node information, account address balance, send transactions, and deploy and call smart contracts. Currently Nebulas also provides two ports, respectively, for ordinary users and administrators to access. The default port setting is at the port where gRPC was previously set.
+## HTTP access
+Nebulas chain HTTP access using RESTful style API. Use the HTTP interface can easily access node information, account address balance, send transactions and deploy call smart contracts.
 
-Official default ports：
+Official default port:
 
-* 8090: The default API port, to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface for getting node information, sending transactions, etc.
+*8685: The default API port to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface, get node information, send transactions, etc .; can be external users.
 
-Examples of using the HTTP access interface:
+Some examples of using the HTTP access interface:
 
-##### Get Node Information
+##### Get node information
 Return node information.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | GET |  /v1/user/nodeinfo |
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | GET |/v1/user/nodeinfo |
 
 ###### Parameters
 none
@@ -98,55 +97,55 @@ none
 
 `version` node version.
 
-`peer_count` current node count.
+`peer_count` The number of currently connected nodes.
 
-`synchronized` node sychronization status.
+Synchronized node synchronization status.
 
-`bucket_size` number of node saved in node route table.
+`bucket_size` node routing table to save the number of nodes.
 
-`relay_cache_size` relay cache size.
+Relay_cache_size broadcast buffer size.
 
-`stream_store_size` node stream store size.
+`stream_store_size` node stream data warehouse size.
 
-`stream_store_extend_size` node stream store extend size.
+`stream_store_extend_size` node stream data warehouse extension size.
 
-`protocol_version` network protocol version.
+`protocol_version` Network protocol version.
 
-`RouteTable route_table` route table.
+`RouteTable route_table` routing table
 
 ```
 message RouteTable {
-	string id = 1;
-	repeated string address = 2;
+string id = 1;
+repeated string address = 2;
 }
 ```
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/nodeinfo
+curl -i -H Accept: application/ json -X GET http://localhost:8090/v1/user/nodeinfo
 
 // Result
 {
-    "id":"QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN",
-    "chain_id":100,
-    "version":1,
-    "bucket_size":16,
-    "relay_cache_size":65536,
-    "stream_store_size":128,
-    "stream_store_extend_size":32,
-    "protocol_version":"/neb/1.0.0"
+    "id": "QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN",
+    "chain_id": 100,
+    "version": 1,
+    "bucket_size": 16,
+    "relay_cache_size": 65536,
+    "stream_store_size": 128,
+    "stream_store_extend_size": 32,
+    "protocol_version": "/ neb/ 1.0.0"
 }
 ```
 ##### Account List
-Returns the list of accounts that the nodes exist on.
+Returns the list of accounts that exist for the node.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | GET |  /v1/user/accounts |
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | GET |/v1/user/accounts |
 
 ##### Parameters
-None
+no
 
 ##### Returns
 `addresses` account list
@@ -154,156 +153,153 @@ None
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8090/v1/user/accounts
+curl -i -H Accept: application/ json -X GET http://localhost:8090/v1/user/accounts
 
 // Result
 {
-    "addresses":[
-        "16464b93292d7c99099d4d982a05140f12779f5e299d6eb4",
-        "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-        "5cdadc1cfe3da0a3d067e9f1b195b90c5aebfb5afc8d43b4",
-        "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-    ]
+    "addresses": [
+        "16464b93292d7c99099d4d982a05140f12779f5e299d6eb4",
+        "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
+        "5cdadc1cfe3da0a3d067e9f1b195b90c5aebfb5afc8d43b4",
+        "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
+    ]
 }
 ```
-#### Ger Account Information
+#### Get Account Information
 Returns account information, including account address balance and current transaction nonce.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/user/accountstate |
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | POST |/v1/user/accountstate |
 
 ###### Parameters
 `address` address hash.
 
 ###### Returns
-`balance` current balance. Unit:： 1/(10^18) NAS.
+`balance` current balance Unit: 1/(10 ^ 18) nas.
 
-`nonce` current transaction nonce.
+nonce current transaction nonce.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8090/v1/user/accountstate -d '{"address": "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
 
 // Result
 {
-    "balance":"5",
-    "nonce": "0"
+    "balance": "5",
+    "nonce": "0"
 }
 ```
-#### Unlock Account
-Use passphrase to unlock account.
+####unlock account
+Use password tounlock account.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/admin/account/unlock |
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | POST |/v1/ admin/account/unlock |
 
 
 ###### Parameters
 `address` account address hash.
 
-`passphrase` account passphrase.
+`passphrase` account password.
 
 ###### Returns
-`result` unlock results.
+`result`unlock results.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8191/v1/admin/account/unlock -d '{"address": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase": "passphrase"}'
 
 // Result
 {
-    "result":true
+    "result": true
 }
 
 ```
-#### Send Transactions
-Send Transactions, contract submission port
+#### Send the transaction
+Send the transaction, submit the contract interface
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/user/transaction |
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | POST |/v1/user/transaction |
 
 ###### Parameters
-`from` Sender account address hash.
+`from` Send account address hash.
 
-`to` Receiver account address hash.
+`to` receive account address hash.
 
-`value` Value. Unit: 1/(10^18) NAS.
+`value` Amount,unit 1/(10 ^ 18) nas.
 
-`nonce` Transaction nonce.
+nonce transaction nonce.
 
-`source` Contract code.
+`gasPrice` trading gas price.
 
-`args` Contract arguments.
+`gasLimit` trading gas cap.
 
-`gas_price` Transaction gas price.
-
-`gas_limit` Transaction gas limit.
+contract information, release and invoke smart contracts.
 
 ###### Returns
-`txhash` Transaction hash;
+`txhash` transaction hash;
 
-If deploying contract, would also return contract address information:
+If the deployment of the contract, as well as the contract address information:
 
-`contract_address` contract address information；
+contract_address contract address information;
 
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8090/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"83a78219edbdeee19eefc48b8d9a4a7cfa02704518b54511","to":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf","nonce":1,"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;", "args":""}'
+curl -i -H 'Accept: application/ json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/ json' -d '{"from": "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "to": "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value": "1000000000000000000", "nonce": 1, "gasPrice": "1000000", "gasLimit": "2000000"} '
 
 // Result
 {
-    "txhash":"896f813a4560732793cdceb9133682277de20df502a35f7af2a845e6606c450b",
-    "contract_address":"695392515cfb8fbfc1f50b7eec02e79a1fbb31e710178b0f"
+    "txhash": "cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
 }
 ```
-#### Get Transaction Information
-Return transaction information using hash.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/user/getTransactionReceipt |
+#### Get transaction information
+Transaction information returned by transaction hash.
+
+Protocol | Method | API |
+| ---------- | -------- | ----- |
+| HTTP | POST |/v1/user/getTransactionReceipt |
 
 ###### Parameters
-`hash` 交易哈希. Transaction hash.
+`hash` transaction hash.
 
 ###### Returns
+`hash` transaction hash.
 
-`hash` 交易哈希. Transaction hash.
+`from` transaction to send the address hash.
 
-`from` Sender account address hash.
+`to` transaction receiving address hash.
 
-`to` Receiver account address hash.
+nonce transaction nonce.
 
-`nonce` Transaction nonce.
+`timestamp` transaction timestamp.
 
-`timestamp` Transaction timestamp.
+`data` transaction data.
 
-`data` Transaction data.
+`chainId` transaction chain ID.
 
-`chainId` Transaction ID.
-
-`contract_address` Contract address.
+contract_address contract address.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8090/v1/user/getTransactionReceipt -d '{"hash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
 
 // Result
 {
-    "hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
-    "from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-    "to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-    "nonce":"12",
-    "timestamp":"1511519091",
-    "chainId":1
+    "hash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
+    "from": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
+    "to": "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
+    "nonce": "12",
+    "timestamp": "1511519091",
+    "chainId": 1
 }
 ```
 
 
-For detailed API and parameter documentation, please refer to the official documentations of [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md).
+Detailed interface usage and parameter description can refer to the official document [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) and [Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md).
