@@ -30,7 +30,7 @@ A brief description of a smart contract:
 
 1. The smart contract code must have a Prototype object;
 
-2. Smart contract code must have a init () method, this method will only be executed once;
+2. Smart contract code must have a `init ()` method, this method will only be executed once;
 
 Devlopers note: smart contract inside the private method is _ at the beginning of the method, the private method can not be externally called directly;
 
@@ -138,7 +138,7 @@ module.exports = BankVaultContract;
 As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an `init ()` method that satisfies what we call the most basic description for writing smart contracts.
 
 BankVaultContract implements two other methods:
-- `save ()`: The user can save money to the bank vault by calling the save () function;
+- `save ()`: The user can save money to the bank vault by calling the `save ()` function;
 - `takeout ()`: Users can withdraw money from bank vault by calling `takeout ()` function;
 
 The contract code above uses the built-in `Blockchain` object and the built-in` BigNumber () `function.
@@ -172,7 +172,7 @@ The contract code above uses the built-in `Blockchain` object and the built-in` 
 	},
 ```
 
-takeout ():
+`takeout ():`
 
 ```js
 //  removed from the safe deposit
@@ -220,9 +220,9 @@ takeout ():
 ```
 
 ## Deploy smart contracts
-Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
+Now we need to deploy the smart contract to the chain.
 
-Earlier, I introduced how users made a transaction in Nebulas, and we used the sendTransation () interface to initiate a transaction. Deploying a smart contract in Nebulas is actually just sending a transaction, just with different parameters.
+Earlier, I introduced how users made a transaction in Nebulas, and we used the `sendTransation ()` interface to initiate a transaction. Deploying a smart contract in Nebulas is actually just sending a transaction, just with different parameters.
 
 ```js
 sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
@@ -260,15 +260,15 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ```
 
 The return value for deploying a smart contract is the transaction's hash address `txhash` and the contract's address` contract_address` .
-Getting the return value does not guarantee a successful deployment of the contract, because the sendTransaction () is an asynchronous process, needed to be packaged by the miner, as the previous transaction, the transfer does not arrive in real time, because its dependent on the miners packing speed, so you need to wait for a period of Time (about 1 minute), then you can verify the contract is deployed successfully by calling the contract address or calling the smart contract.
+Getting the return value does not guarantee a successful deployment of the contract, because `sendTransaction ()` is an asynchronous process, needed to be packaged by the miner. As the previous transaction, the transfer does not arrive in real time because it is dependent on the miner's packing speed, so you need to wait for a period of Time (about 1 minute) after which you can verify the contract is deployed successfully by calling the contract address or calling the smart contract.
 
 ## Verify if the deployment of the contract was successful
 We get the contract address `contract_address` when deploying the smart contract, and we can easily check the contract's address information using the console to verify whether the contract has been deployed successfully.
-! [key] (resources / 101-03-state.png)
+![key](resources/101-03-state.png)
 As shown above, if we can get the contract information by the address of the contract, it means the contract has been deployed successfully.
 
 ## call smart contract
-The way to call a smart contract in Nebulas is also very simple, you can call the smart contract through the rpc interface call () function.
+The way to call a smart contract in Nebulas is also very simple, you can call the smart contract through the rpc interface `call ()` function.
 
 ```js
 call(from, to, value, nonce, gasPrice, gasLimit, contract)
@@ -282,7 +282,7 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 - contract: contract information, the parameters passed in when the contract is deployed
     function: Call contract method
     args: Contract initialization method parameters, no parameters for the empty string, a parameter for the JSON array
-Call smart contract save () method:
+Call smart contract `save ()` method:
 
 ```js
 // Request
@@ -294,11 +294,11 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 }
 ```
 The essence of a smart contract call is to submit a transaction, it depends on the miners to package the transaction, the miners will be successful after the transaction package call is considered successful, so the call to the smart contract is not immediately effective. We need to wait (about a minute) and than we can verify that our call was successful.
-Above we call the save () function to the bank vault to deposit the amount of $100, you aslo need to deduct $100 from the user's balance, so there is a transfer process, the amount of the transfer needs to pass the value field. After the contract is invoked, you only need to verify that the smart contract's address balance is 100$.
+Above we call the `save ()` function to the bank vault to deposit the amount of $100, you also need to deduct $100 from the user's balance, so there is a transfer process, the amount of the transfer needs to pass the value field. After the contract is invoked, you only need to verify that the smart contract's address balance is $100.
 By using console, we can easily check the current smart contract address amount:
-! [key] (resources / 101-03-save-state.png)
+![key](resources/101-03-save-state.png)
 
-Call the smart contract takeout () function:
+Call the smart contract `takeout ()` function:
 
 ```js
 // Request
@@ -309,9 +309,9 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
    "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
 }
 ```
-The above takeout () function is different from the save () function except that the value of 50 is taken out of the vault, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation of the Smart contract related parameters, so they are passed through args parameters.
+The above `takeout ()` function is different from the `save ()` function except that the value of 50 is taken out of the vault, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation of the Smart contract related parameters, so they are passed through args parameters.
 Then we need to verify that the current smart contract address balance is not $50:
-! [key] (resources / 101-03-takeout-state.png)
+![key](resources/101-03-takeout-state.png)
 
 The picture above shows that the smart contract call result is correct, and the smart contract deployment to the call is successful.
 
