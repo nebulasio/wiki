@@ -105,7 +105,7 @@ Now let’s make a transfer
 
 To send a transfer, follow these steps:
 
-1. Get the account information;
+* Get the account information;
 
 ```
 // Request
@@ -124,7 +124,7 @@ You should see addresses like the above example.
 Basically this will return address or addresses that you created earlier. 
 Note: when you used the “./neb account new” it created the address or addresses you see above. If you want to create more addresses use “./neb account new”
 
-2. The terminal code below will unlock the coinbase account. Just copy the code below and paste into your terminal.
+* The terminal code below will unlock the coinbase account. Just copy the code below and paste into your terminal.
  
 ```
 // Request
@@ -137,15 +137,15 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 ```
 This will unlock the sender's address which is needed for the transfers mentioned in the Preparations. 
 
-3. Make a fund transfer to another account using an unlocked account;
-Note: you see two addresses here; “from” and “to” we need to edit the “to” address with your generated address from earlier. When you “./neb account new” it generated an address we need that address now and copy and paste it into “to” Here are some examples below. 
+* Make a fund transfer to another account using an unlocked account;
+Note: you see two addresses here; `from` and `to` we need to edit the `to` address with your generated address from earlier. When you `./neb account new` it generated an address we need that address now and copy and paste it into `to` Here are some examples below. 
 
 
 Example 1: 
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"bf9f8c6d12797d44ea5213988aaad87e964eef32e4fab0dd","nonce": 1,"value": “10”}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"bf9f8c6d12797d44ea5213988aaad87e964eef32e4fab0dd","nonce": 1,"value": "10"}'
 
 //Result
 
@@ -154,14 +154,18 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 }
 
 ```
-Note: After the “from” and “to” addresses there is “nonce” and “value” the “value” number should always be inside “ ” quotes. For example “10” or “12” or “100” ect.. so if you get an error: 
-{"error":"json: cannot unmarshal number into Go value of type string","code":3} – this means you forgot to add “10” quotes around the numbers
 
+Note: After the `from` and `to` addresses there is `nonce ` and `value`. The `value` number should be a string, as the value is too big to use integers. For example "10" or "12" or "100" ect.. so if you get an error: 
+
+```
+{"error":"json: cannot unmarshal number into Go value of type string","code":3} – this means you forgot to add “10” quotes around the numbers
+```
 
 Example 2:
+
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": “10”}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce": 1,"value": "10"}'
 
 // Result
 {
@@ -176,6 +180,7 @@ Note: The nonce here must be the user's last nonce + 1, This means for every tra
 Let’s get the nonce value now
 
 the nonce value of the user can be obtained by querying the account balance information with:
+
 ```
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
@@ -192,7 +197,7 @@ This code was used earlier in this tutorial to get the balance but here were che
 
 The port return value is the hash value of the transaction. This hash value can be used to query the transaction.
 
-4. Wait for about 30s, and then check the transfer information (because the transfer requires the miner to confirm, so there will be a delay);
+* Wait for about 30s, and then check the transfer information (because the transfer requires the miner to confirm, so there will be a delay);
 
 Note: Use your txHash that you generated above. The txHash you see below is mine and only used for an example. 
 
@@ -218,17 +223,18 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 This code can get information from the previous transfer we did earlier. The request parameter is the hash value of the previous transfer. If you can check the transaction information, that means the transaction was successfully executed. So basically if you see “hash” “from” “to” “nonce” “timestamp” and “chainId” your doing good.
 
 
-5. Now were going to check the balance of the transfer receiving account to verify whether the transfer was successful. So using the code we used earlier to check the balance we will use the same code but we will change the address to the address you generated with ./neb account new. Remember the “from” and “to” addresses? We need to plug in the “to” address now.
+* Now were going to check the balance of the transfer receiving account to verify whether the transfer was successful. So using the code we used earlier to check the balance we will use the same code but we will change the address to the address you generated with ./neb account new. Remember the “from” and “to” addresses? We need to plug in the “to” address now.
 Hopefully you didn’t forget it. So now let’s plug it in to our code below.
 
-
 Example 1
+
 ```
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"Your ./neb account new generated address from earlier goes here"}'
 
 ```
 
 Example 2
+
 ```
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88"}'
