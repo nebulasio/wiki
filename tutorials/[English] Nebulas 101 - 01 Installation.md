@@ -73,6 +73,9 @@ If you need the full commit history, clone all to local:
 ```
 git clone https://github.com/nebulasio/go-nebulas.git
 ```
+Note: If you opt for the second option, don't forget to checkout to `master` branch or to commit `ed37bea` (v0.5.0.), otherwise this tutorial might not work for you.
+
+
 Since Go must compile in `$GOPATH`,  Nebulas code must be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`。
 
 Note: so make sure you create a src folder and put nebulas inside it.
@@ -474,5 +477,3 @@ Use the above configuration file to start the node:
 ```
 
 NAS testing network can be obtained from the official website for testing. Distribution Address: [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
-
-
