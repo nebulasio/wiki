@@ -1,6 +1,6 @@
 
 
-# Nebulas 101 - 01 Compile and Install Nebulas (This tutorial applies to the latest v0.5.0 branch)
+# Nebulas 101 - 01 Compile and Install Nebulas (This tutorial applies to the latest master branch)
 
 The project code for [Nebulas](https://nebulas.io/) has been released in several versions and tested to run locally. You can download the Nebulas source code to compile the private chain locally.
 
@@ -72,7 +72,7 @@ If you need the full commit history, clone all to local:
 
 ```
 git clone https://github.com/nebulasio/go-nebulas.git
-git checkout v0.5.0
+git checkout master
 ```
 Since Go must compile in `$GOPATH`,  Nebulas code must be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`.
 
