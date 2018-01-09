@@ -214,9 +214,9 @@ Seed node: Nebula chain network seed node, for other nodes to provide initial sy
 Node: Nebula chain ordinary node, start from the seed node synchronization routing and block information.
 Nebula chain seed nodes and nodes start to distinguish through the configuration file. When the node is started, the seed node needs to be started first. After the seed node is started, the network address information of the seed node is updated to the configuration file of the ordinary node, and the network can be mined.
 
-## Edit seed.conf
+## Edit conf
 
-Now we need to edit the seed.conf file which is located in go-nebulas/conf/default/seed.conf
+Now we need to edit the config.conf file which is located in go-nebulas/conf/default/config.conf
 
 ```
 ## Your file should look something like this:
@@ -291,7 +291,7 @@ stats {
 
 
 
-By default, `seed.conf` in the root directory of the project is read to start seed node if no configuration file is specified.
+By default, `config.conf` in the root directory of the project is read to start seed node if no configuration file is specified.
 
 
 
@@ -306,12 +306,12 @@ The default start seed node command:
 If using different configuration file, just add the `-c` flag at startup to specify the configuration file. For example, to specify a node configuration file when starting a seed node:
 
 ```
-./neb -c <path>/seed.conf
+./neb -c <path>/config.conf
 
 ```
 ## Example neb
 ```
-./neb conf/default/seed.conf
+./neb conf/default/config.conf
 
 ```
 
