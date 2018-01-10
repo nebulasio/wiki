@@ -22,7 +22,7 @@ Before starting neb app, some preparations are needed:
 Coinbase corresponds to the reward address of the miner's mining reward. The reward that the miner gets will go to this address. So before starting the node, you need to configure the Coinbase address first. We can select one address as the address of coinbase from the six addresses in the `conf/default/genesis.conf`[`consensus-> dpos-> dynasty`]. Currently, our version is six addresses as a dynasty, rotating generate blocks, so only the first six addresses can be configured as coinbase addresses. For this tutorial were be going to be using the first address.
 ![key](resources/101-02-genesis.png)
 
-For Example: The generated coinbase address `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c` needs to replace the coinbase address and miner address in the` chain` attribute in the `conf/default/seed.conf` configuration file. The example below will show the coinbase and miner having the same address - (shown below). 
+For Example: The generated coinbase address `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c` needs to replace the coinbase address and miner address in the` chain` attribute in the `conf/default/config.conf` configuration file. The example below will show the coinbase and miner having the same address - (shown below). 
 
 ![key](resources/101-02-coinbase.png)
 
@@ -39,14 +39,14 @@ Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
 The command above will generate a json file at this location: `src/github/go-nebulas/keydir/  `
 
 ## Important Notice
-The next step is to go to go-nebulas/conf/default/seed.conf and open up seed.conf and add the location of the json file which is: `src/github/go-nebulas/keydir/`
+The next step is to go to go-nebulas/conf/default/config.conf and open up config.conf and add the location of the json file which is: `src/github/go-nebulas/keydir/`
 
-Here is an example on how you seed.conf chain attribute should look: 
+Here is an example on how you config.conf chain attribute should look: 
 
 ```
 chain {
   chain_id: 100
-  datadir: "seed.db"
+  datadir: "data.db"
   keydir: "/Users/macbook/Documents/go/src/github.com/go-nebulas/keydir/"
   genesis: "conf/default/genesis.conf"
   coinbase: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
@@ -56,14 +56,14 @@ chain {
 }
 ```
 
-Note: for this tutorial make sure your seed.conf looks similar to the example above.
+Note: for this tutorial make sure your config.conf looks similar to the example above.
 
 ### Start the Neb App
 After completing all the preparations, you can start the neb app:
 
-`$ ./neb -c conf/default/seed.conf`
+`$ ./neb -c conf/default/config.conf`
 
-The neb app loads the `conf/default/seed.conf` configuration file we set earlier. After starting, neb app will enter mining mode by default. After a period of time (1 to 2 minutes), mining reward will be sent to the coinbase account address we set before. The current development code mining reward is 16 NAS (which will be adjusted according to the requirements of the white paper). The average block time is about 10 seconds.
+The neb app loads the `conf/default/config.conf` configuration file we set earlier. After starting, neb app will enter mining mode by default. After a period of time (1 to 2 minutes), mining reward will be sent to the coinbase account address we set before. The current development code mining reward is 16 NAS (which will be adjusted according to the requirements of the white paper). The average block time is about 10 seconds.
 
 ### Check Balance
 Nebulas provides the RPC port, allowing developers to interact with the Nebulas via HTTP or gPRC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of HTTP protocol. The Nebulas HTTP port's address and port is configured via the `api_http_port` attribute in the configuration file. The default port is `8685`.
