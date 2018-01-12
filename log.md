@@ -10,6 +10,29 @@ Console Log(CLog) is used to help you understand which job **Neb** is working on
 
 - CLog will print all logs to stdout & log files both. You can check them in your standard output directly.
 
+Nebulas console log statements
+
+```
+// log level can be `Info`,`Warning`,`Error`
+logging.CLog().Info("")
+```
+
+##### Startup specifications
+Nebulas start service should give a console log, the logs should before the service start. The log format just like this:
+
+```
+logging.CLog().Info("Starting xxx...")
+```
+
+
+##### Stopping specifications
+
+Nebulas stop service should give a console log, the logs should before the service stoped. The log format just like this:
+
+```
+logging.CLog().Info("Stopping xxx...")
+```
+
 ### Verbose Log
 
 Verbose Log(VLog) is used to help you understant how **Neb** works on current job, including how to verifiy new blocks, how to discover new nodes, how to mint and so on.
