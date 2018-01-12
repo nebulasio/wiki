@@ -153,7 +153,7 @@ If you do not use make to integrate V8 link library, you can also install it sep
 	* `sudo /sbin/ldconfig`
 
 
-### Creation block configuration
+### Creation block (i.e. Genesis block) configuration
 
 When the nebula chain is started, configure the information of the **creation block** and use the creation block to configure the **initialization block** information when it is started for the first time. At present, the nebula chain temporarily uses **dpos** (Distributed Proof of Stake) as a consensus algorithm. The pre-allocation of initial mining members and NAS can be set in the creation block configuration.
 
@@ -206,6 +206,7 @@ token_distribution [
     value: "10000000000000000000000"
   },
   {
+    # If the first address goes to 0 then this address is used as a backup
     address: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8"
     value: "10000000000000000000000"
   }
@@ -344,7 +345,7 @@ The seed node `address` and `id` can be found from the seed node log on the line
 ```
 INFO[2017-12-25T15:04:52+08:00] node start       addrs="[/ip4/127.0.0.1/tcp/8680]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
 ```
-In the log above, the **address** is `/ip4/127.0.0.1/tcp/8680`, the **id** is `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `. The Nebulas p2p network uses IPSF's libp2p network library. The format of the seed address is:
+In the log above, the **address** is `/ip4/127.0.0.1/tcp/8680`, the **id** is `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `. The Nebulas p2p network uses IPFS's libp2p network library. The format of the seed address is:
 
 ```
 <address>/ipfs/<id>
@@ -373,4 +374,4 @@ In order to avoid port override ensure that the port `10001` in the network bloc
 
 ### Next Steps
 
-[Sending a Transaction](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+[Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
