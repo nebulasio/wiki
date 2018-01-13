@@ -54,9 +54,6 @@ After a period of time (1 to 2 minutes), the mining reward will begin being sent
 ## Using `curl` to interact with the network
 Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gPRC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
 
-Next, we use `curl` to show the RPC calls.
-
-
 ### Check Address Balance (accountstate)
 
 We can check the coinbase address account balance to see the initial token distribution amount plus tokens that have been mined. When the coinbase account address has a balance, transfer transactions can be made.
@@ -72,10 +69,10 @@ In the terminal make the following curl request:
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 
-// Result
+// Response
 {
-   "Balance":"10080640000000000000000"，
-   "nonce":"0"
+  "balance":"10080640000000000000000"，
+  "nonce":"0"
 }
 ```
 Great! The above shows us the balance for the address that we sent the initial token distribution to and that we are sending mining rewards to.
@@ -87,10 +84,10 @@ Now, let's check the balance of the address we created ourselves. In the termina
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"<your address>"}'
 
 
-// Result
+// Response
 {
-   "Balance":"0"，
-   "nonce":"0"
+  "balance":"0"，
+  "nonce":"0"
 }
 ```
 
@@ -108,9 +105,9 @@ Let's unlock `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c`.
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
 
-// Result
+// Response
 {
-   "result":true
+  "result":true
 }
 ```
 
@@ -123,12 +120,11 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"<your address","nonce": 1,"value": "10"}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"<your address>","nonce": 1,"value": "10"}'
 
-//Result
-
+// Response
 {
-"txhash":"17657a7a574ea767bd1618f2392d7a212b71c8ca5bd688623085c257022d07aa"
+  "txhash":"17657a7a574ea767bd1618f2392d7a212b71c8ca5bd688623085c257022d07aa"
 }
 
 ```
@@ -145,8 +141,8 @@ You should now see an error saying that you used an invalid `nonce`.
 
 ```
 {
-    "code": 2,
-    "error": "nonce is invalid"
+  "code": 2,
+  "error": "nonce is invalid"
 }
 ```
 
@@ -158,8 +154,8 @@ If you have forgotten what the most recent `nonce` was you can find it by checki
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 {
-"balance":"10234719999999999999990",
-"nonce":"1"
+  "balance":"10234719999999999999990",
+  "nonce":"1"
 }
 
 ```
@@ -178,18 +174,16 @@ Note: Use the `txhash` that you generated in your last successful transaction.
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"<your txhash goes here>"}'
 
-// Result
+// Response
 {
-   "hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace",
-   "from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-   "to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88",
-   "nonce":"1",
-   "timestamp":"1511519091",
-   "chainId":1
+  "hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace",
+  "from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
+  "to":"<your address>",
+  "nonce":"1",
+  "timestamp":"1511519091",
+  "chainId":1
 }
 ```
-
-[GERTIG TODO]
 
 If you see a response that is similar to the above (contains the same keys: `hash`, `from`, `to`, `nonce`, `timestamp`, `chainId`) that means the transaction was successfully executed!
 
@@ -201,10 +195,10 @@ Now were going to check the balance of the transfer receiving account to verify 
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"<your address>"}'
 
-// Result
+// Response
 {
-	"balance":"10",
-	"nonce":"0"
+  "balance":"10",
+  "nonce":"0"
 }
 ```
 
@@ -276,7 +270,7 @@ admin.sendTransactionWithPassphrase admin.unlockAccount
 Unlock account "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
 Passphrase:
 {
-   "result": true
+  "result": true
 }
 ```
 
@@ -285,7 +279,7 @@ Passphrase:
 ```js
  >  api.sendTransaction ("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "<your address>", "1000000000000000000", 1)
 {
-    "txhash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22"
+  "txhash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22"
 }
 ```
 
@@ -294,19 +288,19 @@ Passphrase:
 ```js
 >  api.getTransactionReceipt ("4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22")
 {
-    "chainId":  100,
-     "from":  "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-     "gas_limit":  "20000",
-     "gas_price":  "1000000",
-     "hash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22",
-     "nonce":  "1",
-     "timestamp":  "1514898795",
-     "to":  "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-     "type":  "binary",
-     "value":  "1000000000000000000"
+  "chainId":  100,
+  "from":  "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
+  "gas_limit":  "20000",
+  "gas_price":  "1000000",
+  "hash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22",
+  "nonce":  "1",
+  "timestamp":  "1514898795",
+  "to":  "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
+  "type":  "binary",
+  "value":  "1000000000000000000"
 }
 ```
 
-### Through Nebtestkit
+### Using Nebtestkit
 [nebtestkit](https://github.com/nebulasio/go-nebulas/tree/develop/nebtestkit) is an integrated testing framework based on [mocha](https://github.com/mochajs/mocha). With `nebtestkit`, you can launch one or more Nebulas nodes, assemble a complete private chain, or join an existing network, then make transfer transactions, deploy and invoke smart contracts, etc.
-The use of `nebtestkit` instructions can be referred to [nebtestkit instructions](https://github.com/nebulasio/go-nebulas/blob/develop/nebtestkit/README.md), not going into detail here
+The use of `nebtestkit` instructions can be referred to [nebtestkit instructions](https://github.com/nebulasio/go-nebulas/blob/develop/nebtestkit/README.md).
