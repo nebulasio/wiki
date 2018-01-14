@@ -372,6 +372,6 @@ You can now run this node with:
 
 In order to avoid port override ensure that the port `10001` in the network block above `listen: ["127.0.0.1:10001"]` is different for each node you start.
 
-### Next Steps
+### Next step: Tutorial 2:
 
 [Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
