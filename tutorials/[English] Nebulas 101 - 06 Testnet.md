@@ -1,6 +1,6 @@
 # Connecting to the test network i.e. Testnet
 
-The test chain of the nebula chain has a specific chainID. When connecting to the test network, the configuration of the creation block in `genesis.conf` needs to be updated to the creation block configuration of the testing network and the configuration information is updated at the same time. Official introduction to [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
+The test chain of the Nebulas chain has a specific chainID. When connecting to the test network, the configuration of the creation block in `genesis.conf` needs to be updated to the creation block configuration of the testing network. The configuration information will be updated at the same time. Official introduction to [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
 
 ## Configuration steps
 
@@ -110,3 +110,6 @@ Start the Testnet connected Node:
 
 
 NAS testing network can be obtained from the official website for testing. Distribution Address: [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
+
+
+#### code playground coming soon!
