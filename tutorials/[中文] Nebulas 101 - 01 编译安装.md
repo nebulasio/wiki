@@ -77,21 +77,8 @@ vendor.tar.gz
 SHA1: 9292af2dcb905c92a0aff3b9052a275f513efe3c
 MD5: 341144001217f72b08b97ae1ef2521f2
 ```
-
-#### 编译可执行文件
-完成go依赖库和v8依赖包后，可以编译星云链的可执行文件。Nebulas的go工程main函数在`cmd/neb/main.go`中，执行make命令进行编译：
-
-```
-make build
-```
-编译成功后，在根目录生成`neb`可执行文件。
-![make build](resources/101-01-make-build.png)
-
-
-## 搭建本地测试环境
-
 #### 安装v8
-Nebulas的NVM(星云链虚拟机)使用了JavaScript的v8引擎，为NVM编译的v8依赖库需要安装后`neb`才能运行。v8依赖库星云链官方目前提供了Mac版本的动态链接库`libnebulasv8.dylib`和Linux版本的静态链接库`libnebulasv8.so`及其他so库。项目中已经添加了make命令安装v8依赖库，在项目根目录执行安装指令：
+Nebulas的NVM(星云链虚拟机)使用了JavaScript的v8引擎，需要安装为NVM编译的v8依赖库后`neb`才能运行。v8依赖库星云链官方目前提供了Mac版本的动态链接库`libnebulasv8.dylib`和Linux版本的静态链接库`libnebulasv8.so`及其他so库。项目中已经添加了make命令安装v8依赖库，在项目根目录执行安装指令：
 
 ```
 make deploy-v8
@@ -103,6 +90,17 @@ make deploy-v8
 * Linux系统
 	* `sudo install nf/nvm/native-lib/*.so /usr/local/lib/`
 	* `sudo /sbin/ldconfig`
+	
+#### 编译可执行文件
+完成go依赖库和v8依赖包后，可以编译星云链的可执行文件。Nebulas的go工程main函数在`cmd/neb/main.go`中，执行make命令进行编译：
+
+```
+make build
+```
+编译成功后，在根目录生成`neb`可执行文件。
+![make build](resources/101-01-make-build.png)
+
+## 搭建本地测试环境
 
 #### 创世区块配置
 星云链启动时要配置创世区块的信息，在第一次启动时会使用创世区块配置初始化区块信息。目前星云链暂时使用dpos作为共识算法，初始挖矿成员和NAS的预分配可以在创世区块配置中设置。
