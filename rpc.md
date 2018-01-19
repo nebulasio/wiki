@@ -53,8 +53,8 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [SendRawTransaction](#sendrawtransaction)
 * [GetBlockByHash](#getblockbyhash)
 * [GetTransactionReceipt](#gettransactionreceipt)
-* [GetGasPrice](#getGasPrice)
-* [EstimateGas](#estimateGas)
+* [GetGasPrice](#getgasprice)
+* [EstimateGas](#estimategas)
 
 ## RPC API Reference
 
