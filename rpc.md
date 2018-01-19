@@ -55,7 +55,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [GetTransactionReceipt](#gettransactionreceipt)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
-* [LatestIrreversibleBlock](latestirreversibleblock)
+* [LatestIrreversibleBlock](#latestirreversibleblock)
 
 ## RPC API Reference
 
