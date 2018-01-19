@@ -55,6 +55,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [GetTransactionReceipt](#gettransactionreceipt)
 * [GetGasPrice](#getGasPrice)
 * [EstimateGas](#estimateGas)
+* [LatestIrreversibleBlock](latestirreversibleblock)
 
 ## RPC API Reference
 
@@ -534,3 +535,28 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/esti
 }
 ```
 ***
+
+#### LatestIrreversibleBlock
+Return the latest irreversible block.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  LatestIrreversibleBlock |
+| HTTP | GET |  /v1/user/lib |
+
+##### Parameters
+none
+
+###### Returns
+`data` block info.
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/lib -H 'Content-Type: application/json'
+
+// Result
+{
+    "data":"{\"height\":305742, \"hash\":\"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073\", \"parentHash\":\"4d7ab29506ffb353240b6279ffaaf2b9b1681679628c78ac2033ea6bcfe77e46\", \"nonce\":0, \"timestamp\": 1516389660, \"coinbase\": \"0b9cd051a6d7129ab44b17833c63fe4abead40c3714cde6d\", \"tx\": 0}"
+}
+```
