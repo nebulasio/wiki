@@ -338,7 +338,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ***
 
 #### Call
-Call a smart contract function. The smart contract must have been submited.
+Call a smart contract function. The smart contract must have been submited. Method calls are run only on the current node, not broadcast.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -367,7 +367,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 
 // Result
 {
-   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
+   "result": ""
 }
 ```
 ***

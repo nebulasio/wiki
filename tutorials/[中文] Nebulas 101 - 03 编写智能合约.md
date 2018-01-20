@@ -33,6 +33,7 @@
 
 1. 用户可以向这个银行保险柜存钱。
 2. 用户可以从这个银行保险柜取钱。
+3. 用户可以查询银行保险柜中的余额。
 
 智能合约示例：
 
@@ -80,7 +81,7 @@ BankVaultContract.prototype = {
 
 		var orig_deposit = this.bankVault.get(from);
 		if (orig_deposit) {
-			value = value.plus(balance);
+			value = value.plus(orig_deposit.balance);
 		}
 
 		var deposit = new DepositeContent();
@@ -112,16 +113,21 @@ BankVaultContract.prototype = {
 		if (result != 0) {
 			throw new Error("transfer failed.");
 		}
-        Event.Trigger("BankVault", {
-            Transfer: {
-                from: Blockchain.transaction.to,
-                to: from,
-                value: amount.toString(),
-            }
-        });
+		Event.Trigger("BankVault", {
+			Transfer: {
+				from: Blockchain.transaction.to,
+				to: from,
+				value: amount.toString(),
+			}
+		});
 
 		deposit.balance = deposit.balance.sub(amount);
 		this.bankVault.put(from, deposit);
+	},
+
+	balanceOf: function () {
+		var from = Blockchain.transaction.from;
+		return this.bankVault.get(from);
 	}
 };
 
@@ -132,6 +138,7 @@ module.exports = BankVaultContract;
 
 - save(): 用户可以通过调用save()方法向银行保险柜存钱；
 - takeout(): 用户可以通过调用takeout()方法向银行保险柜取钱；
+- balanceOf(): 用户可以通过调用balanceOf()方法向银行保险柜查询余额；
 
 上面的合约代码用到了内置的`Blockchain`对象和内置的`BigNumber()`方法，下面我们来逐行拆解分析合约代码：
 save():
@@ -232,12 +239,11 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
-"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":1,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight)}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0)}};DepositeContent.prototype={toString:function(){return JSON.stringify(this)}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text)},stringify:function(o){return o.toString()}})};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance)}var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit)},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");}if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");}if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");}var result=Blockchain.transfer(from,amount);if(result!=0){throw new Error(\"transfer failed.\");}Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit)},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from)}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
 
 // Result
 {
-    "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
+    "txhash":"aa833b2771e708ec6970888d2a9a5ab4c79aeed04408157e6b9397a0b47c5f13",
     "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
 }
 ```
@@ -249,31 +255,31 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ![key](resources/101-03-state.png)
 如上图所示，如果我们通过合约的地址可以查询到合约的信息，就表示合约部署成功了。
 
-## 调用智能合约
-在Nebulas中调用智能合约的方式也很简单，可以通过rpc接口call()方法来调用智能合约。
+## 执行智能合约方法
+在Nebulas中调用智能合约的方式也很简单，直接使用sendTransation方法来调用智能合约。
 
 ```js
-call(from, to, value, nonce, gasPrice, gasLimit, contract)
+sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 - from: 用户钱包地址
 - to: 智能合约地址
 - value: 调用智能合约用于转账的金额
-- nonce: 用户transaction标识，顺序增长
+- nonce: from用户transaction标识，顺序增长
 - gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用空字符串，使用默认值；
 - gasLimit: 部署合约的gasLimit，通过[`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)可以获取部署合约的gas消耗，不能使用默认值，也可以设置一个较大值，执行时以实际使用计算。
 - contract: 合约信息，部署合约时传入的参数
 	- `function`: 调用合约方法
-	- `args`: 合约初始化方法参数，无参数为空字符串，有参数时为JSON数组
+	- `args`: 合约方法参数，无参数为空字符串，有参数时为JSON数组
 
 调用智能合约的save()方法：
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"100","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
 
 // Result
 {
-   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
+   "txhash": "9008b0958fc26034118bb0f65474c29041116bad8ef909a771af9ed2b2f5d261"
 }
 ```
 智能合约的调用本质也是提交一个transation，所以也依赖矿工打包，矿工将交易打包成功以后调用才算成功，所以智能合约的调用也不是立即生效。我们需要等待一段时间（约一分钟），然后可以验证我们的调用是否成功。
@@ -285,7 +291,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":4,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":4,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
 
 // Result
 {
@@ -297,3 +303,36 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 ![key](resources/101-03-takeout-state.png)
 
 上图可以看到智能合约调用结果无误，智能合约的部署到调用都是成功的。
+
+## 查询智能合约数据
+在Nebulas中已经提交的智能合约和执行方法会提交到链上，查询智能合约已经生成数据的方式也很简单，可以通过rpc接口call()方法来调用智能合约。通过`call()`方式调用合约方法不会发布到链上。
+
+```js
+call(from, to, value, nonce, gasPrice, gasLimit, contract)
+```
+- from: 用户钱包地址
+- to: 用户钱包地址/智能合约地址
+- value: 调用智能合约用于转账的金额
+- nonce: 用户transaction标识，顺序增长
+- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用空字符串，使用默认值；
+- gasLimit: 部署合约的gasLimit，通过[`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)可以获取部署合约的gas消耗，不能使用默认值，也可以设置一个较大值，执行时以实际使用计算。
+- contract: 合约信息，部署合约时传入的参数
+	- `source`: 合约代码
+	- `sourceType`: 合约代码类型，支持`js`和`ts`(对应javaScript和typeScript代码)
+	- `function`: 调用合约方法
+	- `args`: 合约初始化方法参数，无参数为空字符串，有参数时为JSON数组
+
+**Notice: 若为提交智能合约，传入`source`,`sourceType`和`args`参数，若为调用智能合约方法，传入`function`和`args`。**
+
+调用智能合约的balanceOf()方法：
+
+```js
+// Request
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
+
+// Result
+{
+   "result": ""
+}
+```
+智能合约的查询本质也是提交一个transation，transaction提交后只在本地执行，所以智能合约的查询立即生效。在查询方法返回结果中可以看到执行结果。
