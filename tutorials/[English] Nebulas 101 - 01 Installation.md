@@ -29,7 +29,7 @@ After installation, use `go env` to check version for Go
 ![go env](resources/101-01-go-env.png)
 
 ### Setup project folders
-first we should create a folder named "go" and place that in the documents folder. Then we should open up go folder and create another folder named src. So your project foloder should be on Mac; Users/yourUserName/Documents/go/scr/. For now just remember this location; Users/yourUserName/Documents/go
+first we should create a folder named "go" and place that in the documents folder. Then we should open up go folder and create another folder named src. So your project folder should be on Mac; Users/yourUserName/Documents/go/src/. For now just remember this location; Users/yourUserName/Documents/go
 
 The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. Add `GOBIN` to `PATH`.
 
