@@ -4,7 +4,7 @@ Today we learn how to write, deploy, and execute smart contracts in Nebulas.
 
 ## Ready to work
 
-Before entering the smart contract, first review under the previously learned content:
+Before entering the smart contract, first review the previously learned content:
 
 1. Install, compile and start neb application
 2. Create a wallet address, setup coinbase, and start mining
@@ -69,12 +69,12 @@ var BankVaultContract = function () {
 	});
 };
 
-// save value to contract, only after height of block, users can takeout
+
 BankVaultContract.prototype = {
 	init: function () {
 		//TODO:
 	},
-
+// save value to contract, only after height of block, users can modify
 	save: function (height) {
 		var from = Blockchain.transaction.from;
 		var value = Blockchain.transaction.value;
@@ -134,15 +134,15 @@ BankVaultContract.prototype = {
 
 module.exports = BankVaultContract;
 ```
-As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init () method that satisfies what we call the most basic specification for writing smart contracts.
+As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init() method that satisfies what we call the most basic specification for writing smart contracts.
 BankVaultContract implements two other methods:
 
-- save (): The user can save money to the bank vault by calling the save () method;
-- takeout (): Users can withdraw money from bank vault by calling takeout () method;
-- balanceOf (): The user can check the balance with the bank vault by calling the balanceOf () method;
+- save(): The user can save money to the bank safe by calling the save() method;
+- takeout(): Users can withdraw money from bank safe by calling takeout() method;
+- balanceOf(): The user can check the balance with the bank vault by calling the balanceOf() method;
 
-The contract code above uses the built-in `Blockchain` object and the built-in` BigNumber () `method. Let's break down the parsing contract code line by line:
-save ():
+The contract code above uses the built-in `Blockchain` object and the built-in` BigNumber() `method. Let's break down the parsing contract code line by line:
+save():
 
 ```js
 
@@ -198,7 +198,7 @@ if (amount.gt(deposit.balance)) {
 throw new Error("Insufficient balance.");
 }
 
-// Transfer blockchain transfer interface, the amount to be earned to make the user's wallet address
+// Transfer blockchain transfer interface, the amount to be transfered to the user's wallet address
 var result = Blockchain.transfer(from, amount);
 if (result != 0) {
 throw new Error("transfer failed.");
@@ -220,7 +220,7 @@ this.bankVault.put(from, deposit);
 
 ## Deploy smart contracts
 Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
-Earlier, I introduced how users made a transfer transaction in Nebulas, and we used the sendTransation () interface to initiate a transfer transaction. Deploying a smart contract in Nebulas is actually sending a transation to do so, just by calling the sendTransation () interface, just with different parameters.
+Earlier, I introduced how users made a transfer in Nebulas, and we used the sendTransaction() interface to initiate a transfer. Deploying a smart contract in Nebulas is actually sending a transaction to do so, just by calling the sendTransaction() interface, just with different parameters.
 
 ```js
 sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
@@ -254,15 +254,15 @@ The return value for deploying a smart contract is the transaction's hash addres
 Get the return value does not guarantee the successful deployment of the contract, because the sendTransaction () is an asynchronous process, need to be packaged by the miner, just as the previous transfer transaction, the transfer does not arrive in real time, dependent on the speed of the miner packing, so need to wait for a Time (about 1 minute), then you can verify the contract is deployed successfully by querying the contract address or calling a smart contract.
 
 ## Verify the deployment of the contract is successful
-We got the contract address `contract_address` when deploying the smart contract, and we can easily check the contract's address information using the console console to verify whether the contract has been deployed successfully.
+We got the contract address `contract_address` when deploying the smart contract, and we can easily check the contract's address information using the console to verify whether the contract has been deployed successfully.
 ![key](resources/101-03-state.png)
 As shown above, if we can get the contract information by the address of the contract, it means the contract has been deployed successfully.
 
 ## Execute smart contract method
-The way to call a smart contract in Nebulas is also straightforward, using the sendTransation method to invoke the smart contract directly.
+The way to call a smart contract in Nebulas is also straightforward, using the sendTransation() method to invoke the smart contract directly.
 
 ```js
-sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
+sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 - from: user wallet address
 - to: smart contract address
@@ -302,14 +302,14 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
    "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
 }
 ```
-The above takeout() method is different from the save () method except that the value of 50 is taken out of the safe, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation Smart contract related parameters, so passed through args parameters.
+The above takeout() method is different from the save() method except that the value of 50 is taken out of the safe, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation Smart contract related parameters, so passed through args parameters.
 Then we need to verify that the current smart contract address balance is not 50:
 ![key](resources/101-03-takeout-state.png)
 
 The picture above shows that the smart contract call result is correct, and the smart contract deployment to the call is successful.
 
 ## query smart contract data
-The smart contracts and execution methods that have been submitted in Nebulas are submitted to the chain. It is also easy to find out how smart contracts have generated data. Smart contracts can be invoked via the rpc interface call () method. Calling a contract method via the `call ()` method is not posted to the chain.
+The smart contracts and execution methods that have been submitted in Nebulas are submitted to the chain. It is also easy to find out how smart contracts have generated data. Smart contracts can be invoked via the rpc interface call() method. Calling a contract method via the `call()` method is not posted to the chain.
 
 ```js
 call(from, to, value, nonce, gasPrice, gasLimit, contract)
@@ -339,7 +339,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
    "result": ""
 }
 ```
-The essence of intelligent contract query is to submit a transaction, transaction submitted only in the local implementation, so the smart contract inquiries immediately take effect. In the query method returns the results you can see the results.
+The essence of intelligent contract query is to submit a transaction, transactions are submitted only in the local implementation or local network, so the smart contract inquiries immediately take effect. With the query method it returns the results and you can see the results.
 
 ### Next step: Tutorial 4:
 
