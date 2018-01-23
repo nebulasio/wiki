@@ -52,6 +52,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [Call](#call)
 * [SendRawTransaction](#sendrawtransaction)
 * [GetBlockByHash](#getblockbyhash)
+* [GetBlockByHeight](#getblockbyheight)
 * [GetTransactionReceipt](#gettransactionreceipt)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
@@ -409,8 +410,43 @@ Get block header info by the block hash.
 ###### Parameters
 `hash` Hex string of transaction hash.
 
+`fullTransaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
+
 ###### Returns
-`block` block info 
+`hash` Hex string of block hash.
+
+`parent_hash` Hex string of block parent hash.
+
+`height` block height.
+
+`nonce` block nonce.
+
+`coinbase` Hex string of coinbase address.
+
+`miner` Hex string of miner address.
+
+`timestamp` block timestamp.
+
+`chain_id` block chain id.
+
+`state_root` Hex string of state root.
+
+`txs_root` Hex string of txs root.
+
+`events_root` Hex string of event root.
+
+`dpos_context` dpos context.
+
+- `dynasty_root` Hex string of dynasty root
+- `next_dynasty_root` Hex string of next dynasty root
+- `delegate_root` Hex string of delegate root
+- `candidate_root` Hex string of candidate root
+- `vote_root` Hex string of vote root
+- `mint_cnt_root` Hex string of mint cnt root
+
+`transactions` block transactions slice.
+
+- `transaction ` [GetTransactionReceipt](#gettransactionreceipt) response info.
 
 ###### HTTP Example
 ```
@@ -420,17 +456,66 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getBloc
 // Result
 
 {
-    "header":{
-        "hash":"AAAGWDl6kN9kWbjn5jrT9M6PCkC4gD/y8pxhGy4BkLg=",
-        "parent_hash":"AAAP2g0bIVupgD0D8gt5pB9SdGw7scSPll83c0XNwDM=",
-        "nonce":"412557",
-        "coinbase":"iiCc7ALL6rfi90rZadLf6N0kQWqmVYm/",
-        "timestamp":"1511520895",
-        "chain_id":1,
-        "state_root":"u8+xfOhG21cyz2MM1x3M0ZNFZSfgkJYkZDuGmLRDPhA=",
-        "txs_root":"EqiEdCEeJYtr4DpCtxFo9DzxEIhLJ7YLUxQ3caCq7YA="
+    "chain_id": 100,
+    "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+    "dpos_context": {
+        "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
+        "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
+        "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
+        "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
+        "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
+        "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
     },
-    "height":"42073"
+    "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
+    "height": "2",
+    "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
+    "timestamp": "1515751735"
+}
+```
+***
+
+#### GetBlockByHeight
+Get block header info by the block height.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  | GetBlockByHeight |
+| HTTP | POST |  /v1/user/getBlockByHeight |
+
+###### Parameters
+`height` Height of transaction hash.
+
+`fullTransaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
+
+###### Returns
+See [GetBlockByHash](#getblockbyhash) response.
+
+###### HTTP Example
+```
+// Request
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getBlockByHeight -d '{"height": 2, "fullTransaction": true}'
+
+// Result
+
+{
+    "chain_id": 100,
+    "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+    "dpos_context": {
+        "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
+        "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
+        "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
+        "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
+        "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
+        "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
+    },
+    "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
+    "height": "2",
+    "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
+    "timestamp": "1515751735"
 }
 ```
 ***
