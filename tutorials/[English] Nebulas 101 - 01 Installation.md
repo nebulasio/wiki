@@ -8,6 +8,13 @@ To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](http
 
 To learn about the technology, please read the Nebulas [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf) and the Nebulas [github code](https://github.com/nebulasio/go-nebulas).
 
+### Installing prerequisites
+#### Install prerequisites on Linux (Ubuntu)
+We'll install some basic tools needed for this guide:
+```
+sudo apt-get install git make wget
+```
+
 ### Nebulas Environment Set Up
 
 Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang version `>=1.8`.
@@ -16,7 +23,7 @@ Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang v
 
 [Go Lang Installation](https://golang.org/doc/install)
 
-#### Install Go Environment on Mac
+#### Install Go Environment on Mac 
 `brew` is recommended for installation. To install `brew`, pleace go to [homebrew](https://brew.sh/).
 
 Installation command:
@@ -28,7 +35,7 @@ brew install go
 After installation, use `go env` to check version for Go
 ![go env](resources/101-01-go-env.png)
 
-### Setup project folders
+#### Setup project folders on Mac
 first we should create a folder named "go" and place that in the documents folder. Then we should open up go folder and create another folder named src. So your project folder should be on Mac; Users/yourUserName/Documents/go/src/. For now just remember this location; Users/yourUserName/Documents/go
 
 The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. Add `GOBIN` to `PATH`.
@@ -56,12 +63,34 @@ Now restart the terminal: this is important to continue in the next step
 
 **Notice:GOPATH is a local go work directory and can be configured on its own. After GOPATH is configured, your go projects need to be placed in GOPATH directory.**
 
-#### Install Go Environment on Linux：
-It is recommended to install Go from source. Guide: [Go Installation on Linux](https://golang.org/doc/install#install).
+#### Install Go Environment on Linux (Ubuntu)
+See https://golang.org/doc/install
+Download the golang archive
+```
+wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+```
+ Extract it into /usr/local, creating a Go tree in /usr/local/go. For example: 
+```
+tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+```
+Add /usr/local/go/bin to the PATH environment variable in your $HOME/.bashrc (or your profile or wherever you want it to be):
+```
+# Added for golang
+export PATH=$PATH:/usr/local/go/bin
+```
+#### Setup project folders on linux (Ubuntu)
+Create your project folder (Taking $HOME/go as an example, but you can basicly put it anywhere you want)
+```
+mkdir -p $HOME/go/src
+```
+Set GOPATH in your $HOME/.bashrc (Make sure to change <change_this_path to where you've put the project folder!)
+```
+export GOPATH=<change_this_path>/go
+```
 
 ### Compile Nebulas
 
-#### Download Source Code：
+#### Download Source Code (Mac and Linux)：
 Clone from GitHub (This tutorial uses [v0.5.0](https://github.com/nebulasio/go-nebulas/tree/v0.5.0))
 
 ```
@@ -84,7 +113,7 @@ Note: make sure you create a src folder and put go-nebulas inside it. The folder
 ![folder setup](https://user-images.githubusercontent.com/21117852/34554205-c2e7b4c8-f166-11e7-9ab8-8d0da4718355.png)
 
 #### Install Go Dependencies
-
+##### Install dep for mac
 Nebulas' Go code dependency uses [dep](https://github.com/golang/dep). Third-party packages used in development can be downloaded using dep.
 
 Use `brew` to install `dep`:
@@ -93,6 +122,15 @@ Use `brew` to install `dep`:
 $ brew install dep
 $ brew upgrade dep
 ```
+##### Install dep for linux
+Install dep in /usr/local/bin so you can use it to download third-party packages
+```
+cd /usr/local/bin/
+wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
+ln -s dep-linux-amd64 dep
+```
+###### Install dependencies for Mac/linux
+
 Switch to the root directory of the project Install dependencies for Go:
 
 ```
@@ -112,10 +150,36 @@ MD5: a803ea4bd6f2bb19314773eba41b51c7
 make:[dep] Error 1.
 You should use a vpn and route all information through the vpn or export proxy in the terminal: example; `export http_proxy=http://127.0.0.1:1087`; then try `make dep`**
 
+#### Install V8 for Mac/linux
 
-#### Make Build
+Nebulas's NVM (Nebulas Virtual Machine) uses the JavaScript V8 engine, and the V8 dependencies for NVM need to be run with `neb` installed. The Mac version of the dynamic link library `libnebulasv8.dylib` and the Linux version of the static link library` libnebulasv8.so` and other libraries are provided by the official V8 Dependency Library for Nebulas. A make command to install V8 dependency libraries has been added. Execute the installation command in the go-nebulas folder which is the project root directory using the terminal:
 
-Go to the go-nebulas folder in your terminal
+```
+cd go/src/github.com/go-nebulas
+make deploy-v8
+```
+
+After running make deploy-v8 you should see: 
+* On Mac:
+```
+install nf/nvm/native-lib/*.dylib /usr/local/lib/`
+```
+* On linux:
+```
+sudo install nf/nvm/native-lib/*.so /usr/local/lib/
+sudo /sbin/ldconfig
+```
+
+If you do not use make to integrate V8 link library, you can also install it separately:
+
+* Mac
+	* `install nf/nvm/native-lib/libnebulasv8.dylib /usr/local/lib/`
+* Linux
+	* `sudo install nf/nvm/native-lib/*.so /usr/local/lib/`
+	* `sudo /sbin/ldconfig`
+
+
+#### Make Build for Mac/linux
 
 ```
 cd go/src/github.com/go-nebulas
@@ -133,25 +197,6 @@ Once the build is complete，you will see a generated `neb` file in go-nebulas f
 
 
 ## Starting a Node
-
-#### Install V8
-
-Nebulas's NVM (Nebulas Virtual Machine) uses the JavaScript V8 engine, and the V8 dependencies for NVM need to be run with `neb` installed. The Mac version of the dynamic link library `libnebulasv8.dylib` and the Linux version of the static link library` libnebulasv8.so` and other libraries are provided by the official V8 Dependency Library for Nebulas. A make command to install V8 dependency libraries has been added. Execute the installation command in the go-nebulas folder which is the project root directory using the terminal:
-
-```
-make deploy-v8
-```
-
-After running make deploy-v8 you should see: `install nf/nvm/native-lib/*.dylib /usr/local/lib/`
-
-If you do not use make to integrate V8 link library, you can also install it separately:
-
-* Mac
-	* `install nf/nvm/native-lib/libnebulasv8.dylib /usr/local/lib/`
-* Linux
-	* `sudo install nf/nvm/native-lib/*.so /usr/local/lib/`
-	* `sudo /sbin/ldconfig`
-
 
 ### Creation block (i.e. Genesis block) configuration
 
