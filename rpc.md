@@ -56,6 +56,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [GetTransactionReceipt](#gettransactionreceipt)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
+* [GetGasUsed](#getgasused)
 * [LatestIrreversibleBlock](#latestirreversibleblock)
 
 ## RPC API Reference
@@ -607,7 +608,7 @@ Return the estimate gas of transaction.
 The parameters of the `EstimateGas` method is the same as the [SendTransaction](#sendtransaction) parameters.
 
 ##### Returns
-`estimate_gas` the estimate gas.
+`gas` the estimate gas.
 
 ##### HTTP Example
 ```
@@ -616,7 +617,33 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/esti
 
 // Result
 {
-    "estimate_gas":"20000"
+    "gas":"20000"
+}
+```
+***
+
+#### GetGasUsed
+Return the estimate gas of transaction.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  GetGasUsed |
+| HTTP | GET |  /v1/user/getGasUsed |
+
+##### Parameters
+`hash` Hex string of transaction hash.
+
+##### Returns
+`gas` the gas used.
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/getGasUsed -H 'Content-Type: application/json' -d '{"hash":"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}'
+
+// Result
+{
+    "gas":"20000"
 }
 ```
 ***
