@@ -37,7 +37,7 @@ Now we can access the rpc API directly from our browser, you can update the **ap
 
 ###### Example:
 ```
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/blockdump -H 'Content-Type: application/json' -d '{"count":1}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/blockdump -d '{"count":1}'
 ```
 
 
@@ -46,6 +46,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [GetNebState](#getnebstate)
 * [NodeInfo](#nodeinfo)
 * [BlockDump](#blockdump)
+* [LatestIrreversibleBlock](#latestirreversibleblock)
 * [Accounts](#accounts)
 * [GetAccountState](#getaccountstate)
 * [SendTransaction](#sendtransaction)
@@ -54,10 +55,11 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/bloc
 * [GetBlockByHash](#getblockbyhash)
 * [GetBlockByHeight](#getblockbyheight)
 * [GetTransactionReceipt](#gettransactionreceipt)
+* [Subscribe](#subscribe)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
 * [GetGasUsed](#getgasused)
-* [LatestIrreversibleBlock](#latestirreversibleblock)
+* [GetEventsByHash](#geteventsbyhash)
 
 ## RPC API Reference
 
@@ -93,7 +95,7 @@ none
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nebstate
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/nebstate
 
 // Result
 {
@@ -151,7 +153,7 @@ message RouteTable {
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nodeinfo
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/nodeinfo
 
 // Result
 {
@@ -184,11 +186,37 @@ Return the dump info of blockchain.
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/blockdump -d '{"count":2}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/blockdump -d '{"count":2}'
 
 // Result
 {
     "data":" {38117, hash: 000013928d115549e4e6bf058d8e84e8037d2d59fbd9f40342090ebb12612b3c, parent: 00000b4cae32da4430b05adac24146e00c3440b1ae91f66771f5c844afb316fe, stateRoot: cef1b6bc9fb3e5f3768e66d98b671e032561fb24fcfa0e858b6eb05d5f1d8f63, coinbase: 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf} {38116, hash: 00000b4cae32da4430b05adac24146e00c3440b1ae91f66771f5c844afb316fe, parent: 0000158cf35cf2654d04b88a10a9b219bb447d9b1ed1e26a3e95078cea1ad824, stateRoot: 992bfa2b2d5ae17a374e84ce38f6e2dee51748eaa68ddd000d8fe6dd1a184501, coinbase: 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf}"
+}
+```
+***
+
+#### LatestIrreversibleBlock
+Return the latest irreversible block.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  LatestIrreversibleBlock |
+| HTTP | GET |  /v1/user/lib |
+
+##### Parameters
+none
+
+###### Returns
+`data` block info.
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/lib
+
+// Result
+{
+    "data":"{\"height\":305742, \"hash\":\"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073\", \"parentHash\":\"4d7ab29506ffb353240b6279ffaaf2b9b1681679628c78ac2033ea6bcfe77e46\", \"nonce\":0, \"timestamp\": 1516389660, \"coinbase\": \"0b9cd051a6d7129ab44b17833c63fe4abead40c3714cde6d\", \"tx\": 0}"
 }
 ```
 ***
@@ -210,7 +238,7 @@ none
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/accounts
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/accounts
 
 // Result
 {
@@ -262,7 +290,7 @@ Return the state of the account. Balance and nonce of the given address will be 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
 
 // Result
 {
@@ -317,7 +345,7 @@ Notice:
 ###### Normal Transaction Example
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/transaction -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -328,7 +356,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ###### Deploy Smart Contract Example
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/transaction -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
 "source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
 
 // Result
@@ -365,7 +393,7 @@ The parameters of the `call` method is the same as the [SendTransaction](#sendtr
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/call -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
 
 // Result
 {
@@ -391,7 +419,7 @@ Submit the signed transaction. The transaction signed value should be return by 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiCrHtxyyIJks2/RErvBBA862D6iwAaGQ9OK1NisSGAuTBIYGiY1R9Fnx0z0uPkWbPokTeBIHFFKRaosGhgzPLPtjEF5cYRTgu3jz2egqWJwwF/i9wAiEAAAAAAAAAAADeC2s6dkAAAoAjDd/5jSBToICgZiaW5hcnlAZEoQAAAAAAAAAAAAAAAAAA9CQFIQAAAAAAAAAAAAAAAAAABOIFgBYkGLnnvGZEDSlocc202ZRWtUlbl2RHfGNdBY5eajFiHKThfgXIwGixh17LpnZGnYHlmfiGe2zqnFHdj7G8b2XIP2AQ=="}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiCrHtxyyIJks2/RErvBBA862D6iwAaGQ9OK1NisSGAuTBIYGiY1R9Fnx0z0uPkWbPokTeBIHFFKRaosGhgzPLPtjEF5cYRTgu3jz2egqWJwwF/i9wAiEAAAAAAAAAAADeC2s6dkAAAoAjDd/5jSBToICgZiaW5hcnlAZEoQAAAAAAAAAAAAAAAAAA9CQFIQAAAAAAAAAAAAAAAAAABOIFgBYkGLnnvGZEDSlocc202ZRWtUlbl2RHfGNdBY5eajFiHKThfgXIwGixh17LpnZGnYHlmfiGe2zqnFHdj7G8b2XIP2AQ=="}'
 
 // Result
 {
@@ -452,7 +480,7 @@ Get block header info by the block hash.
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8"}'
 
 // Result
 
@@ -496,7 +524,7 @@ See [GetBlockByHash](#getblockbyhash) response.
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getBlockByHeight -d '{"height": 2, "fullTransaction": true}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHeight -d '{"height": 2, "fullTransaction": true}'
 
 // Result
 
@@ -556,7 +584,7 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"}'
 
 // Result
 {
@@ -566,6 +594,47 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
     "nonce":"12",
     "timestamp":"1511519091",
     "chainId":1
+}
+```
+***
+
+#### Subscribe
+Return  the subscribed events of transaction & block. The request is a keep-alive connection.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  Subscribe |
+| HTTP | POST |  /v1/user/subscribe |
+
+##### Parameters
+`topics` repeated event topic name, string array.
+
+The topic name list:
+
+- `chain.pendingTransaction` The topic of pending a transaction in transaction_pool.
+- `chain.sendTransaction` The topic of send a transaction.
+- `chain.deployContract` The topic of deploy a smart contract.
+- `chain.callContract` The topic of call a smart contract.
+- `chain.contract` The topic of contract execution.
+- `chain.delegate` The topic of delegate.
+- `chain.candidate` The topic of candidate.
+- `chain.linkBlock` The topic of link a block.
+- `chain.executeTxFailed` The topic of execute a transaction failed.
+- `chain.executeTxSuccess` The topic of execute a transaction success.
+
+##### Returns
+`topic` subscribed event topic name.
+`data` subscribed event data.
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/subscribe -d '{"topics":["chain.linkBlock", "chain.pendingTransaction"]}'
+
+// Result
+{
+    "topic":"chain.pendingTransaction",
+    "data": "..."
 }
 ```
 ***
@@ -587,7 +656,7 @@ none
 ##### HTTP Example
 ```js
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/getGasPrice
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/getGasPrice
 
 // Result
 {
@@ -602,7 +671,7 @@ Return the estimate gas of transaction.
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  EstimateGas |
-| HTTP | GET |  /v1/user/estimateGas |
+| HTTP | POST |  /v1/user/estimateGas |
 
 ##### Parameters
 The parameters of the `EstimateGas` method is the same as the [SendTransaction](#sendtransaction) parameters.
@@ -613,7 +682,7 @@ The parameters of the `EstimateGas` method is the same as the [SendTransaction](
 ##### HTTP Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/estimateGas -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -628,7 +697,7 @@ Return the estimate gas of transaction.
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  GetGasUsed |
-| HTTP | GET |  /v1/user/getGasUsed |
+| HTTP | POST |  /v1/user/getGasUsed |
 
 ##### Parameters
 `hash` Hex string of transaction hash.
@@ -639,7 +708,7 @@ Return the estimate gas of transaction.
 ##### HTTP Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/getGasUsed -H 'Content-Type: application/json' -d '{"hash":"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getGasUsed -d '{"hash":"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}'
 
 // Result
 {
@@ -648,27 +717,29 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/getG
 ```
 ***
 
-#### LatestIrreversibleBlock
-Return the latest irreversible block.
+#### GetEventsByHash
+Return the events list of transaction.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| gRpc |  |  LatestIrreversibleBlock |
-| HTTP | GET |  /v1/user/lib |
+| gRpc |  |  GetEventsByHash |
+| HTTP | POST |  /v1/user/getEventsByHash |
 
 ##### Parameters
-none
+`hash` Hex string of transaction hash.
 
-###### Returns
-`data` block info.
+##### Returns
+`events` the events list.
+- `topic` event topic;
+- `data` event data.
 
 ##### HTTP Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X GET http://localhost:8685/v1/user/lib -H 'Content-Type: application/json'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getEventsByHash -d '{"hash":"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}'
 
 // Result
 {
-    "data":"{\"height\":305742, \"hash\":\"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073\", \"parentHash\":\"4d7ab29506ffb353240b6279ffaaf2b9b1681679628c78ac2033ea6bcfe77e46\", \"nonce\":0, \"timestamp\": 1516389660, \"coinbase\": \"0b9cd051a6d7129ab44b17833c63fe4abead40c3714cde6d\", \"tx\": 0}"
 }
 ```
+***
