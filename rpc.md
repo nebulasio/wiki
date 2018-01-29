@@ -575,11 +575,17 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 
 `type` Transaction type.
 
-`data` Transaction data.
+`data` Transaction data, return the payload data.
 
 `chainId` Transaction chain id.
 
 `contract_address` Transaction contract address.
+
+`gas_price` Transaction gas price.
+
+`gas_limit` Transaction gas limit.
+
+`status` Transaction status, 0 failed, 1 success, 2 pending.
 
 ###### HTTP Example
 ```
