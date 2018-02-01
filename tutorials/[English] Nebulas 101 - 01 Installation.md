@@ -142,8 +142,8 @@ make dep
 
 ```
 vendor.tar.gz
-SHA1: 4b954fa5490f763aa68b58a84a8bb0cbd48f8c79
-MD5: a803ea4bd6f2bb19314773eba41b51c7
+SHA1: 250eccb8f0a48277765c6266bed55187b6c77b2b
+MD5: 13ef26ab05aad391f540f82af07716df
 ```
 
 **PS: If it doesn’t work and you get an error: validateParams: could not deduce external imports' project roots

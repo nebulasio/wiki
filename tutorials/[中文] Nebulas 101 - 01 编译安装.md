@@ -75,8 +75,8 @@ make dep
 
 ```
 vendor.tar.gz
-SHA1: 4b954fa5490f763aa68b58a84a8bb0cbd48f8c79
-MD5: a803ea4bd6f2bb19314773eba41b51c7
+SHA1: 250eccb8f0a48277765c6266bed55187b6c77b2b
+MD5: 13ef26ab05aad391f540f82af07716df
 ```
 #### 安装v8
 Nebulas的NVM(星云链虚拟机)使用了JavaScript的v8引擎，需要安装为NVM编译的v8依赖库后`neb`才能运行。v8依赖库星云链官方目前提供了Mac版本的动态链接库`libnebulasv8.dylib`和Linux版本的静态链接库`libnebulasv8.so`及其他so库。项目中已经添加了make命令安装v8依赖库，在项目根目录执行安装指令：
