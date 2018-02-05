@@ -771,7 +771,7 @@ GetDynasty get dpos dynasty.
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/usr/dynasty -d '{"height": 1}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/dynasty -d '{"height": 1}'
 
 // Result
 {
