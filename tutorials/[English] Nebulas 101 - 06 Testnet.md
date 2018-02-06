@@ -100,6 +100,20 @@ stats {
 }
 
 ```
+
+You could generate your own private key for testnet:
+```
+./neb network ssh-keygen conf/testnet.key
+```
+If you did this, you should update the config in config file:
+```
+network {
+  ...
+  private_key: "conf/testnet.key"
+  ...
+}
+```
+
 Start the Testnet connected Node:
 
 ```
