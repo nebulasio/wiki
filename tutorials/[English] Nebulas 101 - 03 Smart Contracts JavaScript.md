@@ -223,7 +223,7 @@ Here's how to write a smart contract in Nebulas, and now we need to deploy the s
 Earlier, I introduced how users made a transfer in Nebulas, and we used the sendTransaction() interface to initiate a transfer. Deploying a smart contract in Nebulas is actually sending a transaction to do so, just by calling the sendTransaction() interface, just with different parameters.
 
 ```js
-sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
+sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 We agree that if from and to are the same address, we assume that we are deploying a smart contract.
 
@@ -259,7 +259,7 @@ We got the contract address `contract_address` when deploying the smart contract
 As shown above, if we can get the contract information by the address of the contract, it means the contract has been deployed successfully.
 
 ## Execute smart contract method
-The way to call a smart contract in Nebulas is also straightforward, using the sendTransation() method to invoke the smart contract directly.
+The way to call a smart contract in Nebulas is also straightforward, using the sendTransaction() method to invoke the smart contract directly.
 
 ```js
 sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
