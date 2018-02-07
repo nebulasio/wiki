@@ -161,6 +161,7 @@ admin.newAccount                    admin.setRequest
 ```
 
 ##### 查看账号地址
+
 ```js
 > api.accounts()
 {
@@ -202,7 +203,11 @@ Passphrase:
     "result": true
 }```
 
+
 ##### 发送交易
+
+****   请在（）中输入要发送出的账号地址及要发送到的账号地址，账号地址前后要加上双引号
+
 
 ```js
 > api.sendTransaction("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903","1000000000000000000",1)
@@ -212,6 +217,8 @@ Passphrase:
 ```
 
 ##### 查询交易
+
+**** 请在（）中输入要查讯的账号地址，账号地址前后要加上双引号
 
 ```js
 > api.getTransactionReceipt("4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22")
@@ -228,6 +235,16 @@ Passphrase:
     "value": "1000000000000000000"
 }
 ```
+
+##### 查询账号余额情况
+
+**** 请在（）中输入要查讯的账号地址，账号地址前后要加上双引号
+
+> api.getAccountState("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c")
+{
+    "balance": "9998999999980000000000",
+    "nonce": "1"
+    
 
 ### 通过nebtestkit
 [nebtestkit](https://github.com/nebulasio/go-nebulas/tree/develop/nebtestkit) 是一个基于[mocha](https://github.com/mochajs/mocha)的集成测试框架。通过`nebtestkit`可以启动一个或者多个nebulas节点，组件一个完整的私有链或者加入一个已经存在的网络，然后进行转账交易、部署和调用智能合约等。
