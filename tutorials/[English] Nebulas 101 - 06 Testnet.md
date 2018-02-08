@@ -8,13 +8,13 @@ The configaration files are in folder `testnet/conf`.
 
 Generate your own private key for testnet:
 ```
-./neb network ssh-keygen testnet/conf/testnet.key
+./neb network ssh-keygen testnet/conf/network.key
 ```
 
 Start the Testnet connected Node:
 
 ```
-./neb -c conf/testnet-config.conf
+./neb -c testnet/conf/config.conf
 ```
 
 ## Testnet NAS Tokens
