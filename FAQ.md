@@ -56,8 +56,12 @@ adapt to community or market changes.
 
 ### Smart Contracts
 
+##### Will Ethereum Smart Contracts (Solidity) be supported? 
+> answer
+
 ##### What languages will be supported when Main-net launches?
 > JavaScript & TypeScript will be fully supported when Main-net launches.
+
 
 ##### What language support will follow (and when)?
 > answer here
