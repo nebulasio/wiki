@@ -62,7 +62,6 @@ adapt to community or market changes.
 ##### What languages will be supported when Main-net launches?
 > JavaScript & TypeScript will be fully supported when Main-net launches.
 
-
 ##### What language support will follow (and when)?
 > answer here
 
@@ -80,6 +79,8 @@ Designed to build the blockchain ecosystem in a better way. The Nebulas token in
 
 ##### Have any proofs been done to show the potential token earnings by popular dApps and thus the viability of this protocol?
 > answer here
+
+##### Will the DIP only apply to dApps running on the Nebulas platform?
 
 --- 
 
@@ -106,6 +107,9 @@ decentralized applications from the massive market.
 ##### When will the Nebulas search engine be ready?
 > answer here
 
+##### Will you be able to search dApps not on the Nebulas platform?
+> answer
+
 --- 
 
 ## Fundamentals
@@ -120,6 +124,9 @@ decentralized applications from the massive market.
 
 ##### Will users be able to trade, buy, and sell meaningful names amonst each other with no intermediary? 
 > answer here 
+
+##### Will anything be done to prevent _meaningful name_ squatters?
+> answer here
 
 ### Lightning Network
 
@@ -139,3 +146,6 @@ The Nebulas network has its own built-in token, NAS. NAS plays two roles in the 
 original money in the network, NAS provides asset liquidity among users, and functions as the incentive
 token for PoD bookkeepers and DIP. Second, NAS will be charged as the calculation fee for running
 smart contracts. The minimum unit of NAS is 10−18 NAS.
+
+Will dApps on the Nebulas platform be able to issue their ICOs and tokens?
+> answer
