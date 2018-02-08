@@ -39,7 +39,7 @@ surfacing on the Nebulas platform.
 ##### Who can contribute to the algorithm?
 > Anyone can contribute, but only the Nebulas core team can approve changes.
 
-#### Will there be any safeguards to make sure the Nebulas Rank algorithm aligns with the goals of its community?
+##### Will there be any safeguards to make sure the Nebulas Rank algorithm aligns with the goals of its community?
 > answer here
 
 --- 
