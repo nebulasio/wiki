@@ -30,6 +30,9 @@ surfacing on the Nebulas platform.
 ##### When will Nebulas Rank (NR) be ready?
 > answer here
 
+##### How does the Nebulas Rank calculate the quality (not popularity) of a dApp?
+> answer here?
+
 --- 
 
 ## Nebulas Force (NF)
@@ -62,7 +65,7 @@ Designed to build the blockchain ecosystem in a better way. The Nebulas token in
 ##### Will the DIP provide enough incentive so that ICOs will not be necessary? 
 > answer here
 
-#### Have any proofs been done to show the potential token earnings by popular dApps?
+##### Have any proofs been done to show the potential token earnings by popular dApps and thus the viability of this protocol?
 > answer here
 
 --- 
