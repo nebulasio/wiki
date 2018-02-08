@@ -30,7 +30,7 @@ surfacing on the Nebulas platform.
 ##### When will Nebulas Rank (NR) be ready?
 > answer here
 
-##### How metrics does the Nebulas Rank use to calculate the quality (not popularity) of a dApp?
+##### What metrics will the Nebulas Rank use to determine the quality (not popularity) of a dApp?
 > answer here?
 
 --- 
