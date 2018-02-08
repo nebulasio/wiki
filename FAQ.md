@@ -6,17 +6,17 @@ For a better understanding of the Netbulas framework it's highly reocmmended to 
 
 Table of Contents
 
-1. [Nebulas Rank (NR)](#Nebulas_Rank_NR)
-2. [Nebulas Force (NF)](#Nebulas_Force_NF)
-   1. [Smart Contracts](#Smart_Contracts)
-3. [Developer Incentive Protocol (DIP)](#Developer_Incentive_Protocol_DIP)
-4. [Proof of Devotion (PoD) Consensus Algorithm](#Proof_of_Devotion_PoD_Consensus_Algorithm)
-5. [Search engine for decentralized applications](#Search_engine_for_decentralized_applications)
-6. [Fundamentals](#Fundamentals)
-   1. Domain Name Service
-   2. Lightning Network
-   3. Developer Tools
-7. [Nebulas Token (NAS)](#Nebulas_Token_NAS)
+1. [Nebulas Rank (NR)](#nebulas-rank-nr)
+2. [Nebulas Force (NF)](#nebulas-force-nf)
+   1. [Smart Contracts](#smart-contracts)
+3. [Developer Incentive Protocol (DIP)](#developer-incentive-protocol-dip)
+4. [Proof of Devotion (pod) Consensus Algorithm](#proof-of-devotion-pod-consensus-algorithm)
+5. [Nebulas Search Engine](#nebulas-search-engine)
+6. [Fundamentals](#fundamentals)
+   1. [Domain Name Service](#domain-name-service)
+   2. [Lightning Network](#lightning-network)
+   3. [Developer Tools](#developer-tools)
+7. [Nebulas Token (NAS)](#nebulas-token-nas)
 
 ---
 
