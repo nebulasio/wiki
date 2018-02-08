@@ -1,1 +1,111 @@
+# Frequently Asked Questions
 
+This document will focus on the technology behind the Nebulas framework. For broader questions, please view the [Reddit FAQ](https://www.reddit.com/r/nebulas/comments/7nt5y0/frequently_asked_questionsfaq/).
+
+For a better understanding of the Netbulas framework it's highly reocmmended to read the [Nebulas Technical Whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf).
+
+Table of Contents
+
+1. [Nebulas Rank (NR)](#Nebulas_Rank_NR)
+2. [Nebulas Force (NF)](#Nebulas_Force_NF)
+   1. [Smart Contracts](#Smart_Contracts)
+3. [Developer Incentive Protocol (DIP)](#Developer_Incentive_Protocol_DIP)
+4. [Proof of Devotion (PoD) Consensus Algorithm](#Proof_of_Devotion_PoD_Consensus_Algorithm)
+5. [Search engine for decentralized applications](#Search_engine_for_decentralized_applications)
+6. [Fundamentals](#Fundamentals)
+   1. Domain Name Service
+   2. Lightning Network
+   3. Developer Tools
+7. [Nebulas Token (NAS)](#Nebulas_Token_NAS)
+
+---
+
+## Nebulas Rank (NR)
+
+Measures value by considering liquidity and propagation of the
+address. Nebulas Ranking tries to establish a trustful, computable and deterministic measurement
+approach. With the value ranking system, we will see more and more outstanding applications 
+surfacing on the Nebulas platform.
+
+##### When will Nebulas Rank (NR) be ready?
+> answer here
+
+
+--- 
+
+## Nebulas Force (NF)
+
+Supports upgrading core protocols and smart contracts on the
+chains. It provides self-evolving capabilities to Nebulas system and its applications. With Nebulas
+Force, developers can build rich applications in fast iterations, and the applications can dynamically
+adapt to community or market changes.
+
+##### When will Nebulas Force (NF) be ready?
+> answer here
+
+### Smart Contracts
+
+##### What languages will be supported when Mainnet launches?
+> answer here 
+
+##### What language support will follow (and when)?
+> answer here
+
+--- 
+
+## Developer Incentive Protocol (DIP)
+
+Designed to build the blockchain ecosystem in a better way. The Nebulas token incentives will help top developers to create more values in Nebulas.
+
+##### When will the Developer Incentive Protocol (DIP) be ready?
+> answer here
+
+--- 
+
+## Proof of Devotion (PoD) Consensus Algorithm
+
+To build a healthy ecosystem, Nebulas proposes
+three key points for consensus algorithm: speediness, irreversibility and fairness. By adopting the
+advantages of PoS and PoI, and leveraging NR, PoD will take the lead in consensus algorithms.
+
+##### When will the Proof of Devotion (PoD) Consensus Algorithm be ready?
+> answer here
+
+##### What consensus algorithm will by used until PoD is ready?
+> answer here
+
+--- 
+
+## Search engine for decentralized applications
+
+Nebulas constructs a search engine for decentralized
+applications based on Nebulas value ranking. Using this engine, users can easily find desired
+decentralized applications from the massive market.
+
+##### When will the Nebulas search engine be ready?
+> answer here
+
+--- 
+
+## Fundamentals
+
+### Domain Name Service
+
+##### When will the DNS service be ready?
+> answer here
+
+##### How will the bidding system for _meaningful names_ work? 
+> answer here
+
+##### Will users be able to trade, buy, and sell meaningful names amonst each other with no intermediary? 
+> answer here 
+
+### Lightning Network
+
+
+
+### Developer Tools
+
+--- 
+
+## Nebulas Token (NAS)
