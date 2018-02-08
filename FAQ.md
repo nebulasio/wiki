@@ -30,7 +30,6 @@ surfacing on the Nebulas platform.
 ##### When will Nebulas Rank (NR) be ready?
 > answer here
 
-
 --- 
 
 ## Nebulas Force (NF)
@@ -58,6 +57,12 @@ adapt to community or market changes.
 Designed to build the blockchain ecosystem in a better way. The Nebulas token incentives will help top developers to create more values in Nebulas.
 
 ##### When will the Developer Incentive Protocol (DIP) be ready?
+> answer here
+
+##### Will the DIP provide enough incentive so that ICOs will not be necessary? 
+> answer here
+
+#### Have any proofs been done to show the potential token earnings by popular dApps?
 > answer here
 
 --- 
@@ -102,10 +107,19 @@ decentralized applications from the massive market.
 
 ### Lightning Network
 
+##### When will lightning network be supported?
+> answer here
 
 
 ### Developer Tools
 
+_Questions and answers about developer tools coming soon..._
+
 --- 
 
 ## Nebulas Token (NAS)
+
+The Nebulas network has its own built-in token, NAS. NAS plays two roles in the network. First, as the
+original money in the network, NAS provides asset liquidity among users, and functions as the incentive
+token for PoD bookkeepers and DIP. Second, NAS will be charged as the calculation fee for running
+smart contracts. The minimum unit of NAS is 10−18 NAS.
