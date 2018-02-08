@@ -39,7 +39,7 @@ surfacing on the Nebulas platform.
 ##### Who can contribute to the algorithm?
 > Anyone can contribute, but only the Nebulas core team can approve changes.
 
-#### How can the community be confident that Nebulas sticks to its mantra of _"Can't Be Evil"_ if only the Nebulas team can modify the algorithm? Will there be any safeguards to make sure the Nebulas Rank doesn't move in a direction that goes against the core principals?
+#### Will there be any safeguards to make sure the Nebulas Rank algorithm aligns with the goals of its community?
 > answer here
 
 --- 
