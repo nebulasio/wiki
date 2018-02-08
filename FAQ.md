@@ -10,7 +10,7 @@ Table of Contents
 2. [Nebulas Force (NF)](#nebulas-force-nf)
    1. [Smart Contracts](#smart-contracts)
 3. [Developer Incentive Protocol (DIP)](#developer-incentive-protocol-dip)
-4. [Proof of Devotion (pod) Consensus Algorithm](#proof-of-devotion-pod-consensus-algorithm)
+4. [Proof of Devotion (PoD) Consensus Algorithm](#proof-of-devotion-pod-consensus-algorithm)
 5. [Nebulas Search Engine](#nebulas-search-engine)
 6. [Fundamentals](#fundamentals)
    1. [Domain Name Service](#domain-name-service)
