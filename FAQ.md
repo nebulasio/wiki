@@ -2,7 +2,7 @@
 
 This document will focus on the technology behind the Nebulas framework. For broader questions, please view the [Reddit FAQ](https://www.reddit.com/r/nebulas/comments/7nt5y0/frequently_asked_questionsfaq/).
 
-For a better understanding of the Netbulas framework it's highly reocmmended to read the [Nebulas Technical Whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf).
+For a better understanding of the Nebulas framework it's highly recommended to read the [Nebulas Technical Whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf).
 
 Table of Contents
 
