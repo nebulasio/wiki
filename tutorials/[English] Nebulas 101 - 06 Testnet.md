@@ -14,7 +14,7 @@ Generate your own private key for testnet:
 Start the Testnet connected Node:
 
 ```
-./neb -c conf/testnet-config.conf
+./neb -c testnet/conf/config.conf
 ```
 
 ## Testnet NAS Tokens
