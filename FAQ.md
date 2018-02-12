@@ -16,6 +16,8 @@ Table of Contents
    2. [Lightning Network](#lightning-network)
    3. [Nebulas Token (NAS)](#nebulas-token-nas)
    4. [Smart Contracts](#smart-contracts)
+      1. [Language Support](#what-languages-will-be-supported-when-main-net-launches)
+      2. [Ethereum Compatibility](#will-ethereum-smart-contracts-solidity-be-fully-supported)
 
 ---
 
