@@ -22,4 +22,5 @@
 
 ## Wallet
 
-- 帮助Nebulas完善网页版钱包，[更多详情]( https://github.com/nebulasio/explorer/tree/master/nasWallet)
+- 帮助Nebulas完善网页版钱包，[更多详情]( https://github.com/nebulasio/web-wallet)
+- 帮助Nebulas完善桌面版钱包，[更多详情]( https://github.com/nebulasio/desk-wallet)
