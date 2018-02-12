@@ -175,10 +175,20 @@ domain name resolution services independently or based on NNS.
 
 ### Lightning Network
 
+Nebulas implements the lightning network as the infrastructure of blockchains and offers flexible
+design. Any third-party developers can use the basic service of lightning network to develop applications
+for frequent transaction scenarios on Nebulas. In addition, Nebulas will launch the world’s first wallet
+app that supports the lightning network.
+
 ##### When will lightning network be supported?
 > answer here
 
 ### The Nebulas Token (NAS)
+
+The Nebulas network has its own built-in token, NAS. NAS plays two roles in the network. First, as the
+original money in the network, NAS provides asset liquidity among users, and functions as the incentive
+token for PoD bookkeepers and DIP. Second, NAS will be charged as the calculation fee for running
+smart contracts. The minimum unit of NAS is 10−18 NAS.
 
 ##### What will happen to the Nebulas ERC20 tokens when NAS is launched?
 > answer here
