@@ -1,8 +1,8 @@
 # Frequently Asked Questions
 
-This document will focus on the technology behind the Nebulas framework. For broader questions, please view the [Reddit FAQ](https://www.reddit.com/r/nebulas/comments/7nt5y0/frequently_asked_questionsfaq/).
+This document will focus on the technology behind the Nebulas platform. For broader questions, please view the [Reddit FAQ](https://www.reddit.com/r/nebulas/comments/7nt5y0/frequently_asked_questionsfaq/).
 
-For a better understanding of the Nebulas framework it's highly recommended to read the [Nebulas Technical Whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf).
+For a better understanding of the Nebulas platform it's highly recommended to read the [Nebulas Technical Whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf).
 
 Table of Contents
 
@@ -66,7 +66,7 @@ adapt to community or market changes.
 > Yes, [short summary explaining how it works]
 
 ##### Can the Nebulas Virtual Machine (NVM) be upgraded?
-> Yes, [sort summary explaining how it works]
+> Yes, [short summary explaining how it works]
 
 --- 
 
