@@ -52,7 +52,7 @@ In a separate terminal window run the following:
 After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `config.1a2635.conf` which is `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c`.
 
 ## Using `curl` to interact with the network
-Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gPRC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
+Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gRPC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
 
 ### Check Address Balance (accountstate)
 
