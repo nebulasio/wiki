@@ -180,4 +180,120 @@ interface StorageMap {
 
 ### BigNumber
 
+The `BigNumber` module use the [bignumber.js](https://github.com/MikeMcl/bignumber.js), a JavaScript library for arbitrary-precision decimal and non-decimal arithmetic. The contract can use `BigNumber` directly to handle the value of the transaction and other values transfer.
+
+```js
+
+var value = new BigNumber(0);
+value.plus(1);
+...
+```
+
 ### Blockchain
+The `Blockchain` module provides a object for contracts to obtain transactions and blocks executed by the current contract. At the same time, the NAS can be transferred from the contract and the address check is provided.
+
+Blockchain API:
+
+```js
+
+// current block 
+Blockchain.block;
+
+// current transaction, transaction's value/gasPrice/gasLimit auto change to BigNumber object
+Blockchain.transaction;
+
+// transfer NAS from contract to address
+Blockchain.transfer(address, value);
+
+// verify address
+Blockchain.verifyAddress(address);
+
+```
+properties:
+
+- `block`: current block for contract execution
+	- `coinbase`: block miner coinbase
+	- `hash`: block hash
+	- `height`: block height
+- `transaction`: current transaction for contract execution
+	- `hash`: transaction hash
+	- `from`: transaction from address
+	- `to`: transaction to address
+	- `value`: transaction value, a BigNumber object for contract use
+	- `nonce`: transaction nonce
+	- `timestamp`: transaction timestamp
+	- `gasPrice`: transaction gasPrice, a BigNumber object for contract use
+	- `gasLimit`: transaction gasLimit, a BigNumber object for contract use
+- `transfer(address, value)`: transfer NAS from contract to address
+	- params:
+		- `address`: nebulas address to receive NAS
+		- `value`: transfer value, a BigNumber object
+	- return:
+		- `0`: transfer success
+		- `1`: transfer failed   
+- `verifyAddress(address)`: verify address
+	- params:
+		- `address`: address need to check
+	- return:
+		- `1`: address is valid
+		- `0`: address is invalid 
+
+Example to use:
+
+```js
+
+'use strict';
+
+var SampleContract = function () {
+    LocalContractStorage.defineProperties(this, {
+        name: null,
+        count: null
+    });
+    LocalContractStorage.defineMapProperty(this, "allocation");
+};
+
+SampleContract.prototype = {
+    init: function (name, count, allocation) {
+        this.name = name;
+        this.count = count;
+        allocation.forEach(function (item) {
+            this.allocation.put(item.name, item.count);
+        }, this);
+        console.log('init: Blockchain.block.coinbase = ' + Blockchain.block.coinbase);
+        console.log('init: Blockchain.block.hash = ' + Blockchain.block.hash);
+        console.log('init: Blockchain.block.height = ' + Blockchain.block.height);
+        console.log('init: Blockchain.transaction.from = ' + Blockchain.transaction.from);
+        console.log('init: Blockchain.transaction.to = ' + Blockchain.transaction.to);
+        console.log('init: Blockchain.transaction.value = ' + Blockchain.transaction.value);
+        console.log('init: Blockchain.transaction.nonce = ' + Blockchain.transaction.nonce);
+        console.log('init: Blockchain.transaction.hash = ' + Blockchain.transaction.hash);
+    },
+    transfer: function (address, value) {
+        var result = Blockchain.transfer(address, value);
+        console.log("transfer result:", result);
+        Event.Trigger("transfer", {
+			Transfer: {
+				from: Blockchain.transaction.to,
+				to: address,
+				value: value
+			}
+		});
+    },
+    verifyAddress: function (address) {
+    	 var result = Blockchain.verifyAddress(address);
+        console.log("verifyAddress result:", result);
+    }
+};
+
+module.exports = SampleContract;
+
+```
+
+### Event
+
+The `Event` module records execution events in contract. The recorded events are stored in the event trie on the chain, which can be fetched by `FetchEvents` method in block with the execution transaction hash. All contract events topic have a `chain.contract.` prefix before the topic they set in contract.
+
+```js
+Event.Trigger(topic, obj);
+```
+You can see the example in `SampleContract` before.
