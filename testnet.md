@@ -78,7 +78,7 @@ Feel free to join Nebulas Testnet. If you did find something wrong, please [subm
 
 ## Updates
 
-#### 0.5.0
+#### 0.6.1
 
 - **network** p2p network, full-sync, downloader
 - **basic** crypto, blockchain

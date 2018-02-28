@@ -69,7 +69,6 @@ network {
   seed:["/ip4/13.57.245.249/tcp/8680/ipfs/Qme7PkuEWLajPmPmKNPZ7MAonK7MjDomReLbEzdy8yJHo4", "/ip4/54.219.151.126/tcp/8680/ipfs/QmVUPFV9DEwaNBM5p8CrEJeXSHFGLdST5cbRaTkUjVrF6r", "/ip4/18.218.165.90/tcp/8680/ipfs/Qmac11jvtGpFt9Ptevn4SHHQpvJjNsC17ZX7VmuHvsHM8o", "/ip4/35.176.94.224/tcp/8680/ipfs/QmTZDELLwtAYzC7U1WpofKrfT9c652VkMoTSum3cfadHM5"]
   listen: ["0.0.0.0:8680"]
   private_key: "conf/network/ed25519key"
-  network_id: 1
 }
 
 chain {

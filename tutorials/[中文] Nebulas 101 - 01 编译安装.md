@@ -272,7 +272,6 @@ network {
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
   seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
   listen: ["127.0.0.1:10001"]
-  network_id: 1
 }
 ...
 ```
