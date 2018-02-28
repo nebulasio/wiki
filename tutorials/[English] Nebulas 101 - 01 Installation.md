@@ -91,10 +91,10 @@ export GOPATH=<change_this_path>/go
 ### Compile Nebulas
 
 #### Download Source Code (Mac and Linux)：
-Clone from GitHub (This tutorial uses [v0.5.0](https://github.com/nebulasio/go-nebulas/tree/v0.5.0))
+Clone from GitHub (This tutorial uses [v0.6.1](https://github.com/nebulasio/go-nebulas/tree/v0.6.1))
 
 ```
-git clone -b v0.5.0 https://github.com/nebulasio/go-nebulas.git --depth=1
+git clone -b v0.6.1 https://github.com/nebulasio/go-nebulas.git --depth=1
 ```
 
 If you need the full commit history, clone all to local:
@@ -284,8 +284,6 @@ network {
   listen: ["127.0.0.1:8680"]
   # the private key is used to generate a node ID. If you don't use the private key, the node will get a new ID.
   # private_key: "conf/network/id_ed25519"
-  # network group ID. nodes can't connect to each other in different network groups.
-  network_id: 1
 }
 
 chain {
@@ -388,9 +386,9 @@ To create a Node that connects with your seed node you must create a config file
 The seed node `address` and `id` can be found from the seed node log on the line beginning with **node start**:
 
 ```
-INFO[2017-12-25T15:04:52+08:00] node start       addrs="[/ip4/127.0.0.1/tcp/8680]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
+time="2018-02-28T14:00:52+08:00" level=info msg="Started NetService Node." file=net_service.go func="net.(*NetService).Start" id=QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP line=61 listening address="[/ip4/127.0.0.1/tcp/8680 /ip4/192.168.1.25/tcp/8680]"
 ```
-In the log above, the **address** is `/ip4/127.0.0.1/tcp/8680`, the **id** is `QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `. The Nebulas p2p network uses IPFS's libp2p network library. The format of the seed address is:
+In the log above, the **address** is `/ip4/127.0.0.1/tcp/8680`, the **id** is `QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP `. The Nebulas p2p network uses IPFS's libp2p network library. The format of the seed address is:
 
 ```
 <address>/ipfs/<id>
@@ -401,9 +399,8 @@ Now copy the configuration file `conf/default/config.conf` to `conf/my-node-conf
 ```
 network {
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
   listen: ["127.0.0.1:10001"]
-  network_id: 1
 }@
 ...
 ```

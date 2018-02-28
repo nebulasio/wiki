@@ -43,10 +43,10 @@ Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上�
 ## 星云链编译
 
 #### 源代码下载：
-首先从github网站conle代码到本地(本教程使用[v0.5.0版本](https://github.com/nebulasio/go-nebulas/tree/v0.5.0))
+首先从github网站conle代码到本地(本教程使用[v0.6.1版本](https://github.com/nebulasio/go-nebulas/tree/v0.6.1))
 
 ```
-git clone -b v0.5.0 https://github.com/nebulasio/go-nebulas.git --depth=1
+git clone -b v0.6.1 https://github.com/nebulasio/go-nebulas.git --depth=1
 ```
 如果需要完整代码的提交历史，可以全部clone到本地：
 
@@ -184,8 +184,6 @@ network {
   listen: ["127.0.0.1:8680"]
   # 生成节点ID时候用到的私钥路径，如果不配置，每次都会生成新的不同的节点ID；配置了，会使用配置的私钥生成节点ID
   #private_key: "conf/network/id_ed25519"
-  # 网络分组ID，不同网络分组ID的节点不能互相通讯
-  network_id: 1
 }
 
 # blockchain相关配置
@@ -260,9 +258,9 @@ stats {
 在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
 
 ```
-INFO[2017-12-25T15:04:52+08:00] node start                                    addrs="[/ip4/127.0.0.1/tcp/8680]" file=net_service.go func="p2p.(*NetService).Start" id=QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN line=693
+time="2018-02-28T14:00:52+08:00" level=info msg="Started NetService Node." file=net_service.go func="net.(*NetService).Start" id=QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP line=61 listening address="[/ip4/127.0.0.1/tcp/8680 /ip4/192.168.1.25/tcp/8680]"
 ```
-上面的log中，地址信息为`/ip4/127.0.0.1/tcp/8680`,id为`QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
+上面的log中，地址信息为`/ip4/127.0.0.1/tcp/8680`,id为`QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
 
 ```
 <address>/ipfs/<id>
@@ -272,7 +270,7 @@ INFO[2017-12-25T15:04:52+08:00] node start                                    ad
 ```
 network {
   # seed: "UNCOMMENT_AND_SET_SEED_NODE_ADDRESS"
-  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN"]
+  seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
   listen: ["127.0.0.1:10001"]
   network_id: 1
 }
