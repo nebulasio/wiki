@@ -759,7 +759,7 @@ GetDynasty get dpos dynasty.
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  GetDynasty |
-| HTTP | POST |  /v1/usr/dynasty |
+| HTTP | POST |  /v1/user/dynasty |
 
 
 ###### Parameters
