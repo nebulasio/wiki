@@ -2,6 +2,8 @@
 
 # Nebulas 101 - 01 Compile and Install Nebulas
 
+[YouTube Tutorial](https://www.youtube.com/watch?v=85L07p_FWGY)
+
 The project code for [Nebulas](https://nebulas.io/) has been released in several versions and tested to run locally. You can download the Nebulas source code to compile the private chain locally.
 
 To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf).
