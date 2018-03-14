@@ -58,7 +58,6 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 * [Subscribe](#subscribe)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
-* [GetGasUsed](#getgasused)
 * [GetEventsByHash](#geteventsbyhash)
 * [GetDynasty](#getdynasty)
 * [GetCandidates](#getcandidates)
@@ -303,7 +302,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 ***
 
 #### SendTransaction
-Send the transaction. Parameters `from`, `to`, `value`, `nonce` are required. If `gasprice` and `gaslimit` are not provided, the transaction will use the default parameters, with only normal transaction support it. If the transaction is to send contract, delegate, or candidate, you must specify the `gaslimit`.
+Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and `gasLimit` are required. If the transaction is to send contract, you must specify the `contract`.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -323,7 +322,7 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce` are required. If
 
 `gas_limit` gasLimit sending with this transaction.
 
-`contract` transaction contract object for deploy/call smart contract.
+`contract` transaction contract object for deploy/call smart contract. [optional]
 
 * Sub properties:
 	* `source` contract source code for deploy contract.
@@ -335,9 +334,11 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce` are required. If
 
 Notice:
 
+* `from = to` when deploy a contract, the `from` address must equal to `to` address.
+
 * `nonce` the value is plus 1 from the nonce value of the current from address. Current nonce can get from [GetAccountState](#getaccountstate).
-* `gasPrice` and `gasLimit` default values only support normal transaction. We recommend taking them when sending a transaction.
-* `contract` parameter only need for smart contract deploy and call. `source` and `sourceType` are used only when deploy, and when the contract method is invoked, no passing is required. 
+* `gasPrice` and `gasLimit` need for every transaction. We recommend taking them use [GetGasPrice](#getgasprice) and [EstimateGas](#estimategas).
+* `contract` parameter only need for smart contract deploy and call. When a smart contract is deployed, the `source` and `sourceType` must be specified, the `args` is optional and passed in when the initialization function takes a parameter. The `function` field is used to call the contract method.
 
 ###### Returns
 
@@ -391,7 +392,7 @@ The parameters of the `call` method is the same as the [SendTransaction](#sendtr
 	* `args` the params of contract. The args content is JSON string of parameters array.
 
 ###### Returns
-`hash` Hex string of transaction hash.
+`result` JSON string of the result, users need to parse it and the result can be string, number, object and etc.
 
 ###### HTTP Example
 ```
@@ -692,32 +693,6 @@ The parameters of the `EstimateGas` method is the same as the [SendTransaction](
 ```
 // Request
 curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
-
-// Result
-{
-    "gas":"20000"
-}
-```
-***
-
-#### GetGasUsed
-Return the estimate gas of transaction.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  GetGasUsed |
-| HTTP | POST |  /v1/user/getGasUsed |
-
-##### Parameters
-`hash` Hex string of transaction hash.
-
-##### Returns
-`gas` the gas used.
-
-##### HTTP Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getGasUsed -d '{"hash":"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073"}'
 
 // Result
 {

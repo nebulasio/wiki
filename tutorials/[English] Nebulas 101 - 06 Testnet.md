@@ -9,11 +9,13 @@ The configaration files are in folder `testnet/conf`:
  - genesis.conf
 
 Generate your own private key for testnet:
+
 ```
 ./neb network ssh-keygen testnet/conf/network.key
 ```
 
 Start the Testnet connected Node:
+
 ```
 ./neb -c testnet/conf/config.conf
 ```
@@ -27,12 +29,14 @@ You could use instructions from [Testnet](testnet.md): just copy the files from 
 - [testnet-genesis.conf](resources/conf/testnet-genesis.conf)
 
 For example, you want to save this files in `conf/default` folder (where config files for mainnet saved) use:
+
 ```
 cd conf/default
 wget https://raw.githubusercontent.com/nebulasio/wiki/master/resources/conf/testnet-config.conf
 wget https://raw.githubusercontent.com/nebulasio/wiki/master/resources/conf/testnet-genesis.conf
 ```
 If you prefer `curl` instead `wget` use:
+
 ```
 curl -O https://raw.githubusercontent.com/nebulasio/wiki/master/resources/conf/testnet-config.conf
 curl -O https://raw.githubusercontent.com/nebulasio/wiki/master/resources/conf/testnet-genesis.conf
@@ -43,6 +47,7 @@ Return to project root folder:
 cd ../..
 ```
 And start your Testnet connected node (you need to build `neb` before, see [Nebulas 101 - 01 Compile and Install Nebulas](tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)):
+
 ```
 ./neb -c conf/default/config-testnet.conf
 ```

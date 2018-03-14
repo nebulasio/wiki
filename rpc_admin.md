@@ -2,7 +2,7 @@
 
 Beside the [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface nebulas provides additional management APIs. Neb console supports both API and management interfaces. Management RPC has separate gRPC and HTTP port, which also binds [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interfaces.
 
-Nebulas provide both [gRPC](https://grpc.io) and RESTful management APIs, let users interact with Nebulas. Our admin [proto](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/pb/rpc.proto) file defines all admin APIs. **We recommend using the console access admin interfaces, or restricting the port of the admin RPC to local access.**
+Nebulas provide both [gRPC](https://grpc.io) and RESTful management APIs, let users interact with Nebulas. Our admin [proto](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/pb/rpc.proto) file defines all admin APIs. **We recommend using the console access admin interfaces, or restricting the admin RPC to local access.**
 
 Default management RPC Endpoint:
 
@@ -122,7 +122,7 @@ SignTransaction sign transaction. The transaction's from addrees must be unlock 
 
 
 ###### Parameters
-The parameters of the `SignTransaction` method is the same as the [SendTransaction](#sendtransaction) parameters.
+The parameters of the `SignTransaction` method is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction) parameters.
 
 ###### Returns
 `data` Signed transaction data. 
@@ -162,7 +162,7 @@ SendTransactionWithPassphrase send transaction with passphrase.
 
 
 ###### Parameters
-`transaction` transaction parameters, which is the same as the [SendTransaction](#sendtransaction) parameters.
+`transaction` transaction parameters, which is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction) parameters.
 
 `passphrase` From address passphrase.
 

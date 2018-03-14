@@ -226,7 +226,7 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 我们约定：如果from和to是同一个地址，就认为是部署一个智能合约。
 
 - value：部署合约时为`"0"`；
-- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用空字符串，使用默认值；
+- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用默认值:`"1000000"`；
 - gasLimit: 部署合约的gasLimit，通过[`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)可以获取部署合约的gas消耗，不能使用默认值，也可以设置一个较大值，执行时以实际使用计算。
 - contract: 合约信息，部署合约时传入的参数
 	- `source`: 合约代码
@@ -265,7 +265,7 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 - to: 智能合约地址
 - value: 调用智能合约用于转账的金额
 - nonce: from用户transaction标识，顺序增长
-- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用空字符串，使用默认值；
+- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用默认值:`"1000000"`；
 - gasLimit: 部署合约的gasLimit，通过[`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)可以获取部署合约的gas消耗，不能使用默认值，也可以设置一个较大值，执行时以实际使用计算。
 - contract: 合约信息，部署合约时传入的参数
 	- `function`: 调用合约方法
@@ -314,7 +314,7 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 - to: 用户钱包地址/智能合约地址
 - value: 调用智能合约用于转账的金额
 - nonce: 用户transaction标识，顺序增长
-- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用空字符串，使用默认值；
+- gasPrice：部署智能合约用到的gasPrice，可以通过`GetGasPrice`获取，或者使用默认值:`"1000000"`；
 - gasLimit: 部署合约的gasLimit，通过[`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)可以获取部署合约的gas消耗，不能使用默认值，也可以设置一个较大值，执行时以实际使用计算。
 - contract: 合约信息，部署合约时传入的参数
 	- `source`: 合约代码

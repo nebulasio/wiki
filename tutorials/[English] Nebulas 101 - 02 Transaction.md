@@ -121,7 +121,7 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"<your address>","nonce": 1,"value": "10"}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"<your address>","nonce": 1,"value": "10","gasPrice":"1000000","gasLimit":"200000"}'
 
 // Response
 {
@@ -130,7 +130,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 
 ```
 
-**Note:** After the `from` and `to` addresses there is a `nonce ` and `value`. The `value` number should be a string, as the value is too big to use integers. For example "10" or "12" or "100" etc.. so if you get an error:
+**Note:** After the `from` and `to` addresses there is `nonce `, `value`, `gasPrice` and `gasLimit`. The `value`, `gasPrice` and `gasLimit` number should be a string, as the value is too big to use integers. For example "10" or "12" or "100" etc.. so if you get an error:
 
 ```
 {"error":"json: cannot unmarshal number into Go value of type string","code":3} – this means you forgot to add “10” quotes around the numbers
@@ -278,7 +278,7 @@ Passphrase:
 ##### Send Transaction
 
 ```js
- >  api.sendTransaction ("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "<your address>", "1000000000000000000", 1)
+ >  api.sendTransaction ("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "<your address>", "1000000000000000000", 1, "1000000", "200000")
 {
   "txhash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22"
 }

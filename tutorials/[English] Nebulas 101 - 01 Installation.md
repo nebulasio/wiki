@@ -19,7 +19,7 @@ sudo apt-get install git make wget
 
 ### Nebulas Environment Set Up
 
-Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang version `>=1.8`.
+Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang version `>=1.9`.
 
 *NVM (Nebulas Virtual Machine) uses JavaScript v8 engine. As currently v8 only run on Mac and Linux versions, Nebulas can only run on Mac and Linux at this stage. The Windows version will be coming soon.*
 
@@ -68,14 +68,17 @@ Now restart the terminal: this is important to continue in the next step
 #### Install Go Environment on Linux (Ubuntu)
 See https://golang.org/doc/install
 Download the golang archive
+
 ```
 wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
 ```
  Extract it into /usr/local, creating a Go tree in /usr/local/go. For example: 
+ 
 ```
 tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
 ```
 Add /usr/local/go/bin to the PATH environment variable in your $HOME/.bashrc (or your profile or wherever you want it to be):
+
 ```
 # Added for golang
 export PATH=$PATH:/usr/local/go/bin
@@ -85,7 +88,9 @@ Create your project folder (Taking $HOME/go as an example, but you can basicly p
 ```
 mkdir -p $HOME/go/src
 ```
+
 Set GOPATH in your $HOME/.bashrc (Make sure to change <change_this_path to where you've put the project folder!)
+
 ```
 export GOPATH=<change_this_path>/go
 ```
@@ -93,26 +98,18 @@ export GOPATH=<change_this_path>/go
 ### Compile Nebulas
 
 #### Download Source Code (Mac and Linux)：
-Clone from GitHub (This tutorial uses [v0.6.1](https://github.com/nebulasio/go-nebulas/tree/v0.6.1))
-
-```
-git clone -b v0.6.1 https://github.com/nebulasio/go-nebulas.git --depth=1
-```
-
-If you need the full commit history, clone all to local:
+Clone from GitHub (This tutorial uses [master](https://github.com/nebulasio/go-nebulas/tree/master))
 
 ```
 git clone https://github.com/nebulasio/go-nebulas.git
 git checkout master
 ```
 
-Note: If you opt for the second option, don't forget to checkout to `master` branch or to commit `ed37bea` (v0.5.0.), otherwise this tutorial might not work for you.
+Note: If you opt for the second option, don't forget to checkout to `master` branch, otherwise this tutorial might not work for you.
 
 Since Go must compile in `$GOPATH`,  Nebulas code must be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`。
 
-Note: make sure you create a src folder and put go-nebulas inside it. The folder structure that includes `github.com` is a best practice not a requirement.
-
-![folder setup](https://user-images.githubusercontent.com/21117852/34554205-c2e7b4c8-f166-11e7-9ab8-8d0da4718355.png)
+Note: make sure you create a src folder and put go-nebulas inside it. The folder structure that includes `github.com/nebulasio/` is a best practice not a requirement.
 
 #### Install Go Dependencies
 ##### Install dep for mac
@@ -126,6 +123,7 @@ $ brew upgrade dep
 ```
 ##### Install dep for linux
 Install dep in /usr/local/bin so you can use it to download third-party packages
+
 ```
 cd /usr/local/bin/
 wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
@@ -150,7 +148,7 @@ MD5: 13ef26ab05aad391f540f82af07716df
 
 **PS: If it doesn’t work and you get an error: validateParams: could not deduce external imports' project roots
 make:[dep] Error 1.
-You should use a vpn and route all information through the vpn or export proxy in the terminal: example; `export http_proxy=http://127.0.0.1:1087`; then try `make dep`**
+You should use a vpn and route all information through the vpn or export proxy in the terminal:example; `export http_proxy=http://127.0.0.1:1087`; then try `make dep`**
 
 #### Install V8 for Mac/linux
 

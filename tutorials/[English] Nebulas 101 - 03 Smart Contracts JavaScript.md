@@ -229,7 +229,7 @@ sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 We agree that if from and to are the same address, we assume that we are deploying a smart contract.
 
 - value: "0" `when deploying the contract;
-- gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or an empty string, using default values;
+- gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or using default values: `"1000000"`;
 - gasLimit: The gasLimit for the deployment contract, which can be used to get the gas consumption of the deployment contract via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and can not use the default value, Can also set a larger value, the actual use of the calculation.
 - contract: the contract information, the parameters passed in when the contract is deployed
 - `source`: contract code
@@ -269,7 +269,7 @@ sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 - to: smart contract address
 - value: The amount of money used to transfer a smart contract
 - nonce: from user transaction ID, the order of growth
-- gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or an empty string, using default values;
+- gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or using default values `"1000000"`;
 - gasLimit: The gasLimit for the deployment contract, which can be used to get the gas consumption of the deployment contract via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and can not use the default value, Can also set a larger value, the actual use of the calculation.
 - contract: the contract information, the parameters passed in when the contract is deployed
 - `function`: Call the contract method

@@ -97,14 +97,14 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction  -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce":1,"value":"10"}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction  -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88","nonce":1,"value":"10", "gasPrice":"1000000", "gasLimit":"200000"}'
 
 // Result
 {
   "txhash": "93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace"
 }
 ```
-转账交易接口：账户`0fba`向账户`6c05` 转账金额10。这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户余额信息获取。该接口返回值是交易的hash值，这个hash值可以用来对这笔交易进行查询。转账时若不配置`gasPrice`和`gasLimit`,会使用默认值来执行交易（只有在普通交易中可以不做配置，后面提到的部署合约需要配置），详细的接口[API](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction).
+转账交易接口：账户`0fba`向账户`6c05` 转账金额10。这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户余额信息获取。该接口返回值是交易的hash值，这个hash值可以用来对这笔交易进行查询。转账时必须配置`gasPrice`和`gasLimit`，详细的接口[API](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction).
 
 4. 等待大约30s，然后查询该转账交易信息（因为转账交易需要矿工打包才能成功，所以会有一定的延时，并不是实时立马成功）；
 
@@ -210,7 +210,7 @@ Passphrase:
 
 
 ```js
-> api.sendTransaction("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903","1000000000000000000",1)
+> api.sendTransaction("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903","1000000000000000000",1, "1000000", "200000")
 {
     "txhash": "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22"
 }
