@@ -19,8 +19,6 @@ Default management RPC Endpoint:
 * [LockAccount](#lockaccount)
 * [SignTransaction](#signtransaction)
 * [SendTransactionWithPassphrase](#sendtransactionwithpassphrase)
-* [StartMining](#startmining)
-* [StopMining](#stopmining)
 
 ## Management RPC API Reference
 
@@ -179,61 +177,6 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 // Result
 {
     "hash":"00a631ebf5e1b02e9d8ad3f714d8b4ae64aca211e65323d41469d233270c9dc5"
-}
-```
-***
-
-
-#### StartMining
-StartMining start consensus mining.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  StartMining |
-| HTTP | POST |  /v1/admin/startMining |
-
-
-###### Parameters
-`passphrase` miner's passphrase. miner address configed in config file.
-
-###### Returns
-`result` result value true / throw error.
-
-###### Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/startMining -d '{"passphrase": "passphrase"}'
-
-// Result
-{
-    "result": true
-}
-```
-***
-
-#### StopMining
-StopMining stop consensus mining.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  StopMining |
-| HTTP | GET |  /v1/admin/stopMining |
-
-
-###### Parameters
-none.
-
-###### Returns
-`result` result value true / throw error.
-
-###### Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/admin/stopMining
-
-// Result
-{
-    "result": true
 }
 ```
 ***
