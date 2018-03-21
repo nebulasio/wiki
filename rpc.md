@@ -37,7 +37,28 @@ Now we can access the rpc API directly from our browser, you can update the **ap
 
 ###### Example:
 ```
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/blockdump -d '{"count":1}'
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/nebstate
+```
+if success, response will be returned like this
+```
+{
+    "result":{
+        "chain_id":100,
+        "tail":"7adf5b9cc8b3c92f55fe7f71f8e6ce1318109c1169828a9ea4b3ea3f5f660c71",
+        "height":"120",
+        "coinbase":"eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+        "peer_count":0,
+        "is_mining":false,
+        "protocol_version":"/neb/1.0.0","synchronized":false,
+        "version":"0.7.0"
+    }
+}
+```
+Or, there is error form grpc, repose will carry the error message
+```
+{
+    "error":"message..."
+} 
 ```
 
 
@@ -60,8 +81,6 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 * [EstimateGas](#estimategas)
 * [GetEventsByHash](#geteventsbyhash)
 * [GetDynasty](#getdynasty)
-* [GetCandidates](#getcandidates)
-* [GetDelegateVoters](#getdelegatevoters)
 
 ## RPC API Reference
 
@@ -84,6 +103,8 @@ none
 
 `tail` Current neb tail hash
 
+`height` Current neb tail block height
+
 `coinbase` Neb coinbase
 
 `peer_count` Number of peers currenly connected
@@ -94,6 +115,8 @@ none
 
 `synchronized` The peer sync status.
 
+`version` neb version.
+
 ###### HTTP Example
 ```
 // Request
@@ -101,11 +124,18 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "chain_id":1,
-    "tail":"00001555adb8c03238169c89a90a7d3776cc0500a4d01e0187c716faaab4a21b",
-    "coinbase":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-    "protocol_version":"/neb/1.0.0",
-    "synchronized":true
+    "result":
+    {
+        "chain_id":100,
+        "tail":"fb138366cf27896b0bc6de6f95f51fbcda0214c3987d68274f6ed3d2e24a0582",
+        "height":"167",
+        "coinbase":"eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+        "peer_count":0,
+        "is_mining":false,
+        "protocol_version":"/neb/1.0.0",
+        "synchronized":false,
+        "version":"0.7.0"
+    }
 }
 ```
 
@@ -159,14 +189,21 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "id":"QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN",
-    "chain_id":100,
-    "version":1,
-    "bucket_size":16,
-    "relay_cache_size":65536,
-    "stream_store_size":128,
-    "stream_store_extend_size":32,
-    "protocol_version":"/neb/1.0.0"
+    "result":{
+        "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+        "chain_id":100,
+        "version":0,
+        "peer_count":0,
+        "synchronized":false,
+        "bucket_size":64,
+        "relay_cache_size":65536,
+        "stream_store_size":128,
+        "stream_store_extend_size":32,
+        "protocol_version":"/neb/1.0.0",
+        "route_table":[{
+            "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP","address":[]
+        }]
+    }
 }
 ```
 ***
@@ -192,7 +229,9 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "data":" {38117, hash: 000013928d115549e4e6bf058d8e84e8037d2d59fbd9f40342090ebb12612b3c, parent: 00000b4cae32da4430b05adac24146e00c3440b1ae91f66771f5c844afb316fe, stateRoot: cef1b6bc9fb3e5f3768e66d98b671e032561fb24fcfa0e858b6eb05d5f1d8f63, coinbase: 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf} {38116, hash: 00000b4cae32da4430b05adac24146e00c3440b1ae91f66771f5c844afb316fe, parent: 0000158cf35cf2654d04b88a10a9b219bb447d9b1ed1e26a3e95078cea1ad824, stateRoot: 992bfa2b2d5ae17a374e84ce38f6e2dee51748eaa68ddd000d8fe6dd1a184501, coinbase: 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf}"
+    "result":{
+        "data":"[{\"height\": 183, \"hash\": \"043d953ad51a782407d0707f9af454423aa260ec51ecd7467ff5f2eb2554c249\", \"parent_hash\": \"c0f78a726e758cd2ae531d922842c62abc29b94c941174794cee08e07b250f45\", \"acc_root\": \"ee640fb13409ea93e352c11196266d7b84e9b7adbec7d793658ece294acc6d86\", \"timestamp\": 1521625135, \"tx\": 0, \"miner\": \"75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f\"},{\"height\": 182, \"hash\": \"c0f78a726e758cd2ae531d922842c62abc29b94c941174794cee08e07b250f45\", \"parent_hash\": \"457b7e7729a9e1c9833f43003edf2220c2d605bf9abafbc6b1b4757e6ffb3a26\", \"acc_root\": \"11f4656b45b209df8a18e149b67371c585776fa7d1835cda76296469e4c26350\", \"timestamp\": 1521625105, \"tx\": 0, \"miner\": \"75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f\"}]"
+    }
 }
 ```
 ***
@@ -209,7 +248,31 @@ Return the latest irreversible block.
 none
 
 ###### Returns
-`data` block info.
+`hash` Hex string of block hash.
+
+`parent_hash` Hex string of block parent hash.
+
+`height` block height.
+
+`nonce` block nonce.
+
+`coinbase` Hex string of coinbase address.
+
+`timestamp` block timestamp.
+
+`chain_id` block chain id.
+
+`state_root` Hex string of state root.
+
+`txs_root` Hex string of txs root.
+
+`events_root` Hex string of event root.
+
+`consensus_root` Hex string of consensus root.
+
+`transactions` block transactions slice.
+
+- `transaction ` [GetTransactionReceipt](#gettransactionreceipt) response info.
 
 ##### HTTP Example
 ```
@@ -218,7 +281,24 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "data":"{\"height\":305742, \"hash\":\"ec239d532249f84f158ef8ec9262e1d3d439709ebf4dd5f7c1036b26c6fe8073\", \"parentHash\":\"4d7ab29506ffb353240b6279ffaaf2b9b1681679628c78ac2033ea6bcfe77e46\", \"nonce\":0, \"timestamp\": 1516389660, \"coinbase\": \"0b9cd051a6d7129ab44b17833c63fe4abead40c3714cde6d\", \"tx\": 0}"
+    "result":{
+        "hash":"0000000000000000000000000000000000000000000000000000000000000000",
+        "parent_hash":"0000000000000000000000000000000000000000000000000000000000000000",
+        "height":"1",
+        "nonce":"0",
+        "coinbase":"0000000000000000000000000000000000000000f3683c9e",
+        "timestamp":"0",
+        "chain_id":100,
+        "state_root":"df69d8eac19d1c6829007a284bf5cbeede8e529a002235a48c362d37626bb3e0",
+        "txs_root":"",
+        "events_root":"",
+        "consensus_root":{
+            "timestamp":"0",
+            "proposer":null,
+            "dynasty_root":"9whmRLjhuhqaBo5AbHnCQFKKMhnNphoVYpKKXdoS/18="
+        },
+        "transactions":[]
+    }
 }
 ```
 ***
@@ -244,29 +324,31 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "addresses": [
-        "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-        "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-        "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-        "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-        "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-        "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-        "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-        "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-        "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-        "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-        "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-        "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-        "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-        "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-        "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-        "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-        "d1abde197e97398864ba74511f02832726edad596775420a",
-        "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-        "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-        "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-        "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
-    ]
+    "result":{
+        "addresses": [
+            "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
+            "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+            "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
+            "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
+            "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
+            "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+            "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
+            "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
+            "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
+            "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
+            "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
+            "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
+            "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
+            "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
+            "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
+            "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
+            "d1abde197e97398864ba74511f02832726edad596775420a",
+            "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
+            "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
+            "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
+            "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
+        ]
+    }
 }
 ```
 ***
@@ -296,7 +378,10 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "balance":"5"
+    result {
+        "balance":"5"
+        "nonce":"0"
+    }
 }
 ```
 ***
@@ -331,7 +416,9 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 		* `ts` the contract source write with typescript. 
 	* `function` the contract call function for call contarct function.
 	* `args` the params of contract. The args content is JSON string of parameters array.
-
+	
+`binary` any binary data with a length limit = 1MB.
+[optional] 
 Notice:
 
 * `from = to` when deploy a contract, the `from` address must equal to `to` address.
@@ -353,7 +440,8 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "txhash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
+    "result":{
+ A       "txhash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
 }
 ```
 
@@ -365,8 +453,10 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
-    "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+    result {
+        "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
+        "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+    }
 }
 ```
 ***
@@ -427,7 +517,9 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "txhash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"
+    "result":{
+        "txhash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"
+    }
 }
 ```
 ***
@@ -489,22 +581,24 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 // Result
 
 {
-    "chain_id": 100,
-    "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
-    "dpos_context": {
-        "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
-        "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
-        "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
-        "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
-        "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
-        "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
-    },
-    "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
-    "height": "2",
-    "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
-    "timestamp": "1515751735"
+    "result":{
+        "chain_id": 100,
+        "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+        "dpos_context": {
+            "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
+            "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
+            "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
+            "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
+            "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
+            "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
+        },
+        "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
+        "height": "2",
+        "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+        "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
+        "timestamp": "1515751735"
+    }
 }
 ```
 ***
@@ -533,22 +627,24 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 // Result
 
 {
-    "chain_id": 100,
-    "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
-    "dpos_context": {
-        "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
-        "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
-        "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
-        "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
-        "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
-        "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
-    },
-    "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
-    "height": "2",
-    "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
-    "timestamp": "1515751735"
+    "result":{
+        "chain_id": 100,
+        "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+        "dpos_context": {
+            "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
+            "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
+            "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
+            "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
+            "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
+            "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
+        },
+        "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
+        "height": "2",
+        "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
+        "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
+        "timestamp": "1515751735"
+    }
 }
 ```
 ***
@@ -598,12 +694,14 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
-    "from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-    "to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-    "nonce":"12",
-    "timestamp":"1511519091",
-    "chainId":1
+    "result":{
+       "hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
+      "from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
+     "to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
+      "nonce":"12",
+       "timestamp":"1511519091",
+       "chainId":1
+    }
 }
 ```
 ***
@@ -643,8 +741,10 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "topic":"chain.pendingTransaction",
-    "data": "..."
+    "result":{
+        "topic":"chain.pendingTransaction",
+        "data": "..."
+    }
 }
 ```
 ***
@@ -670,7 +770,9 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "gas_price":"1000000"
+    "result":{
+        "gas_price":"1000000"
+    }
 }
 ```
 ***
@@ -750,93 +852,16 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "delegatees":[
-        "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-        "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-        "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-        "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-        "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-        "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f"
-    ]
+    "result":{
+        "delegatees":[
+            "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
+            "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
+            "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
+            "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
+            "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
+            "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f"
+        ]
+    }
 }
 ```
-***
 
-#### GetCandidates
-GetCandidates get dpos candidates.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  GetCandidates |
-| HTTP | POST |  /v1/user/candidates |
-
-
-###### Parameters
-`height` block height
-
-###### Returns
-`candidates` repeated string of candidates address.
-
-###### Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/candidates -d '{"height": 1}'
-
-// Result
-{
-    "candidates":[
-        "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-        "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-        "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-        "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-        "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-        "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-        "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-        "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-        "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-        "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-        "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-        "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-        "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-        "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-        "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-        "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-        "d1abde197e97398864ba74511f02832726edad596775420a",
-        "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-        "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-        "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-        "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
-    ]
-}
-```
-***
-
-#### GetDelegateVoters
-GetDelegateVoters get dpos delegate voters.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  GetDelegateVoters |
-| HTTP | POST |  /v1/admin/delegateVoters |
-
-
-###### Parameters
-`delegatee` delegatee address.
-`height` block height.
-
-###### Returns
-`voters` repeated string of voters address.
-
-###### Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/delegateVoters -d '{"height": 1, "delegatee":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
-
-// Result
-{
-    "voters":[
-        "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
-    ]
-}
-```
-***
