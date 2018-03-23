@@ -27,7 +27,7 @@ At this stage, Nebulas just adopts the normal bitcoin [base58](https://en.wikipe
 
 ## Smart Contract Address
 
-Calculating contract address differs slightly from account, passphrase of contract sender is not required but address & nonce. For more information, plz check [smart contract](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md) and [rpc.sendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction). Calculation formula is as follows:
+Calculating contract address differs slightly from account, passphrase of contract sender is not required but address & nonce. For more information, plz check [smart contract](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md) and [rpc.sendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction). Calculation formula is as follows:
 
 ```
 1.  content = ripemd160(sha3_256(tx.from, tx.nonce))
