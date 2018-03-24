@@ -10,9 +10,9 @@ The specific calculation formula is as follows:
 ```
 1.  content = ripemd160(sha3_256(public key))
     length: 20 bytes
-                            +--------+------------------+
-2.  checksum = sha3_256(    |  0x57  +      content     |   )[:4]
-                            +--------+------------------+
+                         +--------+--------+------------------+
+2.  checksum = sha3_256( |  0x19  +  0x57  |      content     |   )[:4]
+                         +--------+--------+------------------+
     length: 4 bytes
 
                         +--------+---------+-----------------+------------+
@@ -23,7 +23,7 @@ The specific calculation formula is as follows:
 
  **0x57** is a one-byte "type code" for account address, **0x19** is a one-byte "fixed filling"
 
-At this stage, Nebulas just adopts the normal bitcoin [base58](https://en.wikipedia.org/wiki/Base58) encoding schema. A valid address is like:  _n1GYcgxhDSHFdL4QgEDNYdcd8pP6vVtTX6x_
+At this stage, Nebulas just adopts the normal bitcoin [base58](https://en.wikipedia.org/wiki/Base58) encoding schema. A valid address is like:  _n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC_
 
 ## Smart Contract Address
 
@@ -32,9 +32,9 @@ Calculating contract address differs slightly from account, passphrase of contra
 ```
 1.  content = ripemd160(sha3_256(tx.from, tx.nonce))
     length: 20 bytes
-                            +--------+------------------+
-2.  checksum = sha3_256(    |  0x58  +      content     |   )[:4]
-                            +--------+------------------+
+                            +--------+--------+------------------+
+2.  checksum = sha3_256(    |  0x19  |  0x58  +      content     |   )[:4]
+                            +--------+--------+------------------+
     length: 4 bytes
 
                         +--------+---------+-----------------+------------+
@@ -45,4 +45,4 @@ Calculating contract address differs slightly from account, passphrase of contra
 
  **0x58** is a one-byte "type code" for smart contract address, **0x19** is a one-byte "fixed filling"
 
-A valid address is like:  _n1sLnoc7j57YfzAVP8tJ3yK5a2i56Uka4v6_
+A valid address is like:  _n1sLnoc7j57YfzAVP8tJ3yK5a2i56QrTDdK_
