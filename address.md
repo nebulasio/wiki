@@ -21,7 +21,7 @@ The specific calculation formula is as follows:
     length: 35 chars
 ```
 
- **0x57** is a one-byte "type code" for account address, **0x19** is a one-byte "fixed filling"
+ **0x57** is a one-byte "type code" for account address, **0x19** is a one-byte fixed "padding"
 
 At this stage, Nebulas just adopts the normal bitcoin [base58](https://en.wikipedia.org/wiki/Base58) encoding schema. A valid address is like:  _n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC_
 
@@ -43,6 +43,6 @@ Calculating contract address differs slightly from account, passphrase of contra
     length: 35 chars
 ```
 
- **0x58** is a one-byte "type code" for smart contract address, **0x19** is a one-byte "fixed filling"
+ **0x58** is a one-byte "type code" for smart contract address, **0x19** is a one-byte fixed "padding"
 
 A valid address is like:  _n1sLnoc7j57YfzAVP8tJ3yK5a2i56QrTDdK_
