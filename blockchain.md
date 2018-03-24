@@ -147,7 +147,7 @@ We starts synchronization from the snapshot of the blockchain in local storage. 
 ### Downloader
 ```
 1. block_pool receive a block(new block) and found that can not link to parent.
-2. compare the height fo tail block and the new block. if the tail block heigher than the new block, abandon the new block, else trigger a event of new block coming but can not link.
+2. compare the height of tail block and the new block. if the tail block heigher than the new block, abandon the new block, else trigger a event of new block coming but can not link.
 3. downloader will subscribe the event of new block coming but can not link. 
 4. downloader go downloader from the node who send the new block.
 ```
