@@ -1,6 +1,6 @@
 # Nebulas Address Design
 
-Nebulas address sys is carefully designed. As u will see below, both account and smart contract address are strings starting with an "n" in JSON, which could be thought of as our faith &#x1f618;Nebulas/NAS&#x1f618;
+Nebulas address sys is carefully designed. As u will see below, both account and smart contract address are strings starting with an "n" in JSON, which could be thought of as our faith Nebulas/NAS.
 
 ## Account Address
 
