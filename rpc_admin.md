@@ -19,9 +19,10 @@ Default management RPC Endpoint:
 * [NewAccount](#newaccount)
 * [UnLockAccount](#unlockaccount)
 * [LockAccount](#lockaccount)
-* [SignTransactionWithPassphrase](#signtransactionWithpassphrase)
+* [SignTransactionWithPassphrase](#signtransactionwithpassphrase)
 * [SendTransactionWithPassphrase](#sendtransactionwithpassphrase)
-* [SendTransaction](#SendTransaction)
+* [SendTransaction](#sendtransaction)
+* [SignHash](#signhash)
 * [StartPprof](#startpprof)
 * [GetConfig](#getconfig)
 
