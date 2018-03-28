@@ -65,21 +65,17 @@ Or, there is error form grpc, repose will carry the error message
 ## RPC methods
 
 * [GetNebState](#getnebstate)
-* [NodeInfo](#nodeinfo)
-* [BlockDump](#blockdump)
-* [LatestIrreversibleBlock](#latestirreversibleblock)
-* [Accounts](#accounts)
 * [GetAccountState](#getaccountstate)
-* [SendTransaction](#sendtransaction)
+* [LatestIrreversibleBlock](#latestirreversibleblock)
 * [Call](#call)
 * [SendRawTransaction](#sendrawtransaction)
 * [GetBlockByHash](#getblockbyhash)
 * [GetBlockByHeight](#getblockbyheight)
 * [GetTransactionReceipt](#gettransactionreceipt)
-* [Subscribe](#subscribe)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
 * [GetEventsByHash](#geteventsbyhash)
+* [Subscribe](#subscribe)
 * [GetDynasty](#getdynasty)
 
 ## RPC API Reference
@@ -103,13 +99,9 @@ none
 
 `tail` Current neb tail hash
 
+`lib` Current neb lib hash
+
 `height` Current neb tail block height
-
-`coinbase` Neb coinbase
-
-`peer_count` Number of peers currenly connected
-
-`is_mining` Neb mine status, minging is true ,otherwise false
 
 `protocol_version` The current neb protocol version.
 
@@ -124,113 +116,49 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 
 // Result
 {
-    "result":
-    {
+    "result":{
         "chain_id":100,
-        "tail":"fb138366cf27896b0bc6de6f95f51fbcda0214c3987d68274f6ed3d2e24a0582",
-        "height":"167",
-        "coinbase":"eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
-        "peer_count":0,
-        "is_mining":false,
+        "tail":"b10c1203d5ae6d4d069d5f520eb060f2f5fb74e942f391e7cadbc2b5148dfbcb",
+        "lib":"da30b4ed14affb62b3719fb5e6952d3733e84e53fe6e955f8e46da503300c985",
+        "height":"365",
         "protocol_version":"/neb/1.0.0",
         "synchronized":false,
         "version":"0.7.0"
     }
 }
 ```
-
 ***
-
-#### NodeInfo
-Return the p2p node info.
+#### GetAccountState
+Return the state of the account. Balance and nonce of the given address will be returned.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| gRpc |  |  NodeInfo |
-| HTTP | GET |  /v1/user/nodeinfo |
+| gRpc |  |  GetAccountState |
+| HTTP | POST |  /v1/user/accountstate |
 
 ###### Parameters
-none
+`address` Hex string of the account addresss.
+
+`height` block account state with height. If not specified, use 0 as tail height.
 
 ###### Returns
-`id` the node ID.
+`balance` Current balance in unit of 1/(10^18) nas.
 
-`chain_id` the block chainID.
+`nonce` Current transaction count.
 
-`version` the node version.
-
-`peer_count` Number of peers currenly connected.
-
-`synchronized` the node synchronized status.
-
-`bucket_size` the node route table bucket size.
-
-`relay_cache_size` the node relay cache size.
-
-`stream_store_size` the node stream store size.
-
-`stream_store_extend_size` the node stream store extend size.
-
-`protocol_version` the network protocol version.
-
-`RouteTable route_table` the network routeTable
-
-```
-message RouteTable {
-	string id = 1;
-	repeated string address = 2;
-}
-```
+`type` The type of address, 87 stands for normal address and 88 stands for contract address
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/nodeinfo
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3"}'
 
 // Result
 {
-    "result":{
-        "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
-        "chain_id":100,
-        "version":0,
-        "peer_count":0,
-        "synchronized":false,
-        "bucket_size":64,
-        "relay_cache_size":65536,
-        "stream_store_size":128,
-        "stream_store_extend_size":32,
-        "protocol_version":"/neb/1.0.0",
-        "route_table":[{
-            "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP","address":[]
-        }]
-    }
-}
-```
-***
-
-#### BlockDump
-Return the dump info of blockchain.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  BlockDump |
-| HTTP | POST |  /v1/user/blockdump |
-
-##### Parameters
-`count` the count of blocks to dump before current tail.
-
-##### Returns
-`data` block dump info.
-
-##### HTTP Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/blockdump -d '{"count":2}'
-
-// Result
-{
-    "result":{
-        "data":"[{\"height\": 183, \"hash\": \"043d953ad51a782407d0707f9af454423aa260ec51ecd7467ff5f2eb2554c249\", \"parent_hash\": \"c0f78a726e758cd2ae531d922842c62abc29b94c941174794cee08e07b250f45\", \"acc_root\": \"ee640fb13409ea93e352c11196266d7b84e9b7adbec7d793658ece294acc6d86\", \"timestamp\": 1521625135, \"tx\": 0, \"miner\": \"75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f\"},{\"height\": 182, \"hash\": \"c0f78a726e758cd2ae531d922842c62abc29b94c941174794cee08e07b250f45\", \"parent_hash\": \"457b7e7729a9e1c9833f43003edf2220c2d605bf9abafbc6b1b4757e6ffb3a26\", \"acc_root\": \"11f4656b45b209df8a18e149b67371c585776fa7d1835cda76296469e4c26350\", \"timestamp\": 1521625105, \"tx\": 0, \"miner\": \"75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f\"}]"
+    result {
+        "balance":"9489999998980000000000"
+        "nonce":51
+        "type":87
     }
 }
 ```
@@ -268,7 +196,15 @@ none
 
 `events_root` Hex string of event root.
 
-`consensus_root` Hex string of consensus root.
+`consensus_root` 
+
+-  `Timestamp` time of consensus state
+-  `Proposer`  proposer of current consensus state
+-  `DynastyRoot` Hex string of dynasty root
+
+`miner` the miner of this block
+
+`is_finality` block is finality
 
 `transactions` block transactions slice.
 
@@ -282,184 +218,30 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 // Result
 {
     "result":{
-        "hash":"0000000000000000000000000000000000000000000000000000000000000000",
-        "parent_hash":"0000000000000000000000000000000000000000000000000000000000000000",
-        "height":"1",
+        "hash":"c4a51d6241db372c1b8720e62c04426bd587e1f31054b7d04a3509f48ee58e9f",
+        "parent_hash":"8f9f29028356d2fb2cf1291dcee85785e1c20a2145318f36c136978edb6097ce",
+        "height":"407",
         "nonce":"0",
-        "coinbase":"0000000000000000000000000000000000000000f3683c9e",
-        "timestamp":"0",
+        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "timestamp":"1521963660",
         "chain_id":100,
-        "state_root":"df69d8eac19d1c6829007a284bf5cbeede8e529a002235a48c362d37626bb3e0",
-        "txs_root":"",
-        "events_root":"",
+        "state_root":"a77bbcd911e7ee9488b623ce4ccb8a38d9a83fc29eb5ad43009f3517f1d3e19a",
+        "txs_root":"664671e2fda200bd93b00aaec4ab12db718212acd51b4624e8d4937003a2ab22",
+        "events_root":"2607e32c166a3513f9effbd1dc7caa7869df5989398d0124987fa0e4d183bcaf",
         "consensus_root":{
-            "timestamp":"0",
-            "proposer":null,
-            "dynasty_root":"9whmRLjhuhqaBo5AbHnCQFKKMhnNphoVYpKKXdoS/18="
+            "timestamp":"1521963660",
+            "proposer":"GVeOQnYf20Ppxa2cqTrPHdpr6QH4SKs4ZKs=",
+            "dynasty_root":"IfTgx0o271Gg4N3cVKHe7dw3NREnlYCN8aIl8VvRXDY="
         },
-        "transactions":[]
+        "miner": "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4"
+        "is_finality":false,
+        "transactions":[] 
     }
 }
 ```
 ***
 
-#### Accounts
-Return account list.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  Accounts |
-| HTTP | GET |  /v1/user/accounts |
-
-##### Parameters
-none
-
-##### Returns
-`addresses` account list
-
-##### HTTP Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/accounts
-
-// Result
-{
-    "result":{
-        "addresses": [
-            "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-            "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-            "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-            "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-            "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-            "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-            "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-            "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-            "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-            "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-            "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-            "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-            "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-            "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-            "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-            "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-            "d1abde197e97398864ba74511f02832726edad596775420a",
-            "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-            "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-            "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-            "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
-        ]
-    }
-}
-```
-***
-
-#### GetAccountState
-Return the state of the account. Balance and nonce of the given address will be returned.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  GetAccountState |
-| HTTP | POST |  /v1/user/accountstate |
-
-###### Parameters
-`address` Hex string of the account addresss.
-
-`block` Hex string block number, or one of "latest", "earliest" or "pending". If not specified, use "latest".
-
-###### Returns
-`balance` Current balance in unit of 1/(10^18) nas.
-
-`nonce` Current transaction count.
-
-###### HTTP Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
-
-// Result
-{
-    result {
-        "balance":"5"
-        "nonce":"0"
-    }
-}
-```
-***
-
-#### SendTransaction
-Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and `gasLimit` are required. If the transaction is to send contract, you must specify the `contract`.
-
-| Protocol | Method | API |
-|----------|--------|-----|
-| gRpc |  |  SendTransaction |
-| HTTP | POST |  /v1/user/transaction |
-
-###### Parameters
-`from` Hex string of the sender account addresss.
-
-`to` Hex string of the receiver account addresss.
-
-`value` Amount of value sending with this transaction.
-
-`nonce` Transaction nonce.
-
-`gas_price` gasPrice sending with this transaction.
-
-`gas_limit` gasLimit sending with this transaction.
-
-`contract` transaction contract object for deploy/call smart contract. [optional]
-
-* Sub properties:
-	* `source` contract source code for deploy contract.
-	* `sourceType` contract source type for deploy contract. Currently support `js` and `ts`
-		* `js` the contract source write with javascript.
-		* `ts` the contract source write with typescript. 
-	* `function` the contract call function for call contarct function.
-	* `args` the params of contract. The args content is JSON string of parameters array.
-	
-`binary` any binary data with a length limit = 1MB.
-[optional] 
-Notice:
-
-* `from = to` when deploy a contract, the `from` address must equal to `to` address.
-
-* `nonce` the value is plus 1 from the nonce value of the current from address. Current nonce can get from [GetAccountState](#getaccountstate).
-* `gasPrice` and `gasLimit` need for every transaction. We recommend taking them use [GetGasPrice](#getgasprice) and [EstimateGas](#estimategas).
-* `contract` parameter only need for smart contract deploy and call. When a smart contract is deployed, the `source` and `sourceType` must be specified, the `args` is optional and passed in when the initialization function takes a parameter. The `function` field is used to call the contract method.
-
-###### Returns
-
-`txhash` transaction hash.
-
-`contract_address ` returns only for deploy contract transaction.
-
-###### Normal Transaction Example
-```js
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/transaction -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
-
-// Result
-{
-    "result":{
- A       "txhash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
-}
-```
-
-###### Deploy Smart Contract Example
-```js
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/transaction -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
-"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
-
-// Result
-{
-    result {
-        "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
-        "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
-    }
-}
-```
-***
 
 #### Call
 Call a smart contract function. The smart contract must have been submited. Method calls are run only on the current node, not broadcast.
@@ -482,16 +264,20 @@ The parameters of the `call` method is the same as the [SendTransaction](#sendtr
 	* `args` the params of contract. The args content is JSON string of parameters array.
 
 ###### Returns
-`result` JSON string of the result, users need to parse it and the result can be string, number, object and etc.
+`result` result of smart contract method call
+`excute_err` execute error
+`execute_err` estimate gas used
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/call -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/call -d '{"from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3","to":"n1mL2WCZyRi1oELEugfCZoNAW3dt8QpHtJw","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"transferValue","args":"[500]"}}'
 
 // Result
 {
-   "result": ""
+   "result": "0",
+   "execute_err": "insufficient balance"
+   "22208": ,
 }
 ```
 ***
@@ -508,7 +294,8 @@ Submit the signed transaction. The transaction signed value should be return by 
 `data` Signed data of transaction
 
 ###### Returns
-`hash` Hex string of transaction hash.
+`txhash` Hex string of transaction hash.
+`contract_address ` returns only for deploy contract transaction.
 
 ###### HTTP Example
 ```
@@ -519,6 +306,20 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 {
     "result":{
         "txhash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"
+    }
+}
+```
+
+###### Deploy Contract Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiDam3G9Sy5fV6/ZcjasYPwSF39ZJDIHNB0Us94vn6p6ohIaGVfLzJ83pom1DO1gD307f1JdTVdDLzbMXO4aGhlXy8yfN6aJtQztYA99O39SXU1XQy82zFzuIhAAAAAAAAAAAAAAAAAAAAAAKBswwfTs1QU64AcKBmRlcGxveRLVB3siU291cmNlVHlwZSI6ImpzIiwiU291cmNlIjoiJ3VzZSBzdHJpY3QnXG5cbnZhciBUcmFuc2ZlclZhbHVlQ29udHJhY3QgPSBmdW5jdGlvbiAoKSB7XG4gICAgLy8gTG9jYWxDb250cmFjdFN0b3JnZS5kZWZpbmVQcm9wZXJ0aWVzKHRoaXMsIHtcbiAgICAvLyAgICAgdG90YWxCYWxhbmNlOiBudWxsXG4gICAgLy8gfSlcbn1cblxuXG5UcmFuc2ZlclZhbHVlQ29udHJhY3QucHJvdG90eXBlID0ge1xuICAgICBpbml0OiBmdW5jdGlvbigpIHtcbiAgICAvLyAgICAgdGhpcy50b3RhbEJhbGFuY2UgPSAwO1xuICAgICB9LFxuXG4gICAgdHJhbnNmZXI6IGZ1bmN0aW9uKHRvKSB7XG4gICAgICAgIHZhciByZXN1bHQgPSBCbG9ja2NoYWluLnRyYW5zZmVyKHRvLCBCbG9ja2NoYWluLnRyYW5zYWN0aW9uLnZhbHVlKTtcbiAgICAgICAgLy8gdmFyIHJlc3VsdCA9IEJsb2NrY2hhaW4udHJhbnNmZXIodG8sIDApO1xuICAgICAgICBpZiAoIXJlc3VsdCkge1xuXHQgICAgXHR0aHJvdyBuZXcgRXJyb3IoXCJ0cmFuc2ZlciBmYWlsZWQuXCIpO1xuICAgICAgICB9XG4gICAgICAgIHJldHVybiBCbG9ja2NoYWluLnRyYW5zYWN0aW9uLnZhbHVlO1xuICAgIH0sXG4gICAgdHJhbnNmZXJTcGVjaWFsVmFsdWU6IGZ1bmN0aW9uKHRvLCB2YWx1ZSkge1xuICAgICAgICB2YXIgYW1vdW50ID0gbmV3IEJpZ051bWJlcih2YWx1ZSk7XG4gICAgICAgIHZhciByZXN1bHQgPSBCbG9ja2NoYWluLnRyYW5zZmVyKHRvLCBhbW91bnQpO1xuICAgICAgICAvLyB2YXIgcmVzdWx0ID0gQmxvY2tjaGFpbi50cmFuc2Zlcih0bywgMCk7XG4gICAgICAgIGlmICghcmVzdWx0KSB7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoXCJ0cmFuc2ZlciBmYWlsZWQuXCIpO1xuICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgICAgcmV0dXJuIDBcbiAgICAgICAgfVxuICAgIH0sXG4gICAgXG59XG5tb2R1bGUuZXhwb3J0cyA9IFRyYW5zZmVyVmFsdWVDb250cmFjdDsifUBkShAAAAAAAAAAAAAAAAAAD0JAUhAAAAAAAAAAAAAAAAABMS0AWAFiQcJUX32jGcduxnJCjvJ9kRcGXhSK2+h3Tb46ySjAToGAY11C7mysGEU11OE6YTd+WNAo/CEbThvI0iKcjHhgBZUB"}'
+
+// Result
+{
+    "result":{
+        "txhash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
+        "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
     }
 }
 ```
@@ -535,69 +336,51 @@ Get block header info by the block hash.
 ###### Parameters
 `hash` Hex string of transaction hash.
 
-`fullTransaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
+`full_fill_transaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
 
 ###### Returns
-`hash` Hex string of block hash.
-
-`parent_hash` Hex string of block parent hash.
-
-`height` block height.
-
-`nonce` block nonce.
-
-`coinbase` Hex string of coinbase address.
-
-`miner` Hex string of miner address.
-
-`timestamp` block timestamp.
-
-`chain_id` block chain id.
-
-`state_root` Hex string of state root.
-
-`txs_root` Hex string of txs root.
-
-`events_root` Hex string of event root.
-
-`dpos_context` dpos context.
-
-- `dynasty_root` Hex string of dynasty root
-- `next_dynasty_root` Hex string of next dynasty root
-- `delegate_root` Hex string of delegate root
-- `candidate_root` Hex string of candidate root
-- `vote_root` Hex string of vote root
-- `mint_cnt_root` Hex string of mint cnt root
-
-`transactions` block transactions slice.
-
-- `transaction ` [GetTransactionReceipt](#gettransactionreceipt) response info.
+See [LatestIrreversibleBlock](#LatestIrreversibleBlock) response.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", "full_fill_transaction":"true"}'
 
 // Result
-
 {
     "result":{
-        "chain_id": 100,
-        "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
-        "dpos_context": {
-            "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
-            "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
-            "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
-            "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
-            "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
-            "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
+        "hash":"c4a51d6241db372c1b8720e62c04426bd587e1f31054b7d04a3509f48ee58e9f",
+        "parent_hash":"8f9f29028356d2fb2cf1291dcee85785e1c20a2145318f36c136978edb6097ce",
+        "height":"407",
+        "nonce":"0",
+        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "timestamp":"1521963660",
+        "chain_id":100,
+        "state_root":"a77bbcd911e7ee9488b623ce4ccb8a38d9a83fc29eb5ad43009f3517f1d3e19a",
+        "txs_root":"664671e2fda200bd93b00aaec4ab12db718212acd51b4624e8d4937003a2ab22",
+        "events_root":"2607e32c166a3513f9effbd1dc7caa7869df5989398d0124987fa0e4d183bcaf",
+        "consensus_root":{
+            "timestamp":"1521963660",
+            "proposer":"GVeOQnYf20Ppxa2cqTrPHdpr6QH4SKs4ZKs=",
+            "dynasty_root":"IfTgx0o271Gg4N3cVKHe7dw3NREnlYCN8aIl8VvRXDY="
         },
-        "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
-        "height": "2",
-        "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-        "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-        "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
-        "timestamp": "1515751735"
+        "miner": "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4"
+        "is_finality":false,
+        "transactions":[{
+            "hash":"1e96493de6b5ebe686e461822ec22e73fcbfb41a6358aa58c375b935802e4145",
+            "chainId":100,
+            "from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+            "to":"n1orSeSMj7nn8KHHN4JcQEw3r52TVExu63r",
+            "value":"10000000000000000000","nonce":"34",
+            "timestamp":"1522220087",
+            "type":"binary",
+            "data":null,
+            "gas_price":"1000000",
+            "gas_limit":"2000000",
+            "contract_address":"",
+            "status":1,
+            "gas_used":"20000"
+        }]
     }
 }
 ```
@@ -614,36 +397,51 @@ Get block header info by the block height.
 ###### Parameters
 `height` Height of transaction hash.
 
-`fullTransaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
+`full_fill_transaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
 
 ###### Returns
-See [GetBlockByHash](#getblockbyhash) response.
+See [LatestIrreversibleBlock](#LatestIrreversibleBlock) response.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHeight -d '{"height": 2, "fullTransaction": true}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHeight -d '{"height": 256, "full_fill_transaction": true}'
 
 // Result
-
 {
     "result":{
-        "chain_id": 100,
-        "coinbase": "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
-        "dpos_context": {
-            "candidate_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c",
-            "delegate_root": "84d748f44be8dc4003fb437569902e5d3ec8bb5cb04943a6dde253f2a38e9d91",
-            "dynasty_root": "f7086644b8e1ba1a9a068e406c79c240528a3219cda61a1562928a5dda12ff5f",
-            "mint_cnt_root": "5891652b9a89f10ef73e9c2eb068ff6e059b72e4b6116ba0b564e168fbcfcf17",
-            "next_dynasty_root": "f7de7c703e5c3c9065541bc2cbacb1df3967c78d930a53a1799463999758b9ce",
-            "vote_root": "c8752029c37617a900b1b9ad1fbfb1bd410ca592b5722cf6c71e0c03fee8bb6c"
+        "hash":"c4a51d6241db372c1b8720e62c04426bd587e1f31054b7d04a3509f48ee58e9f",
+        "parent_hash":"8f9f29028356d2fb2cf1291dcee85785e1c20a2145318f36c136978edb6097ce",
+        "height":"407",
+        "nonce":"0",
+        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "timestamp":"1521963660",
+        "chain_id":100,
+        "state_root":"a77bbcd911e7ee9488b623ce4ccb8a38d9a83fc29eb5ad43009f3517f1d3e19a",
+        "txs_root":"664671e2fda200bd93b00aaec4ab12db718212acd51b4624e8d4937003a2ab22",
+        "events_root":"2607e32c166a3513f9effbd1dc7caa7869df5989398d0124987fa0e4d183bcaf",
+        "consensus_root":{
+            "timestamp":"1521963660",
+            "proposer":"GVeOQnYf20Ppxa2cqTrPHdpr6QH4SKs4ZKs=",
+            "dynasty_root":"IfTgx0o271Gg4N3cVKHe7dw3NREnlYCN8aIl8VvRXDY="
         },
-        "hash": "63352665aebb39d60639dd323e65128ad6a9801f8c2463cd8ec5142f7e4c4f74",
-        "height": "2",
-        "miner": "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-        "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-        "state_root": "408788a9378c85022a4d4f0067a8a27296acff966279560623ee3cda361d0050",
-        "timestamp": "1515751735"
+        "miner": "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4"
+        "is_finality":false,
+        "transactions":[{
+            "hash":"1e96493de6b5ebe686e461822ec22e73fcbfb41a6358aa58c375b935802e4145",
+            "chainId":100,
+            "from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+            "to":"n1orSeSMj7nn8KHHN4JcQEw3r52TVExu63r",
+            "value":"10000000000000000000","nonce":"34",
+            "timestamp":"1522220087",
+            "type":"binary",
+            "data":null,
+            "gas_price":"1000000",
+            "gas_limit":"2000000",
+            "contract_address":"",
+            "status":1,
+            "gas_used":"20000"
+        }]
     }
 }
 ```
@@ -663,6 +461,8 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 ###### Returns
 `hash` Hex string of tx hash.
 
+`chainId` Transaction chain id.
+
 `from` Hex string of the sender account addresss.
 
 `to` Hex string of the receiver account addresss.
@@ -677,30 +477,38 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 
 `data` Transaction data, return the payload data.
 
-`chainId` Transaction chain id.
-
-`contract_address` Transaction contract address.
-
 `gas_price` Transaction gas price.
 
 `gas_limit` Transaction gas limit.
 
+`contract_address` Transaction contract address.
+
 `status` Transaction status, 0 failed, 1 success, 2 pending.
+
+`gas_used` transaction gas used
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"cda54445ffccf4ea17f043e86e54be11b002053f9edbe30ae1fbc0437c2b6a73"}'
 
 // Result
 {
     "result":{
-       "hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
-      "from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-     "to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-      "nonce":"12",
-       "timestamp":"1511519091",
-       "chainId":1
+        "hash":"cda54445ffccf4ea17f043e86e54be11b002053f9edbe30ae1fbc0437c2b6a73",
+        "chainId":100,
+        "from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+        "to":"n1PxKRaJ5jZHXwTfgM9WqkZJJVXBxRcggEE",
+        "value":"10000000000000000000",
+        "nonce":"53",
+        "timestamp":"1521964742",
+        "type":"binary",
+        "data":null,
+        "gas_price":"1000000",
+        "gas_limit":"20000",
+        "contract_address":"",
+        "status":1,
+        "gas_used":"20000"
     }
 }
 ```
@@ -741,10 +549,27 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
+    {"result":{
+        "topic":"chain.pendingTransaction",
+        "data":"{
+                \"chainID\":100,
+                 \"hash\":\"b466c7a9b667db8d15f74863a4bc60bc989566b6c3766948b2cacb45a4fbda42\", 
+                 \"from\":\"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3\",
+                 \"to\":\"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3\", 
+                 \"nonce\":6,
+                 \"value\":\"0\",
+                 \"timestamp\":1522215320,
+                 \"gasprice\": \"1000000\", 
+                 \"gaslimit\":\"20000000\",
+                 \"type\":\"deploy\"}"
+            }
+        }
     "result":{
         "topic":"chain.pendingTransaction",
         "data": "..."
     }
+
+    ...
 }
 ```
 ***
@@ -786,19 +611,22 @@ Return the estimate gas of transaction.
 | HTTP | POST |  /v1/user/estimateGas |
 
 ##### Parameters
-The parameters of the `EstimateGas` method is the same as the [SendTransaction](#sendtransaction) parameters.
+The parameters of the `EstimateGas` method is the same as the
+[SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md/#sendtransaction)parameters.
 
 ##### Returns
 `gas` the estimate gas.
+`err` error message of the transaction executing
 
 ##### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
-    "gas":"20000"
+    "gas":"20000",
+    "err":""
 }
 ```
 ***
@@ -826,6 +654,17 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
+    "result":{
+        "events":[{
+            "topic":"chain.transactionResult",
+            "data":"{
+                \"hash\":\"d7977f96294cd232781d9c17f0f3212b48312d5ef0f556551c5cf48622759785\",
+                \"status\":1,
+                \"gas_used\":\"22208\",
+                \"error\":\"\"
+            }"
+        }]
+    }
 }
 ```
 ***
@@ -843,7 +682,7 @@ GetDynasty get dpos dynasty.
 `height` block height
 
 ###### Returns
-`delegatees` repeated string of delegatees address.
+`miners` repeated string of miner address.
 
 ###### HTTP Example
 ```
@@ -852,15 +691,17 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "result":{
-        "delegatees":[
-            "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-            "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-            "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-            "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-            "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-            "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f"
-        ]
+    {
+        "result":{
+            "miners":[
+                "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+                "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+                "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+                "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+                "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+                "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
+            ]
+        }
     }
 }
 ```

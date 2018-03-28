@@ -14,14 +14,127 @@ Default management RPC Endpoint:
 
 ## Management RPC methods
 
+* [NodeInfo](#nodeinfo)
+* [Accounts](#accounts)
 * [NewAccount](#newaccount)
 * [UnlockAccount](#unlockaccount)
 * [LockAccount](#lockaccount)
 * [SignTransaction](#signtransaction)
+* [SignTransactionWithPassphrase](#signtransactionWithpassphrase)
 * [SendTransactionWithPassphrase](#sendtransactionwithpassphrase)
+* [SendTransaction](#SendTransaction)
+* [StartPprof](#startpprof)
+* [GetConfig](#getconfig)
 
 ## Management RPC API Reference
 
+#### NodeInfo
+Return the p2p node info.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  NodeInfo |
+| HTTP | GET |  /v1/user/nodeinfo |
+
+###### Parameters
+none
+
+###### Returns
+`id` the node ID.
+
+`chain_id` the block chainID.
+
+`coninbase` coinbase 
+
+`peer_count` Number of peers currenly connected.
+
+`synchronized` the node synchronized status.
+
+`bucket_size` the node route table bucket size.
+
+`protocol_version` the network protocol version.
+
+`RouteTable*[] route_table` the network routeTable
+
+```
+message RouteTable {
+	string id = 1;
+	repeated string address = 2;
+}
+```
+
+###### HTTP Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/admin/nodeinfo
+
+// Result
+{
+    "result":{
+        "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+        "chain_id":100,
+        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "peer_count":4,
+        "synchronized":false,
+        "bucket_size":64,
+        "protocol_version":"/neb/1.0.0",
+        "route_table":[
+            {
+                "id":"QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+                "address":[
+                    "/ip4/127.0.0.1/tcp/8680",
+                    "/ip4/192.168.1.206/tcp/8680"
+                ]
+            },
+            {
+                "id":"QmUxw4PZ8kMEnHD8WaSVE92dtvdnwgufM6m5DrWemdk2M7",
+                "address":[
+                    "/ip4/192.168.1.206/tcp/10003","/ip4/127.0.0.1/tcp/10003"
+                ]
+            }
+        ]
+    }
+}
+```
+***
+
+#### Accounts
+Return account list.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  Accounts |
+| HTTP | GET |  /v1/admin/accounts |
+
+##### Parameters
+none
+
+##### Returns
+`addresses` account list
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/admin/accounts
+
+// Result
+{
+    "result":{
+        "addresses":[
+            "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+            "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+            "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+            "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
+            "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+            "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+            "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+            "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+            "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
+        ]
+    }
+}
+```
+***
 #### NewAccount
 NewAccount create a new account with passphrase.
 
@@ -46,34 +159,33 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 
 {
     "result":{
-        "address":"71e616cb8bcd1270eee26f54247bd45dd0e5e0032bc04279"
+        "address":"n1czGUvbQQton6KUWga4wKDLLKYDEn39mEk"
     }
 }
 
 ```
 ***
 
-#### UnlockAccount
+####UnLockAccount
 UnlockAccount unlock account with passphrase. After the default unlock time, the account will be locked.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| gRpc |  |  UnlockAccount |
+| gRpc |  |  LockAccount |
 | HTTP | POST |  /v1/admin/account/unlock |
 
-
 ###### Parameters
-`address` Unlock account address.
-
-`passphrase` Unlock account passphrase.
+`address` UnLock account address.
+`passphrase` UnLock account passphrase.
+`duration` Unlock accoutn duration.
 
 ###### Returns
-`result` Unlock account result.
+`result` UnLock account result, unit is ns.
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1czGUvbQQton6KUWga4wKDLLKYDEn39mEk","passphrase":"passphrase","duration":"1000000000"}'
 
 // Result
 {
@@ -83,7 +195,6 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 }
 
 ```
-
 ***
 
 #### LockAccount
@@ -104,7 +215,7 @@ LockAccount lock account.
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/lock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/lock -d '{"address":"n1czGUvbQQton6KUWga4wKDLLKYDEn39mEk"}'
 
 // Result
 {
@@ -116,17 +227,19 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 ```
 ***
 
-#### SignTransaction
+#### SignTransactionWithPassphrase
 SignTransaction sign transaction. The transaction's from addrees must be unlock before sign call.
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| gRpc |  |  SignTransaction |
+| gRpc |  |  SignTransactionWithPassphrase |
 | HTTP | POST |  /v1/admin/sign |
 
 
 ###### Parameters
-The parameters of the `SignTransaction` method is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction) parameters.
+`transaction` this is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction) parameters.
+
+`passphrase` from account passphrase
 
 ###### Returns
 `data` Signed transaction data. 
@@ -134,27 +247,12 @@ The parameters of the `SignTransaction` method is the same as the [SendTransacti
 ###### sign normal transaction Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
 
 // Result
 {
     "result":{
-        "data":"CiCBzwh67ctZ8bsS/C93EYTtWhkYrCfKuUlg2fRtewfcYxIYGiY1R9Fnx0z0uPkWbPokTeBIHFFKRaosGhgzPLPtjEF5cYRTgu3jz2egqWJwwF/i9wAiEAAAAAAAAAAADeC2s6dkAAAoATDUhrHTBToICgZiaW5hcnlAZEoQAAAAAAAAAAAAAAAAAA9CQFIQAAAAAAAAAAAAAAAAAB6EgFgBYkH4U+V9Qp9FNdSHfUd/NAwWEhjTu2bevaEaNyqRx1p1QFS322nnJRFDRePHDx56pUADk2H4l8ZRJyhF31woH3V2AQ=="
-    }
-}
-```
-***
-
-###### sign deploy contract Example
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
-"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
-
-// Result
-{
-    "result":{
-        "data":"CiD6OXQajree4K7zTPN+Vo1+QhaYKG3nECOBtlJRqT4IqRIYGiY1R9Fnx0z0uPkWbPokTeBIHFFKRaosGhgaJjVH0WfHTPS4+RZs+iRN4EgcUUpFqiwiEAAAAAAAAAAAAAAAAAAAAAAoAjCdh7HTBTrnCAoGZGVwbG95EtwIeyJTb3VyY2VUeXBlIjoianMiLCJTb3VyY2UiOiJcInVzZSBzdHJpY3RcIjt2YXIgQmFua1ZhdWx0Q29udHJhY3Q9ZnVuY3Rpb24oKXtMb2NhbENvbnRyYWN0U3RvcmFnZS5kZWZpbmVNYXBQcm9wZXJ0eSh0aGlzLFwiYmFua1ZhdWx0XCIpfTtCYW5rVmF1bHRDb250cmFjdC5wcm90b3R5cGU9e2luaXQ6ZnVuY3Rpb24oKXt9LHNhdmU6ZnVuY3Rpb24oaGVpZ2h0KXt2YXIgZGVwb3NpdD10aGlzLmJhbmtWYXVsdC5nZXQoQmxvY2tjaGFpbi50cmFuc2FjdGlvbi5mcm9tKTt2YXIgdmFsdWU9bmV3IEJpZ051bWJlcihCbG9ja2NoYWluLnRyYW5zYWN0aW9uLnZhbHVlKTtpZihkZXBvc2l0IT1udWxsXHUwMDI2XHUwMDI2ZGVwb3NpdC5iYWxhbmNlLmxlbmd0aFx1MDAzZTApe3ZhciBiYWxhbmNlPW5ldyBCaWdOdW1iZXIoZGVwb3NpdC5iYWxhbmNlKTt2YWx1ZT12YWx1ZS5wbHVzKGJhbGFuY2UpfXZhciBjb250ZW50PXtiYWxhbmNlOnZhbHVlLnRvU3RyaW5nKCksaGVpZ2h0OkJsb2NrY2hhaW4uYmxvY2suaGVpZ2h0K2hlaWdodH07dGhpcy5iYW5rVmF1bHQucHV0KEJsb2NrY2hhaW4udHJhbnNhY3Rpb24uZnJvbSxjb250ZW50KX0sdGFrZW91dDpmdW5jdGlvbihhbW91bnQpe3ZhciBkZXBvc2l0PXRoaXMuYmFua1ZhdWx0LmdldChCbG9ja2NoYWluLnRyYW5zYWN0aW9uLmZyb20pO2lmKGRlcG9zaXQ9PW51bGwpe3JldHVybiAwfWlmKEJsb2NrY2hhaW4uYmxvY2suaGVpZ2h0XHUwMDNjZGVwb3NpdC5oZWlnaHQpe3JldHVybiAwfXZhciBiYWxhbmNlPW5ldyBCaWdOdW1iZXIoZGVwb3NpdC5iYWxhbmNlKTt2YXIgdmFsdWU9bmV3IEJpZ051bWJlcihhbW91bnQpO2lmKGJhbGFuY2UubGVzc1RoYW4odmFsdWUpKXtyZXR1cm4gMH12YXIgcmVzdWx0PUJsb2NrY2hhaW4udHJhbnNmZXIoQmxvY2tjaGFpbi50cmFuc2FjdGlvbi5mcm9tLHZhbHVlKTtpZihyZXN1bHRcdTAwM2UwKXtkZXBvc2l0LmJhbGFuY2U9YmFsYW5jZS5kaXZpZGVkQnkodmFsdWUpLnRvU3RyaW5nKCk7dGhpcy5iYW5rVmF1bHQucHV0KEJsb2NrY2hhaW4udHJhbnNhY3Rpb24uZnJvbSxkZXBvc2l0KX1yZXR1cm4gcmVzdWx0fX07bW9kdWxlLmV4cG9ydHM9QmFua1ZhdWx0Q29udHJhY3Q7IiwiQXJncyI6IiJ9QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBmzfKx7Z3bpXEqWQ3G5rveVUHnglr3KVFRqemqfPdqpwtVimEylObGiCvh6aZdCtih+h2EbuBr2c6u7sYQwKdagA="
+        "data":"CiBOW15yoZ+XqQbMNr4bQdJCXrBTehJKukwjcfW5eASgtBIaGVduKnw+6lM3HBXhJEzzuvv3yNdYANelaeAaGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwucHt1QU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJB/BwhwhqUkp/gEJtE4kndoc7NdSgqD26IQqa0Hjbtg1JaszAvHZiW+XH7C+Ky9XTKRJKuTOc446646d/Sbz/nxQE="
     }
 }
 ```
@@ -182,12 +280,239 @@ SendTransactionWithPassphrase send transaction with passphrase.
 ###### Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d '{"transaction":{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"},"passphrase":"passphrase"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"},"passphrase":"passphrase"}'
 
 // Result
 {
     "result":{
-        "hash":"00a631ebf5e1b02e9d8ad3f714d8b4ae64aca211e65323d41469d233270c9dc5"
+        "hash":"143eac221da8079f017bd6fd6b6a08ea0623114c93c638b94334d16aae109666",
+        "contract_address":""
+    }
+}
+```
+***
+
+
+#### SendTransaction
+Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and `gasLimit` are required. If the transaction is to send contract, you must specify the `contract`.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  SendTransaction |
+| HTTP | POST |  /v1/user/transaction |
+
+###### Parameters
+`from` Hex string of the sender account addresss.
+
+`to` Hex string of the receiver account addresss.
+
+`value` Amount of value sending with this transaction.
+
+`nonce` Transaction nonce.
+
+`gas_price` gasPrice sending with this transaction.
+
+`gas_limit` gasLimit sending with this transaction.
+
+`contract` transaction contract object for deploy/call smart contract. [optional]
+
+* Sub properties:
+	* `source` contract source code for deploy contract.
+	* `sourceType` contract source type for deploy contract. Currently support `js` and `ts`
+		* `js` the contract source write with javascript.
+		* `ts` the contract source write with typescript. 
+	* `function` the contract call function for call contarct function.
+	* `args` the params of contract. The args content is JSON string of parameters array.
+	
+`binary` any binary data with a length limit = 1MB.
+[optional] 
+Notice:
+
+* `from = to` when deploy a contract, the `from` address must equal to `to` address.
+
+* `nonce` the value is plus 1 from the nonce value of the current from address. Current nonce can get from [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md/#getaccountstate).
+* `gasPrice` and `gasLimit` need for every transaction. We recommend taking them use [GetGasPrice](https://github.com/nebulasio/wiki/blob/master/rpc.md/#getgasprice) and [EstimateGas](https://github.com/nebulasio/wiki/blob/master/rpc.md/#estimategas).
+* `contract` parameter only need for smart contract deploy and call. When a smart contract is deployed, the `source` and `sourceType` must be specified, the `args` is optional and passed in when the initialization function takes a parameter. The `function` field is used to call the contract method.
+
+###### Returns
+
+`txhash` transaction hash.
+
+`contract_address ` returns only for deploy contract transaction.
+
+###### Normal Transaction Example
+```js
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", "value":"1000000000000000000","nonce":1000,"gasPrice":"1000000","gasLimit":"2000000"}'
+
+// Result
+{
+    "result":{
+      "txhash":"fb5204e106168549465ea38c040df0eacaa7cbd461454621867eb5abba92b4a5",
+      "contract_address":""
+    }
+}
+```
+
+###### Deploy Smart Contract Example
+```js
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{
+"source":"\"use strict\";var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\")};BankVaultContract.prototype={init:function(){},save:function(height){var deposit=this.bankVault.get(Blockchain.transaction.from);var value=new BigNumber(Blockchain.transaction.value);if(deposit!=null&&deposit.balance.length>0){var balance=new BigNumber(deposit.balance);value=value.plus(balance)}var content={balance:value.toString(),height:Blockchain.block.height+height};this.bankVault.put(Blockchain.transaction.from,content)},takeout:function(amount){var deposit=this.bankVault.get(Blockchain.transaction.from);if(deposit==null){return 0}if(Blockchain.block.height<deposit.height){return 0}var balance=new BigNumber(deposit.balance);var value=new BigNumber(amount);if(balance.lessThan(value)){return 0}var result=Blockchain.transfer(Blockchain.transaction.from,value);if(result>0){deposit.balance=balance.dividedBy(value).toString();this.bankVault.put(Blockchain.transaction.from,deposit)}return result}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
+
+// Result
+{
+    "result":{
+        "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
+        "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+    }
+}
+```
+***
+
+#### SignHash
+SignHash sign message, the address must be unlock.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  SignHash |
+| HTTP | POST |  /v1/admin/sign/hash |
+
+
+###### Parameters
+`address` sign address
+
+`hash`  a sha3256 hash of the message
+
+`alg` sign algorithm
+
+
+###### Returns
+`data` Signed transaction data. 
+
+###### sign normal transaction Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign/hash -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","hash":"W+rOKNqs/tlvz02ez77yIYMCOr2EubpuNh5LvmwceI0=","alg":1}'
+
+// Result
+{
+    "result":{
+        "data":"a7HHsLRvKTNazD1QEogY+Fre8KmBIyK+lNa4zv0Z72puFVkY9uZD6nGixGx/6s1x6Baq7etGwlDNxVvHsoGWbAA="
+    }
+}
+```
+***
+
+#### StartPprof
+StartPprof starts pprof
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  Pprof |
+| HTTP | POST |  /v1/admin/pprof |
+
+
+###### Parameters
+`listen` the address to listen
+
+###### Returns
+`result` start pprof result 
+
+###### Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/pprof -d '{"listen":"0.0.0.0:1234"}'
+
+// Result
+{
+    "result":{
+        "result":true
+    }
+}
+```
+***
+
+#### GetConfig
+GetConfig return the config the neb is using 
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  |  GetConfig |
+| HTTP | POST |  /v1/admin/getConfig |
+
+
+###### Parameters
+none
+
+###### Returns
+`config` start pprof result 
+
+###### Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/getConfig
+
+// Result
+{
+    "result":{
+        "config":{
+            "network":{
+                "seed":[],
+                "listen":["0.0.0.0:8680"],
+                "private_key":"conf/network/ed25519key",
+                "network_id":1
+            },
+            "chain":{
+                "chain_id":100,
+                "genesis":"conf/default/genesis.conf",
+                "datadir":"data.db",
+                "keydir":"keydir",
+                "start_mine":true,
+                "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+                "miner":"n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ",
+                "passphrase":"",
+                "enable_remote_sign_server":false,
+                "remote_sign_server":"",
+                "gas_price":"",
+                "gas_limit":"",
+                "signature_ciphers":["ECC_SECP256K1"]
+            },
+            "rpc":{
+                "rpc_listen":["127.0.0.1:8684"],
+                "http_listen":["127.0.0.1:8685"],
+                "http_module":["api","admin"],
+                "connection_limits":0,
+                "http_limits":0,
+                "http_cors":[]
+            },
+            "stats":{
+                "enable_metrics":false,
+                "reporting_module":[],
+                "influxdb":{
+                    "host":"http://localhost:8086",
+                    "port":0,
+                    "db":"nebulas",
+                    "user":"admin",
+                    "password":"admin"
+                },
+                "metrics_tags":[]
+            },
+            "misc":null,
+            "app":{
+                "log_level":"debug",
+                "log_file":"logs",
+                "log_age":0,
+                "enable_crash_report":true,
+                "crash_report_url":"https://crashreport.nebulas.io",
+                "pprof":{
+                    "http_listen":"0.0.0.0:8888",
+                    "cpuprofile":"",
+                    "memprofile":""
+                },
+                "version":"0.7.0"
+            }
+        }
     }
 }
 ```
