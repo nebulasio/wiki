@@ -253,7 +253,7 @@ Call a smart contract function. The smart contract must have been submited. Meth
 
 ###### Parameters
 
-The parameters of the `call` method is the same as the [SendTransaction](#sendtransaction) parameters. Special attention:
+The parameters of the `call` method is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md/#sendtransaction) parameters. Special attention:
 
 `to` Hex string of the receiver account addresss. **The value of `to` is a contract address.**
 
@@ -339,7 +339,7 @@ Get block header info by the block hash.
 `full_fill_transaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
 
 ###### Returns
-See [LatestIrreversibleBlock](#LatestIrreversibleBlock) response.
+See [LatestIrreversibleBlock](#latestirreversibleblock) response.
 
 ###### HTTP Example
 ```

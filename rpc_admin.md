@@ -17,7 +17,7 @@ Default management RPC Endpoint:
 * [NodeInfo](#nodeinfo)
 * [Accounts](#accounts)
 * [NewAccount](#newaccount)
-* [UnlockAccount](#unlockaccount)
+* [UnLockAccount](#unlockaccount)
 * [LockAccount](#lockaccount)
 * [SignTransaction](#signtransaction)
 * [SignTransactionWithPassphrase](#signtransactionWithpassphrase)
@@ -166,7 +166,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 ```
 ***
 
-####UnLockAccount
+#### UnLockAccount
 UnlockAccount unlock account with passphrase. After the default unlock time, the account will be locked.
 
 | Protocol | Method | API |
@@ -268,7 +268,7 @@ SendTransactionWithPassphrase send transaction with passphrase.
 
 
 ###### Parameters
-`transaction` transaction parameters, which is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction) parameters.
+`transaction` transaction parameters, which is the same as the [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction) parameters.
 
 `passphrase` From address passphrase.
 
@@ -371,7 +371,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 ***
 
 #### SignHash
-SignHash sign message, the address must be unlock.
+SignHash sign the hash of a message.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -380,11 +380,11 @@ SignHash sign message, the address must be unlock.
 
 
 ###### Parameters
-`address` sign address
+`address` Sign address
 
-`hash`  a sha3256 hash of the message
+`hash`  A sha3256 hash of the message
 
-`alg` sign algorithm
+`alg` Sign algorithm
 
 
 ###### Returns
