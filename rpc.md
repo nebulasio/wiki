@@ -400,7 +400,7 @@ Get block header info by the block height.
 `full_fill_transaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
 
 ###### Returns
-See [LatestIrreversibleBlock](#LatestIrreversibleBlock) response.
+See [LatestIrreversibleBlock](#latestirreversibleblock) response.
 
 ###### HTTP Example
 ```

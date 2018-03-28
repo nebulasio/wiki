@@ -19,7 +19,6 @@ Default management RPC Endpoint:
 * [NewAccount](#newaccount)
 * [UnLockAccount](#unlockaccount)
 * [LockAccount](#lockaccount)
-* [SignTransaction](#signtransaction)
 * [SignTransactionWithPassphrase](#signtransactionWithpassphrase)
 * [SendTransactionWithPassphrase](#sendtransactionwithpassphrase)
 * [SendTransaction](#SendTransaction)
@@ -439,19 +438,19 @@ GetConfig return the config the neb is using
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  GetConfig |
-| HTTP | POST |  /v1/admin/getConfig |
+| HTTP | GET |  /v1/admin/getConfig |
 
 
 ###### Parameters
 none
 
 ###### Returns
-`config` start pprof result 
+`config` neb config 
 
 ###### Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/getConfig
+curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/admin/getConfig
 
 // Result
 {
