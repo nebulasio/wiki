@@ -82,12 +82,12 @@ Add /usr/local/go/bin to the PATH environment variable in your $HOME/.bashrc:
 export PATH=$PATH:/usr/local/go/bin
 ```
 ##### Setup golang project folders on linux (Ubuntu)
-Create your project folder (Taking $HOME/go as an example, but you can basicly put it anywhere you want)
+Create your project folder (Taking `$HOME/go` as an example, but you can basically put it anywhere you want)
 ```
 mkdir -p $HOME/go/src
 ```
 
-Set GOPATH in your $HOME/.bashrc (Make sure to change <change_this_path to where you've put the project folder!)
+Set GOPATH in your $HOME/.bashrc (Make sure to replace <change_this_path> whith where you've put the project folder!)
 
 ```
 export GOPATH=<change_this_path>/go
@@ -103,16 +103,16 @@ git clone https://github.com/nebulasio/go-nebulas.git
 git checkout master
 ```
 
-Note: Don't forget to checkout to `master` branch, otherwise this tutorial might not work for you.
+**Note:** Don't forget to checkout to `master` branch, otherwise this tutorial might not work for you.
 
 Since Go must be compiled in `$GOPATH`,  Nebulas code should be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`。
 
-Note: make sure you create a `src` folder and put `go-nebulas` inside it. The folder structure `github.com/nebulasio/go-nebulas` is just a suggestion.
+**Note:** make sure you create a `src` folder and put `go-nebulas` inside it. The folder structure `github.com/nebulasio/go-nebulas` is just a suggestion.
 
 #### Install Go Dependencies
-##### Install dep for mac
 Nebulas golang source code dependency is managered by [dep](https://github.com/golang/dep). Third-party packages used during development can be downloaded using dep.
 
+##### Install dep for mac
 Use `brew` to install `dep` on Mac:
 
 ```

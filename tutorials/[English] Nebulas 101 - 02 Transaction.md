@@ -226,7 +226,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/account
 Here you should see a balance that is the total of all the successful transfers that you executed. Here we can see that this address has 10 NAS!
 
 
-### Console
+## Console
 Nebulas also provides a JavaScript console. The console implements [API](https://github.com/nebulasio/wiki/blob/master/rpc.md) and [Admin](https://github.com/nebulasio/wiki/blob/master/management_rpc.md)
 
 The console provides functions such as view account, create account address, unlock account, transaction signature, send transactions, etc.
