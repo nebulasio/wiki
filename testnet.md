@@ -6,7 +6,7 @@ We are glad to release Nebulas Testnet here. It simulate the Nebulas network and
 
 #### Configuration
 
-The testnet configuration files are in folder `testnet/conf`.
+The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf).
 
 Information about it is below.
 
@@ -39,10 +39,9 @@ Test Endpoint:
 | RESTful | https://testnet.nebulas.io/ | HTTP |
 
 * [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
-* [Accounts](https://github.com/nebulasio/wiki/blob/master/rpc.md#accounts): list accounts on the neb node.
 * [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate): returns the account balance and nonce.
-* [SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction): submit unsigned transaction. The transaction's from address must be unlocked before send.
-* [Call](https://github.com/nebulasio/wiki/blob/master/rpc.md#call): submit smart contract call transaction. The transaction's from address must be unlocked before send.
+* [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit signed transaction. The transaction must be signed before send.
+* [Call](https://github.com/nebulasio/wiki/blob/master/rpc.md#call): execute smart contract local, don't submit on chain.
 * [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit the signed transaction.
 * [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt): get transaction receipt info by tansaction hash.
 
@@ -75,13 +74,3 @@ Every email can claim some tokens every day at [here](https://testnet.nebulas.io
 ## Contribution
 
 Feel free to join Nebulas Testnet. If you did find something wrong, please [submit a issue](https://github.com/nebulasio/go-nebulas/issues/new) or [submit a pull request](https://github.com/nebulasio/go-nebulas/pulls) to let us know, we will add your name and url to this page soon.
-
-## Updates
-
-#### 0.6.1
-
-- **network** p2p network, full-sync, downloader
-- **basic** crypto, blockchain
-- **consensus** using dpos
-- **smart contract** support javascript & typescript
-- **api** rpc & http interfaces
