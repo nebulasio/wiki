@@ -81,17 +81,17 @@ API的接口定义在通过proto文件生成的go接口文件中:
 
 一些使用HTTP访问接口的例子：
 
-##### 获取节点信息
+### 获取节点信息
 返回节点信息。
 
 | Protocol | Method | API |
 |----------|--------|-----|
 | HTTP | GET |  /v1/admin/nodeinfo |
 
-###### Parameters
+### Parameters
 none
 
-###### Returns
+### Returns
 `id` 节点ID.
 
 `chain_id` 区块链ID.
@@ -121,7 +121,7 @@ message RouteTable {
 }
 ```
 
-###### HTTP Example
+### HTTP Example
 ```
 // Request
 curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinfo
@@ -149,7 +149,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinf
 }
 ```
 
-##### 账号列表
+### 账号列表
 返回节点存在的账号列表。
 
 | Protocol | Method | API                 |
@@ -188,7 +188,9 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
          "n1aV2QqKRmL8S41Rih11tnCzwsR9zPUcye8"
       ]
    }
-}```
+}
+```
+
 #### 获取账号信息
 返回账号信息，包括账号地址的余额和当前交易nonce。
 
@@ -207,7 +209,9 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
 `type` 87为普通地址，88为合约地址
 
 ###### HTTP Example
+
 ```
+
 // Request
 curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2"}'
 
@@ -220,6 +224,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/account
    }
 }
 ```
+
 #### 解锁账号
 使用密码解锁账号.
 
