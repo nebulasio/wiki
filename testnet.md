@@ -23,7 +23,7 @@ Notice:
 * testnet seed node:
 
 ```
-seed:["/ip4/13.57.245.249/tcp/8680/ipfs/Qme7PkuEWLajPmPmKNPZ7MAonK7MjDomReLbEzdy8yJHo4", "/ip4/54.219.151.126/tcp/8680/ipfs/QmVUPFV9DEwaNBM5p8CrEJeXSHFGLdST5cbRaTkUjVrF6r", "/ip4/18.218.165.90/tcp/8680/ipfs/Qmac11jvtGpFt9Ptevn4SHHQpvJjNsC17ZX7VmuHvsHM8o", "/ip4/35.176.94.224/tcp/8680/ipfs/QmTZDELLwtAYzC7U1WpofKrfT9c652VkMoTSum3cfadHM5"]
+seed:["/ip4/35.154.108.11/tcp/8680/ipfs/QmTvcQ3E1yGdKoW6rSQYVNpbLUivXtb44Py72EvySSLaQx"]
 ```
 * `chain_id` should be 1001, as same as [genesis.conf](resources/conf/testnet-genesis.conf).
 * `datadir` should be different with private chain.
