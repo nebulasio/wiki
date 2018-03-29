@@ -86,7 +86,7 @@ Return node information.
 
 Protocol | Method | API |
 | ---------- | -------- | ----- |
-| HTTP | GET |/v1/user/nodeinfo |
+| HTTP | GET |/v1/admin/nodeinfo |
 
 ###### Parameters
 none
@@ -127,23 +127,32 @@ repeated string address = 2;
 curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinfo
 
 // Result
-{
-    "id": "QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN",
-    "chain_id": 100,
-    "version": 1,
-    "bucket_size": 16,
-    "relay_cache_size": 65536,
-    "stream_store_size": 128,
-    "stream_store_extend_size": 32,
-    "protocol_version": "/ neb/ 1.0.0"
+"result" : {
+    "protocol_version" : "/neb/1.0.0",
+    "coinbase" : "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+    "bucket_size" : 64,
+    "chain_id" : 100,
+    "route_table" : [
+        {
+        "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+        "address" : [
+            "/ip4/127.0.0.1/tcp/8680",
+            "/ip4/192.168.1.215/tcp/8680"
+        ]
+        }
+    ],
+    "synchronized" : false,
+    "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+    "peer_count" : 0
 }
+
 ```
 ##### Account List
 Returns the list of accounts associated with the node.
 
 Protocol | Method | API |
 | ---------- | -------- | ----- |
-| HTTP | GET |/v1/user/accounts |
+| HTTP | GET |/v1/admin/accounts |
 
 ##### Parameters
 none
@@ -154,15 +163,26 @@ none
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept: application/ json -X GET http://localhost:8685/v1/user/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
 
 // Result
-{
-    "addresses": [
-        "16464b93292d7c99099d4d982a05140f12779f5e299d6eb4",
-        "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-        "5cdadc1cfe3da0a3d067e9f1b195b90c5aebfb5afc8d43b4",
-        "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
+"result" : {
+    "addresses" : [
+        "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
+        "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+        "n1GfqPxKgJhWxFgHSaFHPfzuL8sKo5vdGDW",
+        "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+        "n1JZ5Gc5qdTpbrCkwDXZM6gzTpNXyUAoiTa",
+        "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+        "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
+        "n1PHsjHVfTLBjT24cnMYouysaiJoHxZT9cz",
+        "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+        "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+        "n1YoQWHJTnawn6uLPb9XRJuv6C9yQ7x5yGr",
+        "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+        "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ",
+        "n1aV2QqKRmL8S41Rih11tnCzwsR9zPUcye8"
     ]
 }
 ```
@@ -179,17 +199,20 @@ Protocol | Method | API |
 ###### Returns
 `balance` current balance Unit: 1/(10 ^ 18) nas.
 
-nonce current transaction nonce.
+`nonce` current transaction nonce.
+
+`type` 87:normal address, 88:contract address
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/accountstate -d '{"address": "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/accountstate -d '{"address": "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2"}'
 
 // Result
 {
     "balance": "5",
-    "nonce": "0"
+    "nonce": "0",
+    "type" : 87,
 }
 ```
 ####unlock account
@@ -211,7 +234,7 @@ Protocol | Method | API |
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase": "passphrase"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address": "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2", "passphrase": "passphrase"}'
 
 // Result
 {
@@ -224,7 +247,7 @@ Send the transaction, submit the contract interface
 
 Protocol | Method | API |
 | ---------- | -------- | ----- |
-| HTTP | POST |/v1/user/transaction |
+| HTTP | POST |/v1/admin/transaction |
 
 ###### Parameters
 `from` instigator account address hash.
@@ -251,11 +274,14 @@ contract_address contract address information;
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/ json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/ json' -d '{"from": "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "to": "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value": "1000000000000000000", "nonce": 1, "gasPrice": "1000000", "gasLimit": "2000000"} '
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2","to":"n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
-    "txhash": "cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
++   "result" : {
++      "contract_address" : "",
++      "txhash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"
++   }
 }
 ```
 
@@ -289,16 +315,26 @@ contract_address contract address.
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash": "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"}'
 
 // Result
 {
-    "hash": "f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
-    "from": "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-    "to": "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-    "nonce": "12",
-    "timestamp": "1511519091",
-    "chainId": 1
+   "result" : {
+      "to" : "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+      "status" : 2,
+      "gas_price" : "1000000",
+      "contract_address" : "",
+      "from" : "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
+      "gas_limit" : "2000000",
+      "nonce" : "1",
+      "data" : null,
+      "type" : "binary",
+      "value" : "1000000000000000000",
+      "chainId" : 100,
+      "timestamp" : "1522341802",
+      "hash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6",
+      "gas_used" : ""
+   }
 }
 ```
 
