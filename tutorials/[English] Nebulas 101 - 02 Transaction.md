@@ -16,7 +16,7 @@ Here is an introduction to sending a transaction in Nebulas through the three me
 You will need two wallet addresses. An address that has NAS (the sending address, i.e. `from`) and an address you want to send NAS to (the receiving address, i.e. `to`).
 
 ### The sender
-For this tutorial we will use the coinbase address in the `conf/example/config.1a2635..conf`, which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
+For this tutorial we will use the coinbase address in the `conf/example/config.1a2635.conf`, which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
 
 ### The receiver
 A new wallet address that we will create to be used as the receiving address of the transfer.
@@ -30,7 +30,7 @@ Repeat passphrase:
 Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
 
-**Note:** when you run this command you will have a different address than `n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`. Be sure to use your address, which we will refer to as `your_address>` going forward.
+**Note:** when you run this command you will have a different address than `n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`. Be sure to use your address, which we will refer to as `your_address` going forward.
 
 The command above will generate a json file at this location: `src/github.com/go-nebulas/keydir/`
 
