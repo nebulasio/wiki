@@ -46,7 +46,7 @@ if success, response will be returned like this
         "chain_id":100,
         "tail":"7adf5b9cc8b3c92f55fe7f71f8e6ce1318109c1169828a9ea4b3ea3f5f660c71",
         "height":"120",
-        "coinbase":"eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8",
+        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
         "peer_count":0,
         "is_mining":false,
         "protocol_version":"/neb/1.0.0","synchronized":false,
