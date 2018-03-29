@@ -15,11 +15,11 @@ Nebulas提供了三种方式去发送我们的交易：
 2. 修改节点的配置文件，配置 coinbase 地址。
 
 #### 准备工作细节
-#### 1. 配置挖矿钱包地址coinbase 
+##### 1. 配置挖矿钱包地址coinbase 
 
 coinbase 对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。这里我们使用默认配置文件 config_local.conf 中的 coinbase 地址 `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`。
 
-#### 2. 创建转账的接收地址
+##### 2. 创建转账的接收地址
 
 现在我们通过 `account new` 指令创建一个转帐交易接收地址。
 ```sh
@@ -68,7 +68,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/account
 
 #### 1. 获取账户信息；
 
-```
+```diff
 // Request
 curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
 
@@ -80,7 +80,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
         "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR", 
         "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW", 
         "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8", 
-        <font  color=#0099ff>"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", </font>
+        "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", 
         "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", 
         "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC", 
         "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", 
@@ -90,7 +90,8 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
 
 ```
 
-[`Accounts`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#accounts)返回了当前启动的节点里面所有的账户信息，我们可以从中找到我们之前创建的coinbase账户地址（红色标识）以及我们接受转账的账户地址（蓝色标识）。
+[`Accounts`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#accounts)返回了当前启动的节点里面所有的账户信息，我们可以从中找到我们之前创建的coinbase账户地址，以及我们接受转账的账户地址。
+
 
 #### 2. 找一个账户余额大于0的账户用于转账，并解锁该账户；
 

@@ -19,14 +19,14 @@ sudo apt-get install git make wget
 
 ### Nebulas Environment Set Up
 
-Nebulas is implemented in Go Language. Installing Go Lang is required. Go Lang version `>=1.9`.
+Nebulas is implemented using Go Language. Installing Golang develop environment is required. And the golang version should`>= 1.9`.
 
-*NVM (Nebulas Virtual Machine) uses JavaScript v8 engine. As currently v8 only run on Mac and Linux versions, Nebulas can only run on Mac and Linux at this stage. The Windows version will be coming soon.*
+*NVM (Nebulas Virtual Machine) uses V8 JavaScript engine. As currently V8 only works on Mac and Linux, Nebulas can only runs on Mac and Linux at this stage. The Windows version will be coming soon.*
 
-[Go Lang Installation](https://golang.org/doc/install)
+[Golang Installation](https://golang.org/doc/install)
 
 #### Install Go Environment on Mac 
-`brew` is recommended for installation. To install `brew`, pleace go to [homebrew](https://brew.sh/).
+`brew` is recommended for installing golang on Mac. Please refer to [Homebrew](https://brew.sh/) to install`brew` .
 
 Installation command:
 
@@ -37,34 +37,32 @@ brew install go
 After installation, use `go env` to check version for Go
 ![go env](resources/101-01-go-env.png)
 
-#### Setup project folders on Mac
-first we should create a folder named "go" and place that in the documents folder. Then we should open up go folder and create another folder named src. So your project folder should be on Mac; Users/yourUserName/Documents/go/src/. For now just remember this location; Users/yourUserName/Documents/go
+##### Setup golang project directory on Mac
 
-The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. Add `GOBIN` to `PATH`.
+The environment variables that need to be set after installation are: `GOPATH`,`GOBIN`. and then add `GOBIN` to `PATH`.
 
-Find you .bash_profile in Mac- Users/myUserName/.bash_profile
-If you you don’t see the file you need to go to open up terminal and type
+Find `.bash_profile` in path `Users/myUserName/.bash_profile`.
+If the file is invisible then you need to open up terminal and type
 
 ```
 defaults write com.apple.finder AppleShowAllFiles TRUE
 ```
 
-Open up .bash_profile and copy paste this below.
+Then you can find and edit `~/.bash_profile`.
 
-Edit `~/.bash_profile`:
+Open up .bash_profile and add the code below:
 
 ```
-    export GOPATH=/Users/yourUserName/Documents/go
+    export GOPATH=<go path>
     export GOBIN=$GOPATH/bin
     export PATH=$PATH:$GOBIN
 ```
- **Note the export GOPATH=/Your/location/of/go (refer to Setup project folders) you must get the exact location then add it to the .bash_profile**
 
-### Save the changes to your .bash_profile file.
-Now restart the terminal: this is important to continue in the next step
 
-**Notice:GOPATH is a local go work directory and can be configured on its own. After GOPATH is configured, your go projects need to be placed in GOPATH directory.**
+**Notice:GOPATH is a local golang working directory which could be decided by youself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.**
 
+ Save the changes to your .bash_profile file, and then restart the terminal: this is important to continue in the next step
+ 
 #### Install Go Environment on Linux (Ubuntu)
 See https://golang.org/doc/install
 Download the golang archive
@@ -77,13 +75,13 @@ wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
 ```
 tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
 ```
-Add /usr/local/go/bin to the PATH environment variable in your $HOME/.bashrc (or your profile or wherever you want it to be):
+Add /usr/local/go/bin to the PATH environment variable in your $HOME/.bashrc:
 
 ```
 # Added for golang
 export PATH=$PATH:/usr/local/go/bin
 ```
-#### Setup project folders on linux (Ubuntu)
+##### Setup golang project folders on linux (Ubuntu)
 Create your project folder (Taking $HOME/go as an example, but you can basicly put it anywhere you want)
 ```
 mkdir -p $HOME/go/src
@@ -105,17 +103,17 @@ git clone https://github.com/nebulasio/go-nebulas.git
 git checkout master
 ```
 
-Note: If you opt for the second option, don't forget to checkout to `master` branch, otherwise this tutorial might not work for you.
+Note: Don't forget to checkout to `master` branch, otherwise this tutorial might not work for you.
 
-Since Go must compile in `$GOPATH`,  Nebulas code must be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`。
+Since Go must be compiled in `$GOPATH`,  Nebulas code should be in `/src/github.com/nebulasio/go-nebulas` under `$GOPATH`。
 
-Note: make sure you create a src folder and put go-nebulas inside it. The folder structure that includes `github.com/nebulasio/` is a best practice not a requirement.
+Note: make sure you create a `src` folder and put `go-nebulas` inside it. The folder structure `github.com/nebulasio/go-nebulas` is just a suggestion.
 
 #### Install Go Dependencies
 ##### Install dep for mac
-Nebulas' Go code dependency uses [dep](https://github.com/golang/dep). Third-party packages used in development can be downloaded using dep.
+Nebulas golang source code dependency is managered by [dep](https://github.com/golang/dep). Third-party packages used during development can be downloaded using dep.
 
-Use `brew` to install `dep`:
+Use `brew` to install `dep` on Mac:
 
 ```
 $ brew install dep
@@ -129,16 +127,16 @@ cd /usr/local/bin/
 wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
 ln -s dep-linux-amd64 dep
 ```
-###### Install dependencies for Mac/linux
+##### Install dependencies for Mac/linux
 
-Switch to the root directory of the project Install dependencies for Go:
+Switch to the root directory of the project to install dependencies for Go:
 
 ```
 cd <path>/go-nebulas
 make dep
 ```
 
-**PS: `make dep` downloads many dependencies. It would take a long time to download the first time. Some dependencies may fail to download. If you can not download, you can directly download the file generated by dep [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz) and extract it to the code root directory.**
+**PS: `make dep` downloads lots of dependencies. It might take a long time to download for the first time. Some dependencies may fail to download. If you can not download, you can directly download the zipped dependency files generated by dep [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz) and extract it to the nebulas root directory.**
 
 ```
 vendor.tar.gz
@@ -146,20 +144,20 @@ SHA1: 250eccb8f0a48277765c6266bed55187b6c77b2b
 MD5: 13ef26ab05aad391f540f82af07716df
 ```
 
-**PS: If it doesn’t work and you get an error: validateParams: could not deduce external imports' project roots
-make:[dep] Error 1.
-You should use a vpn and route all information through the vpn or export proxy in the terminal:example; `export http_proxy=http://127.0.0.1:1087`; then try `make dep`**
+**PS: If it doesn’t work and you get an error:` validateParams: could not deduce external imports' project roots
+make:[dep] Error 1.`
+You should use a vpn and route all information through the vpn or export proxy in the terminal. For example; `export http_proxy=http://127.0.0.1:1087`; then try `make dep`**
 
 #### Install V8 for Mac/linux
 
-Nebulas's NVM (Nebulas Virtual Machine) uses the JavaScript V8 engine, and the V8 dependencies for NVM need to be run with `neb` installed. The Mac version of the dynamic link library `libnebulasv8.dylib` and the Linux version of the static link library` libnebulasv8.so` and other libraries are provided by the official V8 Dependency Library for Nebulas. A make command to install V8 dependency libraries has been added. Execute the installation command in the go-nebulas folder which is the project root directory using the terminal:
+Nebulas's NVM (Nebulas Virtual Machine) uses the V8 JavaScript engine, and the `neb` could not run until V8 dependencies build for NVM is installed. The V8 dependencies provided by Mebulas incluses the dynamic link library `libnebulasv8.dylib` for Mac and the static link library` libnebulasv8.so` for Linux and other libraries. A make command is added in the project to install V8 dependency libraries. just run the installation command under the project root directory using the terminal:
 
 ```
 cd go/src/github.com/go-nebulas
 make deploy-v8
 ```
 
-After running make deploy-v8 you should see: 
+You can also install V8 dependencies separately if you don't want to use the dependencies integrated by `make`:
 * On Mac:
 ```
 install nf/nvm/native-lib/*.dylib /usr/local/lib/`
@@ -170,17 +168,10 @@ sudo install nf/nvm/native-lib/*.so /usr/local/lib/
 sudo /sbin/ldconfig
 ```
 
-If you do not use make to integrate V8 link library, you can also install it separately:
-
-* Mac
-	* `install nf/nvm/native-lib/libnebulasv8.dylib /usr/local/lib/`
-* Linux
-	* `sudo install nf/nvm/native-lib/*.so /usr/local/lib/`
-	* `sudo /sbin/ldconfig`
-
-
 #### Make Build for Mac/linux
+You can now build the executable for Nebulas after golang dependencies and V8 dependency packages is installed.
 
+Build under the project root directory:
 ```
 cd go/src/github.com/go-nebulas
 make build
@@ -192,54 +183,37 @@ Developers note: The Nebulas Go main function is in `cmd/neb/main.go`
 
 
 
-Once the build is complete，you will see a generated `neb` file in go-nebulas folder, which is the root directory.
+Once the building is complete，there will be a executable file `neb` generated under the root directory.
 ![make build](resources/101-01-make-build.png)
 
 
-## Starting a Node
+## Build a local test environment
 
-### Creation block (i.e. Genesis block) configuration
+### Genesis block configuration
 
-When the nebula chain is started, configure the information of the **creation block** and use the creation block to configure the **initialization block** information when it is started for the first time. At present, the nebula chain temporarily uses **dpos** (Distributed Proof of Stake) as a consensus algorithm. The pre-allocation of initial mining members and NAS can be set in the creation block configuration.
+When launching the nebulas chain, the information of genesis block need to be configured. The block information will be initialized by **genesis block** configuration when the nebulas chain runs for the first time. At present, the nebula chain temporarily uses **DPOS** (Distributed Proof of Stake) as it's consensus algorithm. The initial mining members and the pre-allocation of NAS can be set in the genesis block configuration.
 
-#### Configuration Information
-
-The default configuration shown below can be found at `conf/default/genesis.conf`
+ **Genesis block configuration information:**
 
 ```
 # Neb genesis text file. Scheme is defined in core/pb/genesis.proto.
 #
 
 meta {
-  # chainID，private default 100，Testnet 1001
+  # chainID，private net is 100 by default ，Testnet is 1001
   chain_id: 100
 }
 
 consensus {
-  # dpos genesis miner
+  # dpos Initial mining members
   dpos {
     dynasty: [
-    "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-    "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-    "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-    "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-    "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-    "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-    "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-    "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-    "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-    "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-    "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-    "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-    "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-    "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-    "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-    "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-    "d1abde197e97398864ba74511f02832726edad596775420a",
-    "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-    "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-    "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-    "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
+       "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+       "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+       "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+       "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+       "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+       "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
     ]
   }
 }
@@ -247,25 +221,27 @@ consensus {
 # NAS dispatch，
 token_distribution [
   {
-    address: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
+    address: "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3"
     value: "10000000000000000000000"
   },
   {
     # If the first address goes to 0 then this address is used as a backup
-    address: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8"
+    address: "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8"
     value: "10000000000000000000000"
   }
 ]
 ```
+The genesis configuration file is located in  `conf/default/genesis.conf` by default. This location could also be set in seed node configuration file.
 
 ### Nodes
-
+Nebulas nodes could be started by exceuable file `neb`, which should be executed in terminal.
 Neb nodes include **seed nodes** and ordinary **nodes**.
 
-**Seed Node**: a Nebula chain network **seed node** is used to provide initial synchronization services for other nodes;
+**Seed Node**: the  **seed node**  of Nebula chain network, which is used to provide initial synchronization services for other nodes;
 
-**Node**: a Nebula chain ordinary **node**, starts from the **seed node** synchronization routing and block information.
-Nebula chain seed nodes and nodes start to distinguish through the configuration file. When the node is started, the seed node needs to be started first. After the seed node is started, the network address information of the seed node is updated to the configuration file of the ordinary node, and the network can be mined.
+**Node**: the ordinary **node** of Nebula chain. An ordinary node should sync routing and blocks information form seed node first after it's started.
+
+Nebula chain seed nodes and nodes are distinguished by the configuration file. When starting nebulas nodes, the seed node need to be started first. After the seed node is started, you should to update the network address of the seed node into the configuration file of the ordinary nodes, and then they can be networked for mining.
 
 ### Review config.conf
 
@@ -296,11 +272,11 @@ chain {
   # The genesis block configuration
   genesis: "conf/default/genesis.conf"
   # Mining machine's mining address, the reward will be send to a Coinbase address
-  coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  coinbase: "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"
   # Node signature algorithm
   signature_ciphers: ["ECC_SECP256K1"]
   # Mining machine's mining address
-  miner: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  miner: "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
   # The passphrase used to unlock account
   passphrase: "passphrase"
 }
@@ -349,17 +325,11 @@ stats {
 The default command to start a seed node:
 
 ```
-./neb
+./neb -c conf/default/config_local.conf
 ```
 
-By default neb looks for a configuration file in `conf/default/config.conf` to start a seed node if no configuration file is specified.
+The `-c` flag is used to specify a node configuration file when starting a node:
 
-If you are using a different configuration file than the default, add the `-c` flag at startup to specify the configuration file. For example, to specify a node configuration file when starting a seed node:
-
-```
-./neb -c <path>/new-config.conf
-
-```
 
 After starting, the following should be visible in the terminal:
 ![seed node start](resources/101-01-seed-node-start.png)
@@ -383,11 +353,10 @@ After the node starts, if the connection with the seed node is successful, you c
 
 To create a Node that connects with your seed node you must create a config file that references the seed address.
 
-The seed node `address` and `id` can be found from the seed node log on the line beginning with **node start**:
+The seed node `address` and `id` can be found from the seed node log printed on screen on the line which has words `Started NebService Node`. You can also find this information in log file which locates in folder `./logs/`
 
-```
-time="2018-02-28T14:00:52+08:00" level=info msg="Started NetService Node." file=net_service.go func="net.(*NetService).Start" id=QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP line=61 listening address="[/ip4/127.0.0.1/tcp/8680 /ip4/192.168.1.25/tcp/8680]"
-```
+![seed node start](resources/101-01-started-nebService-node.png)
+
 In the log above, the **address** is `/ip4/127.0.0.1/tcp/8680`, the **id** is `QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP `. The Nebulas p2p network uses IPFS's libp2p network library. The format of the seed address is:
 
 ```
