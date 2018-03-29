@@ -199,7 +199,9 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
 
 ###### Returns
 `balance` 当前余额 单位： 1/(10^18) nas
+
 `nonce` 当前交易nonce
+
 `type` 87为普通地址，88为合约地址
 
 ###### HTTP Example
