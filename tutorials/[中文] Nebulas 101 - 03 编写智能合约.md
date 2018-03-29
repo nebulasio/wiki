@@ -38,11 +38,11 @@
 智能合约示例：
 
 ```js
-'use strict';
+"use strict";
 
 var DepositeContent = function (text) {
 	if (text) {
-		let o = JSON.parse(text);
+		var o = JSON.parse(text);
 		this.balance = new BigNumber(o.balance);
 		this.expiryHeight = new BigNumber(o.expiryHeight);
 	} else {
@@ -102,7 +102,7 @@ BankVaultContract.prototype = {
 		}
 
 		if (bk_height.lt(deposit.expiryHeight)) {
-			throw new Error("Can't takeout before expiryHeight.");
+			throw new Error("Can not takeout before expiryHeight.");
 		}
 
 		if (amount.gt(deposit.balance)) {
@@ -110,14 +110,14 @@ BankVaultContract.prototype = {
 		}
 
 		var result = Blockchain.transfer(from, amount);
-		if (result != 0) {
+		if (!result) {
 			throw new Error("transfer failed.");
 		}
 		Event.Trigger("BankVault", {
 			Transfer: {
 				from: Blockchain.transaction.to,
 				to: from,
-				value: amount.toString(),
+				value: amount.toString()
 			}
 		});
 
@@ -128,10 +128,19 @@ BankVaultContract.prototype = {
 	balanceOf: function () {
 		var from = Blockchain.transaction.from;
 		return this.bankVault.get(from);
+	},
+
+	verifyAddress: function (address) {
+		// 1-valid, 0-invalid
+		var result = Blockchain.verifyAddress(address);
+		return {
+			valid: result == 0 ? false : true
+		};
 	}
 };
 
 module.exports = BankVaultContract;
+
 ```
 上面智能合约的示例可以看到，`BankVaultContract`是一个prototype对象，这个对象有一个init()方法，满足了我们说的编写智能合约最基础的规范。
 `BankVaultContract`实现了另外两个方法：
@@ -147,20 +156,15 @@ save():
 
 	// 将金额存入保险柜
 	save: function (height) {
-	   // 获取当前调用合约的地址
 		var from = Blockchain.transaction.from;
-		// 获取当前交易值(value为Bignumber对象)，合约调用者将此金额转入合约地址，存入保险柜
 		var value = Blockchain.transaction.value;
-		// 当前区块高度
 		var bk_height = new BigNumber(Blockchain.block.height);
-		
-		// 获取存款信息
+
 		var orig_deposit = this.bankVault.get(from);
 		if (orig_deposit) {
-			value = value.plus(balance);
+			value = value.plus(orig_deposit.balance);
 		}
-		
-		// 更新存款信息
+
 		var deposit = new DepositeContent();
 		deposit.balance = value;
 		deposit.expiryHeight = bk_height.plus(height);
@@ -174,46 +178,38 @@ takeout():
 ```js
 	// 从保险柜取出存款
 	takeout: function (value) {
-		// 存款人地址
 		var from = Blockchain.transaction.from;
-		// 当前区块高度
 		var bk_height = new BigNumber(Blockchain.block.height);
-		//取款金额
 		var amount = new BigNumber(value);
-		
-		// 存款信息
+
 		var deposit = this.bankVault.get(from);
 		if (!deposit) {
 			throw new Error("No deposit before.");
 		}
 
 		if (bk_height.lt(deposit.expiryHeight)) {
-			throw new Error("Can't takeout before expiryHeight.");
+			throw new Error("Can not takeout before expiryHeight.");
 		}
 
 		if (amount.gt(deposit.balance)) {
 			throw new Error("Insufficient balance.");
 		}
 
-		// 调用blockchain的transfer接口，将待取金额赚到用户的钱包地址
 		var result = Blockchain.transfer(from, amount);
-		if (result != 0) {
+		if (!result) {
 			throw new Error("transfer failed.");
 		}
-		
-		// 添加转移事件监听
-        Event.Trigger("BankVault", {
-            Transfer: {
-                from: Blockchain.transaction.to,
-                to: from,
-                value: amount.toString(),
-            }
-        });
-        
-        // 更新存款信息
+		Event.Trigger("BankVault", {
+			Transfer: {
+				from: Blockchain.transaction.to,
+				to: from,
+				value: amount.toString()
+			}
+		});
+
 		deposit.balance = deposit.balance.sub(amount);
 		this.bankVault.put(from, deposit);
-	}
+	},
 ```
 
 ## 部署智能合约
@@ -239,12 +235,14 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":1,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight)}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0)}};DepositeContent.prototype={toString:function(){return JSON.stringify(this)}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text)},stringify:function(o){return o.toString()}})};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance)}var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit)},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");}if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");}if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");}var result=Blockchain.transfer(from,amount);if(result!=0){throw new Error(\"transfer failed.\");}Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit)},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from)}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC", "value":"0","nonce":7,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight);}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0);}};DepositeContent.prototype={toString:function(){return JSON.stringify(this);}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text);},stringify:function(o){return o.toString();}});};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance);} var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit);},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");} if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");} if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");} var result=Blockchain.transfer(from,amount);if(!result){throw new Error(\"transfer failed.\");} Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit);},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from);},verifyAddress:function(address){var result=Blockchain.verifyAddress(address);return{valid:result==0?false:true};}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
 
 // Result
 {
-    "txhash":"aa833b2771e708ec6970888d2a9a5ab4c79aeed04408157e6b9397a0b47c5f13",
-    "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+	"result":
+	{
+			"txhash":"2dd7186d266c2139fcc92446b364ef1a1037bc96d571f7c8a1716bec44fe25d8","contract_address":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno"
+	}
 }
 ```
 部署智能合约的返回值是transaction的hash地址`txhash`和合约的部署地址`contract_address`。
@@ -275,11 +273,11 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno", "value":"100","nonce":8,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
 
 // Result
 {
-   "txhash": "9008b0958fc26034118bb0f65474c29041116bad8ef909a771af9ed2b2f5d261"
+	"result":{"txhash":"b55358c2e12c1d48d4e6beaee7002a59138294fb2896ea8059ff5277553af59f","contract_address":""}
 }
 ```
 智能合约的调用本质也是提交一个transation，所以也依赖矿工打包，矿工将交易打包成功以后调用才算成功，所以智能合约的调用也不是立即生效。我们需要等待一段时间（约一分钟），然后可以验证我们的调用是否成功。
@@ -291,11 +289,11 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":4,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno","value":"0","nonce":9,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
 
 // Result
 {
-   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
+	"result":{"txhash":"3d069543cb659c0cc4254b7ff96b2020b5d2d0a54f111cf0f20f177356988dce","contract_address":""}
 }
 ```
 上面takeout()方法与save()方法有所不同，只是从保险柜取出50的金额，将取出的金额转给用户是智能合约内部的操作，所以value参数不需要有值，取出的金额是操作的智能合约相关的参数，所以通过args参数来传递。
@@ -328,11 +326,17 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno","value":"0","nonce":10,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
 
 // Result
 {
-   "result": ""
+	"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"556\"}","execute_err":"","estimate_gas":"20209"}
 }
 ```
 智能合约的查询本质也是提交一个transation，transaction提交后只在本地执行，所以智能合约的查询立即生效。在查询方法返回结果中可以看到执行结果。
+
+**参考链接:
+
+http://javascriptcompressor.com
+
+https://www.freeformatter.com/javascript-escape.html#ad-output
