@@ -44,7 +44,7 @@ Smart contract example:
 
 var DepositeContent = function (text) {
 	if (text) {
-		let o = JSON.parse(text);
+		var o = JSON.parse(text);
 		this.balance = new BigNumber(o.balance);
 		this.expiryHeight = new BigNumber(o.expiryHeight);
 	} else {
@@ -70,12 +70,12 @@ var BankVaultContract = function () {
 	});
 };
 
-
+// save value to contract, only after height of block, users can takeout
 BankVaultContract.prototype = {
 	init: function () {
 		//TODO:
 	},
-// save value to contract, only after height of block, users can modify
+
 	save: function (height) {
 		var from = Blockchain.transaction.from;
 		var value = Blockchain.transaction.value;
@@ -104,7 +104,7 @@ BankVaultContract.prototype = {
 		}
 
 		if (bk_height.lt(deposit.expiryHeight)) {
-			throw new Error("Can't takeout before expiryHeight.");
+			throw new Error("Can not takeout before expiryHeight.");
 		}
 
 		if (amount.gt(deposit.balance)) {
@@ -112,27 +112,32 @@ BankVaultContract.prototype = {
 		}
 
 		var result = Blockchain.transfer(from, amount);
-		if (result != 0) {
+		if (!result) {
 			throw new Error("transfer failed.");
 		}
 		Event.Trigger("BankVault", {
 			Transfer: {
 				from: Blockchain.transaction.to,
 				to: from,
-				value: amount.toString(),
+				value: amount.toString()
 			}
 		});
 
 		deposit.balance = deposit.balance.sub(amount);
 		this.bankVault.put(from, deposit);
 	},
-
 	balanceOf: function () {
 		var from = Blockchain.transaction.from;
 		return this.bankVault.get(from);
+	},
+	verifyAddress: function (address) {
+		// 1-valid, 0-invalid
+		var result = Blockchain.verifyAddress(address);
+		return {
+			valid: result == 0 ? false : true
+		};
 	}
 };
-
 module.exports = BankVaultContract;
 ```
 As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init() method that satisfies what we call the most basic specification for writing smart contracts.
@@ -148,75 +153,60 @@ save():
 ```js
 
 // Deposit the amount into the safe
+
 save: function (height) {
-    
-// Get the address of the current call contract
-var from = Blockchain.transaction.from;
+	var from = Blockchain.transaction.from;
+	var value = Blockchain.transaction.value;
+	var bk_height = new BigNumber(Blockchain.block.height);
 
-// Get the current transaction value (value is Bignumber object), the contract caller will be transferred to the contract address, deposited into the safe
-var value = Blockchain.transaction.value;
+	var orig_deposit = this.bankVault.get(from);
+	if (orig_deposit) {
+		value = value.plus(orig_deposit.balance);
+	}
+	var deposit = new DepositeContent();
+	deposit.balance = value;
+	deposit.expiryHeight = bk_height.plus(height);
 
-// The current block height
-var bk_height = new BigNumber(Blockchain.block.height);
-
-// Get deposit information
-var orig_deposit = this.bankVault.get (from);
-if (orig_deposit) {
-value = value.plus (balance);
-}
-
-// Update the deposit information
-var deposit = new DepositeContent ();
-deposit.balance = value;
-deposit.expiryHeight = bk_height.plus(height);
-
-this.bankVault.put(from, deposit);
+	this.bankVault.put(from, deposit);
 },
 ```
 
 takeout ():
 
 ```js
-// Remove the deposit from the safe
 takeout: function (value) {
-// depositor address
-var from = Blockchain.transaction.from;
-// The current block height
-var bk_height = new BigNumber(Blockchain.block.height);
-// withdrawal amount
-var amount = new BigNumber(value);
-// Deposit information
-var deposit = this.bankVault.get(from);
-if (!deposit) {
-throw new Error("No deposit before.");
-}
+	var from = Blockchain.transaction.from;
+	var bk_height = new BigNumber(Blockchain.block.height);
+	var amount = new BigNumber(value);
 
-if (bk_height.lt(deposit.expiryHeight)) {
-throw new Error("Can not takeout before expiryHeight.");
-}
+	var deposit = this.bankVault.get(from);
+	if (!deposit) {
+		throw new Error("No deposit before.");
+	}
 
-if (amount.gt(deposit.balance)) {
-throw new Error("Insufficient balance.");
-}
+	if (bk_height.lt(deposit.expiryHeight)) {
+		throw new Error("Can not takeout before expiryHeight.");
+	}
 
-// Transfer blockchain transfer interface, the amount to be transfered to the user's wallet address
-var result = Blockchain.transfer(from, amount);
-if (result != 0) {
-throw new Error("transfer failed.");
-}
-// Add transfer event listener
-        Event.Trigger("BankVault", {
-            Transfer: {
-                from: Blockchain.transaction.to,
-                to: from,
-                value: amount.toString(),
-            }
-        });
-        
-        // Update the deposit information
-deposit.balance = deposit.balance.sub(amount);
-this.bankVault.put(from, deposit);
-}
+	if (amount.gt(deposit.balance)) {
+		throw new Error("Insufficient balance.");
+	}
+
+	var result = Blockchain.transfer(from, amount);
+	if (!result) {
+		throw new Error("transfer failed.");
+	}
+	Event.Trigger("BankVault", {
+		Transfer: {
+			from: Blockchain.transaction.to,
+			to: from,
+			value: amount.toString()
+		}
+	});
+
+	deposit.balance = deposit.balance.sub(amount);
+	this.bankVault.put(from, deposit);
+},
 ```
 
 ## Deploy smart contracts
@@ -242,12 +232,14 @@ Example of deploying a smart contract using curl:
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":1,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight)}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0)}};DepositeContent.prototype={toString:function(){return JSON.stringify(this)}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text)},stringify:function(o){return o.toString()}})};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance)}var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit)},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");}if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");}if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");}var result=Blockchain.transfer(from,amount);if(result!=0){throw new Error(\"transfer failed.\");}Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit)},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from)}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC", "value":"0","nonce":7,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight);}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0);}};DepositeContent.prototype={toString:function(){return JSON.stringify(this);}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text);},stringify:function(o){return o.toString();}});};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance);} var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit);},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");} if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");} if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");} var result=Blockchain.transfer(from,amount);if(!result){throw new Error(\"transfer failed.\");} Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit);},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from);},verifyAddress:function(address){var result=Blockchain.verifyAddress(address);return{valid:result==0?false:true};}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}'
 
 // Result
 {
-    "txhash":"aa833b2771e708ec6970888d2a9a5ab4c79aeed04408157e6b9397a0b47c5f13",
-    "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+	"result":
+	{
+		"txhash":"2dd7186d266c2139fcc92446b364ef1a1037bc96d571f7c8a1716bec44fe25d8","contract_address":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno"
+	}
 }
 ```
 
@@ -279,11 +271,11 @@ Call smart contract save() method:
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno", "value":"100","nonce":8,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}'
 
 // Result
 {
-   "txhash": "9008b0958fc26034118bb0f65474c29041116bad8ef909a771af9ed2b2f5d261"
+	"result":{"txhash":"b55358c2e12c1d48d4e6beaee7002a59138294fb2896ea8059ff5277553af59f","contract_address":""}
 }
 ```
 
@@ -296,11 +288,11 @@ Call the smart contract takeout() method:
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":4,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno","value":"0","nonce":9,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}'
 
 // Result
 {
-   "txhash": "cab27f9653cd8f3232d68fc8123d85ea508181a545b22d6eefd1f394dee7d053"
+	"result":{"txhash":"3d069543cb659c0cc4254b7ff96b2020b5d2d0a54f111cf0f20f177356988dce","contract_address":""}
 }
 ```
 The above takeout() method is different from the save() method except that the value of 50 is taken out of the safe, and the amount withdrawn to the user is an operation inside the smart contract, so the value parameter does not need to have a value and the amount withdrawn is the operation Smart contract related parameters, so passed through args parameters.
@@ -333,12 +325,13 @@ Call the smart contract balanceOf() method:
 
 ```js
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"n1NZttPdrJCwHgFN3V6YnSDaD5g8UbVppoC","to":"n1qsgj2C5zmYzS9TSkPTnp15bhCCocRPwno","value":"0","nonce":10,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
 
 // Result
 {
-   "result": ""
+	"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"556\"}","execute_err":"","estimate_gas":"20209"}
 }
+
 ```
 The essence of intelligent contract query is to submit a transaction, transactions are submitted only in the local implementation or local network, so the smart contract inquiries immediately take effect. With the query method it returns the results and you can see the results.
 
