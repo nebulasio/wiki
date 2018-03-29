@@ -229,7 +229,7 @@ sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
 	- `sourceType`: 合约代码类型，支持`js`和`ts`(对应javaScript和typeScript代码)
 	- `args`: 合约初始化方法参数，无参数为空字符串，有参数时为JSON数组
 
-详细的接口文档[API](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction).
+详细的接口文档[API](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction).
 
 使用curl方式部署智能合约示例：
 

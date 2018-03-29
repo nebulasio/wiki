@@ -12,7 +12,7 @@ Information about it is below.
 
 > Genesis.conf
 
-Genesis.conf should be as same as [here](resources/conf/testnet-genesis.conf) exactly.
+Genesis.conf should be as same as [here](resources/conf/testnet/genesis.conf) exactly.
 
 > neb.conf
 
@@ -25,10 +25,10 @@ Notice:
 ```
 seed:["/ip4/35.154.108.11/tcp/8680/ipfs/QmTvcQ3E1yGdKoW6rSQYVNpbLUivXtb44Py72EvySSLaQx"]
 ```
-* `chain_id` should be 1001, as same as [genesis.conf](resources/conf/testnet-genesis.conf).
+* `chain_id` should be `1001`, as same as [genesis.conf](resources/conf/testnet/genesis.conf).
 * `datadir` should be different with private chain.
 
-The example of testnet conf [here](resources/conf/testnet-config.conf).
+The example of testnet conf [here](resources/conf/testnet/config.conf).
 
 #### API List
 
