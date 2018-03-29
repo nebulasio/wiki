@@ -345,3 +345,6 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 
 详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)。
 
+### 下一步: 教程 6:
+
+ [连接测试网络](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E4%B8%AD%E6%96%87%5D%20Nebulas%20101%20-%2006%20%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C.md)
