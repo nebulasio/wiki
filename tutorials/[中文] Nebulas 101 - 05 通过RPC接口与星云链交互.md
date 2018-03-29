@@ -14,7 +14,7 @@ gRPC使用ProtoBuf来定义服务,protobuf的定义在官方代码的[/rpc/pb](h
 
 ```
 // API接口，定义了节点、账号地址信息获取，发送交易等接口
-api_rpc.proto
+rpc.proto
 
 ```
 使用的时候可以在`rpc/pb`文件夹中执行`make`：
@@ -23,7 +23,7 @@ api_rpc.proto
 cd rpc/pb
 make
 ```
-生成对应的go版本grpc接口代码。官方代码go版本已经生成了，使用的时候可以不用重新生成。gRPC的端口可以在配置文件(eg:`conf/default/seed.conf`)中修改。配置文件的中的端口配置项如下：
+生成对应的go版本grpc接口代码。官方代码go版本已经生成了，使用的时候可以不用重新生成。gRPC的端口可以在配置文件(eg:`conf/default/config.conf`)中修改。配置文件的中的端口配置项如下：
 
 ```
 # 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
@@ -61,7 +61,7 @@ if err != nil {
 
 // API接口访问,锁定账号地址
 management := rpcpb.NewManagementServiceClient(conn)
-from := "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
+from := "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"
 resp, err = management.LockAccount(context.Background(), &rpcpb.LockAccountRequest{Address: from})
 if err != nil {
 	log.Println("LockAccount", from, "failed", err)
@@ -96,7 +96,7 @@ none
 
 `chain_id` 区块链ID.
 
-`version` 节点版本.
+`coinbase` 接收挖矿奖励的地址.
 
 `peer_count` 当前连接的节点数.
 
@@ -104,15 +104,9 @@ none
 
 `bucket_size` 节点路由表保存节点个数.
 
-`relay_cache_size` 转播缓存大小.
-
-`stream_store_size` 节点流数据仓库size.
-
-`stream_store_extend_size` 节点流数据仓库扩展size.
-
 `protocol_version` 网络协议版本.
 
-`RouteTable route_table` 路由表
+`RouteTable*[] route_table` 路由表
 
 ```
 message RouteTable {
@@ -345,7 +339,8 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
       "hash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6",
       "gas_used" : ""
    }
-}```
+}
+```
 
 
 详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)。
