@@ -146,7 +146,9 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinf
       "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
       "peer_count" : 0
    }
-}```
+}
+```
+
 ##### 账号列表
 返回节点存在的账号列表。
 
