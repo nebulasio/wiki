@@ -29,8 +29,10 @@ Passphrase:
 Repeat passphrase:
 Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
-执行完这个命令以后，根据提示输入密码，该密码用于加密私钥信息。之后neb程序会在项目根目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：
+执行完这个命令以后，根据提示输入密码，该密码用于加密私钥信息。之后neb程序会在项目根目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：.
 ![key](resources/101-02-new-key.png)
+
+**注意:** 每当执行该命令创建账户时，都会得到一个不同的账户地址。所以这里你得到的地址并不是`n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`，在下面的例子中要使用你自己得到的地址替换"your_address"。
 
 ### 启动neb应用
 完成所有的准备工作后，就可以启动neb应用。启动neb应用的方式非常简单：
@@ -46,7 +48,7 @@ Nebulas提供了RPC接口，让开发者通过HTTP或gPRC协议与星云链进�
 接下来，我们使用curl工具来展示RPC接口的调用。
 
 我们可以通过查询该coinbase地址账户余额的接口去查看这个用户挖矿的奖励。当coinbase账户地址有余额以后，就可以进行转账交易了。
-当系统启动以后，我们可以通过curl发送http请求的方式查询账户的余额信息，下面的返回值表示这个地址的余额是64：
+当系统启动以后，我们可以通过curl发送http请求的方式查询账户的余额信息，下面的返回值表示这个地址的余额是67066180000000000000 Wei(1 NAS = 1*10^18 Wei)：
 
 ```sh
 // Request
@@ -81,7 +83,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
         "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW", 
         "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8", 
         "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", 
-        "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", 
+        "your_address", 
         "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC", 
         "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", 
         "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3", 
@@ -117,7 +119,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 ##### 3.1 对交易进行签名
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
 
 // Result
 {
@@ -127,6 +129,13 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 }
 ```
 [`SignTransactionWithPassphrase`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase)对一笔交易信息进行签名。上面的交易内容为账户`n1QZMX`向账户`n1SQe5` 转账金额10 Wei。转账时必须配置`gasPrice`和`gasLimit`，这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户状态信息获取。该接口返回值是该交易的签名数据。
+
+**注意:** 交易中的`value`, `gasPrice` 和 `gasLimit` 应该是字符串类型，需要用双引号或单引号括起来，因为他们的值有可能很大，会超出整型数值的表示范围。如果没有双引号会得到如下错误：
+```
+{"error":"json: cannot unmarshal number into Go value of type string"} 
+// this means you forgot to add “10” quotes around the numbers
+```
+
 
 ##### 3.2 发送交易签名
 ```
@@ -141,11 +150,16 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 }
 ```
  [`SendRawTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendrawtransaction)用于发送交易，发送信息为交易的签名数据，返回值为该交易的 hash 值，通过该 hash 值可以用来对这笔交易进行查询。
+ 
+**注意：** 如果你尝试重发一次该指令，会得到一个错误。因为每次交易的nonce（交易编号）不能重复，这样是为了避免重复发送和执行交易导致账户损失。所以每个账号发送的不同交易的编号都不能相同，每发送一笔交易，nonce应该自增。
+```
+{"error":"transaction's nonce is invalid, should bigger than the from's nonce"}
+```
 
 另外，以上两步交易也可以通过[`SendTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)一次完成：
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -168,7 +182,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
 		"chainId": 100,
 		"from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
-		"to": "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy",
+		"to": "your_address",
 		"value": "10",
 		"nonce": "1",
 		"timestamp": "1522339267",
@@ -188,7 +202,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
 
 // Result
 {
@@ -239,7 +253,7 @@ admin.newAccount                    admin.setHost                       admin.un
             "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
             "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
             "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
-            "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy",
+            "your_address",
             "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
             "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
             "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
@@ -272,7 +286,7 @@ Passphrase:
 
 
 ```js
-> admin.sendTransaction("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy","10",2, "1000000", "200000")
+> admin.sendTransaction("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "your_address","10",2, "1000000", "200000")
 {
     "result": {
         "contract_address": "",
@@ -299,7 +313,7 @@ Passphrase:
         "nonce": "2",
         "status": 1,
         "timestamp": "1522341302",
-        "to": "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy",
+        "to": "your_address",
         "type": "binary",
         "value": "10"
     }
@@ -309,7 +323,7 @@ Passphrase:
 ##### 查询账号余额情况
 
 ```js
-> api.getAccountState("n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy")
+> api.getAccountState("your_address")
 {
     "result": {
         "balance": "20",

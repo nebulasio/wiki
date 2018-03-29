@@ -16,23 +16,21 @@ Here is an introduction to sending a transaction in Nebulas through the three me
 You will need two wallet addresses. An address that has NAS (the sending address, i.e. `from`) and an address you want to send NAS to (the receiving address, i.e. `to`).
 
 ### The sender
-For this tutorial we will use the first address in the dpos dynasty `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c` because it is initialized with NAS when we start our seed node, NAS that we can send to another wallet because we know the passphrase for this address. You can see this address in the `conf/default/genesis.conf` file as shown below.
-
-![key](resources/101-02-genesis.png)
+For this tutorial we will use the coinbase address in the `conf/example/config.1a2635..conf`, which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
 
 ### The receiver
 A new wallet address that we will create to be used as the receiving address of the transfer.
 
 Generating a new Nebulas address:
 ```sh
-$ ./neb account new
+$ ./neb -c conf/default/config_local.conf account new
 Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
 Passphrase:
 Repeat passphrase:
-Address: e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88
+Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
 
-**Note:** when you run this command you will have a different address than `e6dea0d0769fbf71ab01f8e0d78cd59e78361a450e1f4f88`. Be sure to use your address, which we will refer to as `<your address>` going forward.
+**Note:** when you run this command you will have a different address than `n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`. Be sure to use your address, which we will refer to as `your_address>` going forward.
 
 The command above will generate a json file at this location: `src/github.com/go-nebulas/keydir/`
 
@@ -42,7 +40,7 @@ This is a two part process. First you must start a seed node, then start a norma
 
 **Starting the Seed Node**
 
-`$ ./neb -c conf/default/config.conf`
+`$ ./neb -c conf/default/config_local.conf`
 
 **Starting the normal Node**
 
@@ -50,7 +48,7 @@ In a separate terminal window run the following:
 
 `$ ./neb -c conf/example/config.1a2635.conf`
 
-After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `config.1a2635.conf` which is `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c`.
+After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `config.1a2635.conf` which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`.
 
 ## Using `curl` to interact with the network
 Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gRPC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
@@ -66,29 +64,33 @@ We can check the coinbase address account balance to see the initial token distr
 In the terminal make the following curl request:
 
 ```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
-
-
-// Response
-{
-  "balance":"10080640000000000000000"，
-  "nonce":"0"
-}
+/// Request
+ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+ 
+ // Result
+ {
+ 	"result": {
+ 		"balance": "67066180000000000000",
+ 		"nonce": "0",
+ 		"type": 87
+ 	}
+ }
 ```
-Great! The above shows us the balance for the address that we sent the initial token distribution to and that we are sending mining rewards to.
+Great! The above shows us the balance for the address that we are sending mining rewards to.
 
 Now, let's check the balance of the address we created ourselves. In the terminal make the following curl request:
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"<your address>"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
 
-
-// Response
+// Result
 {
-  "balance":"0"，
-  "nonce":"0"
+	"result": {
+		"balance": "0",
+		"nonce": "0",
+		"type": 87
+	}
 }
 ```
 
@@ -100,15 +102,17 @@ Now let’s transfer some NAS from one address to another!
 
 Before we can transfer NAS out of an address it must be unlocked. To unlock an address you need to know the passphrase for that address. Currently, an address will stay unlocked for 5 minutes. Note: you do not need to unlock the receiving address.
 
-Let's unlock `1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c`.
+Let's unlock `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`.
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "passphrase":"passphrase"}'
 
-// Response
+// Result
 {
-  "result":true
+	"result": {
+		"result": true
+	}
 }
 ```
 
@@ -121,11 +125,14 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"<your address>","nonce": 1,"value": "10","gasPrice":"1000000","gasLimit":"200000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
 
-// Response
+// Result
 {
-  "txhash":"17657a7a574ea767bd1618f2392d7a212b71c8ca5bd688623085c257022d07aa"
+    "result":{
+      "txhash":"fb5204e106168549465ea38c040df0eacaa7cbd461454621867eb5abba92b4a5",
+      "contract_address":""
+    }
 }
 
 ```
@@ -133,7 +140,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 **Note:** After the `from` and `to` addresses there is `nonce `, `value`, `gasPrice` and `gasLimit`. The `value`, `gasPrice` and `gasLimit` number should be a string, as the value is too big to use integers. For example "10" or "12" or "100" etc.. so if you get an error:
 
 ```
-{"error":"json: cannot unmarshal number into Go value of type string","code":3} – this means you forgot to add “10” quotes around the numbers
+{"error":"json: cannot unmarshal number into Go value of type string"} – this means you forgot to add “10” quotes around the numbers
 ```
 
 If your transaction was successful and you see a response that includes a `txhash`, go ahead and try running the exact same curl request again.
@@ -173,16 +180,26 @@ Note: Use the `txhash` that you generated in your last successful transaction.
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"<your txhash goes here>"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d"}'
 
-// Response
+// Result
 {
-  "hash":"93930906f21282b4cd72de8292d122806f65e6803cddd9e9e203561996237ace",
-  "from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-  "to":"<your address>",
-  "nonce":"1",
-  "timestamp":"1511519091",
-  "chainId":1
+	"result": {
+		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
+		"chainId": 100,
+		"from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+		"to": "your_address",
+		"value": "10",
+		"nonce": "1",
+		"timestamp": "1522339267",
+		"type": "binary",
+		"data": null,
+		"gas_price": "1000000",
+		"gas_limit": "2000000",
+		"contract_address": "",
+		"status": 1,
+		"gas_used": "20000"
+	}
 }
 ```
 
@@ -194,12 +211,15 @@ Now were going to check the balance of the transfer receiving account to verify 
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"<your address>"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
 
-// Response
+// Result
 {
-  "balance":"10",
-  "nonce":"0"
+	"result": {
+		"balance": "10",
+		"nonce": "0",
+		"type": 87
+	}
 }
 ```
 
@@ -222,83 +242,98 @@ Starting this way will connect the local neb nodes that are started by default. 
 
 ```js
 > api.
-api.accounts              api.getBlockByHash        api.sendRawTransaction
-api.blockDump             api.getNebState           api.sendTransaction
-api.call                  api.getTransactionReceipt
-api.getAccountState       api.nodeInfo
+api.call                    api.getBlockByHeight        api.latestIrreversibleBlock 
+api.estimateGas             api.getDynasty              api.sendRawTransaction      
+api.gasPrice                api.getEventsByHash         api.subscribe               
+api.getAccountState         api.getNebState             
+api.getBlockByHash          api.getTransactionReceipt
 ```
 ```js
 > admin.
-admin.lockAccount                   admin.setHost
-admin.newAccount                    admin.signTransaction
-admin.sendTransactionWithPassphrase admin.unlockAccount
+admin.accounts                      admin.nodeInfo                      admin.signHash                      
+admin.getConfig                     admin.sendTransaction               admin.signTransactionWithPassphrase 
+admin.lockAccount                   admin.sendTransactionWithPassphrase admin.startPprof                    
+admin.newAccount                    admin.setHost                       admin.unlockAccount  
 ```
 
 ##### Check Account Addresses
 ```js
->  api.accounts()
-{
-    "Addresses": [
-         "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-         "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-         "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-         "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-         "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-         "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-         "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-         "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-         "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-         "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-         "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-         "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-         "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-         "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-         "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-         "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-         "d1abde197e97398864ba74511f02832726edad596775420a",
-         "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-         "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-         "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-         "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
-    ]
-}
+>  admin.accounts()
+   {
+       "result": {
+           "addresses": [
+               "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+               "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+               "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+               "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
+               "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+               "your_address",
+               "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+               "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+               "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+               "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
+           ]
+       }
+   }
 ```
 
 ##### Unlock Account
 
 ```js
-> admin.unlockAccount("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c")
-Unlock account "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
+> admin.unlockAccount("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5")
+Unlock account n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5
 Passphrase:
 {
-  "result": true
+    "result": {
+        "result": true
+    }
 }
 ```
 
 ##### Send Transaction
 
 ```js
- >  api.sendTransaction ("1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c", "<your address>", "1000000000000000000", 1, "1000000", "200000")
+> admin.sendTransaction("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "your_address","10",2, "1000000", "200000")
 {
-  "txhash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22"
+    "result": {
+        "contract_address": "",
+        "txhash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d"
+    }
 }
 ```
 
 ##### Check Transactions
 
 ```js
->  api.getTransactionReceipt ("4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22")
+> api.getTransactionReceipt("84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d")
 {
-  "chainId":  100,
-  "from":  "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-  "gas_limit":  "20000",
-  "gas_price":  "1000000",
-  "hash":  "4cfb6461873a478f10eb35424e03ab5abad3e10bd030d2f31b3c96a02b747d22",
-  "nonce":  "1",
-  "timestamp":  "1514898795",
-  "to":  "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-  "type":  "binary",
-  "value":  "1000000000000000000"
+    "result": {
+        "chainId": 100,
+        "contract_address": "",
+        "data": null,
+        "from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "gas_limit": "200000",
+        "gas_price": "1000000",
+        "gas_used": "20000",
+        "hash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d",
+        "nonce": "2",
+        "status": 1,
+        "timestamp": "1522341302",
+        "to": "your_address",
+        "type": "binary",
+        "value": "10"
+    }
+}
+```
+#### check account balance
+```js
+> api.getAccountState("your_address")
+{
+    "result": {
+        "balance": "20",
+        "nonce": "0",
+        "type": 87
+    }
 }
 ```
 
