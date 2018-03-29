@@ -140,6 +140,7 @@ function approveEvent: function(status, from, spender, value)
 - [NRC20.js](https://github.com/nebulasio/go-nebulas/blob/master/nf/nvm/test/NRC20.js)
 
 ```js
+
 'use strict';
 
 var Allowed = function (obj) {
@@ -153,7 +154,7 @@ Allowed.prototype = {
     },
 
     parse: function (obj) {
-        if ( typeof obj != "undefined" ) {
+        if (typeof obj != "undefined") {
             var data = JSON.parse(obj);
             for (var key in data) {
                 this.allowed[key] = new BigNumber(data[key]);
@@ -253,8 +254,6 @@ StandardToken.prototype = {
         var balance = this.balances.get(from) || new BigNumber(0);
 
         if (balance.lt(value)) {
-
-            this.transferEvent(false, from, to, value);
             throw new Error("transfer failed.");
         }
 
@@ -263,10 +262,9 @@ StandardToken.prototype = {
         this.balances.set(to, toBalance.add(value));
 
         this.transferEvent(true, from, to, value);
-        return true;
     },
 
-    transferFrom: function(from, to, value) {
+    transferFrom: function (from, to, value) {
         var txFrom = Blockchain.transaction.from;
         var balance = this.balances.get(from) || new BigNumber(0);
 
@@ -285,14 +283,12 @@ StandardToken.prototype = {
             this.balances.set(to, toBalance.add(value));
 
             this.transferEvent(true, from, to, value);
-            return true;
         } else {
-            this.transferEvent(false, from, to, value);
             throw new Error("transfer failed.");
         }
     },
 
-    transferEvent: function(status, from, to, value) {
+    transferEvent: function (status, from, to, value) {
         Event.Trigger(this.name(), {
             Status: status,
             Transfer: {
@@ -308,29 +304,30 @@ StandardToken.prototype = {
 
         var oldValue = this.allowance(from, spender);
         if (oldValue != currentValue.toString()) {
-            this.approveEvent(false, from, spender, value);
-            throw new Error("approve failed.");
+            throw new Error("current approve value mistake.");
+        }
+
+        var balance = new BigNumber(this.balanceOf(from));
+        if (balance.lt(value)) {
+            throw new Error("approve value bigger than balance.");
         }
 
         var owned = this.allowed.get(from) || new Allowed();
-
         owned.set(spender, new BigNumber(value));
 
         this.allowed.set(from, owned);
 
         this.approveEvent(true, from, spender, value);
-        
-        return true;
     },
 
-    approveEvent: function(status, from, spender, value) {
+    approveEvent: function (status, from, spender, value) {
         Event.Trigger(this.name(), {
             Status: status,
-			Approve: {
-				owner: from,
-				spender: spender,
-				value: value
-			}
+            Approve: {
+                owner: from,
+                spender: spender,
+                value: value
+            }
         });
     },
 
@@ -339,7 +336,7 @@ StandardToken.prototype = {
 
         if (owned instanceof Allowed) {
             var spender = owned.get(spender);
-            if ( typeof spender != "undefined") {
+            if (typeof spender != "undefined") {
                 return spender.toString(10);
             }
         }
