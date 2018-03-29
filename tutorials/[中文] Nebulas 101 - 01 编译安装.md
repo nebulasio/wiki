@@ -37,12 +37,12 @@ brew install go
 ```
 **注意：GOPATH是本地的go工作目录，可以自行配置，在GOPATH配置完后，go项目工程需要放置到GOPATH目录中。**
 
-#### Linux系统安装go：
+#### Linux系统安装go
 Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上安装Go](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/02.3.md)。
 
 ## 星云链编译
 
-#### 源代码下载：
+#### 源代码下载
 首先从github网站conle代码到本地(本教程使用[v0.6.1版本](https://github.com/nebulasio/go-nebulas/tree/v0.6.1))
 
 ```
@@ -93,10 +93,9 @@ make deploy-v8
 	* `sudo /sbin/ldconfig`
 	
 #### 编译可执行文件
-完成go依赖库和v8依赖包后，可以编译星云链的可执行文件。Nebulas的go工程main函数在`cmd/neb/main.go`中，执行make命令进行编译：
+完成go依赖库和v8依赖包后，可以编译星云链的可执行文件。Nebulas的go工程main函数在`cmd/neb/main.go`中，在项目根目录执行make命令进行编译：
 
-```
-make build
+``` make build
 ```
 编译成功后，在根目录生成`neb`可执行文件。
 ![make build](resources/101-01-make-build.png)
@@ -106,7 +105,7 @@ make build
 #### 创世区块配置
 星云链启动时要配置创世区块的信息，在第一次启动时会使用创世区块配置初始化区块信息。目前星云链暂时使用dpos作为共识算法，初始挖矿成员和NAS的预分配可以在创世区块配置中设置。
 
-配置信息：
+创世区块配置信息：
 
 ```
 # Neb genesis text file. Scheme is defined in core/pb/genesis.proto.
@@ -121,27 +120,12 @@ consensus {
   # dpos 初始挖矿成员配置
   dpos {
     dynasty: [
-    "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c",
-    "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8",
-    "333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700",
-    "48f981ed38910f1232c1bab124f650c482a57271632db9e3",
-    "59fc526072b09af8a8ca9732dae17132c4e9127e43cf2232",
-    "75e4e5a71d647298b88928d8cb5da43d90ab1a6c52d0905f",
-    "7da9dabedb4c6e121146fb4250a9883d6180570e63d6b080",
-    "98a3eed687640b75ec55bf5c9e284371bdcaeab943524d51",
-    "a8f1f53952c535c6600c77cf92b65e0c9b64496a8a328569",
-    "b040353ec0f2c113d5639444f7253681aecda1f8b91f179f",
-    "b414432e15f21237013017fa6ee90fc99433dec82c1c8370",
-    "b49f30d0e5c9c88cade54cd1adecf6bc2c7e0e5af646d903",
-    "b7d83b44a3719720ec54cdb9f54c0202de68f1ebcb927b4f",
-    "ba56cc452e450551b7b9cffe25084a069e8c1e94412aad22",
-    "c5bcfcb3fa8250be4f2bf2b1e70e1da500c668377ba8cd4a",
-    "c79d9667c71bb09d6ca7c3ed12bfe5e7be24e2ffe13a833d",
-    "d1abde197e97398864ba74511f02832726edad596775420a",
-    "d86f99d97a394fa7a623fdf84fdc7446b99c3cb335fca4bf",
-    "e0f78b011e639ce6d8b76f97712118f3fe4a12dd954eba49",
-    "f38db3b6c801dddd624d6ddc2088aa64b5a24936619e4848",
-    "fc751b484bd5296f8d267a8537d33f25a848f7f7af8cfcf6"
+       "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+       "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+       "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+       "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+       "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+       "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
     ]
   }
 }
@@ -149,16 +133,16 @@ consensus {
 # NAS预分配地址金额，
 token_distribution [
   {
-    address: "1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"
+    address: "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3"
     value: "10000000000000000000000"
   },
   {
-    address: "2fe3f9f51f9a05dd5f7c5329127f7c917917149b4e16b0b8"
+    address: "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8"
     value: "10000000000000000000000"
   }
 ]
 ```
-创世区块配置默认放在`conf/default/genesis.conf`中，配置创世区块路径在下面的配置中可以设置。
+创世区块配置默认放在`conf/default/genesis.conf`中，配置创世区块路径可以在种子节点的配置文件中设置。
 
 #### 节点
 星云链节点可以通过执行编译后的`neb`可执行文件启动。节点启动需在终端执行，Neb节点包括种子节点和节点：
@@ -169,9 +153,9 @@ token_distribution [
 星云链的种子节点和节点启动通过配置文件来区分。节点启动需要先启动种子节点，在种子节点启动后，将种子节点的网络地址信息更新到普通节点的配置文件中，可以组网挖矿。
 
 #### 启动种子节点
-星云链的节点启动需要配置文件提供部分配置参数。配置文件使用了使用[Protocol Buffer](https://github.com/google/protobuf)的格式读取配置信息。工程根目录下有默认种子节点配置文件：
+启动星云链的节点需要配置文件提供部分配置参数。配置文件使用了使用[Protocol Buffer](https://github.com/google/protobuf)的格式读取配置信息。工程根目录下有默认种子节点配置文件：
 
-`conf/default/config.conf`
+`conf/default/config_local.conf`
 
 种子节点配置文件内容如下：
 
@@ -183,7 +167,7 @@ network {
   # p2p网络服务ip和端口，服务启动的时候可以listen多组不同的ip和端口
   listen: ["127.0.0.1:8680"]
   # 生成节点ID时候用到的私钥路径，如果不配置，每次都会生成新的不同的节点ID；配置了，会使用配置的私钥生成节点ID
-  #private_key: "conf/network/id_ed25519"
+  #private_key: "conf/network/ed25519key"
 }
 
 # blockchain相关配置
@@ -197,11 +181,11 @@ chain {
   # genesis创世区块的默认配置
   genesis: "conf/default/genesis.conf"
   # 矿机的挖矿地址，获取的奖励将发放给coinbase
-  coinbase: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  coinbase: "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"
   # 节点签名算法
   signature_ciphers: ["ECC_SECP256K1"]
   # 节点挖矿的地址，key文件需要放在`keydir`中
-  miner: "eb31ad2d8a89a0ca6935c308d5425730430bc2d63f2573b8"
+  miner: "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
   # 用于解锁挖矿账户的passphrase
   passphrase: "passphrase"
 }
@@ -241,12 +225,14 @@ stats {
 
 ```
 
-在不指定配置文件时默认读取工程根目录下的`conf/default/config.conf`启动种子节点。默认启动种子节点命令:
+详细的配置文件说明请参考[配置文件示例](https://github.com/nebulasio/wiki/blob/master/resources/conf/neb.conf)。
+
+启动种子节点的命令为:
 
 ```
-./neb
+./neb -c conf/default/config_local.conf
 ```
-若需要使用不同的配置文件，仅需在启动时添加`-c`标记，指定配置文件。例如启动种子节点时指定节点配置文件：
+若需要使用不同的配置文件，需要更改`-c`参数，指定其他配置文件。例如：
 
 ```
 ./neb -c <path>/config.conf
@@ -255,11 +241,9 @@ stats {
 ![seed node start](resources/101-01-seed-node-start.png)
 
 #### 启动节点
-在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从种子节点启动log:**node start**中获取：
+在种子节点启动后如果需要启动普通节点组网与种子节点连接，需要在普通节点配置文件中配置种子节点地址信息，种子节点地址可以从终端打印信息log:**Started NebService Node.**中获取：
+![seed node start](resources/101-01-started-nebService-node.png)
 
-```
-time="2018-02-28T14:00:52+08:00" level=info msg="Started NetService Node." file=net_service.go func="net.(*NetService).Start" id=QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP line=61 listening address="[/ip4/127.0.0.1/tcp/8680 /ip4/192.168.1.25/tcp/8680]"
-```
 上面的log中，地址信息为`/ip4/127.0.0.1/tcp/8680`,id为`QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP `，星云链p2p网络使用了ipfs的libp2p网络库，所以种子地址的格式为下述所示:
 
 ```
@@ -282,5 +266,5 @@ network {
 ```
 ./neb -c conf/example/config.1a2635.conf
 ```
-节点启动后，如果与种子节点连接成功，可以看到下面的log：
+节点启动后，如果与种子节点连接成功，可以在logs/normal.1a2635/目录下的log文件中找到下面的log信息：
 ![node start](resources/101-01-node-start.png)

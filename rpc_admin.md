@@ -171,7 +171,7 @@ UnlockAccount unlock account with passphrase. After the default unlock time, the
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| gRpc |  |  LockAccount |
+| gRpc |  |  UnLockAccount |
 | HTTP | POST |  /v1/admin/account/unlock |
 
 ###### Parameters
