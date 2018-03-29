@@ -36,7 +36,7 @@ rpc {
     http_module: ["api", "admin"]
 }
 ```
-The default configuration port is the above `API: 51510`.
+The default configuration port is the above `API: 8684`.
 
 go gRPC access code is as follows:
 
@@ -124,7 +124,7 @@ repeated string address = 2;
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept: application/ json -X GET http://localhost:8685/v1/user/nodeinfo
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinfo
 
 // Result
 {

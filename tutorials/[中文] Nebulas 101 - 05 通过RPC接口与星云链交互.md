@@ -36,7 +36,7 @@ rpc {
     http_module: ["api","admin"]
 }
 ```
-默认的配置端口为上述的`API:8685`。
+默认rpc的配置端口为上述的`API:8684`。
 
 go的gRPC访问代码如下：
 
@@ -86,7 +86,7 @@ API的接口定义在通过proto文件生成的go接口文件中:
 
 | Protocol | Method | API |
 |----------|--------|-----|
-| HTTP | GET |  /v1/user/nodeinfo |
+| HTTP | GET |  /v1/admin/nodeinfo |
 
 ###### Parameters
 none
@@ -124,26 +124,35 @@ message RouteTable {
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nodeinfo
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinfo
 
 // Result
 {
-    "id":"QmPyr4ZbDmwF1nWxymTktdzspcBFPL6X1v3Q5nT7PGNtUN",
-    "chain_id":100,
-    "version":1,
-    "bucket_size":16,
-    "relay_cache_size":65536,
-    "stream_store_size":128,
-    "stream_store_extend_size":32,
-    "protocol_version":"/neb/1.0.0"
-}
-```
+   "result" : {
+      "protocol_version" : "/neb/1.0.0",
+      "coinbase" : "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+      "bucket_size" : 64,
+      "chain_id" : 100,
+      "route_table" : [
+         {
+            "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+            "address" : [
+               "/ip4/127.0.0.1/tcp/8680",
+               "/ip4/192.168.1.215/tcp/8680"
+            ]
+         }
+      ],
+      "synchronized" : false,
+      "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
+      "peer_count" : 0
+   }
+}```
 ##### 账号列表
 返回节点存在的账号列表。
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | GET |  /v1/user/accounts |
+| Protocol | Method | API                 |
+|----------|--------|---------------------|
+| HTTP     |   GET  |  /v1/admin/accounts |
 
 ##### Parameters
 无
@@ -154,18 +163,30 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nodeinfo
 ##### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/accounts
+curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
 
 // Result
 {
-    "addresses":[
-        "16464b93292d7c99099d4d982a05140f12779f5e299d6eb4",
-        "22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-        "5cdadc1cfe3da0a3d067e9f1b195b90c5aebfb5afc8d43b4",
-        "8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf"
-    ]
-}
-```
+   "result" : {
+      "addresses" : [
+         "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
+         "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
+         "n1GfqPxKgJhWxFgHSaFHPfzuL8sKo5vdGDW",
+         "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
+         "n1JZ5Gc5qdTpbrCkwDXZM6gzTpNXyUAoiTa",
+         "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
+         "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
+         "n1PHsjHVfTLBjT24cnMYouysaiJoHxZT9cz",
+         "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+         "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
+         "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+         "n1YoQWHJTnawn6uLPb9XRJuv6C9yQ7x5yGr",
+         "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+         "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ",
+         "n1aV2QqKRmL8S41Rih11tnCzwsR9zPUcye8"
+      ]
+   }
+}```
 #### 获取账号信息
 返回账号信息，包括账号地址的余额和当前交易nonce。
 
@@ -177,27 +198,30 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/accounts
 `address` 地址哈希.
 
 ###### Returns
-`balance` 当前余额 单位： 1/(10^18) nas.
-
-`nonce` 当前交易nonce.
+`balance` 当前余额 单位： 1/(10^18) nas
+`nonce` 当前交易nonce
+`type` 87为普通地址，88为合约地址
 
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2"}'
 
 // Result
 {
-    "balance":"5",
-    "nonce": "0"
+   "result" : {
+      "balance" : "0",
+      "type" : 87,
+      "nonce" : "0"
+   }
 }
 ```
 #### 解锁账号
 使用密码解锁账号.
 
-| Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/admin/account/unlock |
+| Protocol | Method |           API            |
+|----------|--------|--------------------------|
+|   HTTP   |  POST  | /v1/admin/account/unlock |
 
 
 ###### Parameters
@@ -211,7 +235,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/account
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -223,8 +247,8 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 发送交易，提交合约接口
 
 | Protocol | Method | API |
-|----------|--------|-----|
-| HTTP | POST |  /v1/user/transaction |
+|----------|--------|-----------------------|
+|   HTTP   |  POST  |  /v1/admin/transaction |
 
 ###### Parameters
 `from` 发送账号地址哈希.
@@ -251,11 +275,14 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 ###### Example
 ```
 // Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/transaction -H 'Content-Type: application/json' -d '{"from":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c","to":"333cb3ed8c417971845382ede3cf67a0a96270c05fe2f700", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2","to":"n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
-    "txhash":"cc7133643a9ae90ec9fa222871b85349ccb6f04452b835851280285ed72b008c"
+   "result" : {
+      "contract_address" : "",
+      "txhash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"
+   }
 }
 ```
 
@@ -289,18 +316,27 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/tran
 ###### HTTP Example
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"}'
 
 // Result
 {
-    "hash":"f37acdf93004f7a3d72f1b7f6e56e70a066182d85c186777a2ad3746b01c3b52",
-    "from":"8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf",
-    "to":"22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09",
-    "nonce":"12",
-    "timestamp":"1511519091",
-    "chainId":1
-}
-```
+   "result" : {
+      "to" : "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
+      "status" : 2,
+      "gas_price" : "1000000",
+      "contract_address" : "",
+      "from" : "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
+      "gas_limit" : "2000000",
+      "nonce" : "1",
+      "data" : null,
+      "type" : "binary",
+      "value" : "1000000000000000000",
+      "chainId" : 100,
+      "timestamp" : "1522341802",
+      "hash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6",
+      "gas_used" : ""
+   }
+}```
 
 
 详细的接口使用和参数说明，可以参考官方文档[RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)。
