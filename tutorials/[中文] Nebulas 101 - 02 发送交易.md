@@ -10,15 +10,16 @@ Nebulas提供了三种方式去发送我们的交易：
 
 ### 准备工作
 在启动neb应用之前，需要先做一些准备工作：
+
 1. 准备两个钱包地址，一个钱包地址用于挖矿钱包地址coinbase，接收挖矿奖励，也是后文转账交易的发送方，可在节点config文件中配置；另一个钱包地址是转账的接收地址，即后文转帐交易的接收方，可以用 neb 指令创建。
 2. 修改节点的配置文件，配置 coinbase 地址。
 
 #### 准备工作细节
-#####1. 配置挖矿钱包地址coinbase 
+#### 1. 配置挖矿钱包地址coinbase 
 
 coinbase 对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。这里我们使用默认配置文件 config_local.conf 中的 coinbase 地址 `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`。
 
-#####2. 创建转账的接收地址
+#### 2. 创建转账的接收地址
 
 现在我们通过 `account new` 指令创建一个转帐交易接收地址。
 ```sh
@@ -65,9 +66,9 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/account
 ### 发送并验证转账交易
 发送转账交易，可以按照如下步骤来进行：
 
-####1. 获取账户信息；
+#### 1. 获取账户信息；
 
-```sh
+```
 // Request
 curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
 
@@ -79,7 +80,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
         "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR", 
         "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW", 
         "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8", 
-        "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", 
+        <font  color=#0099ff>"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", </font>
         "n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", 
         "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC", 
         "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", 
@@ -88,9 +89,12 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
 }
 
 ```
+
 [`Accounts`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#accounts)返回了当前启动的节点里面所有的账户信息，我们可以从中找到我们之前创建的coinbase账户地址（红色标识）以及我们接受转账的账户地址（蓝色标识）。
 
-#####2. 找一个账户余额大于0的账户用于转账，并解锁该账户；
+#### 2. 找一个账户余额大于0的账户用于转账，并解锁该账户；
+
+
 这里我们使用`config`文件中的 coinbase 账户`n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`
 ```
 // Request
@@ -105,9 +109,11 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 ```
 在转账交易之前需要先对发送方地址进行解锁，[`UnLockAccount`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount)就是用于解锁账户，解锁账户需要使用创建地址时设置的密码。配置文件中用到的账户的默认密码都是“passphrase”。
 
-#####3. 使用已经解锁的账户向另一个账户发起一笔转账交易；
+#### 3. 使用已经解锁的账户向另一个账户发起一笔转账交易；
+
 发送一笔交易时需要先对交易进行签名，然后再发送交易。
-######3.1 对交易进行签名
+
+##### 3.1 对交易进行签名
 ```
 // Request
 curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
@@ -120,7 +126,8 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 }
 ```
 [`SignTransactionWithPassphrase`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase)对一笔交易信息进行签名。上面的交易内容为账户`n1QZMX`向账户`n1SQe5` 转账金额10 Wei。转账时必须配置`gasPrice`和`gasLimit`，这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户状态信息获取。该接口返回值是该交易的签名数据。
-######3.2 发送交易签名
+
+##### 3.2 发送交易签名
 ```
 // Request
 curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiCLGwkou3td6j97Hoig0Ilrj6MDVTT/ZIhdhVHDfL0pTRIaGVduKnw+6lM3HBXhJEzzuvv3yNdYANelaeAaGhlXgnTQAVavvSNEb+nUQTztv0NL502gnnJqIhAAAAAAAAAAAAAAAAAAAAAKKAEww5v01QU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBh8vZ1c9u9Je+MeySP4KwHjUGNqryPC47VQKGIlM0fLo0IhEHLECIgnBBxq/NRSlNM0XwVSsC2TTiXpGFsUXphgE="}'
@@ -132,9 +139,23 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
     }
 }
 ```
-[`SendRawTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendrawtransaction)用于发送交易，发送信息为交易的签名数据，返回值为该交易的 hash 值，通过该 hash 值可以用来对这笔交易进行查询。
+ [`SendRawTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendrawtransaction)用于发送交易，发送信息为交易的签名数据，返回值为该交易的 hash 值，通过该 hash 值可以用来对这笔交易进行查询。
 
-#####4. 等待大约30s，然后查询该转账交易信息（因为转账交易需要矿工打包才能成功，所以会有一定的延时，并不是实时立马成功）；
+另外，以上两步交易也可以通过[`SendTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)一次完成：
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+
+// Result
+{
+    "result":{
+      "txhash":"fb5204e106168549465ea38c040df0eacaa7cbd461454621867eb5abba92b4a5",
+      "contract_address":""
+    }
+}
+```
+
+#### 4. 等待大约30s，然后查询该转账交易信息（因为转账交易需要矿工打包才能成功，所以会有一定的延时，并不是实时立马成功）；
 
 ```
 // Request
@@ -162,7 +183,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 ```
 [`GetTransactionReceipt`接口](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt)可以对之前的转账交易进行查询，请求参数是之前转账交易的hash值。如果查询到交易信息，说明该交易执行成功。
 
-#####5. 查询转账接收账户余额，验证转账交易是否成功；
+#### 5. 查询转账接收账户余额，验证转账交易是否成功；
 
 ```
 // Request
