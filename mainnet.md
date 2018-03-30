@@ -1,5 +1,5 @@
 
-# How to Join Nebulas Testnet
+# How to Join Nebulas MainNet
 
 ## Introduction
 
