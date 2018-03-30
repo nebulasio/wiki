@@ -8,7 +8,7 @@
 对技术感兴趣的同学可以看星云链[技术白皮书](https://nebulas.io/docs/NebulasTechnicalWhitepaperZh.pdf)和星云链[github代码](https://github.com/nebulasio/go-nebulas)。
 
 ## 星云链环境搭建
-星云链使用go语言开发，首先需要安装go语言的开发环境。推荐使用Mac搭建星云链环境。星云链对go版本的要求`>=1.9`。
+星云链使用go语言开发，首先需要安装go语言的开发环境。推荐使用Mac搭建星云链环境。星云链对go版本的要求`>=1.9.2`。
 
 *由于星云链的NVM(星云链虚拟机)使用了JavaScript的v8引擎，目前官方代码提供的v8依赖库只有Mac和Linux版本；星云链现阶段只能在Mac和Linux上运行，后续会推出windows版本。*
 
@@ -55,6 +55,53 @@ git clone https://github.com/nebulasio/go-nebulas.git
 git checkout master
 ```
 由于go代码编译必须在`$GOPATH`中, 星云链代码要放到go的`$GOPATH`中`/src/github.com/nebulasio/go-nebulas`的位置。请使用`master`分支来运行星云节点。
+
+#### 安装rocksdb依赖库
+
+可参考 [rocksdb 安装说明](https://github.com/facebook/rocksdb/blob/master/INSTALL.md)。
+
+##### 对于Mac系统
+ * 首先要安装支持 C++11 的 C++ 编译器。具体步骤如下。
+
+    * 升级 XCode。可以通过 XCode 应用设置（XCode App's settting）来更新，或者通过以下指令：
+    
+       `  xcode-select --install`
+    
+    *  通过 [homebrew](http://brew.sh/)安装.
+
+        * 如果你是首次用Mac开发，你仍需要运行一次`xcode-select --install`.
+        * 安装GCC 4.8 或更高版本:
+    
+            `brew tap homebrew/versions`        
+            `brew install gcc48 --use-llvm`
+          
+ * 安装 rocksdb:
+
+      `brew install rocksdb`
+
+##### 对于Linux系统
+   * 升级GCC到4.8及以上，以支持C++11
+   * 安装 gflags 。
+    
+        `sudo apt-get install libgflags-de`
+          
+        如果该指令无效，对于Ubuntu，您可以参考这个[指南](http://askubuntu.com/questions/312173/installing-gflags-12-04)。
+   * 安装 snappy 。
+   
+        `sudo apt-get install libsnappy-dev`
+   * 安装 zlib 。
+   
+        `sudo apt-get install zlib1g-dev`
+   * 安装 bzip2 。
+   
+        `sudo apt-get install libbz2-dev`
+   * 安装 lz4 。
+   
+        `sudo apt-get install liblz4-dev`
+   * 安装 zstandard 。
+   
+        `sudo apt-get install libzstd-dev`
+
 
 #### 安装go依赖库
 Nebulas的go代码库依赖管理使用[dep](https://github.com/golang/dep)，开发中使用的第三方包可以使用dep下载。

@@ -109,6 +109,42 @@ Since Go must be compiled in `$GOPATH`,  Nebulas code should be in `/src/github.
 
 **Note:** make sure you create a `src` folder and put `go-nebulas` inside it. The folder structure `github.com/nebulasio/go-nebulas` is just a suggestion.
 
+#### Install rocksdb dependencies.
+
+Please refer to [rocksdb](https://github.com/facebook/rocksdb/blob/master/INSTALL.md) for mor informatiom.
+
+* **OS X**:
+    * Install latest C++ compiler that supports C++ 11:
+        * Update XCode:  run `xcode-select --install` (or install it from XCode App's settting).
+        * Install via [homebrew](http://brew.sh/).
+            * If you're first time developer in MacOS, you still need to run: `xcode-select --install` in your command line.
+            * run `brew tap homebrew/versions; brew install gcc48 --use-llvm` to install gcc 4.8 (or higher).
+    * run `brew install rocksdb`
+
+* **Linux - Ubuntu**
+    * Upgrade your gcc to version at least 4.8 to get C++11 support.
+    * Install gflags. First, try: 
+    
+        `sudo apt-get install libgflags-dev`
+        
+      If this doesn't work and you're using Ubuntu, here's a nice tutorial:
+      (http://askubuntu.com/questions/312173/installing-gflags-12-04)
+    * Install snappy. This is usually as easy as:
+    
+      `sudo apt-get install libsnappy-dev`.
+    * Install zlib. Try: 
+    
+        `sudo apt-get install zlib1g-dev`.
+    * Install bzip2: 
+    
+        `sudo apt-get install libbz2-dev`.
+    * Install lz4: 
+    
+        `sudo apt-get install liblz4-dev`.
+    * Install zstandard: 
+    
+        `sudo apt-get install libzstd-dev`.
+    
 #### Install Go Dependencies
 Nebulas golang source code dependency is managered by [dep](https://github.com/golang/dep). Third-party packages used during development can be downloaded using dep.
 
