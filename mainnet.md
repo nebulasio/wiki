@@ -1,5 +1,5 @@
 
-# How to Join Nebulas MainNet
+# How to Join Nebulas Mainnet
 
 ## Introduction
 
@@ -27,13 +27,12 @@ Notice:
 seed:["/ip4/52.2.205.12/tcp/8680/ipfs/QmQK7W8wrByJ6So7rf84sZzKBxMYmc1i4a7JZsne93ysz5","/ip4/52.56.55.238/tcp/8680/ipfs/QmVy9AHxBpd1iTvECDR7fvdZnqXeDhnxkZJrKsyuHNYKAh","/ip4/13.251.33.39/tcp/8680/ipfs/QmVm5CECJdPAHmzJWN2X7tP335L5LguGb9QLQ78riA9gw3"]
 ```
 * `chain_id` should be `1`, as same as [genesis.conf](resources/conf/mainnet/genesis.conf).
-* `datadir` should be different with private chain.
 
-The example of testnet conf [here](resources/conf/mainnet/config.conf).
+The example of mainnet conf [here](resources/conf/mainnet/config.conf).
 
 #### API List
 
-Test Endpoint:
+Main Endpoint:
 
 | API | URL | Protocol |
 |-------|:------------:|:------------:|
@@ -67,4 +66,4 @@ More Nebulas APIs at [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)
 
 ## Contribution
 
-Feel free to join Nebulas Testnet. If you did find something wrong, please [submit a issue](https://github.com/nebulasio/go-nebulas/issues/new) or [submit a pull request](https://github.com/nebulasio/go-nebulas/pulls) to let us know, we will add your name and url to this page soon.
+Feel free to join Nebulas Mainnet. If you did find something wrong, please [submit a issue](https://github.com/nebulasio/go-nebulas/issues/new) or [submit a pull request](https://github.com/nebulasio/go-nebulas/pulls) to let us know, we will add your name and url to this page soon.
