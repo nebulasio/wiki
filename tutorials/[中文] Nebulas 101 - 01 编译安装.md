@@ -60,7 +60,7 @@ git checkout master
 
 可参考 [rocksdb 安装说明](https://github.com/facebook/rocksdb/blob/master/INSTALL.md)。
 
-##### 对于Mac系统
+** 对于Mac系统**
  * 首先要安装支持 C++11 的 C++ 编译器。具体步骤如下。
 
     * 升级 XCode。可以通过 XCode 应用设置（XCode App's settting）来更新，或者通过以下指令：
@@ -79,8 +79,12 @@ git checkout master
 
       `brew install rocksdb`
 
-##### 对于Linux系统
-   * 升级GCC到4.8及以上，以支持C++11
+** 对于Linux系统**
+   * 升级 gcc 到4.8及以上，以支持C++11
+   
+        查询版本 gcc :   `gcc --version`
+   
+        安装 gcc-4.9 :   `sudo apt-get install gcc-4.9`
    * 安装 gflags 。
     
         `sudo apt-get install libgflags-de`

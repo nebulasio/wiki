@@ -309,7 +309,7 @@ Passphrase:
 {
     "result": {
         "chainId": 100,
-        "contract_address": "",
+
         "data": null,
         "from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
         "gas_limit": "200000",

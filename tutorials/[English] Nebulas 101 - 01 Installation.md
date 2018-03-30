@@ -123,6 +123,10 @@ Please refer to [rocksdb](https://github.com/facebook/rocksdb/blob/master/INSTAL
 
 * **Linux - Ubuntu**
     * Upgrade your gcc to version at least 4.8 to get C++11 support.
+    
+        To check your gcc version:  `gcc --version`
+                                       
+        TO Install gcc-4.9 :   `sudo apt-get install gcc-4.9`
     * Install gflags. First, try: 
     
         `sudo apt-get install libgflags-dev`
