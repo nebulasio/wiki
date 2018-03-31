@@ -16,7 +16,7 @@ Here is an introduction to sending a transaction in Nebulas through the three me
 You will need two wallet addresses. An address that has NAS (the sending address, i.e. `from`) and an address you want to send NAS to (the receiving address, i.e. `to`).
 
 ### The sender
-For this tutorial we will use the coinbase address in the `conf/example/config.1a2635.conf`, which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
+For this tutorial we will use the coinbase address in the `conf/example/miner.conf`, which is `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
 
 ### The receiver
 A new wallet address that we will create to be used as the receiving address of the transfer.
@@ -46,9 +46,9 @@ This is a two part process. First you must start a seed node, then start a norma
 
 In a separate terminal window run the following:
 
-`$ ./neb -c conf/example/config.1a2635.conf`
+`$ ./neb -c conf/example/miner.conf`
 
-After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `config.1a2635.conf` which is `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`.
+After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `miner.conf` which is `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`.
 
 ## Using `curl` to interact with the network
 Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gRPC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
@@ -65,7 +65,7 @@ In the terminal make the following curl request:
 
 ```
 /// Request
- curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
  
  // Result
  {
@@ -82,7 +82,7 @@ Now, let's check the balance of the address we created ourselves. In the termina
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
 
 // Result
 {
@@ -102,11 +102,11 @@ Now let’s transfer some NAS from one address to another!
 
 Before we can transfer NAS out of an address it must be unlocked. To unlock an address you need to know the passphrase for that address. Currently, an address will stay unlocked for 5 minutes. Note: you do not need to unlock the receiving address.
 
-Let's unlock `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`.
+Let's unlock `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`.
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -125,7 +125,7 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -159,7 +159,7 @@ Each time you execute a successful transaction you have to increment the `nonce`
 If you have forgotten what the most recent `nonce` was you can find it by checking the Balance with the `accountstate` endpoint.
 
 ```
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"1a263547d167c74cf4b8f9166cfa244de0481c514a45aa2c"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
 
 {
   "balance":"10234719999999999999990",
@@ -187,7 +187,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 	"result": {
 		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
 		"chainId": 100,
-		"from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+		"from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
 		"to": "your_address",
 		"value": "10",
 		"nonce": "1",
@@ -266,7 +266,7 @@ admin.newAccount                    admin.setHost                       admin.un
                "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
                "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
                "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
-               "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+               "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
                "your_address",
                "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
                "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
@@ -280,8 +280,8 @@ admin.newAccount                    admin.setHost                       admin.un
 ##### Unlock Account
 
 ```js
-> admin.unlockAccount("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5")
-Unlock account n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5
+> admin.unlockAccount("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq")
+Unlock account n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq
 Passphrase:
 {
     "result": {
@@ -293,7 +293,7 @@ Passphrase:
 ##### Send Transaction
 
 ```js
-> admin.sendTransaction("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "your_address","10",2, "1000000", "200000")
+> admin.sendTransaction("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "your_address","10",2, "1000000", "200000")
 {
     "result": {
         "contract_address": "",
@@ -311,7 +311,7 @@ Passphrase:
         "chainId": 100,
         "contract_address": "",
         "data": null,
-        "from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
         "gas_limit": "200000",
         "gas_price": "1000000",
         "gas_used": "20000",

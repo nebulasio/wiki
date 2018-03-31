@@ -248,12 +248,12 @@ consensus {
   # dpos Initial mining members
   dpos {
     dynasty: [
-       "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
-       "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
-       "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
-       "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
-       "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
-       "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
+       "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE",
+       "n1GmkKH6nBMw4rrjt16RrJ9WcgvKUtAZP1s",
+       "n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so",
+       "n1JAy4X6KKLCNiTd7MWMRsVBjgdVq5WCCpf",
+       "n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS",
+       "n1LmP9K8pFF33fgdgHZonFEMsqZinJ4EUqk"
     ]
   }
 }
@@ -261,12 +261,12 @@ consensus {
 # NAS dispatch，
 token_distribution [
   {
-    address: "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3"
+    address: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
     value: "10000000000000000000000"
   },
   {
     # If the first address goes to 0 then this address is used as a backup
-    address: "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8"
+    address: "n1GmkKH6nBMw4rrjt16RrJ9WcgvKUtAZP1s"
     value: "10000000000000000000000"
   }
 ]
@@ -312,11 +312,11 @@ chain {
   # The genesis block configuration
   genesis: "conf/default/genesis.conf"
   # Mining machine's mining address, the reward will be send to a Coinbase address
-  coinbase: "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"
+  coinbase: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
   # Node signature algorithm
   signature_ciphers: ["ECC_SECP256K1"]
   # Mining machine's mining address
-  miner: "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
+  miner: "n1SAQy3ix1pZj8MPzNeVqpAmu1nCVqb5w8c"
   # The passphrase used to unlock account
   passphrase: "passphrase"
 }
@@ -383,10 +383,10 @@ After starting, the following should be visible in the terminal:
 
 After starting the seed node, if you need to start a normal node network connected with the seed node you must add the seed node address information in the normal node's configuration file.
 
-Use this example configuration file `conf/example/config.1a2635.conf` to start a Node that is connected to the seed node you started above. Leave the seed node running, open another terminal window inside of the `go-nebulas` directory and run the following command:
+Use this example configuration file `conf/example/miner.conf` to start a Node that is connected to the seed node you started above. Leave the seed node running, open another terminal window inside of the `go-nebulas` directory and run the following command:
 
 ```
-./neb -c conf/example/config.1a2635.conf
+./neb -c conf/example/miner.conf
 ```
 
 After the node starts, if the connection with the seed node is successful, you can see the following log:

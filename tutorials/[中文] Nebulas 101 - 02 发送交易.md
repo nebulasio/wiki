@@ -15,7 +15,7 @@ Nebulas提供了三种方式去发送我们的交易：
 ##### 1. 准备发送方钱包
 一个钱包地址的余额大概又3种来源：星云链启动时的NAS初始分配（根据创世区块配置）、节点的挖矿奖励（奖励给节点配置中的coinbase地址）、其他钱包地址的转账收入。
 
-本教程中我们用coinbase地址来作为发送方，coinbase对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。这里我们使用项目示例配置文件 `conf/example/config.1a2635.conf` 中的 coinbase 地址 `n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`。
+本教程中我们用coinbase地址来作为发送方，coinbase对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。这里我们使用项目示例配置文件 `conf/example/miner.conf` 中的 coinbase 地址 `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`。
 
 ##### 2. 创建转账的接收地址
 
@@ -42,7 +42,7 @@ $ ./neb -c conf/default/config.conf
 #### 启动普通节点
 新打开一个终端来来启动新的节点:
 ```
-$ ./neb -c conf/example/config.1a2635.conf`
+$ ./neb -c conf/example/miner.conf`
 ```
 neb应用启动之后会默认进入挖矿状态，一段时间以后（1~2分钟），挖矿产生的奖励会发到节点的coinbase账户地址上面。当前开发代码的挖矿奖励为1.42 NAS（后续会根据白皮书的要求进行调整修正），平均出块时间为15秒钟。
 
@@ -59,7 +59,7 @@ Nebulas提供了RPC接口，让开发者通过HTTP或gPRC协议与星云链进�
 
 ```sh
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
 
 // Result
 {
@@ -89,7 +89,7 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
         "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR", 
         "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW", 
         "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8", 
-        "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", 
+        "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", 
         "your_address", 
         "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC", 
         "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", 
@@ -105,10 +105,10 @@ curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/account
 #### 2. 找一个账户余额大于0的账户用于转账，并解锁该账户；
 
 
-这里我们使用`config`文件中的 coinbase 账户`n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5`
+这里我们使用`config`文件中的 coinbase 账户`n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "passphrase":"passphrase"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "passphrase":"passphrase"}'
 
 // Result
 {
@@ -126,7 +126,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/accoun
 ##### 3.1 对交易进行签名
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
 
 // Result
 {
@@ -166,7 +166,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 另外，以上两步交易也可以通过[`SendTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)一次完成：
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -188,7 +188,7 @@ curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTran
 	"result": {
 		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
 		"chainId": 100,
-		"from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+		"from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
 		"to": "your_address",
 		"value": "10",
 		"nonce": "1",
@@ -259,7 +259,7 @@ admin.newAccount                    admin.setHost                       admin.un
             "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
             "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
             "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
-            "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+            "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
             "your_address",
             "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
             "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
@@ -276,8 +276,8 @@ admin.newAccount                    admin.setHost                       admin.un
 当前官方代码中默认keydir中的地址的密码是`passphrase`
 
 ```js
-> admin.unlockAccount("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5")
-Unlock account n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5
+> admin.unlockAccount("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq")
+Unlock account n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq
 Passphrase:
 {
     "result": {
@@ -293,7 +293,7 @@ Passphrase:
 
 
 ```js
-> admin.sendTransaction("n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "your_address","10",2, "1000000", "200000")
+> admin.sendTransaction("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "your_address","10",2, "1000000", "200000")
 {
     "result": {
         "contract_address": "",
@@ -312,7 +312,7 @@ Passphrase:
         "chainId": 100,
         "contract_address": "",
         "data": null,
-        "from": "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
+        "from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
         "gas_limit": "200000",
         "gas_price": "1000000",
         "gas_used": "20000",
