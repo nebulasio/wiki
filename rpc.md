@@ -1,7 +1,7 @@
 # Overview
 Remote Procedure Calls (RPCs) provide a useful abstraction for building distributed applications and services.
 
-Nebulas provide both [gRPC](https://grpc.io) and RESTful API, let users interact with Nebulas.
+Nebulas provides both [gRPC](https://grpc.io) and RESTful API for users to interact with Nebulas.
 
 [grpc](https://github.com/grpc/grpc-go) provides a concrete implementation of the gRPC protocol, layered over HTTP/2. These libraries enable communication between clients and servers using any combination of the supported languages.
 
@@ -27,13 +27,13 @@ The testing client gets account state from sender address, makes a transaction f
 We can see client log output like:
 
 ```
-GetAccountState 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf nonce 1 value 78
-SendTransaction 8a209cec02cbeab7e2f74ad969d2dfe8dd24416aa65589bf -> 22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09 value 2 hash:"d9258c06899412169f969807629e1c152b54a3c4033e43727f3a74855849ffa6"
-GetAccountState 22ac3a9a2b1c31b7a9084e46eae16e761f83f02324092b09 nonce 0 value 2
+GetAccountState n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5 nonce 4 value 3142831039999999999992
+SendTransaction n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5 -> n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ value 2 txhash:"2c2f5404a2e2edb651dff44a2d114a198c00614b20801e58d5b00899c8f512ae"
+GetAccountState n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ nonce 0 value 10
 ```
 ##### HTTP
 Now we also provided HTTP to access the RPC API. The file that ends with **gw.go** is the mapping file.
-Now we can access the rpc API directly from our browser, you can update the **api-http-port** and **management-http-port** in **config-seed/normal.pb.txt** to change HTTP port.
+Now we can access the rpc API directly from our browser, you can update the **rpc_listen** and **http_listen** in **conf/default/config.conf** to change RPC/HTTP port.
 
 ###### Example:
 ```
@@ -44,12 +44,11 @@ if success, response will be returned like this
 {
     "result":{
         "chain_id":100,
-        "tail":"7adf5b9cc8b3c92f55fe7f71f8e6ce1318109c1169828a9ea4b3ea3f5f660c71",
-        "height":"120",
-        "coinbase":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
-        "peer_count":0,
-        "is_mining":false,
-        "protocol_version":"/neb/1.0.0","synchronized":false,
+        "tail":"b10c1203d5ae6d4d069d5f520eb060f2f5fb74e942f391e7cadbc2b5148dfbcb",
+        "lib":"da30b4ed14affb62b3719fb5e6952d3733e84e53fe6e955f8e46da503300c985",
+        "height":"365",
+        "protocol_version":"/neb/1.0.0",
+        "synchronized":false,
         "version":"0.7.0"
     }
 }
@@ -265,8 +264,10 @@ The parameters of the `call` method is the same as the [SendTransaction](https:/
 
 ###### Returns
 `result` result of smart contract method call
-`excute_err` execute error
-`execute_err` estimate gas used
+
+`execute_err` execute error
+
+`estimate_gas` estimate gas used
 
 ###### HTTP Example
 ```
@@ -276,14 +277,14 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 // Result
 {
    "result": "0",
-   "execute_err": "insufficient balance"
-   "22208": ,
+   "execute_err": "insufficient balance",
+   estimate_gas: "22208"
 }
 ```
 ***
 
 #### SendRawTransaction
-Submit the signed transaction. The transaction signed value should be return by [SignTransaction](https://github.com/nebulasio/wiki/blob/master/management_rpc.md#signtransaction).
+Submit the signed transaction. The transaction signed value should be return by [SignTransactionWithPassphrase](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase).
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -295,6 +296,7 @@ Submit the signed transaction. The transaction signed value should be return by 
 
 ###### Returns
 `txhash` Hex string of transaction hash.
+
 `contract_address ` returns only for deploy contract transaction.
 
 ###### HTTP Example
@@ -528,18 +530,14 @@ Return  the subscribed events of transaction & block. The request is a keep-aliv
 The topic name list:
 
 - `chain.pendingTransaction` The topic of pending a transaction in transaction_pool.
-- `chain.sendTransaction` The topic of send a transaction.
-- `chain.deployContract` The topic of deploy a smart contract.
-- `chain.callContract` The topic of call a smart contract.
-- `chain.contract` The topic of contract execution.
-- `chain.delegate` The topic of delegate.
-- `chain.candidate` The topic of candidate.
-- `chain.linkBlock` The topic of link a block.
-- `chain.executeTxFailed` The topic of execute a transaction failed.
-- `chain.executeTxSuccess` The topic of execute a transaction success.
+- `chain.latestIrreversibleBlock` The topic of updating latest irreversible block.
+- `chain.transactionResult` The topic of executing & submitting tx.
+- `chain.newTailBlock` The topic of setting new tail block.
+- `chain.revertBlock` The topic of reverting block.
 
 ##### Returns
 `topic` subscribed event topic name.
+
 `data` subscribed event data.
 
 ##### HTTP Example
@@ -549,7 +547,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    {"result":{
+    "result":{
         "topic":"chain.pendingTransaction",
         "data":"{
                 \"chainID\":100,
@@ -562,13 +560,11 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
                  \"gasprice\": \"1000000\", 
                  \"gaslimit\":\"20000000\",
                  \"type\":\"deploy\"}"
-            }
-        }
+    }
     "result":{
         "topic":"chain.pendingTransaction",
         "data": "..."
     }
-
     ...
 }
 ```
