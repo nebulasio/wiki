@@ -2,7 +2,7 @@
 
 ![](resources/overview.png)
 
-> TODO: More features described in our [whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf), such as NVM, Smart Contracts, PoD, DIP and so on, will be integrated into the framework in later versions very soon.
+> TODO: More features described in our [whitepaper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf), such as NR, PoD, DIP and NF, will be integrated into the framework in later versions very soon.
 
 ## Core Dataflow
 
@@ -46,34 +46,24 @@ end
 @enduml
 -->
 
-### Blocks from network
-
-Once a new block received, the node will search the new block’s parent block in current chain. If not found, the new block will be cached in blocks pool. Otherwise, the node will try to execute all transactions in the block and then verify the new block's world state. If the new block is valid, it will be linked to current chain.
-
-### Transactions from network
-
-Once a new transaction received, the node will try to verify its sign. If the new transaction is valid, it will be cached in transactions pool.
-
-### Blocks minted locally
-
-Once a new block minted, the node will broadcast the new block to the network.
-
 ## More Details
 
-[Blockchain Design Doc](./blockchain.md)
+[`Blockchain`](./blockchain.md)
 
-[Consensus Design Doc](./consensus.md)
+[`Consensus`](./consensus.md)
 
-[Crypto Design Doc](./crypto.md)
+[`Crypto`](./crypto.md)
 
-[Net Design Doc](./network_protocol.md)
+[`Network`](./network_protocol.md)
 
-[Smart Contract](./smart_contract.md)
+[`Smart Contract`](./smart_contract.md)
 
-[NVM](./nvm.md)
+[`NVM`](./nvm.md)
 
-NR (TBD)
+[`RPC`](./rpc.md)
+
+[`NR`](https://github.com/nebulasio/research/tree/master/nr)
+
+[`PoD`](https://github.com/nebulasio/research/tree/master/pod)
 
 DIP (TBD)
-
-[RPC](./rpc.md)

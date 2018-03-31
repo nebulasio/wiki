@@ -10,7 +10,7 @@ The Mainnet configuration files are in folder [`mainnet/conf`](https://github.co
 
 ### genesis.conf
 
-All configurable information about genesis block is defined in genesis.conf, including:
+All configurable information about genesis block is defined in genesis.conf, including
 
 - **meta.chain_id:** chain identity
 - **consensus.dpos.dynasty:** the initial dynasty of validators
