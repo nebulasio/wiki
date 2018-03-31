@@ -286,12 +286,12 @@ stats {
 
 详细的配置文件说明请参考[配置文件示例](https://github.com/nebulasio/wiki/blob/master/resources/conf/neb.conf)。
 
-启动种子节点的命令为:
+在不指定配置文件时默认读取工程根目录下的`conf/default/config.conf`启动种子节点。默认启动种子节点命令:
 
 ```
-./neb -c conf/default/config_local.conf
+./neb
 ```
-若需要使用不同的配置文件，需要更改`-c`参数，指定其他配置文件。例如：
+若需要使用不同的配置文件，仅需在启动时添加`-c`标记，指定配置文件。例如启动种子节点时指定节点配置文件：
 
 ```
 ./neb -c <path>/config.conf
@@ -308,7 +308,7 @@ stats {
 ```
 <address>/ipfs/<id>
 ```
-在普通节点配置文件`config.1a2635.conf`中配置如下：
+在工程根目录的`conf/examples/`目录下预置了几个普通节点的配置文件。这里我们以普通节点配置文件`config.1a2635.conf`为例，在配置文件中有种子节点地址信息：
 
 ```
 network {

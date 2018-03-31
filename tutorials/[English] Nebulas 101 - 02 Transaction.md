@@ -23,7 +23,7 @@ A new wallet address that we will create to be used as the receiving address of 
 
 Generating a new Nebulas address:
 ```sh
-$ ./neb -c conf/default/config_local.conf account new
+$ ./neb account new
 Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
 Passphrase:
 Repeat passphrase:
@@ -40,7 +40,7 @@ This is a two part process. First you must start a seed node, then start a norma
 
 **Starting the Seed Node**
 
-`$ ./neb -c conf/default/config_local.conf`
+`$ ./neb -c conf/default/config.conf`
 
 **Starting the normal Node**
 

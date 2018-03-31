@@ -365,11 +365,16 @@ stats {
 The default command to start a seed node:
 
 ```
-./neb -c conf/default/config_local.conf
+./neb
 ```
 
-The `-c` flag is used to specify a node configuration file when starting a node:
+By default neb looks for a configuration file in `conf/default/config.conf` to start a seed node if no configuration file is specified.
 
+If you are using a different configuration file than the default, add the `-c` flag at startup to specify the configuration file. For example, to specify a node configuration file when starting a seed node:
+
+```
+./neb -c <path>/new-config.conf
+```
 
 After starting, the following should be visible in the terminal:
 ![seed node start](resources/101-01-seed-node-start.png)

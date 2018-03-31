@@ -21,7 +21,7 @@ Nebulas提供了三种方式去发送我们的交易：
 
 现在我们通过 `account new` 指令创建一个转帐交易接收地址。
 ```sh
-$ ./neb -c conf/default/config_local.conf account new
+$ ./neb account new
 Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
 Passphrase:
 Repeat passphrase:
@@ -37,7 +37,7 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 #### 启动种子节点
 ```
-$ ./neb -c conf/default/config_local.conf
+$ ./neb -c conf/default/config.conf
 ```
 #### 启动普通节点
 新打开一个终端来来启动新的节点:
@@ -227,7 +227,7 @@ Nebulas提供了javascript的交互控制台。控制台实现了[API](https://g
 通过console控制台发送交易的步骤和通过调用http请求基本类似，调用方式更加简单。
 ##### 启动console控制台
 ```
-$ ./neb -c conf/default/config_local.conf console
+$ ./neb console
 ```
 
 上面这种方式默认会连接本地启动的neb节点。console控制台实现了方法自动补全功能，使用`TAB`查看已有的方法：
