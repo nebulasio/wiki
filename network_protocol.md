@@ -66,7 +66,7 @@ In Nebulas, we define our own wire protocol, as the following:
 * Header Checksum: 32 bits
   * The CRC32 checksum of the fields from Magic Number to Data Checksum, totally 256 bits.
 
-* Data: variable length, max 4G.
+* Data: variable length, max 512M.
   * The message data.
 
 We always use Big-Endian in message protocol.
