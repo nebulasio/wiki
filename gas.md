@@ -54,7 +54,7 @@ Different types of transactions' payload have different gas consumption when exe
 
 ### Transaction payload execution(Smart contract deploy & call)
 
-The `binary` type of transaction do not do any processing when the transaction is executed, so the execution need not be paied.
+The `binary` type of transaction do not do any processing when the transaction is executed, so the execution need not be paid.
 
 When a smart contract deploys or call in transaction submition, the contract execution will consume miner's computer resources and may store data on the chain.
 

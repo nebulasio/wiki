@@ -36,21 +36,31 @@ But neb has too many goroutines, we don’t kown which one ,  we give up
 
 ## BreakPoints
 Second  we try to set break point to debug 
+
 (gdb) `b blockchain.go:381`
+
 Breakpoint 2 at 0xad4373: file /neb/golang/src/github.com/nebulasio/go-nebulas/core/blockchain.go, line 381.
+
 (gdb) `b core/blockchain.go:390`
+
 Breakpoint 3 at 0xad44c6: file /neb/golang/src/github.com/nebulasio/go-nebulas/core/blockchain.go, line 390.
+
 (gdb) `info breakpoints` // show all breakpoints 
+
 (gdb) `d 2` //delete No 2 breakpoint
+
 Now let the neb continue its execution until the next breakpoint, enter the c command:
 (gdb) `c`
 Continuing
+
 ```
 Thread 6 "neb" hit Breakpoint 2, github.com/nebulasio/go-nebulas/core.(*BlockChain).updateLatestIrreversibleBlock (bc=0xc4202c6320, tail=0xc4244198c0)
 at /neb/golang/src/github.com/nebulasio/go-nebulas/core/blockchain.go:382
 382        miners := make(map[string
 ```
 now we can use p(print) to print variables value 
+
+```
 (gdb) `p cur`
 $2 = (struct github.com/nebulasio/go-nebulas/core.Block *) 0xc420716f90
 (gdb) `p cur.height`
@@ -65,6 +75,8 @@ $6 = 51743
 $7 = (struct github.com/nebulasio/go-nebulas/core.Block *) 0xc4244198c0
 (gdb) `p tail.height`
 $8 = 51749
+```
+
 now we can use `info goroutines` again, to find current goroutine. info goroutines with the * indicating the current execution, so we find the current goroutine nunmber quickly.
 
 the next breakpoint we can use `c` command , so we found the cur and lib is not equal, because of  length of the miners is less than ConsensusSize， In the loop the cur change to the parent block . 
