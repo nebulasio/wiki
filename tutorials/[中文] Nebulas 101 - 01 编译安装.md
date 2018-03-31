@@ -43,7 +43,7 @@ Linux安装建议使用源代码安装go，安装教程可以参考[在Linux上�
 ## 星云链编译
 
 #### 源代码下载
-首先从github网站conle代码到本地(本教程使用[v1.0.版本](https://github.com/nebulasio/go-nebulas/tree/v1.0.0))
+首先从github网站conle代码到本地(本教程使用[v1.0.0版本](https://github.com/nebulasio/go-nebulas/tree/v1.0.0))
 
 ```
 git clone -b v1.0.0 https://github.com/nebulasio/go-nebulas.git --depth=1
