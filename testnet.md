@@ -4,31 +4,31 @@
 
 We are glad to release Nebulas Testnet here. It simulate the Nebulas network and NVM, and allow developers to interact with Nebulas without paying the cost of gas.
 
-#### Configuration
+### Configuration
 
-The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/testnet/conf).
+The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/testnet/conf), including
 
-Information about it is below.
+#### genesis.conf
 
-> Genesis.conf
+All configurable information about genesis block is defined in genesis.conf, including:
 
-Genesis.conf should be as same as [here](resources/conf/testnet/genesis.conf) exactly.
+- **meta.chain_id:** chain identity
+- **consensus.dpos.dynasty:** the initial dynasty of validators
+- **token_distribution:** the initial allocation of tokens
 
-> neb.conf
+> *Attention*: DO NOT change the genesis.conf.
 
-Refer to neb.conf [here](resources/conf/neb.conf).
+#### config.conf
 
-Notice:
+All configurable information about runtime is defined in config.conf.
 
-* testnet seed node:
+Please check the [`template.conf`](resources/conf/template.conf) to find more details about the runtime configuration.
 
-```
+> *Tips*: the official seed node info is as below,
+
+``` json
 seed:["/ip4/35.154.108.11/tcp/8680/ipfs/QmTvcQ3E1yGdKoW6rSQYVNpbLUivXtb44Py72EvySSLaQx"]
 ```
-* `chain_id` should be `1001`, as same as [genesis.conf](resources/conf/testnet/genesis.conf).
-* `datadir` should be different with private chain.
-
-The example of testnet conf [here](resources/conf/testnet/config.conf).
 
 #### API List
 
@@ -38,12 +38,12 @@ Test Endpoint:
 |-------|:------------:|:------------:|
 | RESTful | https://testnet.nebulas.io/ | HTTP |
 
-* [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
-* [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate): returns the account balance and nonce.
-* [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit signed transaction. The transaction must be signed before send.
-* [Call](https://github.com/nebulasio/wiki/blob/master/rpc.md#call): execute smart contract local, don't submit on chain.
-* [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit the signed transaction.
-* [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt): get transaction receipt info by tansaction hash.
+- [GetNebState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getnebstate) : returns nebulas client info.
+- [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate): returns the account balance and nonce.
+- [LatestIrreversibleBlock](https://github.com/nebulasio/wiki/blob/master/rpc.md#latestirreversibleblock): returns the lastest irreversible block.
+- [Call](https://github.com/nebulasio/wiki/blob/master/rpc.md#call): execute smart contract locally. the tx won't be submitted on chain.
+- [SendRawTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendrawtransaction): submit signed transaction. The transaction must be signed before send.
+- [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt): get transaction receipt info by tansaction hash.
 
 More Nebulas APIs at [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md).
 
