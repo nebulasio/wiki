@@ -6,7 +6,7 @@ In Nebulas, there are two supported smart contract languages:
  - [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
  - [TypeScript](https://en.wikipedia.org/wiki/TypeScript)
 
-They are supported by integration of [Chrome V8](https://developers.google.com/v8/) in Nebulas, which is the JavaScript engine in Google Chrome and widely used.
+They are supported by the integration of [Chrome V8](https://developers.google.com/v8/), a widely used JavaScript engine developed by The Chromium Project for Google Chrome and Chromium web browsers.
 
 ## Execution Model
 
@@ -14,23 +14,23 @@ The diagram below is the Execution Model of Smart Contract:
 
 ![Smart Contract Execution Model](resources/smart_contract_execution_model.png "Smart Contract Execution Model")
 
-1. All src of Smart Contract and calling parameters are packaged in Transaction and be deployed on Nebulas.
-2. The execution of Smart Contract are divided into two phase:
+1. All src of Smart Contract and arguments are packaged in Transaction and deployed on Nebulas.
+2. The execution of Smart Contract are divided into two phases:
     1. Preprocess: inject tracing instruction, etc.
     2. Execute: generate executable src and execute it.
 
 ## Contracts
 
-Contracts in Nebulas are similar to classes in object-oriented languages. They contains persistent data in state variables and functions that can modify these variables.
+Contracts in Nebulas are similar to classes in object-oriented languages. They contain persistent data in state variables and functions that can modify these variables.
 
 
 ### Writing Contract
 
-Contract must be a Prototype Object or Class in JavaScript or TypeScript.
+A contract must be a Prototype Object or Class in JavaScript or TypeScript.
 
-A Contract must have ```init``` function, it will be executed only once, and be executed while deploying. Function name starts with ```_``` is ```private``` function, can't be executed in Transaction. The other functions are all ```public``` function, can be executed in Transaction.
+A Contract must include an ```init``` function, it will be executed only once when deploying. Functions, named starting with ```_``` are ```private```, can't be executed in Transaction. The others are all ```public``` and can be executed in Transaction.
 
-Since Contract is executed in Chrome V8, all instance variables are in memory, it's not wise to save all of them to [state trie]() in Nebulas. In Nebulas, we provide ```LocalContractStorage``` and ```GlobalContractStorage``` objects to help developers define fields needing to save to state trie. And those fields should be defined in ```constructor``` of Contract, before other functions.
+Since Contract is executed in Chrome V8, all instance variables are in memory, it's not wise to save all of them to [state trie](https://github.com/nebulasio/wiki/blob/master/merkle_trie.md) in Nebulas. In Nebulas, we provide ```LocalContractStorage``` and ```GlobalContractStorage``` objects to help developers define fields needing to be saved to state trie. And those fields should be defined in ```constructor``` of Contract, before other functions.
 
 The following is a sample contract:
 
@@ -72,10 +72,10 @@ In JavaScript, there is no function visibility, all functions defined in prototy
 In Nebulas, we define two kinds of visibility ```public``` and ```private```:
 
 * ```public```
-All functions that name matches regexp ```^[a-zA-Z$][A-Za-z0-9_$]*$``` are Public function, except ```init```. Public function can be called via Transaction.
+All functions whose name matches regexp ```^[a-zA-Z$][A-Za-z0-9_$]*$``` are public, except ```init```. Public functions can be called via Transaction.
 
 * ```private```
-All functions that name starts with ```_``` are Private function. Private function can only be called by Public function.
+All functions whose name starts with ```_``` are private. A private function can only be called by public functions.
 
 ## Global Objects
 
@@ -107,7 +107,7 @@ Print ```args``` to Nebulas Logger at level ```error```.
 
 ### LocalContractStorage
 
-The ```LocalContractStorage``` module provides a state trie based storage capability. It accepts string only key value pairs. And all data are stored to a private state trie associate with current contract address, only the contract can access that their data.
+The ```LocalContractStorage``` module provides a state trie based storage capability. It accepts string only key value pairs. And all data are stored to a private state trie associated with current contract address, only the contract can access them.
 
 ```typescript
 interface Descriptor {
@@ -190,7 +190,7 @@ value.plus(1);
 ```
 
 ### Blockchain
-The `Blockchain` module provides a object for contracts to obtain transactions and blocks executed by the current contract. At the same time, the NAS can be transferred from the contract and the address check is provided.
+The `Blockchain` module provides a object for contracts to obtain transactions and blocks executed by the current contract. Also, the NAS can be transferred from the contract and the address check is provided.
 
 Blockchain API:
 
@@ -212,7 +212,7 @@ Blockchain.verifyAddress(address);
 properties:
 
 - `block`: current block for contract execution
-	- `coinbase`: block miner coinbase
+	- `timestamp`: block timestamp
 	- `hash`: block hash
 	- `height`: block height
 - `transaction`: current transaction for contract execution
@@ -291,9 +291,14 @@ module.exports = SampleContract;
 
 ### Event
 
-The `Event` module records execution events in contract. The recorded events are stored in the event trie on the chain, which can be fetched by `FetchEvents` method in block with the execution transaction hash. All contract events topic have a `chain.contract.` prefix before the topic they set in contract.
+The `Event` module records execution events in contract. The recorded events are stored in the event trie on the chain, which can be fetched by `FetchEvents` method in block with the execution transaction hash. All contract event topics have a `chain.contract.` prefix before the topic they set in contract.
 
 ```js
 Event.Trigger(topic, obj);
 ```
+
+ - `topic`: user-defined topic
+ - `obj`: JSON object
+
+
 You can see the example in `SampleContract` before.
