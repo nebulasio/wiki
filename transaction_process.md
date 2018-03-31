@@ -16,7 +16,6 @@ Transactions submitted through an RPC or other node broadcast.
 - Transaction pool Verification
 1. gasPrice >= minGasPriceOfTxPool & 0 < gasLimit <= maxGasLimitOfTxPool??; fail and drop;
 1. chainID Equals, Hash Equals, Sign verify??; fail and drop;
-- Next steps like Transaction in Block Process.
 
 #### Transaction in Block Process
 The transaction has been packaged into the block, and the transaction is verified after receiving the block.
