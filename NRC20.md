@@ -4,12 +4,12 @@
 ## Abstract
 
 The following standard allows for the implementation of a standard API for tokens within smart contracts.
-This standard provides basic functionality to transfer tokens, as well as allow tokens to be approved so they can be spent by another on-chain third party.
+This standard provides basic functionality to transfer tokens, as well as allows tokens to be approved so they can be spent by another on-chain third party.
 
 
 ## Motivation
 
-A standard interface allows any tokens on Nebulas to be re-used by other applications: from wallets to decentralized exchanges.
+A standard interface allows that a new token can be created by any application easily : from wallets to decentralized exchanges.
 
 
 ## Methods
@@ -53,7 +53,7 @@ function totalSupply()
 
 #### balanceOf
 
-Returns the account balance of another account with address.
+Returns the account balance  of a address.
 
 ``` js
 // returns string, the account balance of another account with address
@@ -107,7 +107,7 @@ function approve(spender, currentValue, value)
 Returns the amount which `spender` is still allowed to withdraw from `owner`.
 
 ``` js
-// returns string, the value of allowed to withdraw from `owner`.
+// returns string, the value allowed to withdraw from `owner`.
 function allowance(owner, spender)
 ```
 

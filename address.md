@@ -1,6 +1,6 @@
 # Nebulas Address Design
 
-Nebulas address sys is carefully designed. As u will see below, both account and smart contract address are strings starting with an "n" in JSON, which could be thought of as our faith Nebulas/NAS.
+Nebulas address system is carefully designed. As you will see below, both account and smart contract address are strings starting with a "n", which could be thought of as our faith Nebulas/NAS.
 
 ## Account Address
 
@@ -11,12 +11,12 @@ The specific calculation formula is as follows:
 1.  content = ripemd160(sha3_256(public key))
     length: 20 bytes
                          +--------+--------+------------------+
-2.  checksum = sha3_256( |  0x19  +  0x57  |      content     |   )[:4]
+2.  checksum = sha3_256( |  0x19  +  0x57  |      content     | )[:4]
                          +--------+--------+------------------+
     length: 4 bytes
 
                         +--------+---------+-----------------+------------+
-3.  address = base58(   |  0x19  |  0x57   |     content     |  checksum  | ）
+3.  address = base58( |    0x19  |  0x57   |     content     |  checksum  | ）
                         +--------+---------+-----------------+------------+
     length: 35 chars
 ```
@@ -27,19 +27,19 @@ At this stage, Nebulas just adopts the normal bitcoin [base58](https://en.wikipe
 
 ## Smart Contract Address
 
-Calculating contract address differs slightly from account, passphrase of contract sender is not required but address & nonce. For more information, plz check [smart contract](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md) and [rpc.sendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction). Calculation formula is as follows:
+Calculating contract address differs slightly from account, passphrase of contract sender is not required but address & nonce. For more information, please check [smart contract](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md) and [rpc.sendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc.md#sendtransaction). Calculation formula is as follows:
 
 ```
 1.  content = ripemd160(sha3_256(tx.from, tx.nonce))
     length: 20 bytes
-                            +--------+--------+------------------+
-2.  checksum = sha3_256(    |  0x19  |  0x58  +      content     |   )[:4]
-                            +--------+--------+------------------+
+                         +--------+--------+------------------+
+2.  checksum = sha3_256( |  0x19  |  0x58  +      content     | )[:4]
+                         +--------+--------+------------------+
     length: 4 bytes
 
-                        +--------+---------+-----------------+------------+
-3.  address = base58(   |  0x19  |  0x58   |     content     |  checksum  | ）
-                        +--------+---------+-----------------+------------+
+                      +--------+---------+-----------------+------------+
+3.  address = base58( |  0x19  |  0x58   |     content     |  checksum  | ）
+                      +--------+---------+-----------------+------------+
     length: 35 chars
 ```
 

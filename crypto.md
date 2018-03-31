@@ -26,10 +26,12 @@ Keystore provide different methods to save keys, such as `memory_provider` and `
 
 The Signature interface is used to provide applications the functionality of a digital signature algorithm. A Signature object can be used to generate and verify digital signatures.
 
-There are two phases to use a Signature object for either signing data or verifying a signature:
+There are two phases to use a Signature object for either signing data :
 
-* Initialization: with either a public key, which initializes the signature for verification (see initVerify), or a private key, which initializes the signature for signing (see initSign).
+* Initialization: with a private key, which initializes the signature for signing (see initSign() in the source  code of go-nebulas).
 
-* Signing or Verifying a signature on all input bytes.
+* Signing on all input bytes.
+
+A Signature object can recover the public key with a signatrue and the plain text was singed on(see function RecoverSignerFromSignature in go-nebulas). So just comparing the from address and the address derived from the public key can verfiy a transaction  
 
 > Similar as [Android Keystore](https://developer.android.com/training/articles/keystore.html), TPM, TEE and hardware low level security protection will be supported as a provider later.

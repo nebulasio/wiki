@@ -17,7 +17,7 @@ Using crash reporter is a very common practice. For example, Microsoft Windows i
 
 In Nebulas, the crash reporter just works like the other crash reporters. It's aware of the
 crash, collects necessary information about the crash, and sends it back the
-Nebulas server. The server is hosted by Nebulas, but accessible for the whole
+Nebulas server. The server is hosted by Nebulas, and accessible for the whole
 community.
 
 As a opensource, decentralized platform, we are aware of that the crash
@@ -32,15 +32,13 @@ To enable or disable the crash reporter, you need to look into the
 configuration file, `config.conf`, and change `enable_crash_reporter` to `true`
 to enable it, while `false` to disable it.
 
-*TODO. As a developer, you may check our website to all all crashes.*
-
 ## How it works
 In this section, we would like to share some tech details. If you are not
 interested in the details, you can ignore this section.
 
 The crash reporter is actually a daemon process, which is started by `neb`.
 When starting the crash reporter, `neb` will tell it the process id (pid) of
-the itself, and the crash file path. For the crash reporter, it will
+`neb` process, and the crash file path. For the crash reporter, it will
 periodically check if the `neb` process and the crash file exists. At the time
 it finds the crash file, it will eliminate the private information and send it
 back to Nebulas.
