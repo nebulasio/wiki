@@ -6,7 +6,7 @@ We are glad to release Nebulas Testnet here. It simulate the Nebulas network and
 
 #### Configuration
 
-The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf).
+The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/testnet/conf).
 
 Information about it is below.
 
