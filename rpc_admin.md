@@ -1,8 +1,8 @@
 # Management RPC
 
-Beside the [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface nebulas provides additional management APIs. Neb console supports both API and management interfaces. Management RPC has separate gRPC and HTTP port, which also binds [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interfaces.
+Beside the [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface nebulas provides additional management APIs. Neb console supports both API and management interfaces. Management RPC uses the same gRPC and HTTP port, which also binds [NEB API RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interfaces.
 
-Nebulas provide both [gRPC](https://grpc.io) and RESTful management APIs, let users interact with Nebulas. Our admin [proto](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/pb/rpc.proto) file defines all admin APIs. **We recommend using the console access admin interfaces, or restricting the admin RPC to local access.**
+Nebulas provide both [gRPC](https://grpc.io) and RESTful management APIs for users to interact with Nebulas. Our admin [proto](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/pb/rpc.proto) file defines all admin APIs. **We recommend using the console access admin interfaces, or restricting the admin RPC to local access.**
 
 Default management RPC Endpoint:
 
@@ -176,7 +176,9 @@ UnlockAccount unlock account with passphrase. After the default unlock time, the
 
 ###### Parameters
 `address` UnLock account address.
+
 `passphrase` UnLock account passphrase.
+
 `duration` Unlock accoutn duration.
 
 ###### Returns
@@ -228,7 +230,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 ***
 
 #### SignTransactionWithPassphrase
-SignTransaction sign transaction. The transaction's from addrees must be unlock before sign call.
+SignTransactionWithPassphrase sign transaction. The transaction's from addrees must be unlocked before sign call.
 
 | Protocol | Method | API |
 |----------|--------|-----|
@@ -328,9 +330,9 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 [optional] 
 Notice:
 
-* `from = to` when deploy a contract, the `from` address must equal to `to` address.
+* `from = to` when deploy a contract, the `to` address must be equal to `from` address.
 
-* `nonce` the value is plus 1 from the nonce value of the current from address. Current nonce can get from [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md/#getaccountstate).
+* `nonce` the value is **plus one**(+1) on the nonce value of the current from address. Current nonce can get from [GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md/#getaccountstate).
 * `gasPrice` and `gasLimit` need for every transaction. We recommend taking them use [GetGasPrice](https://github.com/nebulasio/wiki/blob/master/rpc.md/#getgasprice) and [EstimateGas](https://github.com/nebulasio/wiki/blob/master/rpc.md/#estimategas).
 * `contract` parameter only need for smart contract deploy and call. When a smart contract is deployed, the `source` and `sourceType` must be specified, the `args` is optional and passed in when the initialization function takes a parameter. The `function` field is used to call the contract method.
 
@@ -338,7 +340,7 @@ Notice:
 
 `txhash` transaction hash.
 
-`contract_address ` returns only for deploy contract transaction.
+`contract_address ` returns only for deploying contract transaction.
 
 ###### Normal Transaction Example
 ```js
@@ -364,7 +366,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 {
     "result":{
         "txhash":"3a69e23903a74a3a56dfc2bfbae1ed51f69debd487e2a8dea58ae9506f572f73",
-        "contract_address":"4702b597eebb7a368ac4adbb388e5084b508af582dadde47"
+        "contract_address":"n21Y7arNbUfLGL59xgnA4ouinNxyvz773NW"
     }
 }
 ```
@@ -434,7 +436,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/adm
 ***
 
 #### GetConfig
-GetConfig return the config the neb is using 
+GetConfig return the config current neb is using 
 
 | Protocol | Method | API |
 |----------|--------|-----|
