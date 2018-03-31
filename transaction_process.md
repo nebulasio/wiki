@@ -5,8 +5,8 @@ When a transaction is submitted, it is necessary to check the chain in the trans
 #### New Transaction Process (from network, rpc)
 Transactions submitted through an RPC or other node broadcast.
 
-- Transaction pool Verification: gasPrice >= gasPriceOfTxPool & gasLimit <= gasLimitOfTxPool??; fail and drop;
-
+- Transaction pool Verification: gasPrice >= minGasPriceOfTxPool & 0 < gasLimit <= maxGasLimitOfTxPool??; fail and drop;
+- Transaction pool Verification: chainID Equals, Hash Equals, Sign verify??; fail and drop;
 - Next steps like Transaction in Block Process.
 
 #### Transaction in Block Process
