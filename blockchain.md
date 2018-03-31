@@ -84,16 +84,16 @@ Accounts are divided into two kinds, normal account & smart contract account.
 
 Normal Account, including
 
-- wallet address
-- balance
-- nonce: account's nonce, it will increment in steps of 1
+- **wallet address**
+- **balance**
+- **nonce**: account's nonce, it will increment in steps of 1
 
 Smart Contract Account， including
 
-- contract address
-- balance
-- birth place: the transaction hash where the contract is deployed
-- variables: contains all variables' values in the contract
+- **contract address**
+- **balance**
+- **birth place**: the transaction hash where the contract is deployed
+- **variables**: contains all variables' values in the contract
 
 ### Transactions State
 
@@ -110,19 +110,19 @@ The context of consensus algorithm is stored in consensus state.
 
 As for DPoS, the consensus state includes
 
-- timestamp: current slot of timestamp
-- proposer: current proposer
-- dynasty: current dynasty of validators
+- **timestamp**: current slot of timestamp
+- **proposer**: current proposer
+- **dynasty**: current dynasty of validators
 
 ### Serialization
 
 We choose Protocol Buffers to do general serialization in consideration of the following benefits:
 
-> - Large scale proven.
-> - Efficiency. It omits key literals and use varints encoding.
-> - Multi types and multilangue client support. Easy to use API.
-> - Schema is good format for communication.
-> - Schema is good for versioning/extension, i.e., adding new message fields or deprecating unused ones.
+- Large scale proven.
+- Efficiency. It omits key literals and use varints encoding.
+- Multi types and multilangue client support. Easy to use API.
+- Schema is good format for communication.
+- Schema is good for versioning/extension, i.e., adding new message fields or deprecating unused ones.
 
 Specially, we use json to do serialization in smart contract codes instead of protobuf for the sake of readability.
 
