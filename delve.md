@@ -6,11 +6,13 @@ Go-Nebulas项目地址：https://github.com/nebulasio/go-nebulas.git
 
 ## 简介
 
-> 这篇短文基于Mac OSX系统，简单介绍如何调试Go-Nebulas项目，主要介绍三种方法调试：dlv命令行调试，Gogland IDE调试，以及Visual Studio Code调试。
+> 这篇短文基于Mac OSX 和 Ubuntu系统，简单介绍如何调试Go-Nebulas项目，主要介绍三种方法调试：dlv命令行调试，Gogland IDE调试，以及Visual Studio Code调试。
 
 #### 调试器Delve安装
 
-Google官方为golang的调试例子用gdb，但是delve是更合适的调试器，比gdb能提供更多的信息。安装delve，在Mac上一般采用Homebrew。但是很遗憾，在本文写就时，Homebrew提供的delve包老旧，有bug，无法正确调试Go-Nebulas。普通的go项目是可以的，具体体现就是调试Go-Nebulas项目时，断点无法停住，会永远hang住。我们必须从github上下载delve的最新源代码编译成delve binary，步骤如下：
+##### 在 Mac OSX 上安装Delve
+
+Google官方为golang的调试例子用gdb，但是[delve](https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md)是更合适的调试器，比gdb能提供更多的信息。安装delve，在Mac上一般采用Homebrew。但是很遗憾，在本文写就时，Homebrew提供的delve包老旧，有bug，无法正确调试Go-Nebulas。普通的go项目是可以的，具体体现就是调试Go-Nebulas项目时，断点无法停住，会永远hang住。我们必须从github上下载delve的最新源代码编译成delve binary，步骤如下：
 
 **先用Homebrew安装有bug的Delve：**
 
@@ -45,6 +47,13 @@ codesign -s "dlv-cert"  /Users/xxx/go-delve/bin/dlv
 ```
 
 然后cp /Users/liuwb/go-delve/bin/dlv/usr/local/bin/，把编译好的dlv拷贝进/usr/local/bin目录，替换之前有bug的dlv debugger。输入命令dlv version，如果能正常运行，显示版本号，说明dlv已经被加入到PATH。
+
+##### 在 Ubuntu 上安装Delve
+对于Ubuntu系统，可以直接使用下面的指令安装Delve：
+
+```bash
+go get -u github.com/derekparker/delve/cmd/dlv
+```
 
 **下载Go-Nebulas工程代码**
 ```bash
@@ -173,6 +182,7 @@ launch.json文件内容：
 ```
 
 在cmd/neb/main.go，neb函数中设置断点，F5运行，Go-Nebulas项目会进行编译运行，停在断点：
+![](resources/delve-vscode-debug.png)
 
 
 > 然后，就可以开心的启动Nebulas代码调试之旅！

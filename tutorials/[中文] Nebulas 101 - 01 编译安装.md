@@ -284,7 +284,7 @@ stats {
 
 ```
 
-详细的配置文件说明请参考[配置文件示例](https://github.com/nebulasio/wiki/blob/master/resources/conf/neb.conf)。
+详细的配置文件说明请参考[配置文件示例](https://github.com/nebulasio/wiki/blob/master/resources/conf/template.conf)。
 
 在不指定配置文件时默认读取工程根目录下的`conf/default/config.conf`启动种子节点。默认启动种子节点命令:
 
