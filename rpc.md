@@ -612,6 +612,7 @@ The parameters of the `EstimateGas` method is the same as the
 
 ##### Returns
 `gas` the estimate gas.
+
 `err` error message of the transaction executing
 
 ##### HTTP Example
