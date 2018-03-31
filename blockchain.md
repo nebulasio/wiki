@@ -1,125 +1,122 @@
-# Blockchain Design Doc
+# Blockchain
+
+## Model
+
+Nebulas use accounts model instead of UTXO model.
+The execution of transactions will consume gas.
 
 ## Data Structure
 
 ``` txt
 Block Structure
-+---------------+----------------+
-|  blockHeader  |  transactions  |
-+---------------+----------------+
++---------------+----------------+--------------+
+|  blockHeader  |  transactions  |  dependency  |
++---------------+----------------+--------------+
+blockHeader: header info
+transactions: transactions array
+dependency: the dependency relationship among transactions
 
 Block Header Structure
-+--------+--------------+-------------+---------+------------+-------------+
-|  hash  |  parentHash  |  stateRoot  |  nonce  |  coinbase  |  timestamp  |
-+--------+--------------+-------------+---------+------------+-------------+
-hash: sha3-256 hash, 256 bits
-parentHash: sha3-256 hash, 256 bits
-stateRoot: sha3-256 hash, 256 bits
-nonce: uint64, 64 bits
-coinbase: sha3-256 hash, 256 bits
-timestamp: uint64, 64 bits. The number of nanoseconds elapsed since January 1, 1970 UTC.
++-----------+--------+--------------+------------+-------------+-------+--------+
+|  chainid  |  hash  |  parentHash  |  coinbase  |  timestamp  |  alg  |  sign  |
++-----------+--------+--------------+------------+-------------+-------+--------+
++-------------+-----------+--------------+-----------------+
+|  stateRoot  |  txsRoot  |  eventsRoot  |  consensusRoot  |
++-------------+-----------+--------------+-----------------+
+chainid: chain identity the block belongs to
+hash: block hash
+parentHash: parent block hash
+coinbase: account to receive the mint reward
+timestamp: the number of nanoseconds elapsed since January 1, 1970 UTC
+alg: the type of signature algorithm
+sign: the signature of block hash
+stateRoot: account state root hash
+txsRoot: transactions state root hash
+eventsRoot: events state root hash
+consensusRoot: consensus state, including proposer and the dynasty of validators
+
 
 Transaction Structure
-+--------+--------+------+---------+---------+-------------+--------+-----------+
-|  hash  |  from  |  to  |  value  |  nonce  |  timestamp  |  sign  |  payload  |
-+--------+--------+------+---------+---------+-------------+--------+-----------+
-hash: sha3-256 hash, 256 bits
-from: sha3-256 hash, 256 bits
-to: sha3-256 hash, 256 bits
-value: uint128, bytes array
-nonce: uint64, 64 bits
-timestamp: int64, 64 bits. The number of seconds elapsed since January 1, 1970 UTC.
-sign: bytes array
-payload: bytes array
++-----------+--------+--------+------+---------+---------+-------------+
+|  chainid  |  hash  |  from  |  to  |  value  |  nonce  |  timestamp  |
++-----------+--------+--------+------+---------+---------+-------------+
++--------+------------+------------+
+|  data  |  gasPrice  |  gasLimit  |
++--------+------------+------------+
+chainid: chain identity the block belongs to
+hash: transaction hash
+from: sender's wallet address
+to: receiver's wallet address
+value: transfer value
+nonce: transaction nonce
+timestamp: the number of seconds elapsed since January 1, 1970 UTC
+alg: the type of signature algorithm
+sign: the signature of block hash
+data: transaction data, including the type of transaction(binary transfer/deploy smart contracts/call smart contracts) and payload
+gasPrice: the price of each gas consumed by the transaction
+gasLimit: the max gas that can be consumed by the transaction
 ```
 
 ## Blockchain Update
 
 In our opinion, **Blockchain** only needs to care about how to process new blocks to grow up safely and efficiently. What's more, **Blockchain** can only get new blocks in the following two channels.
 
-**A new block from network**
+### A new block from network
 
 Because of the unstable network latency, we cannot make sure any new block received can be linked to our current **Chain** directly. Thus, we need the **Blocks Pool** to cache new blocks.
 
-**A new block from local miners**
+### A new block from local miner
 
-At first, we need the **Transactions Pool** to cache transactions from network. Then, we wait for a new block created by local **Consensus** component, such as PoW. 
+At first, we need the **Transactions Pool** to cache transactions from network. Then, we wait for a new block created by local **Consensus** component, such as DPoS.
 
 No matter where a new block comes from, we use the same steps to process it as following.
 
 ![](resources/blockpool.png)
 
-<!-- 
-@startuml addBlockInPool
-
-start
-
-if (the new block exists in blockchain?) then (yes)
-    stop
-else (no)
-    if (the block's nonce is right?) then (yes)
-        if (the block's hash is right?) then (yes)
-            while (more transactions in the block?) is (yes)
-                if (the transaction's hash is right?) then (yes)
-                    if (the transaction's sign is right?) then (yes)
-                    else (no)
-                        stop
-                    endif
-                else (no)
-                    stop
-                endif
-            endwhile (no)
-            if (the block's parent exists in blockchain?) then (yes)
-                :clone the block's parent's world states;
-                :execute all transactions in the block;
-                while (more states in the block?) is (yes)
-                    if (the state root matches?) then(yes)
-                    else (no)
-                        stop
-                    endif
-                endwhile (no)
-                :append the block to blockchain;
-            else (no)
-                :cache the block in block pool;
-            endif
-        else (no)
-            stop
-        endif
-    else (no)
-        stop
-    endif
-endif
-
-stop
-
-@enduml 
--->
-
 ## World State
 
 Every block contains the current world state, consist of following four states. They are all maintained as [Merkle Trees](./merkle_trie.md).
 
-**Account State**
+### Accounts State
 
-store all account states in current block
+All accounts in current block are stored in Accounts State.
+Accounts are divided into two kinds, normal account & smart contract account.
 
-key, address; value, balance
+Normal Account, including
 
-**Transaction State(TBD)**
+- wallet address
+- balance
+- nonce: account's nonce, it will increment in steps of 1
 
-store all transaction data in current block
+Smart Contract Account， including
 
-**Receipt State(TBD)**
+- contract address
+- balance
+- birth place: the transaction hash where the contract is deployed
+- variables: contains all variables' values in the contract
 
-store all events generated in the execution of all transactions in current block
+### Transactions State
 
-**Rank State(TBD)**
+All transactions submitted on chain are storage in Transactions State.
 
-store current rank result
+### Events State
 
-## Serialization
+While transactions are executed, many events will be triggered.
+All events triggered by transactions on chain are stored in Events State.
 
-We choose Protocol Buffer to do general serialization in consideration of the following benefits:
+### Consensus State
+
+The context of consensus algorithm is stored in consensus state.
+
+As for DPoS, the consensus state includes
+
+- timestamp: current slot of timestamp
+- proposer: current proposer
+- dynasty: current dynasty of validators
+
+### Serialization
+
+We choose Protocol Buffers to do general serialization in consideration of the following benefits:
 
 > - Large scale proven.
 > - Efficiency. It omits key literals and use varints encoding.
@@ -129,29 +126,30 @@ We choose Protocol Buffer to do general serialization in consideration of the fo
 
 Specially, we use json to do serialization in smart contract codes instead of protobuf for the sake of readability.
 
-## Sync
+## Synchronization
 
-### Full Sync (TBD)
+Synchronization is chunk-based. Each chunk contains 32 blocks on canonical chain.
 
-Here is a entire blockchain synchronization policy to be implemented.
-We starts synchronization from the snapshot of the blockchain in local storage. All blocks generated after the snapshot will be synchronized from peers and replayed locally.
+### Full Sync
 
-``` 
-1. send my tail to remote peers and then find the common ancestor
-2. the remote peers will return the common ancestor and 10 blocks after the common ancestor if exist
-3. compare the common ancestors, if over n+1 are the same, suppose the ancestor is the right ancestor
-4. find overlapping blocks in 10 blocks who has the same ancestors
-5. give the overlapping blocks to block pool one by one, if return false, go to next sync
-6. if all remote peers return the number of blocks less than 10, end sync
-```
-### Downloader
-```
-1. block_pool receive a block(new block) and found that can not link to parent.
-2. compare the height of tail block and the new block. if the tail block heigher than the new block, abandon the new block, else trigger a event of new block coming but can not link.
-3. downloader will subscribe the event of new block coming but can not link. 
-4. downloader go downloader from the node who send the new block.
+Each time 10 chunks will be synced. 
+If node A needs to do full sync, the procedure is as following,
+
+```txt
+1. A sends its tail block to N remote peers.
+2. The remote peers locate the chunk C that contains A's tail block.
+   Then they will send back the headers of 10 chunks, including the chunk C and 9 C's subsequent chunks, and the hash of the 10 headers.
+3. If A receives >N/2 same hash H, A will try to sync the chunks represented by H.
+4. If A has fetched all chunks represented by H and linked them on chain successfully, Jump to 1.
 ```
 
 ### Fast Sync (TBD)
 
-As for a light node, it needs a fast sync strategy to catch up the canonical chain.
+## Downloader
+
+Sometimes a node A will receive a block B with higher height than its current tail block. At this time, the node A will try to download the block's parent, the procedure is as following, 
+
+```txt
+1. A sends B to a random peer to download B's parent block.
+2. If A received B's parent block B', A will try to link B' with A's current tail block. If failed again, B= B' & jump to 1. Otherwise, end.
+```
