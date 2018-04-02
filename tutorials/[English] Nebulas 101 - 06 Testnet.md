@@ -1,6 +1,6 @@
 # Nebulas 101 - 06 Connecting to the test network
 
-The test chain of the nebula chain has a specific chainID. When connecting to the test network, the genesis.conf of the Genesis block needs to be updated to the Genesis block configuration of the test network, and update the node configuration information at the same time. Please refer to official introduction of [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
+The test network of the Nebulas chain has a specific chainID. When connecting to the test network, the genesis.conf of the Genesis block needs to be updated to the Genesis block configuration of the test network, and update the node configuration information at the same time. Please refer to official introduction of [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
 
 ## Configuration
 
