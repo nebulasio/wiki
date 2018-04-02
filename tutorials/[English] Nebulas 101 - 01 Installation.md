@@ -64,7 +64,8 @@ Open up .bash_profile and add the code below:
  Save the changes to your .bash_profile file, and then restart the terminal: this is important to continue in the next step
  
 #### Install Go Environment on Linux (Ubuntu)
-See https://golang.org/doc/install
+Please refer to [golang official docs](https://golang.org/doc/install) to get detailed information. 
+
 Download the golang archive
 
 ```
@@ -275,13 +276,13 @@ The genesis configuration file is located in  `conf/default/genesis.conf` by def
 
 ### Nodes
 Nebulas nodes could be started by exceuable file `neb`, which should be executed in terminal.
-Neb nodes include **seed nodes** and ordinary **nodes**.
+Neb nodes include **seed node** and ordinary **nodes**.
 
 **Seed Node**: the  **seed node**  of Nebula chain network, which is used to provide initial synchronization services for other nodes;
 
-**Node**: the ordinary **node** of Nebula chain. An ordinary node should sync routing and blocks information form seed node first after it's started.
+**Node**: the ordinary **node** of Nebula chain. An ordinary node will sync routing and blocks information form seed node first after it's started.
 
-Nebula chain seed nodes and nodes are distinguished by the configuration file. When starting nebulas nodes, the seed node need to be started first. After the seed node is started, you should to update the network address of the seed node into the configuration file of the ordinary nodes, and then they can be networked for mining.
+Nebula chain seed nodes and nodes are distinguished by the configuration file. When starting nebulas nodes, the seed node need to be started first. After the seed node is started, you need to update the network address of this seed node in the configuration file of the ordinary nodes, and then they can be networked for mining.
 
 ### Review config.conf
 
@@ -389,7 +390,7 @@ Use this example configuration file `conf/example/miner.conf` to start a Node th
 ./neb -c conf/example/miner.conf
 ```
 
-After the node starts, if the connection with the seed node is successful, you can see the following log:
+After the node starts, if the connection with the seed node is successful, you can see the following log which is in log file `logs/miner/neb.log`:
 ![node start](resources/101-01-node-start.png)
 
 #### Creating your own Node config
@@ -398,7 +399,7 @@ After the node starts, if the connection with the seed node is successful, you c
 
 To create a Node that connects with your seed node you must create a config file that references the seed address.
 
-The seed node `address` and `id` can be found from the seed node log printed on screen on the line which has words `Started NebService Node`. You can also find this information in log file which locates in folder `./logs/`
+The seed node `address` and `id` can be found from the seed node log printed on screen on the line which has words `Started NebService Node`. You can also find this information in log file `logs/neb.log`
 
 ![seed node start](resources/101-01-started-nebService-node.png)
 

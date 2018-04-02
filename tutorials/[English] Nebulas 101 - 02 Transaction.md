@@ -82,7 +82,7 @@ Now, let's check the balance of the address we created ourselves. In the termina
 
 ```
 // Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
+curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
 
 // Result
 {

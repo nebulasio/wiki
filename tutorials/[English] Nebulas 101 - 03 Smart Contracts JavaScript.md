@@ -1,9 +1,9 @@
 # Nebulas 101 - 03 Write and run a smart contract
 [YouTube Tutorial](https://www.youtube.com/watch?v=0ut_RcFyQGM)
 
-Today we learn how to write, deploy, and execute smart contracts in Nebulas.
+Through this tutorial we will learn how to write, deploy, and execute smart contracts in Nebulas.
 
-## Ready to work
+## Preparation
 
 Before entering the smart contract, first review the previously learned content:
 
@@ -17,25 +17,25 @@ So lets do this. We will learn and use smart contracts through the following ste
 
 1. Write a smart contract
 2. Deploy the smart contract
-3. Call the smart contract to verify the contract execution results
+3. Call the smart contract, and verify the contract execution results
 
 
 ## Write a smart contract
 
-Like Ethereum, Nebulas implements NVM virtual machines to run smart contracts and NVM implementations use the JavaScript V8 engine, so for the current development we can write smart contracts using JavaScript and TypeScript.
+Like Ethereum, Nebulas implements NVM virtual machines to run smart contracts, and the NVM implementation uses the JavaScript V8 engine, so for the current development we can write smart contracts using JavaScript and TypeScript.
 
 Write a brief specification of a smart contract:
 
 1. The Smart contract code must be a Prototype object;
-2. The Smart contract code must have a init() method, this method will only be executed once;
-3. The Smart contract inside the private method is _ at the beginning of the method, the private method can not be a external direct call;
+2. The Smart contract code must have a init() method, this method will only be executed once during deployment;
+3. The private methods in Smart contract must be prefixed with _ , and the private method cannot be a be directly called outside of the contract;
 
 Below we use JavaScript to write the first smart contract: bank safe.
 This smart contract needs to fulfill the following functions:
 
 1. The user can save money from this bank safe.
 2. Users can withdraw money from this bank safe.
-3. Users can check the bank balance in the safe.
+3. Users can check the balance in the bank safe.
 
 Smart contract example:
 
@@ -140,7 +140,7 @@ BankVaultContract.prototype = {
 };
 module.exports = BankVaultContract;
 ```
-As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init() method that satisfies what we call the most basic specification for writing smart contracts.
+As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init() method. It satisfies the most basic specification for writing smart contracts that we have described before.
 BankVaultContract implements two other methods:
 
 - save(): The user can save money to the bank safe by calling the save() method;
@@ -210,21 +210,21 @@ takeout: function (value) {
 ```
 
 ## Deploy smart contracts
-Here's how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
-Earlier, I introduced how users made a transfer in Nebulas, and we used the sendTransaction() interface to initiate a transfer. Deploying a smart contract in Nebulas is actually sending a transaction to do so, just by calling the sendTransaction() interface, just with different parameters.
+The above describes how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
+Earlier, we have introduced how to make a transaction in Nebulas, and we used the sendTransaction() interface to initiate a transfer. Deploying a smart contract in Nebulas is actually achieved by sending a transaction by calling the sendTransaction() interface, just with different parameters.
 
 ```js
 sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
-We agree that if from and to are the same address, we assume that we are deploying a smart contract.
+We have a convention that if from and to are the same address, we assume that we are deploying a smart contract.
 
-- value: "0" `when deploying the contract;
+- value: it should be `"0"` when deploying the contract;
 - gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or using default values: `"1000000"`;
-- gasLimit: The gasLimit for the deployment contract, which can be used to get the gas consumption of the deployment contract via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and can not use the default value, Can also set a larger value, the actual use of the calculation.
+- gasLimit: The gasLimit for deploying the contract. You can get the estimated gas consumption for the deployment via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and cannot use the default value. And you could also set a larger value. The actual gas consumption is decided by the deployment execution.
 - contract: the contract information, the parameters passed in when the contract is deployed
 - `source`: contract code
 - `sourceType`: Contract code type,` js` and `ts` (corresponding to javaScript and typeScript code)
-- `args`: contract initialization method parameters, no parameters for the empty string, a parameter for the JSON array
+- `args`: parameters for the contract initialization method. Use empty string if there is no parameter, and use JSON array if there is a parameter. 
 
 Detailed Interface Documentation [API](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction).
 
@@ -245,7 +245,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/tra
 ```
 
 The return value for deploying a smart contract is the transaction's hash address `txhash` and the contract's deployment address `contract_address`.
-Get the return value does not guarantee the successful deployment of the contract, because the sendTransaction () is an asynchronous process, need to be packaged by the miner, just as the previous transfer transaction, the transfer does not arrive in real time, dependent on the speed of the miner packing, so need to wait for a Time (about 1 minute), then you can verify the contract is deployed successfully by querying the contract address or calling a smart contract.
+Get the return value does not guarantee the successful deployment of the contract, because the sendTransaction () is an asynchronous process, which need to be packaged by the miner. Just as the previous transfer transaction, the transfer does not arrive in real time, it depends on the speed of the miner packing. Therefore we need to wait for a while (about 1 minute), then you can verify whether the contract is deployed successfully by querying the contract address or calling this smart contract.
 
 ## Verify the deployment of the contract is successful
 We got the contract address `contract_address` when deploying the smart contract, and we can easily check the contract's address information using the console to verify whether the contract has been deployed successfully.
@@ -260,15 +260,15 @@ sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 - from: user wallet address
 - to: smart contract address
-- value: The amount of money used to transfer a smart contract
-- nonce: from user transaction ID, the order of growth
+- value: The amount of money used to transfer by smart contract.
+- nonce: transaction ID of from user, increase with each transaction.
 - gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or using default values `"1000000"`;
-- gasLimit: The gasLimit for the deployment contract, which can be used to get the gas consumption of the deployment contract via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and can not use the default value, Can also set a larger value, the actual use of the calculation.
+- gasLimit: The gasLimit for deploying the contract. You can get the estimated gas consumption for the deployment via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and cannot use the default value. And you could also set a larger value. The actual gas consumption is decided by the deployment execution.
 - contract: the contract information, the parameters passed in when the contract is deployed
-- `function`: Call the contract method
-- `args`: contract method parameters, no argument is an empty string, there are parameters for the JSON array
+- `function`:the contract method to be called
+- `args`: parameters for the contract initialization method. Use empty string if there is no parameter, and use JSON array if there is a parameter.
 
-Call smart contract save() method:
+For example, call save() method of the smart contract:
 
 ```js
 // Request
@@ -280,9 +280,9 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/tra
 }
 ```
 
-The essence of the smart contract transfer is also to submit a transaction, it also depends on the miners to pack, the miners will be successful after the transaction package call is considered successful, so the call of the smart contract is not immediately effective. We need to wait for a while (about a minute) and we can verify that our call was successful.
-Above we call the save () method to the bank safe deposit amount of 100 funds, you need to deduct 100 from the user's balance, so there is a transfer process, the amount of the transfer need to pass the value field. After the contract is invoked, you only need to verify that the smart contract's address balance is 100.
-Console console can easily check the current smart contract address amount:
+Calling a smart contract is essentially submitting a transaction as well, therefore it also depends on the miners to pack. The calling of a smart contract is not success until this transaction is successfully packed by the miners. Hence smart contract calls do not take effect immediately. We need to wait for a while (about a minute) and then we can verify whether our call was successful.
+In the example above we called the save () method to deposit money to the bank safe with a amount of 100, it need to deduct 100 from the user's balance, so there is a transfer process. The amount of the transfer is passed by the value field. After the contract is called, we just need to verify whether the balance of the smart contract's address is 100.
+With the console, we can easily check the current balance of smart contract address:
 ![key](resources/101-03-save-state.png)
 
 Call the smart contract takeout() method:
@@ -300,7 +300,7 @@ The above takeout() method is different from the save() method except that the v
 Then we need to verify that the current smart contract address balance is not 50:
 ![key](resources/101-03-takeout-state.png)
 
-The picture above shows that the smart contract call result is correct, and the smart contract deployment to the call is successful.
+The picture above shows that the smart contract call result is correct. and both the deployment and call of the smart contract is successful.
 
 ## query smart contract data
 The smart contracts and execution methods that have been submitted in Nebulas are submitted to the chain. It is also easy to find out how smart contracts have generated data. Smart contracts can be invoked via the rpc interface call() method. Calling a contract method via the `call()` method is not posted to the chain.
@@ -310,15 +310,14 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 - from: user wallet address
 - to: user wallet address / smart contract address
-- value: The amount of money used to transfer a smart contract
-- nonce: user transaction ID, the order of growth
+- value: The amount of money used to transfer by smart contract
+- nonce: transaction ID of from user, increase with each transaction.
 - gasPrice: The gasPrice used to deploy the smart contract, which can be obtained via `GetGasPrice`, or an empty string, using default values;
-- gasLimit: The gasLimit for the deployment contract, which can be used to get the gas consumption of the deployment contract via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and can not use the default value, Can also set a larger value, the actual use of the calculation.
-- contract: the contract information, the parameters passed in when the contract is deployed
+- gasLimit: The gasLimit for deploying the contract. You can get the estimated gas consumption for the deployment via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and cannot use the default value. And you could also set a larger value. The actual gas consumption is decided by the deployment execution.
 - `source`: contract code
 - `sourceType`: Contract code type,` js` and `ts` (corresponding to javaScript and typeScript code)
 - `function`: Call the contract method
-- `args`: contract initialization method parameters, no parameters for the empty string, a parameter for the JSON array
+- `args`:  parameters for the contract initialization method. Use empty string if there is no parameter, and use JSON array if there is a parameter.
 
 ** Notice: If you want to submit a smart contract, pass in the `source`,` sourceType`, and `args` parameters, if you call the smart contract method, pass` function` and `args`. **
 
@@ -334,7 +333,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 }
 
 ```
-The essence of smart contract query is to submit a transaction, transactions are submitted only in the local implementation or local network, so the smart contract inquiries immediately take effect. With the query method it returns the results and you can see the results.
+The query of smart contract is also essentially submitting a transaction. This transactions are only executed locally, so the smart contract inquiries immediately take effect. With the returns of the query method you can see the results.
 
 ### Next step: Tutorial 4:
 
