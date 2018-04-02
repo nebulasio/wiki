@@ -1,10 +1,10 @@
-# Connecting to the test network i.e. Testnet
+# Nebulas 101 - 06 Connecting to the test network
 
-The configuration information will be updated at the same time. Official introduction to [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
+The test chain of the nebula chain has a specific chainID. When connecting to the test network, the genesis.conf of the Genesis block needs to be updated to the Genesis block configuration of the test network, and update the node configuration information at the same time. Please refer to official introduction of [Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
 
 ## Configuration
 
-The configaration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf):
+The configaration files of testnet are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf):
 
  - config.conf
  - genesis.conf
@@ -23,7 +23,7 @@ private_key: "testnet/conf/network.key"
 
 *Notice: If you do not provide a node connection service, you may not configure the network key in the config file. In this way, each time you start the node, the node randomly generates a new key for the p2p network.*
 
-Start the Testnet connected Node:
+Start Node with the testnet config file:
 
 ```
 ./neb -c testnet/conf/config.conf
@@ -31,7 +31,7 @@ Start the Testnet connected Node:
 
 ## Testnet NAS Tokens
 
-NAS testing network can be obtained from the official website for testing. Distribution Address: [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
+NAS for testing network can be obtained from the official website, which is used for testing. Distribution Address: [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/).
 
 ## explorer
 

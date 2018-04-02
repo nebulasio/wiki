@@ -8,9 +8,9 @@
 ## gRPC访问
 gRPC是一个高性能、通用的开源RPC框架，由Google主要面向移动应用开发并基于HTTP/2协议标准而设计，基于[ProtoBuf](https://github.com/google/protobuf)序列化协议开发，且支持众多开发语言。
 
-星云链的gRPC接口是用go语言开发的，并提供了一个go语言写的客户端[demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go)。这里就主要介绍使用go实现的gRPC接口使用。（gRPC支持多种语言，也可以使用其他语言访问gRPC。）
+星云链的gRPC接口是用go语言开发的，并提供了一个go语言写的客户端[demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go)。这里就主要介绍go实现的gRPC接口的使用。（gRPC支持多种语言，也可以使用其他语言访问gRPC。）
 
-gRPC使用ProtoBuf来定义服务,protobuf的定义在官方代码的[/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb)中：
+gRPC使用ProtoBuf来定义服务，protobuf的定义在官方代码的[/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb)中：
 
 ```
 // API接口，定义了节点、账号地址信息获取，发送交易等接口

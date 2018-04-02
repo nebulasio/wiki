@@ -1,5 +1,5 @@
 # Nebulas 101 - 06 连接测试网络
-星云链的测试网络有特定的chainID,在连接测试网络时需要将创世区块配置`genesis.conf`更新为测试网络的创世区块配置，同时更新配置信息。官方的介绍[Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
+星云链的测试网络有特定的chainID,在连接测试网络时需要将创世区块配置`genesis.conf`更新为测试网络的创世区块配置，同时更新节点配置信息。请参考官方的介绍[Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)。
 
 ## 配置
 
