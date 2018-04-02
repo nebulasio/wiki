@@ -4,6 +4,10 @@
 
 We are glad to release Nebulas Testnet here. It simulate the Nebulas network and NVM, and allow developers to interact with Nebulas without paying the cost of gas.
 
+```
+https://github.com/nebulasio/go-nebulas/tree/testnet
+```
+
 ### Configuration
 
 The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/testnet/conf), including

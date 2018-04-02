@@ -4,6 +4,10 @@
 
 We are glad to release Nebulas Mainnet here. Please join and enjoy Nebulas Mainnet.
 
+```
+https://github.com/nebulasio/go-nebulas/releases/tag/v1.0.0
+```
+
 ### Configuration
 
 The Mainnet configuration files are in folder [`mainnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/mainnet/conf), including
