@@ -31,7 +31,7 @@ Please check the [`template.conf`](resources/conf/template.conf) to find more de
 > *Tips*: the official seed node info is as below,
 
 ``` json
-seed:["/ip4/35.154.108.11/tcp/8680/ipfs/QmTvcQ3E1yGdKoW6rSQYVNpbLUivXtb44Py72EvySSLaQx"]
+seed:["/ip4/52.60.150.236/tcp/8680/ipfs/QmVJikqWQst13QsgdCLBjgcSWwpAAdZjoExGdvK3r2CNhv"]
 ```
 
 #### API List
