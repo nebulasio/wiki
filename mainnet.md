@@ -5,7 +5,7 @@
 We are glad to release Nebulas Mainnet here. Please join and enjoy Nebulas Mainnet.
 
 ```
-https://github.com/nebulasio/go-nebulas/releases/tag/v1.0.0
+https://github.com/nebulasio/go-nebulas/tree/master
 ```
 
 ### Configuration
