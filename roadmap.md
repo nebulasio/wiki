@@ -117,7 +117,7 @@ Misc
 
 Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.4.0).
 
-### v0.5.0
+### v0.5.0 [done]
 
 Goals
 
@@ -140,7 +140,56 @@ Misc
 
 * Add more metrics to monitor the stability of neb applications.
 
-### v0.8.0
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.5.0).
+
+### v0.6.0 [done]
+
+Goals
+
+* Stability improvement, performance optimization.
+* Reconstruct P2P network.
+* Redesign block sync logic.
+
+Testnet
+
+* Fix bugs & improv the performance.
+
+Network
+
+* Add _Stream_ for single connection management.
+* Add _StreamManager_ for connections management.
+* Implement priority message _chan_.
+* Add route table persistence strategy.
+* Improve strategy to process TCP packet splicing.
+
+Log
+
+* Add console log(CLog), printing log to both console & log files, to inform developers what’s happening in Neb.
+* Add verbose log(VLog), printing log to log files, to inform devs how Neb works in details.
+* Log adjustment.
+
+Sync
+
+* Use chunk header hash to boost the sync performance.
+* Adjust the synchronous retry logic and timeout configuration.
+* Fix bugs in synchronization and add more metrics statistics.
+
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.6.0).
+
+### v0.6.1 [done]
+
+Goals
+
+* Improve test net compatibility.
+
+Core
+
+* Upgrade the storage structure of the block
+
+Download [here](https://github.com/nebulasio/go-nebulas/releases/tag/v0.6.1).
+
+
+### v0.8.0 [done]
 
 Goals
 
@@ -148,7 +197,7 @@ Goals
 * New Nebulas Wallet.
 * New web-based Playground tools to interactive with Nebulas.
 
-### v1.0.0
+### v1.0.0 [done]
 
 Goals
 
@@ -158,3 +207,9 @@ Goals
 * Release new Nebulas Block Explorer.
 * Release new Nebulas Wallet for both desktop and mobile device.
 * A web-based playground tools for developer.
+
+Download [explorer](https://github.com/nebulasio/explorer/releases/tag/explorer-tag-1.0.0).
+
+Download [wallet](https://github.com/nebulasio/web-wallet).
+
+Download [neb.js](https://github.com/nebulasio/neb.js).
