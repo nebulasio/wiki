@@ -10,7 +10,7 @@ https://github.com/nebulasio/go-nebulas/tree/testnet
 
 ### Configuration
 
-The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/testnet/testnet/conf), including
+The testnet configuration files are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/testnet/testnet/conf) under `testnet` branch, including
 
 #### genesis.conf
 

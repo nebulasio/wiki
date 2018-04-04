@@ -3,7 +3,7 @@
 
 ## 配置
 
-配置文件在官方代码仓库中[`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf):
+配置文件在官方代码仓库 `testnet` 分支的 [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf) 目录下:
 
 - config.conf
 - genesis.conf
