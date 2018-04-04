@@ -4,7 +4,7 @@ The test network of the Nebulas chain has a specific chainID. When connecting to
 
 ## Configuration
 
-The configaration files of testnet are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/develop/testnet/conf) under `testnet` branch:
+The configaration files of testnet are in folder [`testnet/conf`](https://github.com/nebulasio/go-nebulas/tree/testnet/testnet/conf) under `testnet` branch:
 
  - config.conf
  - genesis.conf
