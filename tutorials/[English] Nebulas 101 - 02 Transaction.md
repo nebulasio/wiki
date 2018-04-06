@@ -125,7 +125,7 @@ Example 1:
 
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
@@ -148,10 +148,7 @@ If your transaction was successful and you see a response that includes a `txhas
 You should now see an error saying that you used an invalid `nonce`.
 
 ```
-{
-  "code": 2,
-  "error": "nonce is invalid"
-}
+{"error":"transaction's nonce is invalid, should bigger than the from's nonce"}
 ```
 
 Each time you execute a successful transaction you have to increment the `nonce` in the subsequent transaction. So the next time you want to transfer from this same account we would have to set `"nonce": 2`. Note that `nonce` is an integer while `value` is a string.
