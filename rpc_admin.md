@@ -326,7 +326,7 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 	* `function` the contract call function for call contarct function.
 	* `args` the params of contract. The args content is JSON string of parameters array.
 	
-`binary` any binary data with a length limit = 1MB.
+`binary` any binary data with a length limit = 128KB.
 [optional] 
 Notice:
 
