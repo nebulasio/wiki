@@ -209,3 +209,41 @@ smart contracts. The minimum unit of NAS is 10−18 NAS.
 ##### What other language support will follow (and when)?
 > answer here
 
+##### binary storage
+What is recommended way to store binary data in Nebulas blockchain? Is it possible at all? Do you encourage such use of blockchain? Also, i couldn't find information regarding GlobalContractStorage mentioned in docs, what is it?
+
+> Currently binary  data can be stored on chain by binary transaction. The limit size of binary is 128k. But we don’t encourage storing data on the chain because the user might store some illegal data.
+
+> `GlobalContractStorage`not currently implemented. It provides support for multiple contract sharing data for the same developer.
+
+
+##### ChainID & connect
+
+Can you tell us what the chainID of Mainnet and Testnet is? I have compiled the source code of our nebulas, but not even our test network?
+
+> chainID of Nebulas:
+
+- Mainnet: 1
+- Testnet: 1001
+- private: default 100, users can customize the values.
+
+> The network connection:
+
+- Mainnet: 
+	- source code:[master](https://github.com/nebulasio/go-nebulas/tree/master)
+	- wiki:[Mainnet](https://github.com/nebulasio/wiki/blob/master/mainnet.md)
+
+- Testnet:
+	- source code:[testnet](https://github.com/nebulasio/go-nebulas/tree/testnet)
+	- wiki:[Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
+
+##### smart contract deploy
+Our smart contract deployment, I think is to submit all contract code directly, is the deployment method like this?
+
+> Yeah, We can deploy the contract code directly, just as it is to release code to the NPM repository, which is very simple and convenient.
+
+##### smart contract IDE
+
+We don't have any other smart contract ides, like solidity's "Remix"? Or is there documentation detailing which contract parameters can be obtained? (because I need to implement the random number and realize the logic, I calculate the final random number according to the parameters of the network, so I may need some additional network parameters that will not be manipulated.)
+
+> You can use [web-wallet](https://github.com/nebulasio/web-wallet) to deploy the contract, it has test function to check the parameters and contract execution result.
