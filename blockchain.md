@@ -142,11 +142,11 @@ If node A needs to do full sync, the procedure is as following,
 3. If A receives >N/2 same hash H, A will try to sync the chunks represented by H.
 4. If A has fetched all chunks represented by H and linked them on chain successfully, Jump to 1.
 ```
-This procedure contain mainly two steps, sync ChunkHeaders (step 1-3) and Sync ChunkData of the chunks included by the ChunkHeaders (step 4). 
+This procedure contain mainly two steps, sync ChunkHeaders (step 1-3) and sync ChunkData of the chunks included by the ChunkHeaders (step 4). 
 
 **Note:** `ChunkHeader` contains an array of 32 block hash and the hash of these block hash. `ChunkHeaders` contains an array of 10 `ChunkHeader`s and the hash of these `ChunkHeader`s' hash.
 
-This procedure will be repeated until the tail block height is 32 blocks less than the canonical chain, which means the remaining blocks is lass than one chunk. Then the sync process will be finish. And the [downloader](https://github.com/nebulasio/wiki/blob/master/blockchain.md#downloader) process is used to get the remaining blocks.
+This procedure will be repeated until the tail block height is 32 blocks less than the canonical chain, which means the remaining blocks is less than one chunk. Then the sync process will be finished. And the [downloader](https://github.com/nebulasio/wiki/blob/master/blockchain.md#downloader) process is used to get the remaining blocks.
 
 Here is a diagram of this sync procedure:
 ![](resources/the-diagram-of-sync-process.png)
