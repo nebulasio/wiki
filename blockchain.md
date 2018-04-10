@@ -128,20 +128,29 @@ Specially, we use json to do serialization in smart contract codes instead of pr
 
 ## Synchronization
 
-Synchronization is chunk-based. Each chunk contains 32 blocks on canonical chain.
+Synchronization is chunk-based, which could minimize the number of network packets and achieve better safety. Each chunk contains 32 blocks on canonical chain.
 
 ### Full Sync
 
-Each time 10 chunks will be synced. 
+Each time a certain number of chunks will be synced. The number is defined by `MaxChunkPerSyncRequest` and it's 10 chunks for now. 
 If node A needs to do full sync, the procedure is as following,
 
 ```txt
 1. A sends its tail block to N remote peers.
 2. The remote peers locate the chunk C that contains A's tail block.
-   Then they will send back the headers of 10 chunks, including the chunk C and 9 C's subsequent chunks, and the hash of the 10 headers.
+   Then they will send back the headers of 10 chunks, including the chunk C and 9 C's subsequent chunks, and the hash H of the 10 headers.
 3. If A receives >N/2 same hash H, A will try to sync the chunks represented by H.
 4. If A has fetched all chunks represented by H and linked them on chain successfully, Jump to 1.
 ```
+This procedure contain mainly two steps, sync ChunkHeaders (step 1-3) and Sync ChunkData of the chunks included by the ChunkHeaders (step 4). 
+
+**Note:** `ChunkHeader` contains an array of 32 block hash and the hash of these block hash. `ChunkHeaders` contains an array of 10 `ChunkHeader`s and the hash of these `ChunkHeader`s' hash.
+
+This procedure will be repeated until the tail block height is 32 blocks less than the canonical chain, which means the remaining blocks is lass than one chunk. Then the sync process will be finish. And the [downloader](https://github.com/nebulasio/wiki/blob/master/blockchain.md#downloader) process is used to get the remaining blocks.
+
+Here is a diagram of this sync procedure:
+![](resources/the-diagram-of-sync-process.png)
+
 
 ### Fast Sync (TBD)
 
@@ -153,3 +162,4 @@ Sometimes a node A will receive a block B with higher height than its current ta
 1. A sends B to a random peer to download B's parent block.
 2. If A received B's parent block B', A will try to link B' with A's current tail block. If failed again, B= B' & jump to 1. Otherwise, end.
 ```
+If the height difference between block B and the tail block of node A is >32, then the sync process will be triggered.
