@@ -128,12 +128,27 @@ Specially, we use json to do serialization in smart contract codes instead of pr
 
 ## Synchronization
 
-Synchronization is chunk-based, which could minimize the number of network packets and achieve better safety. Each chunk contains 32 blocks on canonical chain.
+Sometimes a node will receive a block with height much higher than its current tail block. Then this node need to sync blocks from peer nodes to keep consistent with canonical chain.
 
-### Full Sync
+The synchronization mechanism in nebulas contains two different procedure: sync chunks procedure and download blocks procedure. 
+Which procedure to use depends on the number of blocks that need to be synchronized. 
+If the blocks need to be synchronized is >32, then sync chunk procedure will be used. Otherwise the download block procedure will be used.
 
-Each time a certain number of chunks will be synced. The number is defined by `MaxChunkPerSyncRequest` and it's 10 chunks for now. 
-If node A needs to do full sync, the procedure is as following,
+Sync chunk is a chunk-based synchronization procedure, which could minimize the number of network packets and achieve better safety. 
+Each chunk contains 32 blocks on canonical chain. 
+And chunks will be synced in ascending order (from older to newer).
+
+Download blocks procedure is a synchronization procedure that download blocks one by one in a descending order (from newer to older).
+
+
+### Sync Chunk
+
+If a node A receives a block B with height higher than its current tail block by more than 32, then it will go through the sync chunk procedure.
+
+During each sync chunk procedure a certain number of chunks will be synced. 
+The number is defined by `MaxChunkPerSyncRequest` and it's 10 chunks for now. 
+
+The sync chunk procedure is as following,
 
 ```txt
 1. A sends its tail block to N remote peers.
@@ -149,17 +164,22 @@ This procedure contain mainly two steps, sync ChunkHeaders (step 1-3) and sync C
 This procedure will be repeated until the tail block height is 32 blocks less than the canonical chain, which means the remaining blocks is less than one chunk. Then the sync process will be finished. And the [downloader](https://github.com/nebulasio/wiki/blob/master/blockchain.md#downloader) process is used to get the remaining blocks.
 
 Here is a diagram of this sync procedure:
+
 ![](resources/the-diagram-of-sync-process.png)
 
+### Download Block
 
-### Fast Sync (TBD)
+If a node A receives a block B with height higher than its current tail block and the height difference is  <32, then it will go through the download block procedure.
 
-## Downloader
-
-Sometimes a node A will receive a block B with higher height than its current tail block. At this time, the node A will try to download the block's parent, the procedure is as following, 
+During this procedure, the node A will try to download the B block's parent, the procedure is as following, 
 
 ```txt
-1. A sends B to a random peer to download B's parent block.
+1. A sends the hash of B back to the peer to download B's parent block.
 2. If A received B's parent block B', A will try to link B' with A's current tail block. If failed again, B= B' & jump to 1. Otherwise, end.
 ```
-If the height difference between block B and the tail block of node A is >32, then the sync process will be triggered.
+
+This procedure will repeat until the parent block to be downloaded is the same with the tail block of node A, then the download process will be finished. And the block chain of node A will be the same with the canonical chain.
+
+Here is a diagram of this download procedure:
+
+![](resources/the-diagram-of-download-process.png)
