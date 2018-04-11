@@ -128,27 +128,15 @@ Specially, we use json to do serialization in smart contract codes instead of pr
 
 ## Synchronization
 
-Sometimes a node will receive a block with height much higher than its current tail block. Then this node need to sync blocks from peer nodes to keep consistent with canonical chain.
+Sometimes we will receive a block with height much higher than its current tail block. When the gap appears, we need to sync blocks from peer nodes to catch upd them.
 
-The synchronization mechanism in nebulas contains two different procedure: sync chunks procedure and download blocks procedure. 
-Which procedure to use depends on the number of blocks that need to be synchronized. 
-If the blocks need to be synchronized is >32, then sync chunk procedure will be used. Otherwise the download block procedure will be used.
+Nebulas provides two method to sync blocks from peers: Chunks Downloader and Block Downloader. If the gap is bigger than 32 blocks, we'll choose Chunk Downloader to download a lot of blocks in chunks. Otherwise, we choose Block Downloader to download block one by one.
 
-Sync chunk is a chunk-based synchronization procedure, which could minimize the number of network packets and achieve better safety. 
-Each chunk contains 32 blocks on canonical chain. 
-And chunks will be synced in ascending order (from older to newer).
+### Chunks Downloader
 
-Download blocks procedure is a synchronization procedure that download blocks one by one in a descending order (from newer to older).
+Chunk is a collection of 32 successive blocks. Chunks Downloader allows us to download at most 10 chunks after our current tail block each time. This chunk-based mechanism could help us minimize the number of network packets and achieve better safety.
 
-
-### Sync Chunk
-
-If a node A receives a block B with height higher than its current tail block by more than 32, then it will go through the sync chunk procedure.
-
-During each sync chunk procedure a certain number of chunks will be synced. 
-The number is defined by `MaxChunkPerSyncRequest` and it's 10 chunks for now. 
-
-The sync chunk procedure is as following,
+The procedure is as following,
 
 ```txt
 1. A sends its tail block to N remote peers.
@@ -157,28 +145,29 @@ The sync chunk procedure is as following,
 3. If A receives >N/2 same hash H, A will try to sync the chunks represented by H.
 4. If A has fetched all chunks represented by H and linked them on chain successfully, Jump to 1.
 ```
-This procedure contain mainly two steps, sync ChunkHeaders (step 1-3) and sync ChunkData of the chunks included by the ChunkHeaders (step 4). 
 
-**Note:** `ChunkHeader` contains an array of 32 block hash and the hash of these block hash. `ChunkHeaders` contains an array of 10 `ChunkHeader`s and the hash of these `ChunkHeader`s' hash.
+In steps 1~3, we use majority decision to confirm the chunks on canonical chain. Then we download the blocks in the chunks in step 4.
 
-This procedure will be repeated until the tail block height is 32 blocks less than the canonical chain, which means the remaining blocks is less than one chunk. Then the sync process will be finished. And the [downloader](https://github.com/nebulasio/wiki/blob/master/blockchain.md#downloader) process is used to get the remaining blocks.
+**Note:** `ChunkHeader` contains an array of 32 block hash and the hash of the array. `ChunkHeaders` contains an array of 10 `ChunkHeaders` and the hash of the array.
 
 Here is a diagram of this sync procedure:
 
 ![](resources/the-diagram-of-sync-process.png)
 
-### Download Block
+### Block Downloader
 
-If a node A receives a block B with height higher than its current tail block and the height difference is  <32, then it will go through the download block procedure.
+When the length gap between our local chain with the canonical chain is smaller than 32, we'll use Block downloader to download the missing blocks one by one.
 
-During this procedure, the node A will try to download the B block's parent, the procedure is as following, 
+The procedure is as following,
 
 ```txt
-1. A sends the hash of B back to the peer to download B's parent block.
-2. If A received B's parent block B', A will try to link B' with A's current tail block. If failed again, B= B' & jump to 1. Otherwise, end.
+1. C relays the newest block B to A and A finds B's height is bigger than current tail block's.
+2. A sends the hash of block B back to C to download B's parent block.
+3. If A received B's parent block B', A will try to link B' with A's current tail block.
+   If failed again, A will come back to step 2 and continue to download the parent block of B'. Otherwise, finished.
 ```
 
-This procedure will repeat until the parent block to be downloaded is the same with the tail block of node A, then the download process will be finished. And the block chain of node A will be the same with the canonical chain.
+This procedure will repeat until A catch up the canonical chain.
 
 Here is a diagram of this download procedure:
 
