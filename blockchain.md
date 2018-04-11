@@ -128,13 +128,13 @@ Specially, we use json to do serialization in smart contract codes instead of pr
 
 ## Synchronization
 
-Sometimes we will receive a block with height much higher than its current tail block. When the gap appears, we need to sync blocks from peer nodes to catch upd them.
+Sometimes we will receive a block with height much higher than its current tail block. When the gap appears, we need to sync blocks from peer nodes to catch up with them.
 
 Nebulas provides two method to sync blocks from peers: Chunks Downloader and Block Downloader. If the gap is bigger than 32 blocks, we'll choose Chunk Downloader to download a lot of blocks in chunks. Otherwise, we choose Block Downloader to download block one by one.
 
 ### Chunks Downloader
 
-Chunk is a collection of 32 successive blocks. Chunks Downloader allows us to download at most 10 chunks after our current tail block each time. This chunk-based mechanism could help us minimize the number of network packets and achieve better safety.
+Chunk is a collection of 32 successive blocks. Chunks Downloader allows us to download at most 10 chunks following our current tail block each time. This chunk-based mechanism could help us minimize the number of network packets and achieve better safety.
 
 The procedure is as following,
 
@@ -167,7 +167,7 @@ The procedure is as following,
    If failed again, A will come back to step 2 and continue to download the parent block of B'. Otherwise, finished.
 ```
 
-This procedure will repeat until A catch up the canonical chain.
+This procedure will repeat until A catch up with the canonical chain.
 
 Here is a diagram of this download procedure:
 
