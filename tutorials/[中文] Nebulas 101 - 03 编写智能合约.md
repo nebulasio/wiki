@@ -214,10 +214,10 @@ takeout():
 
 ## 部署智能合约
 上面介绍了在Nebulas中怎么去编写一个智能合约，现在我们需要把智能合约部署到链上。
-前面有介绍过用户如何在Nebulas中进行转账交易，我们使用sendTransation()接口来发起一笔转账交易。在Nebulas中部署一个智能合约其实也是发送一个transation来实现，即也是通过调用sendTransation()接口，只是参数不一样。
+前面有介绍过用户如何在Nebulas中进行转账交易，我们使用sendTransaction()接口来发起一笔转账交易。在Nebulas中部署一个智能合约其实也是发送一个transaction来实现，即也是通过调用sendTransaction()接口，只是参数不一样。
 
 ```js
-sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
+sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 我们约定：如果from和to是同一个地址，就认为是部署一个智能合约。
 
@@ -254,10 +254,10 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/tra
 如上图所示，如果我们通过合约的地址可以查询到合约的信息，就表示合约部署成功了。
 
 ## 执行智能合约方法
-在Nebulas中调用智能合约的方式也很简单，直接使用sendTransation方法来调用智能合约。
+在Nebulas中调用智能合约的方式也很简单，直接使用sendTransaction方法来调用智能合约。
 
 ```js
-sendTransation(from, to, value, nonce, gasPrice, gasLimit, contract)
+sendTransaction(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 - from: 用户钱包地址
 - to: 智能合约地址
@@ -280,7 +280,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/tra
 	"result":{"txhash":"b55358c2e12c1d48d4e6beaee7002a59138294fb2896ea8059ff5277553af59f","contract_address":""}
 }
 ```
-智能合约的调用本质也是提交一个transation，所以也依赖矿工打包，矿工将交易打包成功以后调用才算成功，所以智能合约的调用也不是立即生效。我们需要等待一段时间（约一分钟），然后可以验证我们的调用是否成功。
+智能合约的调用本质也是提交一个transaction，所以也依赖矿工打包，矿工将交易打包成功以后调用才算成功，所以智能合约的调用也不是立即生效。我们需要等待一段时间（约一分钟），然后可以验证我们的调用是否成功。
 上面我们调用save()方法向银行保险柜存储了金额100的资金，需要先从用户的余额扣除100，所以有个转账的过程，转账的金额需要通过value字段来传递。合约调用之后，只需要验证智能合约的地址余额是否是100。
 通过console控制台可以很方便的查询到当前智能合约地址的金额：
 ![key](resources/101-03-save-state.png)
@@ -333,7 +333,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call
 	"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"556\"}","execute_err":"","estimate_gas":"20209"}
 }
 ```
-智能合约的查询本质也是提交一个transation，transaction提交后只在本地执行，所以智能合约的查询立即生效。在查询方法返回结果中可以看到执行结果。
+智能合约的查询本质也是提交一个transaction，transaction提交后只在本地执行，所以智能合约的查询立即生效。在查询方法返回结果中可以看到执行结果。
 
 **参考链接:
 
