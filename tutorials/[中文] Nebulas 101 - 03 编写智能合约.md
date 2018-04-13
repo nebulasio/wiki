@@ -249,7 +249,7 @@ curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/tra
 得到返回值并不能保证合约已经部署成功，因为sendTransaction()是一个异步的过程，需要经过矿工打包，正如之前的转账交易一样，转账并不能实时到账，依赖矿工打包的速度，所以需要等待一段时间（约1分钟），然后可以通过查询合约地址的信息或者调用智能合约来验证合约是否部署成功。
 
 ## 验证合约是否部署成功
-在部署智能合约的时候得到了合约的地址`contract_address`，我们可以很方便的使用console控制台查询合约的地址信息来验证合约是否部署成功。
+在部署智能合约的时候得到了transaction的hash地址`txhash`，我们可以很方便的使用console控制台查询transaction的hash信息来验证合约是否部署成功。
 ![key](resources/101-03-state.png)
 如上图所示，如果我们通过合约的地址可以查询到合约的信息，就表示合约部署成功了。
 

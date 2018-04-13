@@ -153,6 +153,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 {
     "result":{
         "txhash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d"
+        "contract_address":""
     }
 }
 ```
@@ -166,7 +167,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 另外，以上两步交易也可以通过[`SendTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)一次完成：
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":0,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
 
 // Result
 {
