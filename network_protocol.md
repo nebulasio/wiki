@@ -50,6 +50,8 @@ In Nebulas, we define our own wire protocol, as the following:
 
 * Reserved: 24 bits
   * reserved field.
+  * The first bit indicates whether the network message is compressed.
+  * compressed: {0x80, 0x0, 0x0}; uncompressed: {0x0, 0x0, 0x0}
 
 * Version: 8 bits
   * The version of the Message Name.
