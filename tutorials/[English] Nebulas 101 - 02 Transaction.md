@@ -1,28 +1,34 @@
 # Nebulas 101 - 02 Sending Transactions on Nebulas
+
 [Youtube Tutorial](https://www.youtube.com/watch?v=_Njq8LX2r-4)
 
-*For this portion of the tutorial we will pick up where we left off in the [Installation tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md).*
+> For this portion of the tutorial we will pick up where we left off in the [Installation tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md).
 
-Nebulas provides three ways to send transactions：
+Nebulas provides three methods to send transactions：
 
-1. Through http port
-2. Through console
-3. Through Nebulas test framework
+1. Sign & Send
+2. Send with Passphrase
+3. Unlock & Send
 
 Here is an introduction to sending a transaction in Nebulas through the three methods above and verifying whether the transaction is successful.
 
-## Setup
+---
 
-You will need two wallet addresses. An address that has NAS (the sending address, i.e. `from`) and an address you want to send NAS to (the receiving address, i.e. `to`).
+## Prepare Accounts
 
-### The sender
-For this tutorial we will use the coinbase address in the `conf/example/miner.conf`, which is `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq` . It will get NAS rewards by mining blocks, Then we can send to another wallet because we know the passphrase for this address. 
+In Nebulas, each address represents an unique account.
 
-### The receiver
-A new wallet address that we will create to be used as the receiving address of the transfer.
+Prepare two accounts: an address to send tokens (the sending address, called "from") and an address to receive the tokens (the receiving address, called "to").
 
-Generating a new Nebulas address:
-```sh
+### The Sender
+
+Here we will use the coinbase account in the `conf/example/miner.conf`, which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` as the sender. As the miner's coinbase account, it will receive some tokens as the mining reward. Then we could send these tokens to another account later.
+
+### The Receiver
+
+Create a new wallet to receive the tokens.
+
+```bash
 $ ./neb account new
 Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
 Passphrase:
@@ -30,316 +36,183 @@ Repeat passphrase:
 Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
 
-**Note:** when you run this command you will have a different address than `n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`. Be sure to use your address, which we will refer to as `your_address` going forward.
+> When you run this command you will have a different wallet address with `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`. Please take your generated address as the receiver.
 
-The command above will generate a json file at this location: `src/github.com/go-nebulas/keydir/`
+The keystore file of the new wallet will be located in `$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/`
 
-## Start your Node
+---
 
-This is a two part process. First you must start a seed node, then start a normal node based on that seed node. (If you completed the Installation tutorial then you should have already done this step once before)
+## Get Nodes Up
 
-**Starting the Seed Node**
+**Start Seed Node**
 
-`$ ./neb -c conf/default/config.conf`
+Firstly, start a seed node as the first node in local private chain.
 
-**Starting the normal Node**
-
-In a separate terminal window run the following:
-
-`$ ./neb -c conf/example/miner.conf`
-
-After a period of time (1 to 2 minutes), the mining reward will begin being sent to the coinbase account address used in `miner.conf` which is `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`.
-
-## Using `curl` to interact with the network
-Nebulas provides an RPC port, allowing developers to interact with the Nebulas network via HTTP or gRPC protocols for more complex operations. Here, we introduce how to check the balance of each account through the port of the HTTP protocol. The Nebulas HTTP port's address and port is configured via the `http_listen` attribute in the configuration file. The default port is `8685`.
-
-### Check Address Balance (accountstate)
-
-We can check the coinbase address account balance to see the initial token distribution amount plus tokens that have been mined. When the coinbase account address has a balance, transfer transactions can be made.
-
-**Note:** If you get any proxy errors when using curl, run the following command:
-
-`unset https_proxy `
-
-In the terminal make the following curl request:
-
-```
-/// Request
- curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
- 
- // Result
- {
- 	"result": {
- 		"balance": "67066180000000000000",
- 		"nonce": "0",
- 		"type": 87
- 	}
- }
-```
-Great! The above shows us the balance for the address that we are sending mining rewards to.
-
-Now, let's check the balance of the address we created ourselves. In the terminal make the following curl request:
-
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
-
-// Result
-{
-	"result": {
-		"balance": "0",
-		"nonce": "0",
-		"type": 87
-	}
-}
+```bash
+./neb -c conf/default/config.conf
 ```
 
-As expected this address has a 0 balance as we are not mining to it and we have not yet transferred any NAS to it.
+**Start Miner Node**
 
-## Send and Verify Transfers
+Secondly, start a miner node connecting to the seed node. This node will generate new blocks in local private chain.
 
-Now let’s transfer some NAS from one address to another!
+```bash
+./neb -c conf/example/miner.conf
+``` 
 
-Before we can transfer NAS out of an address it must be unlocked. To unlock an address you need to know the passphrase for that address. Currently, an address will stay unlocked for 5 minutes. Note: you do not need to unlock the receiving address.
+> **How long to mint a new block?**
+> 
+> In Nebulas, DPoS is chosen as the temporary consensus algorithm before Proof-of-Devotion(PoD, described in [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)) is ready. In this consensus algorithm, each miner will mint new block one by one every 15 seconds.
+> 
+> In current context, we have to wait for 315(=15*21) seconds to get a new block because there is only one miner among 21 miners defined in `conf/default/genesis.conf` working now.
 
-Let's unlock `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`.
+Once a new block minted by the miner, the mining reward will be added to the coinbase wallet address used in `conf/example/miner.conf` which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
 
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "passphrase":"passphrase"}'
+---
 
-// Result
-{
-	"result": {
-		"result": true
-	}
-}
-```
+## Interact with Nodes
 
-Now that the address is unlocked we can execute a transfer.
+Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction in three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)). 
 
-There are two addresses needed for this request, `from` and `to`. `from` is the address we just unlocked and `to` is the address we created earlier, `<your address>`. Be sure to replace <your address> in the curl request below.
+> The Nebulas HTTP Lisenter is defined in the node configuration. The default port of our seed node is `8685`.
 
+At first, check the sender's balance before sending a transaction.
 
-Example 1:
+### Check Account State
 
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+Fetch the state of sender's account `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` with `/v1/user/accountstate` in API Module using `curl`.
 
-// Result
-{
-    "result":{
-      "txhash":"fb5204e106168549465ea38c040df0eacaa7cbd461454621867eb5abba92b4a5",
-      "contract_address":""
-    }
-}
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"}'
 
-```
-
-**Note:** After the `from` and `to` addresses there is `nonce `, `value`, `gasPrice` and `gasLimit`. The `value`, `gasPrice` and `gasLimit` number should be a string, as the value is too big to use integers. For example "10" or "12" or "100" etc.. so if you get an error:
-
-```
-{"error":"json: cannot unmarshal number into Go value of type string"} – this means you forgot to add “10” quotes around the numbers
-```
-
-If your transaction was successful and you see a response that includes a `txhash`, go ahead and try running the exact same curl request again.
-
-You should now see an error saying that you used an invalid `nonce`.
-
-```
-{"error":"transaction's nonce is invalid, should bigger than the from's nonce"}
-```
-
-Each time you execute a successful transaction you have to increment the `nonce` in the subsequent transaction. So the next time you want to transfer from this same account we would have to set `"nonce": 2`. Note that `nonce` is an integer while `value` is a string.
-
-If you have forgotten what the most recent `nonce` was you can find it by checking the Balance with the `accountstate` endpoint.
-
-```
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
-
-{
-  "balance":"10234719999999999999990",
-  "nonce":"1"
-}
-
-```
-Here we can now see that the `nonce` is 1 (assuming we have only executed 1 successful transaction so far), so the next `nonce` must be 2.
-
-
-## Now back to the txHash we generated above
-
-The `txhash` value can be used to query the transaction receipt to learn about the transaction.
-
-* Wait for about 30s before running this request because the transfer requires the miner to confirm, so there will be a delay.
-
-Note: Use the `txhash` that you generated in your last successful transaction.
-
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d"}'
-
-// Result
-{
-	"result": {
-		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
-		"chainId": 100,
-		"from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-		"to": "your_address",
-		"value": "10",
-		"nonce": "1",
-		"timestamp": "1522339267",
-		"type": "binary",
-		"data": null,
-		"gas_price": "1000000",
-		"gas_limit": "2000000",
-		"contract_address": "",
-		"status": 1,
-		"gas_used": "20000"
-	}
-}
-```
-
-If you see a response that is similar to the above (contains the same keys: `hash`, `from`, `to`, `nonce`, `timestamp`, `chainId`) that means the transaction was successfully executed!
-
-### Check the Balance of the Receiver
-
-Now were going to check the balance of the transfer receiving account to verify whether the transfer was successful.
-
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
-
-// Result
-{
-	"result": {
-		"balance": "10",
-		"nonce": "0",
-		"type": 87
-	}
-}
-```
-
-Here you should see a balance that is the total of all the successful transfers that you executed. Here we can see that this address has 10 NAS!
-
-
-## Console
-Nebulas also provides a JavaScript console. The console implements [API](https://github.com/nebulasio/wiki/blob/master/rpc.md) and [Admin](https://github.com/nebulasio/wiki/blob/master/management_rpc.md)
-
-The console provides functions such as view account, create account address, unlock account, transaction signature, send transactions, etc.
-The console needs to start the node locally, or connect to the remote node with `admin.setHost()` after starting the console.
-The steps to send a transaction through the console console are basically similar to calling http requests, and commands are much simpler.
-
-##### Start the Console
-```
-./neb console
-```
-
-Starting this way will connect the local neb nodes that are started by default. The console implements the auto-completion method, using `TAB` to see the existing methods:
-
-```js
-> api.
-api.call                    api.getBlockByHeight        api.latestIrreversibleBlock 
-api.estimateGas             api.getDynasty              api.sendRawTransaction      
-api.gasPrice                api.getEventsByHash         api.subscribe               
-api.getAccountState         api.getNebState             
-api.getBlockByHash          api.getTransactionReceipt
-```
-```js
-> admin.
-admin.accounts                      admin.nodeInfo                      admin.signHash                      
-admin.getConfig                     admin.sendTransaction               admin.signTransactionWithPassphrase 
-admin.lockAccount                   admin.sendTransactionWithPassphrase admin.startPprof                    
-admin.newAccount                    admin.setHost                       admin.unlockAccount  
-```
-
-##### Check Account Addresses
-```js
->  admin.accounts()
-   {
-       "result": {
-           "addresses": [
-               "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
-               "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
-               "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
-               "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
-               "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-               "your_address",
-               "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
-               "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
-               "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
-               "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
-           ]
-       }
-   }
-```
-
-##### Unlock Account
-
-```js
-> admin.unlockAccount("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq")
-Unlock account n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq
-Passphrase:
 {
     "result": {
-        "result": true
-    }
-}
-```
-
-##### Send Transaction
-
-```js
-> admin.sendTransaction("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "your_address","10",2, "1000000", "200000")
-{
-    "result": {
-        "contract_address": "",
-        "txhash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d"
-    }
-}
-```
-
-##### Check Transactions
-
-```js
-> api.getTransactionReceipt("84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d")
-{
-    "result": {
-        "chainId": 100,
-        "contract_address": "",
-        "data": null,
-        "from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-        "gas_limit": "200000",
-        "gas_price": "1000000",
-        "gas_used": "20000",
-        "hash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d",
-        "nonce": "2",
-        "status": 1,
-        "timestamp": "1522341302",
-        "to": "your_address",
-        "type": "binary",
-        "value": "10"
-    }
-}
-```
-#### check account balance
-```js
-> api.getAccountState("your_address")
-{
-    "result": {
-        "balance": "20",
+        "balance": "67066180000000000000",
         "nonce": "0",
         "type": 87
     }
 }
 ```
 
-### Using Nebtestkit
-[nebtestkit](https://github.com/nebulasio/go-nebulas/tree/develop/nebtestkit) is an integrated testing framework based on [mocha](https://github.com/mochajs/mocha). With `nebtestkit`, you can launch one or more Nebulas nodes, assemble a complete private chain, or join an existing network, then make transfer transactions, deploy and invoke smart contracts, etc.
-The use of `nebtestkit` instructions can be referred to [nebtestkit instructions](https://github.com/nebulasio/go-nebulas/blob/develop/nebtestkit/README.md).
+> **Note**
+> Type is used to check if this account is a smart contract account. `88` represents smart contract account and `87` means a non-contract account.
+
+As we see, the receiver has been rewarded some tokens for mining new blocks.
+
+Then let's check the receiver's account state.
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
 
 
+{
+    "result": {
+        "balance": "0",
+        "nonce": "0",
+        "type": 87
+    }
+}
+```
 
-### Next step: Tutorial 3:
+The new account doesn't have token as expected.
+
+### Send a Transaction
+
+Now let’s send a transaction in three methods to transfer some tokens from the sender to the receiver!
+
+#### Sign & Send
+
+In this way, we can sign a transaction in an offline environment and then submit it to another online node. This is the safest method for everyone to submit a transaction without exposing your own private key to the Internet. 
+
+First, sign the transaction to get raw data.
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
+
+{"result":{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}}
+```
+
+> **Note**
+> Nonce is an very important attribute in a transaction. It's designed to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack). For a given account, only after its transaction with nonce N is accepted, will its transaction with nonce N+1 be processed. Thus, we have to check the latest nonce of the account on chain before preparing a new transaction.
+
+Then, send the raw data to an online Nebulas node.
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}'
+
+{"result":{"txhash":"1b8cc3f977256c4d620b7d72f531bc19f10eb13a05ff24a8a792cd5da53a1277","contract_address":""}}⏎
+```
+
+#### Send with Passphrase
+
+If you trust a Nebulas node so much that you can delegate your keystore files to it, the second method is a good fit for you.
+
+First, upload your keystore files to the keydir folders in the trusted Nebulas node.
+
+Then, send the transaction with your passphrase.
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":2,"gasPrice":"1000000","gasLimit":"2000000"},"passphrase":"passphrase"}'
+
+{"result":{"txhash":"3cdd38a66c8f399e2f28134e0eb556b292e19d48439f6afde384ca9b60c27010","contract_address":""}}
+```
+
+> **Note**
+> Because we have sent a transaction with nonce 1 from the account `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`, new transaction with same `from` should be increased by 1, namely 2.
+
+#### Unlock & Send
+
+This is the most dangerous method. You probably shouldn’t use it unless you you have complete trust in the receiving Nebulas node.
+
+First, upload your keystore files to the keydir folders in the trusted Nebulas node.
+
+Then unlock your accounts with your passphrase for a given duration in the node.
+The unit of the duration is nano seconds (300000000000=300s).
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","passphrase":"passphrase","duration":"300000000000"}'
+
+{"result":{"result":true}}
+```
+
+After unlocking the account, everyone is able to send any transaction directly within the duration in that node without your authorization.
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":3,"gasPrice":"1000000","gasLimit":"2000000"}'
+
+{"result":{"txhash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","contract_address":""}}⏎
+```
+
+---
+
+## Transaction Receipt
+
+We'll get a `txhash` in three methods after sending a transaction successfully. The `txhash` value can be used to query the transaction status.
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf"}'
+
+{"result":{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","chainId":100,"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","value":"1000000000000000000","nonce":"3","timestamp":"1524667888","type":"binary","data":null,"gas_price":"1000000","gas_limit":"2000000","contract_address":"","status":1,"gas_used":"20000"}}⏎
+```
+
+The `status` fields may be 0, 1 or 2.
+
+- **0: Failed.** It means the transaction has been submitted on chain but its execution failed.
+- **1: Successful.** It means the transaction has been submitted on chain and its execution successeed.
+- **2: Pending.** It means the transaction hasn't been packed into a block.
+
+### Double Check
+
+Let's double check the receiver's balance. 
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+
+{"result":{"balance":"3000000000000000000","nonce":"0","type":87}}
+```
+
+Here you should see a balance that is the total of all the successful transfers that you executed.
+
+### Next
 
  [Write and run a smart contract with JavaScript](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
