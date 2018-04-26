@@ -321,6 +321,6 @@ After the node starts, if the connection with the seed node is successful, you c
 
 > Note: You can start many nodes locally. Please make sure the ports in your node configurations won't conflict with each other.
 
-### Next
+### Next step: Tutorial 2
 
 [Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)

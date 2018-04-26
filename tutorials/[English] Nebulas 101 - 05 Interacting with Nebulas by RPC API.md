@@ -1,32 +1,29 @@
 # Nebulas 101 - 05 Interacting with Nebulas by RPC API
+
 [YouTube Tutorial](https://www.youtube.com/watch?v=to3tkwFjVXo)
 
 Nebulas chain node can be accessed and controlled remotely through RPC. Nebulas chain provides a series of APIs to get node information, account balances, send transactions and deploy calls to smart contracts.
 
 The remote access to the Nebulas chain is implemented by [gRPC](https://grpc.io), and also could be accessed by HTTP via the proxy ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)). HTTP access is a interface implemented by RESTful, with the same parameters as the gRPC interface.
 
-## gRPC access
-gRPC is a high-performance, generic open-source RPC framework, developed by Google primarily for mobile applications and designed based on the HTTP/ 2 protocol standard. It's developed based on [ProtoBuf](https://github.com/google/protobuf) serialization protocol, and supports many development languages.
+## API
 
-The gRPC interface for Nebulas chain was developed using go language and provides a client [demo](https://github.com/nebulasio/go-nebulas/blob/develop/rpc/testing/client/main.go) written in go language. Here mainly introduces the use of this interface implemented go.(GRPC supports lot of languages, you can use other languages to get access to gPRC.)
+We've implemented RPC server and HTTP sercer to provide API service in Go-Nebulas.
 
-gRPC uses ProtoBuf to defines the services. The definition of ProtoBuf in the official code is at [/rpc/pb](https://github.com/nebulasio/go-nebulas/tree/master/rpc/pb):
+### Modules
 
-```
-// API interface, defines the node, account address information acquisition, send transactions and other interfaces
-rpc.proto
+All interfaces are divided into two modules: API and Admin.
 
-```
-Execute `make` in` rpc/ pb` folder when using it:
+- API: Provides interfaces that are not related to the user's private key.
+- Admin: Provides interfaces that are related to the user's private key.
 
-```
-cd rpc/ pb
-make
-```
-Generate the corresponding go version of the grpc interface code. Go version of the official code has been generated, you don't have to re-generated it. The gRPC port can be modified in the configuration file(eg: `conf/default/config.conf`). the port configuration items in the configuration file are as follows:
+It's recommended for all Nebulas nodes to open API module for public users and Admin module for authorized users.
 
-```
-# Service configuration of interaction between user and node, when multiple ports are started on the same machine, pay attention to modify the port to prevent occupancy
+### Configuration
+
+RPC server and HTTP server can be configured in the configuration file of each Nebulas node.
+
+```protobuf
 rpc {
     # gRPC API service port
     rpc_listen: ["127.0.0.1:8684"]
@@ -36,307 +33,106 @@ rpc {
     http_module: ["api", "admin"]
 }
 ```
-The default configuration port is the above `API: 8684`.
 
-go gRPC access code is as follows:
+### Example
+
+#### HTTP
+
+Here is some examples to invoke HTTP interfaces using `curl`.
+
+##### GetNebState
+
+We can invoke `GetNebState` in API module to fetch the current state of local Nebulas node, including chain identity, tail block, protocl version and so on.
+
+```bash
+> curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nebstate
+
+{"result":{"chain_id":100,"tail":"0aa1cceb7801b110fdd5217ba0a4356780c940133924d1c1a4eb60336934dab1","lib":"0000000000000000000000000000000000000000000000000000000000000000","height":"479","protocol_version":"/neb/1.0.0","synchronized":false,"version":"0.7.0"}}
+```
+
+##### UnlockAccount
+
+We can invoke `UnlockAccount` in Admin module to unlock an account in memory. All unlocked accounts can be used to send transactions directly without passphrases.
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz", "passphrase": "passphrase"}'
+
+{"result":{"result":true}}
+```
+
+#### RPC
+
+RPC server is implemented with [GRPC](https://grpc.io/). The serialization of GPRC is based on [Protocol Buffers](https://github.com/google/protobuf). You can find all rpc protobuf files in [Nebulas RPC Protobuf Folder](https://github.com/nebulasio/go-nebulas/tree/develop/rpc/pb).
+
+Here is some examples to invoke rpc interfaces using `golang`.
+
+##### GetNebState
+
+We can invoke `GetNebState` in API module to fetch the current state of local Nebulas node.
 
 ```go
-// gRPC server connection address configuration
-addr: = fmt.Sprintf("127.0.0.1:%d",uint32(8684))
-conn, err: = grpc.Dial(addr, grpc.WithInsecure())
-if err! = nil {
-	log.Warn("rpc.Dial() failed:", err)
+import(
+    "github.com/nebulasio/go-nebulas/rpc"
+    "github.com/nebulasio/go-nebulas/rpc/pb"
+)
+
+// GRPC server connection address configuration
+addr := fmt.Sprintf("127.0.0.1:%d",uint32(8684))
+conn, err := grpc.Dial(addr, grpc.WithInsecure())
+if err != nil {
+    log.Warn("rpc.Dial() failed:", err)
 }
 defer conn.Close()
 
 // API interface to access node status information
-api: = rpcpb.NewAPIServiceClient(conn)
-resp, err: = ac.GetNebState(context.Background(), & rpcpb.GetNebStateRequest {})
-if err! = nil {
-	log.Println("GetNebState", "failed", err)
+api := rpcpb.NewAPIServiceClient(conn)
+resp, err := ac.GetNebState(context.Background(), & rpcpb.GetNebStateRequest {})
+if err != nil {
+    log.Println("GetNebState", "failed", err)
 } else {
-// tail: = r.GetTail()
-	log.Println("GetNebState tail", resp)
+    log.Println("GetNebState tail", resp)
 }
+```
 
-// API interface to access, lock account address
-management: = rpcpb.NewManagementServiceClient(conn)
-from: = "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"
+##### LockAccount
+
+Account `n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz` has been unlocked after invoking `v1/admin/account/unlock` via HTTP request above. We can invoke `LockAccount` in Admin module to lock it again.
+
+```go
+import(
+    "github.com/nebulasio/go-nebulas/rpc"
+    "github.com/nebulasio/go-nebulas/rpc/pb"
+)
+
+// GRPC server connection address configuration
+addr := fmt.Sprintf("127.0.0.1:%d",uint32(8684))
+conn, err := grpc.Dial(addr, grpc.WithInsecure())
+if err != nil {
+    log.Warn("rpc.Dial() failed:", err)
+}
+defer conn.Close()
+
+// Admin interface to access, lock account address
+admin := rpcpb.NewAdminServiceClient(conn)
+from := "n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz"
 resp, err = management.LockAccount(context.Background(), & rpcpb.LockAccountRequest {Address: from})
-if err! = nil {
-	log.Println("LockAccount", from, "failed", err)
+if err != nil {
+    log.Println("LockAccount", from, "failed", err)
 } else {
-	log.Println("LockAccount", from, "result", resp)
-}
-```
-API interface defined in the go interface file generated by the proto file:
-`rpc.pb.go`
-
-## HTTP access
-The HTTP access of Nebulas chain using RESTful style API. Using the HTTP interface, you can easily access node information, account address balance, send transactions and deploy calls to smart contracts.
-
-Official default port:
-
-*8685: The default API port, used to access the [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md) interface, get node information, send transactions, etc .; can be open to external users.
-
-Some examples of using the HTTP access interface:
-
-##### Get node information
-Return node information.
-
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | GET |/v1/admin/nodeinfo |
-
-###### Parameters
-none
-
-###### Returns
-`id` node ID.
-
-`chain_id` Blockchain ID.
-
-`coinbase` the address to receive reward of mining.
-
-`peer_count` The number of currently connected nodes.
-
-`synchronized` node synchronization status.
-
-`bucket_size` the number of nodes to be saved by node routing table.
-
-`protocol_version` Network protocol version.
-
-`route_table` routing table
-
-```
-message RouteTable {
-string id = 1;
-repeated string address = 2;
+    log.Println("LockAccount", from, "result", resp)
 }
 ```
 
-###### HTTP Example
-```
-// Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/nodeinfo
+### API List
 
-// Result
-"result" : {
-    "protocol_version" : "/neb/1.0.0",
-    "coinbase" : "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
-    "bucket_size" : 64,
-    "chain_id" : 100,
-    "route_table" : [
-        {
-        "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
-        "address" : [
-            "/ip4/127.0.0.1/tcp/8680",
-            "/ip4/192.168.1.215/tcp/8680"
-        ]
-        }
-    ],
-    "synchronized" : false,
-    "id" : "QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP",
-    "peer_count" : 0
-}
+For more interfaces, please refer to the official documentation:
 
-```
-##### Account List
-Returns the list of accounts associated with the node.
+- [API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md)
+- [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md).
 
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | GET |/v1/admin/accounts |
+### Next
 
-##### Parameters
-none
+Nice job! Let's join official Testnet or Mainnet to enjoy Nebulas now!
 
-##### Returns
-`addresses` account list
-
-##### HTTP Example
-```
-// Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
-
-// Result
-"result" : {
-    "addresses" : [
-        "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
-        "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
-        "n1GfqPxKgJhWxFgHSaFHPfzuL8sKo5vdGDW",
-        "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
-        "n1JZ5Gc5qdTpbrCkwDXZM6gzTpNXyUAoiTa",
-        "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
-        "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
-        "n1PHsjHVfTLBjT24cnMYouysaiJoHxZT9cz",
-        "n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5",
-        "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
-        "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
-        "n1YoQWHJTnawn6uLPb9XRJuv6C9yQ7x5yGr",
-        "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
-        "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ",
-        "n1aV2QqKRmL8S41Rih11tnCzwsR9zPUcye8"
-    ]
-}
-```
-#### Get Account Information
-Returns account information, including account address balance and current transaction nonce.
-
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | POST |/v1/user/accountstate |
-
-###### Parameters
-`address` account address hash.
-
-###### Returns
-`balance` current balance Unit: 1/(10 ^ 18) nas.
-
-`nonce` current transaction nonce.
-
-`type` 87:normal address, 88:contract address
-
-###### HTTP Example
-```
-// Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/accountstate -d '{"address": "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2"}'
-
-// Result
-{
-    "balance": "5",
-    "nonce": "0",
-    "type" : 87,
-}
-```
-####unlock account
-Use password to unlock account.
-
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | POST |/v1/ admin/account/unlock |
-
-
-###### Parameters
-`address` account address hash.
-
-`passphrase` account password.
-
-###### Returns
-`result` unlock results.
-
-###### HTTP Example
-```
-// Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address": "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2", "passphrase": "passphrase"}'
-
-// Result
-{
-    "result": true
-}
-
-```
-#### Send the transaction
-Send the transaction, submit the contract interface
-
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | POST |/v1/admin/transaction |
-
-###### Parameters
-`from` instigator account address hash.
-
-`to` recipient account address hash.
-
-`value` Amount,unit 1/(10 ^ 18) nas.
-
-nonce transaction nonce.
-
-`gasPrice` trading gas price.
-
-`gasLimit` trading gas cap.
-
-contract information, release and invoke smart contracts.
-
-###### Returns
-`txhash` transaction hash;
-
-If the contract is deployed, returns the contract address information:
-
-contract_address contract address information;
-
-###### Example
-```
-// Request
-curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transaction -H 'Content-Type: application/json' -d '{"from":"n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2","to":"n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
-
-// Result
-{
-+   "result" : {
-+      "contract_address" : "",
-+      "txhash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"
-+   }
-}
-```
-
-#### Get transaction information
-Transaction information returned by transaction hash.
-
-Protocol | Method | API |
-| ---------- | -------- | ----- |
-| HTTP | POST |/v1/user/getTransactionReceipt |
-
-###### Parameters
-`hash` transaction hash.
-
-###### Returns
-`hash` transaction hash.
-
-`from` Instigator account address hash.
-
-`to` recipient account address hash.
-
-nonce transaction nonce.
-
-`timestamp` transaction timestamp.
-
-`data` transaction data.
-
-`chainId` transaction chain ID.
-
-contract_address contract address.
-
-###### HTTP Example
-```
-// Request
-curl -i -H Accept: application/ json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash": "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6"}'
-
-// Result
-{
-   "result" : {
-      "to" : "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
-      "status" : 2,
-      "gas_price" : "1000000",
-      "contract_address" : "",
-      "from" : "n1EuxhVYEE1JBHJuZh9c9reit6TajUwmku2",
-      "gas_limit" : "2000000",
-      "nonce" : "1",
-      "data" : null,
-      "type" : "binary",
-      "value" : "1000000000000000000",
-      "chainId" : 100,
-      "timestamp" : "1522341802",
-      "hash" : "dd5ddac81253fd77b2b7997f1b7d862425c129f41079bda413fb8ab8ffe41be6",
-      "gas_used" : ""
-   }
-}
-```
-
-
-For detailed interface usage and parameter definitions, please refer to the official documentation:
-- [RPC](https://github.com/nebulasio/wiki/blob/master/rpc.md)
-- [Admin RPC](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md).
-
-### Next step: Tutorial 6:
-
- [Connecting to Testnet](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2006%20Testnet.md)
+ [Join to Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
+ [Join to Mainnet](https://github.com/nebulasio/wiki/blob/master/mainnet.md)

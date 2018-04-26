@@ -1,34 +1,44 @@
 # Nebulas 101 - 04 Smart Contract Storage
+
 [YouTube Tutorial](https://www.youtube.com/watch?v=Ofs4AyRaSlw)
 
 Earlier we covered how to write smart contracts and how to deploy and invoke smart contracts in the Nebulas.
 
 Now we introduce in detail the storage of the smart contract. Nebulas smart contracts provide on-chain data storage capabilities. Similar to the traditional key-value storage system (eg: redis), smart contracts can be stored on the Nebulas with a pay (gas).
 
-## Storing LocalContractStorage
+## LocalContractStorage
+
 Nebulas' Smart Contract environment has built-in storage object `LocalContractStorage`, which can store numbers, strings, and JavaScript objects. The stored data can only be used in smart contracts. Other contracts can not read the stored data.
 
-#### Basics
+### Basics
+
 The `LocalContractStorage` API includes `set`, `get` and `del`, which allow you to store, read, and delete data. Storage can be numbers, strings, objects
 
-##### Storing `LocalContractStorage` Data：
+#### Storing `LocalContractStorage` Data：
 
 ```js
 // store data. The data will be stored as JSON strings
 LocalContractStorage.put(key, value);
+// Or
 LocalContractStorage.set(key, value);
 ```
-##### Reading `LocalContractStorage ` Data：
+
+#### Reading `LocalContractStorage ` Data：
+
 ```js
 // get the value from key
 LocalContractStorage.get(key);
 ```
-##### Deleting `LocalContractStorage ` Data：
+
+#### Deleting `LocalContractStorage` Data：
+
 ```js
 // delete data, data can not be read after deletion
 LocalContractStorage.del(key);
+// Or
 LocalContractStorage.delete(key);
 ```
+
 Examples:
 
 ```js
@@ -46,54 +56,56 @@ SampleContract.prototype = {
         // Storing a number (value)
         LocalContractStorage.set("value", value);
         // Storing an objects
-        LocalContractStorage.set("obj", {name:name,value:value});
+        LocalContractStorage.set("obj", {name:name, value:value});
     },
     get: function () {
         var name = LocalContractStorage.get("name");
-        console.log("name:"+name)
+        console.log("name:" + name)
         var value = LocalContractStorage.get("value");
-        console.log("value:"+value)
+        console.log("value:" + value)
         var obj = LocalContractStorage.get("obj");
-        console.log("obj:"+JSON.stringify(obj))
+        console.log("obj:" + JSON.stringify(obj))
     },
     del: function () {
         var result = LocalContractStorage.del("name");
-        console.log("del result:"+result)
+        console.log("del result:" + result)
     }
 };
 
 module.exports = SampleContract;
 ```
 
-#### Advanced
-In addition to the basic` set`, `get`, and` del` methods, `LocalContractStorage` also supports setting storage properties and storing maps to objects, as well as serialization methods for setting storage.
+### Advanced
 
-##### Storage Properties
-When writing a smart contract, its properties can be set to a storage bit. Reading and writing properties directly uses LocalContractStorage to read and write. When reading and writing, you can also customize the properties of strings and objects' mapping. Usually, for the contract to be storage bit,  properties will be set to storage property in the initialization.
+In addition to the basic `set`, `get`, and `del` methods, `LocalContractStorage` also provides methods to bind properties of smart contracts. We could read and write binded properties directly without invoking `LocalContractStorage` interfaces to `get` and `set`.
 
-Defining `LocalContractStorage` properties：
+#### Binding Properties
+
+Object instance, field name and descriptor should be provided to bind properties.
+
+##### Binding Interface
 
 ```js
-    // define a object property named `fieldname` to `obj` with descriptor.
-    // default descriptor is JSON.parse/JSON.stringify descriptor.
-    // return this.
-    defineProperty(obj, fieldName, descriptor);
+// define a object property named `fieldname` to `obj` with descriptor.
+// default descriptor is JSON.parse/JSON.stringify descriptor.
+// return this.
+defineProperty(obj, fieldName, descriptor);
 
-    // define object properties to `obj` from `props`.
-    // default descriptor is JSON.parse/JSON.stringify descriptor.
-    // return this.
-    defineProperties(obj, descriptorMap);
+// define object properties to `obj` from `props`.
+// default descriptor is JSON.parse/JSON.stringify descriptor.
+// return this.
+defineProperties(obj, descriptorMap);
 ```
 
-Property binding `LocalContractStorage` to make contracts Example:
-
+Here is an example to bind properties in a smart contract.
 
 ```js
 'use strict';
+
 var SampleContract = function () {
     // The SampleContract `size` property is a storage property. Reads and writes to` size` will be stored on the chain.
     // The `descriptor` is set to null here, the default JSON.stringify () and JSON.parse () will be used.
-    LocalContractStorage.defineMapProperty(this, "size", null);
+    LocalContractStorage.defineMapProperty(this, "size");
 
     // The SampleContract `value` property is a storage property. Reads and writes to` value` will be stored on the chain.
     // Here is a custom `descriptor` implementation, storing as a string, and returning Bignumber object during parsing. 
@@ -111,9 +123,11 @@ var SampleContract = function () {
         count: null
     });
 };
+
 module.exports = SampleContract;
 ```
-After defining the contract, you can directly read and write the binding properties. The corresponding properties will be saved directly, and stored on the chain:
+
+Then, we can read and write these properties directly as the following example.
 
 ```js
 SampleContract.prototype = {
@@ -135,8 +149,9 @@ SampleContract.prototype = {
 };
 ```
 
-##### Storing Map Data
-In a smart contract, if you need to store the key-value, you can define the contract property as a Map batch and save it onto the chain. The contract that uses Map can be written as this:
+#### Binding Map Properties
+
+What's more, `LocalContractStorage` also provides methods to bind map properties. Here is an example to bind map properties and use them in a smart contract.
 
 ```js
 'use strict';
@@ -182,6 +197,6 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-### Next step: Tutorial 5:
+### Next step: Tutorial 5
 
  [Interacting with Nebulas by RPC API](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)

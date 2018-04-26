@@ -44,7 +44,7 @@ The keystore file of the new wallet will be located in `$GOPATH/src/github.com/n
 
 ## Get Nodes Up
 
-**Start Seed Node**
+### Start Seed Node
 
 Firstly, start a seed node as the first node in local private chain.
 
@@ -52,7 +52,7 @@ Firstly, start a seed node as the first node in local private chain.
 ./neb -c conf/default/config.conf
 ```
 
-**Start Miner Node**
+### Start Miner Node
 
 Secondly, start a miner node connecting to the seed node. This node will generate new blocks in local private chain.
 
@@ -60,7 +60,7 @@ Secondly, start a miner node connecting to the seed node. This node will generat
 ./neb -c conf/example/miner.conf
 ``` 
 
-> **How long to mint a new block?**
+> **How long a new block will be minted?**
 > 
 > In Nebulas, DPoS is chosen as the temporary consensus algorithm before Proof-of-Devotion(PoD, described in [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)) is ready. In this consensus algorithm, each miner will mint new block one by one every 15 seconds.
 > 
@@ -213,6 +213,6 @@ Let's double check the receiver's balance.
 
 Here you should see a balance that is the total of all the successful transfers that you executed.
 
-### Next
+### Next step: Tutorial 3
 
  [Write and run a smart contract with JavaScript](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
