@@ -22,7 +22,7 @@ Nebulas is implemented in Golang now.
 |----------|-------------|-------------|
 |[Golang](https://golang.org) | >= 1.9.2| The Go Programming Language |
 
-### Mac OSX 
+### Mac OSX
 
 [Homebrew](https://brew.sh/) is recommended for installing golang on Mac.
 
@@ -73,38 +73,38 @@ git checkout master
 ### Install RocksDB
 
 * **OS X**:
-  * Install rocksdb via [Homebrew](https://brew.sh/)
-    ```bash
-    brew install rocksdb
-    ```
+* Install rocksdb via [Homebrew](https://brew.sh/)
+```bash
+brew install rocksdb
+```
 
 * **Linux - Ubuntu**
-  * Install Dependencies
-    ```bash
-    apt-get update
-    apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev
-    ```
-  * Install rocksdb by source code:
-    ```bash
-    git clone https://github.com/facebook/rocksdb.git
-    cd rocksdb & make shared_lib && make install-shared
-    ```
+* Install Dependencies
+```bash
+apt-get update
+apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev
+```
+* Install rocksdb by source code:
+```bash
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb & make shared_lib && make install-shared
+```
 
 * **Linux - Centos**
-  * Install Dependencies
-    ```bash
-    yum -y install epel-release && yum -y update
-    yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel
-    ```
-  * Install rocksdb by source code:
-    ```bash
-    git clone https://github.com/facebook/rocksdb.git
-    cd rocksdb & make shared_lib && make install-shared
-    ```
+* Install Dependencies
+```bash
+yum -y install epel-release && yum -y update
+yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel
+```
+* Install rocksdb by source code:
+```bash
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb & make shared_lib && make install-shared
+```
 
 ### Install Go Dependencies
 
-Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep). 
+Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep).
 
 | Components | Version | Description |
 |----------|-------------|-------------|
@@ -113,19 +113,19 @@ Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep)
 #### Install Dep
 
 * **Mac OSX**
-  * Install Dep via [Homebrew](https://brew.sh/)
-    ```bash
-    brew install dep
-    brew upgrade dep
-    ```
+* Install Dep via [Homebrew](https://brew.sh/)
+```bash
+brew install dep
+brew upgrade dep
+```
 
 * **Linux**
-  * Install dep
-    ```bash
-    cd /usr/local/bin/
-    wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
-    ln -s dep-linux-amd64 dep
-    ```
+* Install dep
+```bash
+cd /usr/local/bin/
+wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
+ln -s dep-linux-amd64 dep
+```
 
 #### Download Dependencies
 
@@ -165,7 +165,7 @@ Once the building is complete，there will be a executable file `neb` generated 
 
 ---
 
-## Get Neb Up
+## Start NEB
 
 ### Genesis Block
 
@@ -177,27 +177,27 @@ Before launching a new Nebulas chain, we have to define the configuration of gen
 # Neb genesis text file. Scheme is defined in core/pb/genesis.proto.
 
 meta {
-  # Chain identity
-  chain_id: 100
+# Chain identity
+chain_id: 100
 }
 
 consensus {
-  dpos {
-    # Initial dynasty, including all initial miners
-    dynasty: [
-      [ miner address ],
-      ...
-    ]
-  }
+dpos {
+# Initial dynasty, including all initial miners
+dynasty: [
+[ miner address ],
+...
+]
+}
 }
 
 # Pre-allocation of initial tokens
 token_distribution [
-  {
-    address: [ allocation address ]
-    value: [ amount of allocation tokens ]
-  },
-  ...
+{
+address: [ allocation address ]
+value: [ amount of allocation tokens ]
+},
+...
 ]
 ```
 
@@ -205,7 +205,7 @@ An example genesis.conf is located in `conf/default/genesis.conf`.
 
 ### Configuration
 
-Before getting a neb node up, we have to define the configuration of this node.
+Before getting a neb node started, we have to define the configuration of this node.
 
 #### Neb Node Configuration
 
@@ -214,80 +214,80 @@ Before getting a neb node up, we have to define the configuration of this node.
 
 # Network Configuration
 network {
-  # For the first node in a new Nebulas chain, `seed` is not need.
-  # Otherwise, every node need some seed nodes to introduce it into the Nebulas chain.
-  # seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
+# For the first node in a new Nebulas chain, `seed` is not need.
+# Otherwise, every node need some seed nodes to introduce it into the Nebulas chain.
+# seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
 
-  # P2p network service host. support mutiple ip and ports.
-  listen: ["0.0.0.0:8680"]
+# P2p network service host. support mutiple ip and ports.
+listen: ["0.0.0.0:8680"]
 
-  # The private key is used to generate a node ID. If you don't use the private key, the node will generate a new node ID.
-  # private_key: "conf/network/id_ed25519"
+# The private key is used to generate a node ID. If you don't use the private key, the node will generate a new node ID.
+# private_key: "conf/network/id_ed25519"
 }
 
 # Chain Configuration
 chain {
-  # Network chain ID
-  chain_id: 100
+# Network chain ID
+chain_id: 100
 
-  # Database storage location
-  datadir: "data.db"
+# Database storage location
+datadir: "data.db"
 
-  # Accounts' keystore files location
-  keydir: "keydir"
+# Accounts' keystore files location
+keydir: "keydir"
 
-  # The genesis block configuration
-  genesis: "conf/default/genesis.conf"
+# The genesis block configuration
+genesis: "conf/default/genesis.conf"
 
-  # Signature algorithm
-  signature_ciphers: ["ECC_SECP256K1"]
+# Signature algorithm
+signature_ciphers: ["ECC_SECP256K1"]
 
-  # Miner address
-  miner: "n1SAQy3ix1pZj8MPzNeVqpAmu1nCVqb5w8c"
+# Miner address
+miner: "n1SAQy3ix1pZj8MPzNeVqpAmu1nCVqb5w8c"
 
-  # Coinbase address, all mining reward received by the above miner will be send to this address
-  coinbase: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
+# Coinbase address, all mining reward received by the above miner will be send to this address
+coinbase: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
 
-  # The passphrase to miner's keystore file
-  passphrase: "passphrase"
+# The passphrase to miner's keystore file
+passphrase: "passphrase"
 }
 
 # API Configuration
 rpc {
-    # GRPC API port
-    rpc_listen: ["127.0.0.1:8684"]
+# GRPC API port
+rpc_listen: ["127.0.0.1:8684"]
 
-    # HTTP API port
-    http_listen: ["127.0.0.1:8685"]
+# HTTP API port
+http_listen: ["127.0.0.1:8685"]
 
-    # The module opened
-    http_module: ["api", "admin"]
+# The module opened
+http_module: ["api", "admin"]
 }
 
 # Log Configuration
 app {
-    # Log level: [debug, info, warn, error, fatal]
-    log_level: "info"
+# Log level: [debug, info, warn, error, fatal]
+log_level: "info"
 
-    # Log location
-    log_file: "logs"
+# Log location
+log_file: "logs"
 
-    # Open crash log
-    enable_crash_report: false
+# Open crash log
+enable_crash_report: false
 }
 
 # Metrics Configuration
 stats {
-    # Open node metrics
-    enable_metrics: false
+# Open node metrics
+enable_metrics: false
 
-    # Influxdb configuration
-    influxdb: {
-        host: "http://localhost:8086"
-        db: "nebulas"
-        user: "admin"
-        password: "admin"
-    }
+# Influxdb configuration
+influxdb: {
+host: "http://localhost:8086"
+db: "nebulas"
+user: "admin"
+password: "admin"
+}
 }
 
 ```
@@ -324,3 +324,4 @@ After the node starts, if the connection with the seed node is successful, you c
 ### Next step: Tutorial 2
 
 [Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+
