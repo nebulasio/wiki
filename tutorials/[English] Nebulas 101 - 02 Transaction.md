@@ -36,13 +36,13 @@ Repeat passphrase:
 Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
 
-> When you run this command you will have a different wallet address with `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`. Please take your generated address as the receiver.
+> When you run this command you will have a different wallet address with `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`. Please use your generated address as the receiver.
 
 The keystore file of the new wallet will be located in `$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/`
 
 ---
 
-## Get Nodes Up
+## Start the Nodes
 
 ### Start Seed Node
 
@@ -114,7 +114,7 @@ Then let's check the receiver's account state.
 }
 ```
 
-The new account doesn't have token as expected.
+The new account doesn't have tokens as expected.
 
 ### Send a Transaction
 
@@ -162,7 +162,7 @@ Then, send the transaction with your passphrase.
 
 #### Unlock & Send
 
-This is the most dangerous method. You probably shouldn’t use it unless you you have complete trust in the receiving Nebulas node.
+This is the most dangerous method. You probably shouldn’t use it unless you have complete trust in the receiving Nebulas node.
 
 First, upload your keystore files to the keydir folders in the trusted Nebulas node.
 

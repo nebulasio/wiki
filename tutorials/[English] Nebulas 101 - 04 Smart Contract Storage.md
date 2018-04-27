@@ -4,7 +4,7 @@
 
 Earlier we covered how to write smart contracts and how to deploy and invoke smart contracts in the Nebulas.
 
-Now we introduce in detail the storage of the smart contract. Nebulas smart contracts provide on-chain data storage capabilities. Similar to the traditional key-value storage system (eg: redis), smart contracts can be stored on the Nebulas with a pay (gas).
+Now we introduce in detail the storage of the smart contract. Nebulas smart contracts provide on-chain data storage capabilities. Similar to the traditional key-value storage system (eg: redis), smart contracts can be stored on the Nebulas by paying with (gas).
 
 ## LocalContractStorage
 
