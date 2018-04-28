@@ -221,7 +221,7 @@ takeout: function (value) {
 {"result":{"balance":"5000000000000000000000000","nonce":"0","type":87}}
 ```
 
-该账户有足够的钱来支付手续费，接下来，我们解锁发送者账户`n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so`，解锁12小时。
+该账户有足够的钱来支付手续费，接下来，我们解锁发送者账户`n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so`，解锁12小时。
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so","passphrase":"passphrase","duration":"43200000000000"}'
@@ -229,7 +229,7 @@ takeout: function (value) {
 {"result":{"result":true}}
 ```
 
-然后，我们发送部署BankVault合约的交易。
+然后，我们发送部署BankVault合约的交易。
 
 ```js
 > curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -H 'Content-Type: application/json' -d '{"transaction": {"from":"n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so","to":"n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so", "value":"0","nonce":1,"gasPrice":"1000000","gasLimit":"2000000","contract":{"source":"\"use strict\";var DepositeContent=function(text){if(text){var o=JSON.parse(text);this.balance=new BigNumber(o.balance);this.expiryHeight=new BigNumber(o.expiryHeight);}else{this.balance=new BigNumber(0);this.expiryHeight=new BigNumber(0);}};DepositeContent.prototype={toString:function(){return JSON.stringify(this);}};var BankVaultContract=function(){LocalContractStorage.defineMapProperty(this,\"bankVault\",{parse:function(text){return new DepositeContent(text);},stringify:function(o){return o.toString();}});};BankVaultContract.prototype={init:function(){},save:function(height){var from=Blockchain.transaction.from;var value=Blockchain.transaction.value;var bk_height=new BigNumber(Blockchain.block.height);var orig_deposit=this.bankVault.get(from);if(orig_deposit){value=value.plus(orig_deposit.balance);} var deposit=new DepositeContent();deposit.balance=value;deposit.expiryHeight=bk_height.plus(height);this.bankVault.put(from,deposit);},takeout:function(value){var from=Blockchain.transaction.from;var bk_height=new BigNumber(Blockchain.block.height);var amount=new BigNumber(value);var deposit=this.bankVault.get(from);if(!deposit){throw new Error(\"No deposit before.\");} if(bk_height.lt(deposit.expiryHeight)){throw new Error(\"Can not takeout before expiryHeight.\");} if(amount.gt(deposit.balance)){throw new Error(\"Insufficient balance.\");} var result=Blockchain.transfer(from,amount);if(!result){throw new Error(\"transfer failed.\");} Event.Trigger(\"BankVault\",{Transfer:{from:Blockchain.transaction.to,to:from,value:amount.toString()}});deposit.balance=deposit.balance.sub(amount);this.bankVault.put(from,deposit);},balanceOf:function(){var from=Blockchain.transaction.from;return this.bankVault.get(from);},verifyAddress:function(address){var result=Blockchain.verifyAddress(address);return{valid:result==0?false:true};}};module.exports=BankVaultContract;","sourceType":"js", "args":""}}, "passphrase": "passphrase"}'
@@ -285,13 +285,13 @@ takeout: function (value) {
 
 > **验证智能合约的方法`save`是否执行成功**
 >
-> 由于执行合约方法本质是提交一个交易，所以我们可以通过验证交易是否提交成功来判断合约方法是否执行成功。
+> 由于执行合约方法本质是提交一个交易，所以我们可以通过验证交易是否提交成功来判断合约方法是否执行成功。
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84"}'
 > 
 > {"result":{"hash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84","chainId":100,"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM","value":"100","nonce":"1","timestamp":"1524712532","type":"call","data":"eyJGdW5jdGlvbiI6InNhdmUiLCJBcmdzIjoiWzBdIn0=","gas_price":"1000000","gas_limit":"2000000","contract_address":"","status":1,"gas_used":"20361"}}
 > ```
-> 如上所示，交易状态变为了1，表示执行`save`方法成功了。
+> 如上所示，交易状态变为了1，表示执行`save`方法成功了。
 
 ### 调用智能合约的`takeout`方法
 
@@ -303,7 +303,7 @@ takeout: function (value) {
 
 > **验证智能合约的方法`takeout`是否执行成功**
 >
-> 在上面save方法的执行中，我们在合约`n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`中存了100NAS。此时，我们执行`takeout`函数，从中取出50NAS。合约里应该还有50NAS。我们检测下合约账户的余额来验证`takeout`方法执行是否成功。
+> 在上面save方法的执行中，我们在合约`n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`中存了100NAS。此时，我们执行`takeout`函数，从中取出50NAS。合约里应该还有50NAS。我们检测下合约账户的余额来验证`takeout`方法执行是否成功。
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
@@ -313,7 +313,7 @@ takeout: function (value) {
 
 ## 查询智能合约数据
 
-在智能合约中，我们有一些方法并不更改合约的状态，这些方法被设计来帮助我们获取合约数据，它们是只读的。在星云链上，我们在API Module中为用户提供了[`Call`](https://github.com/nebulasio/wiki/blob/master/rpc.md#call)接口来帮助用户来执行这些只读的方法，使用`Call`接口不会发送交易，也就无需支付上链手续费。
+在智能合约中，我们有一些方法并不更改合约的状态，这些方法被设计来帮助我们获取合约数据，它们是只读的。在星云链上，我们在API Module中为用户提供了[`Call`](https://github.com/nebulasio/wiki/blob/master/rpc.md#call)接口来帮助用户来执行这些只读的方法，使用`Call`接口不会发送交易，也就无需支付上链手续费。
 
 我们调用合约`n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`中的`balanceOf`方法来查询该合约的余额。
 

@@ -28,7 +28,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
+> 提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
 
 ### Linux
 
@@ -55,7 +55,7 @@ export GOPATH=/path/to/workspace
 mkdir -p $GOPATH/src/github.com/nebulasio
 cd $GOPATH/src/github.com/nebulasio
 
-# 下载源码
+# 下载源码
 git clone https://github.com/nebulasio/go-nebulas.git
 
 # 切换到最稳定的master分支
@@ -173,7 +173,7 @@ make build
 
 在启动一个新的星云链前，我们必须定义创世区块的配置文件。
 
-#### 创世区块配置
+#### 创世区块配置
 
 ```protobuf
 meta {
@@ -183,7 +183,7 @@ meta {
 }
 
 consensus {
-  # 在贡献度证明(PoD)被充分验证前，星云链采用DPoS共识算法
+  # 在贡献度证明(PoD)被充分验证前，星云链采用DPoS共识算法
   # DPoS共识中，21个人组成一个朝代
   # 每隔一段时间都会切换朝代，每个朝代内，21个矿工轮流出块
   # 由于DPoS只是过渡方案，所以暂时不开放给公众挖矿，即当前版本朝代不会发生变更
@@ -217,15 +217,15 @@ token_distribution [
 ```protobuf
 # 网络配置
 network {
-  # 对于全网第一个节点，不需要配置seed
+  # 对于全网第一个节点，不需要配置seed
   # 否则，其他节点启东市需要配置seed，seed节点将会把网络中其他节点的路由信息同步给刚启动的节点
   # 可以配置多个seed, ["...", "..."]
   seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
 
-  # 节点监听网络消息端口，可以配置多个
+  # 节点监听网络消息端口，可以配置多个
   listen: ["0.0.0.0:8680"]
 
-  # 网络私钥，用于确认身份节点
+  # 网络私钥，用于确认身份节点
   # private_key: "conf/network/id_ed25519"
 }
 
@@ -249,8 +249,8 @@ chain {
   # 矿工地址，矿工的keystore文件需要放置在配置的keydir下
   miner: "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"
 
-  # Coinbase地址，该地址用于接收矿工的挖矿奖励，可以和矿工地址一致
-  # 该地址的keystore无需暴露，不用放置在配置的keydir下
+  # Coinbase地址，该地址用于接收矿工的挖矿奖励，可以和矿工地址一致
+  # 该地址的keystore无需暴露，不用放置在配置的keydir下
   coinbase: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
 
   # 矿工地址的密码
@@ -267,7 +267,7 @@ rpc {
 
     # 开放的API模块
     # API模块包含所有和用户私钥无关的接口
-    # Admin模块包含所有和用户私钥相关的接口，需要慎重考虑该模块的访问权限
+    # Admin模块包含所有和用户私钥相关的接口，需要慎重考虑该模块的访问权限
     http_module: ["api", "admin"]
 }
 
@@ -289,7 +289,7 @@ stats {
     enable_metrics: false
 
     # 监控服务将数据上传到Influxdb
-    # 配置Influxdb的访问信息
+    # 配置Influxdb的访问信息
     influxdb: {
         host: "http://localhost:8086"
         db: "nebulas"
@@ -304,7 +304,7 @@ A lot of examples can be found in `$GOPATH/src/github.com/nebulasio/go-nebulas/c
 
 ### 启动星云链
 
-> 此时启动的星云链是本地的私有链，和官方的测试网和主网没有任何相互关联
+> 此时启动的星云链是本地的私有链，和官方的测试网和主网没有任何相互关联
 
 启动你的第一个星云节点。
 
@@ -313,13 +313,13 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 ./neb -c conf/default/config.conf
 ```
 
-启动成功的话，将会看到如下信息，有`Started Neblet`的日志输出。
+启动成功的话，将会看到如下信息，有`Started Neblet`的日志输出。
 
 ![seed node start](resources/101-01-seed-node-start.png)
 
 默认情况下，使用配置文件`conf/default/config.conf`启动的节点不是矿工节点。
 
-接下来，启动你的第一个矿工节点，它的seed节点即我们刚刚启动的第一个节点。
+接下来，启动你的第一个矿工节点，它的seed节点即我们刚刚启动的第一个节点。
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
@@ -334,11 +334,11 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 
 ![finish sync](resources/101-01-finish-sync.png)
 
-再等待几分钟，你会看到如下信息，表示当前矿工节点挖出了第一个区块。
+再等待几分钟，你会看到如下信息，表示当前矿工节点挖出了第一个区块。
 
 ![finish sync](resources/101-01-mint.png)
 
-> 提示: 目前的DPoS共识算法，会有21个节点轮流出块。由于我们只启动了21个矿工节点中的一个矿工节点，所以每隔15*21s才出一个块。你可以启动更多的矿工节点，填补的空缺。但是需要注意，多个节点间的端口号不要相互冲突了。
+> 提示: 目前的DPoS共识算法，会有21个节点轮流出块。由于我们只启动了21个矿工节点中的一个矿工节点，所以每隔15*21s才出一个块。你可以启动更多的矿工节点，填补的空缺。但是需要注意，多个节点间的端口号不要相互冲突了。
 
 ### 下一章
 

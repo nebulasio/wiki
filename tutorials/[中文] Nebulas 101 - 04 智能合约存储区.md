@@ -75,7 +75,7 @@ module.exports = SampleContract;
 
 ### 高级用法
 
-`LocalContractStorage`除了基本的`set`,`get`,`del`方法，还提供方法来绑定合约属性。对绑定过的合约属性的读写将直接在`LocalContractStorage`上读写，而无需调用`get`和`set`方法。
+`LocalContractStorage`除了基本的`set`,`get`,`del`方法，还提供方法来绑定合约属性。对绑定过的合约属性的读写将直接在`LocalContractStorage`上读写，而无需调用`get`和`set`方法。
 
 #### 绑定属性
 
@@ -95,7 +95,7 @@ defineProperty(obj, fieldName, descriptor);
 defineProperties(obj, descriptorMap);
 ```
 
-下面是一个在合约中使用`LocalContractStorage`绑定属性的例子:
+下面是一个在合约中使用`LocalContractStorage`绑定属性的例子:
 
 ```js
 'use strict';
@@ -148,9 +148,9 @@ SampleContract.prototype = {
 
 #### 绑定Map属性
 
-`LocalContractStorage`还提供了对合约中map属性的绑定方法。
+`LocalContractStorage`还提供了对合约中map属性的绑定方法。
 
-下面是一个绑定map属性的例子：
+下面是一个绑定map属性的例子：
 
 ```js
 'use strict';

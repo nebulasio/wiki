@@ -6,7 +6,7 @@
 
 ## API
 
-我们已经在每个星云节点中实现了RPC服务器和HTTP服务器，提供给用户丰富的接口来与星云节点交互。
+我们已经在每个星云节点中实现了RPC服务器和HTTP服务器，提供给用户丰富的接口来与星云节点交互。
 
 ### 接口模块
 
@@ -15,11 +15,11 @@
 - API：提供所有和用户私钥无关的接口
 - Admin：提供所有和用户私钥相关的接口
 
-建议星云节点对外提供服务时，可以把API接口开放给公众，而将Admin接口开放给授权用户。
+建议星云节点对外提供服务时，可以把API接口开放给公众，而将Admin接口开放给授权用户。
 
 ### 配置文件
 
-星云节点中的RPC服务器和HTTP服务器都可以在节点的配置中配置对应的端口，以及开放的模块。
+星云节点中的RPC服务器和HTTP服务器都可以在节点的配置中配置对应的端口，以及开放的模块。
 
 ```protobuf
 # 用户与节点交互的服务配置，同一台机器启动多个时注意修改端口防止占用
@@ -51,7 +51,7 @@ rpc {
 
 ##### UnlockAccount
 
-我们可以调用Admin模块中的[`UnlockAccount`](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount)接口来在节点内存中解锁一个账户。所有解锁的账户都可以被用来直接发送交易，而不需要密码。
+我们可以调用Admin模块中的[`UnlockAccount`](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount)接口来在节点内存中解锁一个账户。所有解锁的账户都可以被用来直接发送交易，而不需要密码。
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz", "passphrase": "passphrase"}'
@@ -63,7 +63,7 @@ rpc {
 
 RPC服务器基于[GRPC](https://grpc.io/)实现. GRPC的基于[Protocol Buffers](https://github.com/google/protobuf)来做序列化，你可以在[星云RPC Protobuf文件夹](https://github.com/nebulasio/go-nebulas/tree/develop/rpc/pb)下找到所有的RPC相关的Proto文件定义。
 
-这里有一些使用golang调用RPC接口的实例。
+这里有一些使用golang调用RPC接口的实例。
 
 ##### GetNebState
 
@@ -124,7 +124,7 @@ if err != nil {
 
 ### 接口列表
 
-更多的接口列表请参考官方文档。
+更多的接口列表请参考官方文档。
 
 - [API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md)
 - [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md).
