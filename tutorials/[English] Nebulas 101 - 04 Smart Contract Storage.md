@@ -197,7 +197,8 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-##### Iterate Map 
+##### Iterate Map
+
 In  contract, map does't support iterator. if you need to iterate the map, you can use the following way: define two map, arrayMap, dataMap, arrayMap with a strictly increasing counter as key, dataMap with data key as key. 
 
 ```js

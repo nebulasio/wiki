@@ -12,8 +12,6 @@ To learn about the technology, please read the Nebulas [Technical White Paper](h
 
 > Nebulas can only runs on Mac and Linux at this stage. The Windows version will be coming soon.
 
----
-
 ## Golang Environment
 
 Nebulas is implemented in Golang now.
@@ -49,8 +47,6 @@ tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=/path/to/workspace
 ```
-
----
 
 ## Compile Nebulas
 
@@ -163,7 +159,6 @@ make build
 Once the building is complete，there will be a executable file `neb` generated under the root directory.
 ![make build](resources/101-01-make-build.png)
 
----
 
 ## Start NEB
 

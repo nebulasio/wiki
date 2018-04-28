@@ -4,8 +4,6 @@
 
 Through this tutorial we will learn how to write, deploy, and execute smart contracts in Nebulas.
 
----
-
 ## Preparation
 
 Before entering the smart contract, first review the previously learned content:
@@ -21,8 +19,6 @@ So lets do this. We will learn and use smart contracts through the following ste
 1. Write a smart contract
 2. Deploy the smart contract
 3. Call the smart contract, and verify the contract execution results
-
----
 
 ## Write a smart contract
 
@@ -153,7 +149,8 @@ BankVaultContract implements two other methods:
 - balanceOf(): The user can check the balance with the bank vault by calling the balanceOf() method;
 
 The contract code above uses the built-in `Blockchain` object and the built-in `BigNumber()` method. Let's break down the parsing contract code line by line:
-save():
+
+**save():**
 
 ```js
 
@@ -176,7 +173,7 @@ save: function (height) {
 },
 ```
 
-takeout ():
+**takeout ():**
 
 ```js
 takeout: function (value) {
@@ -252,6 +249,7 @@ The return value for deploying a smart contract is the transaction's hash addres
 Get the return value does not guarantee the successful deployment of the contract, because the sendTransaction () is an asynchronous process, which need to be packaged by the miner. Just as the previous transfer transaction, the transfer does not arrive in real time, it depends on the speed of the miner packing. Therefore we need to wait for a while (about 1 minute), then you can verify whether the contract is deployed successfully by querying the contract address or calling this smart contract.
 
 > **Verify the deployment of the contract is successful**
+>
 > Check the receipt of the deploy transaction via [`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt) to verify whether the contract has been deployed successfully.
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"aaebb86d15ca30b86834efb600f82cbcaf2d7aaffbe4f2c8e70de53cbed17889"}'

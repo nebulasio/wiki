@@ -4,31 +4,40 @@
 
 今天我们来详细的介绍有关星云链智能合约的存储。星云链智能合约(smart contract)提供了链上数据存储功能。类似于传统的key-value存储系统（eg:redis），可以付费（消耗gas）将数据存储到星云链上。
 
-## LocalContractStorage存储使用存储介绍
-星云链的智能合约运行环境内置了存储对象`LocalContractStorage`,可以存储数字，字符串，JavaScript对象，存储数据只能在智能合约内使用，其他合约不能读取存储的内容。
+## LocalContractStorage
+
+星云链的智能合约运行环境内置了存储对象`LocalContractStorage`，可以存储数字，字符串，JavaScript对象，存储数据只能在智能合约内使用，其他合约不能读取存储的内容。
 
 #### 基础用法
+
 `LocalContractStorage`的简单接口包括`set`,`get`,`del`接口，实现了存储，读取，删除数据功能。存储可以是数字，字符串，对象。
 
-##### `LocalContractStorage `存储数据：
+##### `LocalContractStorage`存储数据
 
 ```js
 // 存储数据，数据会被json序列化成字符串保存
 LocalContractStorage.put(key, value);
+// 或者
 LocalContractStorage.set(key, value);
 ```
-##### `LocalContractStorage `读取数据：
+
+##### `LocalContractStorage`读取数据
+
 ```js
 // 获取数据
 LocalContractStorage.get(key);
 ```
-##### `LocalContractStorage `删除数据：
+
+##### `LocalContractStorage`删除数据
+
 ```js
 // 删除数据, 数据删除后无法读取
 LocalContractStorage.del(key);
+// 或者
 LocalContractStorage.delete(key);
 ```
-下面是一些使用例子：
+
+下面是一个具体在合约中使用`LocalContractStorage`的实例：
 
 ```js
 'use strict';
@@ -64,30 +73,33 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-#### 高级用法
-`LocalContractStorage`除了基本的`set`,`get`,`del`方法，还支持向对象设置存储属性和存储map，并支持设置存储时的序列化方法。
+### 高级用法
 
-##### 存储属性
-在写智能合约时可以将合约的属性设为设为存储位，使用时对属性的读写会直接使用`LocalContractStorage`的读写。读写时还可以自定义属性的字符和对象映射关系。一般为合约做存储位时在初始化中将属性设置为存储属性。
+`LocalContractStorage`除了基本的`set`,`get`,`del`方法，还提供方法来绑定合约属性。对绑定过的合约属性的读写将直接在`LocalContractStorage`上读写，而无需调用`get`和`set`方法。
 
-`LocalContractStorage`的属性方法定义：
+#### 绑定属性
+
+在绑定一个合约属性时，需要提供对象实例，属性名和序列化方法。
+
+##### 绑定接口
 
 ```js
-    // define a object property named `fieldname` to `obj` with descriptor.
-    // default descriptor is JSON.parse/JSON.stringify descriptor.
-    // return this.
-    defineProperty(obj, fieldName, descriptor);
+// define a object property named `fieldname` to `obj` with descriptor.
+// default descriptor is JSON.parse/JSON.stringify descriptor.
+// return this.
+defineProperty(obj, fieldName, descriptor);
 
-    // define object properties to `obj` from `props`.
-    // default descriptor is JSON.parse/JSON.stringify descriptor.
-    // return this.
-    defineProperties(obj, descriptorMap);
+// define object properties to `obj` from `props`.
+// default descriptor is JSON.parse/JSON.stringify descriptor.
+// return this.
+defineProperties(obj, descriptorMap);
 ```
 
-使用`LocalContractStorage`做合约的属性绑定例子:
+下面是一个在合约中使用`LocalContractStorage`绑定属性的例子:
 
 ```js
 'use strict';
+
 var SampleContract = function () {
     // SampleContract的`size`属性为存储属性，对`size`的读写会存储到链上，
     // 此处的`descriptor`设置为null，将使用默认的JSON.stringify()和JSON.parse()
@@ -111,7 +123,8 @@ var SampleContract = function () {
 };
 module.exports = SampleContract;
 ```
-在定义完合约后，可以直接对绑定的属性做读写操作，对应的属性就会直接保存，并存储到链上：
+
+然后，我们可以如下在合约里直接读写这些属性。
 
 ```js
 SampleContract.prototype = {
@@ -133,9 +146,11 @@ SampleContract.prototype = {
 };
 ```
 
-##### 存储Map数据
+#### 绑定Map属性
 
-在智能合约中，如果需要存储key-value时，可以将合约属性定义为Map集合，并保存到链上。使用Map的合约可以用下面的方式来写：
+`LocalContractStorage`还提供了对合约中map属性的绑定方法。
+
+下面是一个绑定map属性的例子：
 
 ```js
 'use strict';
@@ -199,14 +214,14 @@ SampleContract.prototype = {
     init: function () {
         this.size = 0;
     },
-    
+
     set: function (key, value) {
         var index = this.size;
         this.arrayMap.set(index, key);
         this.dataMap.set(key, value);
         this.size +=1;
     },
-    
+
     get: function (key) {
         return this.dataMap.get(key);
     },
@@ -214,7 +229,7 @@ SampleContract.prototype = {
     len:function(){
       return this.size;
     },
-    
+
     forEach: function(limit, offset){
         limit = parseInt(limit);
         offset = parseInt(offset);
@@ -233,10 +248,10 @@ SampleContract.prototype = {
         }
         return result;
     }
-    
 };
 
 module.exports = SampleContract;
 ```
 
 
+ [通过RPC API和星云链交互](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)

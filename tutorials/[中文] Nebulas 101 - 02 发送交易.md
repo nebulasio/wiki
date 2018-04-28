@@ -2,348 +2,204 @@
 
 Nebulas提供了三种方式去发送我们的交易：
 
-1. 通过http接口
-2. 通过console控制台
-3. 通过nebulas测试框架
+1. 签名 & 发送
+2. 密码 & 发送
+3. 解锁 & 发送
 
 下面我们分别介绍如何通过以上三种方式在nebulas中发送一笔交易，并验证交易是否成功。
 
-### 准备工作
-在启动neb应用之前，需要先做一些准备工作。要发送一笔交易，我们需要有两个钱包地址，一个地址有NAS余额，用来作为发送方；另一个地址用来作为接收方。
+## 准备账户
 
-下面我们来准备发送和接收钱包地址。
-##### 1. 准备发送方钱包
-一个钱包地址的余额大概又3种来源：星云链启动时的NAS初始分配（根据创世区块配置）、节点的挖矿奖励（奖励给节点配置中的coinbase地址）、其他钱包地址的转账收入。
+在星云链上，每个地址表示一个唯一的账户，一一对应。
 
-本教程中我们用coinbase地址来作为发送方，coinbase对应着矿工挖矿的奖励地址，矿工挖矿得到的奖励都会进到这个地址。所以在启动节点之前，需要先配置coinbase地址。这里我们使用项目示例配置文件 `conf/example/miner.conf` 中的 coinbase 地址 `n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`。
+在发送交易前，我们需要准备两个账户：一个账户用来发送代币 (称为"from") 和另一个账户来接受代币 (称为"to").
 
-##### 2. 创建转账的接收地址
+### 发送者账户
 
-现在我们通过 `account new` 指令创建一个转帐交易接收地址。
-```sh
+在这里，我们将会使用配置文件`conf/default/genesis.conf`中预分配过代币的账户中选择一个作为发送者账户，默认选择`n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`。
+
+### 接受者账户
+
+我们使用如下指令创建一个全新的账户来做接受者，请记住输入的密码。
+
+```bash
 $ ./neb account new
 Your new account is locked with a passphrase. Please give a passphrase. Do not forget this passphrase.
 Passphrase:
 Repeat passphrase:
 Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 ```
-执行完这个命令以后，根据提示输入密码，该密码用于加密私钥信息。之后neb程序会在项目根目录的`keydir`子目录下新生成该地址对应的Key文件，如图所示：.
-![key](resources/101-02-new-key.png)
 
-**注意:** 每当执行该命令创建账户时，都会得到一个不同的账户地址。所以这里你得到的地址并不是`n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy`，在下面的例子中要使用你自己得到的地址替换"your_address"。
+> 提示：你创建的新账户和上面可能不一样，请以你创建的账户做为接受者继续接下来的实验。
 
-### 启动neb应用
-完成所有的准备工作后，就可以启动neb应用。
+新账户的keystore文件将会被放置在`$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/`内。
 
-#### 启动种子节点
-```
-$ ./neb -c conf/default/config.conf
-```
-#### 启动普通节点
-新打开一个终端来来启动新的节点:
-```
-$ ./neb -c conf/example/miner.conf`
-```
-neb应用启动之后会默认进入挖矿状态，一段时间以后（1~2分钟），挖矿产生的奖励会发到节点的coinbase账户地址上面。当前开发代码的挖矿奖励为1.42 NAS（后续会根据白皮书的要求进行调整修正），平均出块时间为15秒钟。
+## 启动私有链
 
-### 查询账户状态(余额)
+我们将在本地搭建一个私有链来作为本教程的测试环境。
 
-Nebulas提供了RPC接口，让开发者通过HTTP或gPRC协议与星云链进行交互，完成更丰富复杂的操作。。在这里，我们介绍如何通过HTTP协议的接口，查询各个帐户的余额。Nebulas的HTTP接口地址和端口是通过配置文件中的`api_http_port`属性来配置，默认端口是`8685`。
+### 启动种子节点
 
-接下来，我们使用curl工具来展示RPC接口的调用。如果遇到proxy错误，可使用如下指令取消代理：
+首先，我们启动本地私有链的第一个节点，它可以作为其他节点的种子节点。
 
-`unset https_proxy `
-
-我们可以通过查询该coinbase地址账户余额的接口去查看这个用户挖矿的奖励。当coinbase账户地址有余额以后，就可以进行转账交易了。
-当系统启动以后，我们可以通过curl发送http请求的方式查询账户的余额信息，下面的返回值表示这个地址的余额是67066180000000000000 Wei(1 NAS = 1*10^18 Wei)：
-
-```sh
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"}'
-
-// Result
-{
-	"result": {
-		"balance": "67066180000000000000",
-		"nonce": "0",
-		"type": 87
-	}
-}
-```
-[`GetAccountState`接口](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt)用于查询账户状态，可以得到账户余额，交易序号信息。
-
-### 发送并验证转账交易
-发送转账交易，可以按照如下步骤来进行：
-
-#### 1. 获取账户信息；
-
-```diff
-// Request
-curl -i -H Accept:application/json -X GET http://localhost:8685/v1/admin/accounts
-
-// Result
-
-"result": {
-    "addresses": [
-        "n1FkntVUMPAsESuCAAPK711omQk19JotBjM", 
-        "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR", 
-        "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW", 
-        "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8", 
-        "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", 
-        "your_address", 
-        "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC", 
-        "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4", 
-        "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3", 
-        "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"]
-}
-
+```bash
+./neb -c conf/default/config.conf
 ```
 
-[`Accounts`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#accounts)返回了当前启动的节点里面所有的账户信息，我们可以从中找到我们之前创建的coinbase账户地址，以及我们接受转账的账户地址。
+### 启动矿工节点
 
+接着，我们启动一个矿工节点接入本地私有链，这个节点之后将会产生新的区块。
 
-#### 2. 找一个账户余额大于0的账户用于转账，并解锁该账户；
-
-
-这里我们使用`config`文件中的 coinbase 账户`n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq`
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "passphrase":"passphrase"}'
-
-// Result
-{
-	"result": {
-		"result": true
-	}
-}
-```
-在转账交易之前需要先对发送方地址进行解锁，[`UnLockAccount`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount)就是用于解锁账户，解锁账户需要使用创建地址时设置的密码。配置文件中用到的账户的默认密码都是“passphrase”。
-
-#### 3. 使用已经解锁的账户向另一个账户发起一笔转账交易；
-
-发送一笔交易时需要先对交易进行签名，然后再发送交易。
-
-##### 3.1 对交易进行签名
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
-
-// Result
-{
-	"result": {
-		"data": "CiCLGwkou3td6j97Hoig0Ilrj6MDVTT/ZIhdhVHDfL0pTRIaGVduKnw+6lM3HBXhJEzzuvv3yNdYANelaeAaGhlXgnTQAVavvSNEb+nUQTztv0NL502gnnJqIhAAAAAAAAAAAAAAAAAAAAAKKAEww5v01QU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBh8vZ1c9u9Je+MeySP4KwHjUGNqryPC47VQKGIlM0fLo0IhEHLECIgnBBxq/NRSlNM0XwVSsC2TTiXpGFsUXphgE="
-	}
-}
-```
-[`SignTransactionWithPassphrase`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase)对一笔交易信息进行签名。上面的交易内容为账户`n1QZMX`向账户`n1SQe5` 转账金额10 Wei。转账时必须配置`gasPrice`和`gasLimit`，这里的nonce必须是该用户上一个nonce+1，该用户上一个nonce值可以通过查询账户状态信息获取。该接口返回值是该交易的签名数据。
-
-**注意:** 交易中的`value`, `gasPrice` 和 `gasLimit` 应该是字符串类型，需要用双引号或单引号括起来，因为他们的值有可能很大，会超出整型数值的表示范围。如果没有双引号会得到如下错误：
-```
-{"error":"json: cannot unmarshal number into Go value of type string"} 
-// this means you forgot to add “10” quotes around the numbers
+```bash
+./neb -c conf/example/miner.conf
 ```
 
+> **多久会生成一个新的区块?**
+>
+> 在星云链上, 在贡献度证明（Proof-of-Devotion， [技术白皮书](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)中有详细描述）被充分验证前，DPoS被选择作为一个过渡方案。在我们采用DPoS共识算法中，总共有21个矿工，每个矿工会轮流每15s出一个新区块。
+> 
+> 在我们目前的测试环境中，由于我们只启动了21个矿工中的一个，所以需要等待15\*21s才会出一个新区块。
 
-##### 3.2 发送交易签名
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiCLGwkou3td6j97Hoig0Ilrj6MDVTT/ZIhdhVHDfL0pTRIaGVduKnw+6lM3HBXhJEzzuvv3yNdYANelaeAaGhlXgnTQAVavvSNEb+nUQTztv0NL502gnnJqIhAAAAAAAAAAAAAAAAAAAAAKKAEww5v01QU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBh8vZ1c9u9Je+MeySP4KwHjUGNqryPC47VQKGIlM0fLo0IhEHLECIgnBBxq/NRSlNM0XwVSsC2TTiXpGFsUXphgE="}'
+一旦一个新区块被挖出，挖块奖励将会被自动发送到当前矿工配置的Coinbase账户中，在`conf/example/miner.conf`里，该账户就是`n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
 
-// Result
-{
-    "result":{
-        "txhash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d"
-        "contract_address":""
-    }
-}
-```
- [`SendRawTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendrawtransaction)用于发送交易，发送信息为交易的签名数据，返回值为该交易的 hash 值，通过该 hash 值可以用来对这笔交易进行查询。
- 
-**注意：** 如果你尝试重发一次该指令，会得到一个错误。因为每次交易的nonce（交易编号）不能重复，这样是为了避免重复发送和执行交易导致账户损失。所以每个账号发送的不同交易的编号都不能相同，每发送一笔交易，nonce应该自增。
-```
-{"error":"transaction's nonce is invalid, should bigger than the from's nonce"}
-```
+## 星云链交互
 
-另外，以上两步交易也可以通过[`SendTransaction`接口](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)一次完成：
-```
-// Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq","to":"your_address", "value":"10","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+星云链提供给开发者HTTP API, RPC API和CLI来和运行中的星云节点交互。在教程中，我们将会基于HTTP API（[API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)）来介绍三种发送交易的方法。
 
-// Result
-{
-    "result":{
-      "txhash":"fb5204e106168549465ea38c040df0eacaa7cbd461454621867eb5abba92b4a5",
-      "contract_address":""
-    }
-}
+> 提示：星云链的HTTP服务默认端口号为8685。
+
+首先，在发送新交易前，我们检查下发送者账户的状态。
+
+### 检查账户状态
+
+每个交易如果需要上链，都需要给矿工缴纳一部分手续费，所以发送者账户中需要有一部分钱才能成功发送交易。一般一个普通转账交易，手续费在0.000000002NAS左右，非常少。
+
+我们可以通过[API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate)中的`/v1/user/accountstate`接口来获取发送者账户`n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`的账户信息，检查下是否有足够的钱支付上链手续费。
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"}'
+
+{"result":{"balance":"5000000000000000000000000","nonce":"0","type":87}}
 ```
 
-#### 4. 等待大约30s，然后查询该转账交易信息（因为转账交易需要矿工打包才能成功，所以会有一定的延时，并不是实时立马成功）；
+> 提示：`Type`用于标记账户类型。88表示改账户为智能合约账户，部署一个合约之后，就可以得到一个合约账户。87表示非合约账户，我们通过`./neb account new`创建的账户就是非合约账户，用户存储链上资产。
 
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d"}'
+> 提示：`Nonce`用于标记账户发起的所有交易的顺序。同一个账户，每发起一个新的交易，`Nonce`就加一，初始为0，第一个交易的`Nonce`为1。
 
-// Result
-{
-	"result": {
-		"hash": "8b1b0928bb7b5dea3f7b1e88a0d0896b8fa3035534ff64885d8551c37cbd294d",
-		"chainId": 100,
-		"from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-		"to": "your_address",
-		"value": "10",
-		"nonce": "1",
-		"timestamp": "1522339267",
-		"type": "binary",
-		"data": null,
-		"gas_price": "1000000",
-		"gas_limit": "2000000",
-		"contract_address": "",
-		"status": 1,
-		"gas_used": "20000"
-	}
-}
-```
-[`GetTransactionReceipt`接口](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt)可以对之前的转账交易进行查询，请求参数是之前转账交易的hash值。如果查询到交易信息，说明该交易执行成功。
+如我们所见，发送者账户在预分配后拥有5000000000000000000000000(5 * 10\^24)个代币，1个NAS是1000000000000000000（10\^18）个代币，用于支付交易上链的手续费绰绰有余。
 
-#### 5. 查询转账接收账户余额，验证转账交易是否成功；
+然后我们检查接受者账户的状态。
 
-```
-// Request
-curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy"}'
 
-// Result
-{
-	"result": {
-		"balance": "10",
-		"nonce": "0",
-		"type": 87
-	}
-}
-```
-查询可得转账接收放账户余额为10 Wei, 正好等于交易额度。
-
-### 通过console控制台
-Nebulas提供了javascript的交互控制台。控制台实现了[API](https://github.com/nebulasio/wiki/blob/master/rpc.md)和[Admin](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)接口。控制台提供了账号查看，创建账号地址，解锁账号，交易签名，发送交易等功能。控制台需要在本地先启动节点, 或者在启动控制台后通过`admin.setHost()`连接远程节点。
-通过console控制台发送交易的步骤和通过调用http请求基本类似，调用方式更加简单。
-##### 启动console控制台
-```
-$ ./neb console
+{"result":{"balance":"0","nonce":"0","type":87}}
 ```
 
-上面这种方式默认会连接本地启动的neb节点。console控制台实现了方法自动补全功能，使用`TAB`查看已有的方法：
+如我们期望的那样，新账户没有任何代币。
 
-```js
-> api.
-api.call                    api.getBlockByHeight        api.latestIrreversibleBlock 
-api.estimateGas             api.getDynasty              api.sendRawTransaction      
-api.gasPrice                api.getEventsByHash         api.subscribe               
-api.getAccountState         api.getNebState             
-api.getBlockByHash          api.getTransactionReceipt
-```
-```js
-> admin.
-admin.accounts                      admin.nodeInfo                      admin.signHash                      
-admin.getConfig                     admin.sendTransaction               admin.signTransactionWithPassphrase 
-admin.lockAccount                   admin.sendTransactionWithPassphrase admin.startPprof                    
-admin.newAccount                    admin.setHost                       admin.unlockAccount  
-```
+### 发送交易
 
-##### 查看账号地址
+接下来，我们将介绍星云链上三种发送交易的方式。
 
-```js
-> admin.accounts()
-{
-    "result": {
-        "addresses": [
-            "n1FkntVUMPAsESuCAAPK711omQk19JotBjM",
-            "n1JNHZJEUvfBYfjDRD14Q73FX62nJAzXkMR",
-            "n1Kjom3J4KPsHKKzZ2xtt8Lc9W5pRDjeLcW",
-            "n1NHcbEus81PJxybnyg4aJgHAaSLDx9Vtf8",
-            "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-            "your_address",
-            "n1TV3sU6jyzR4rJ1D7jCAmtVGSntJagXZHC",
-            "n1WwqBXVMuYC3mFCEEuFFtAXad6yxqj4as4",
-            "n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
-            "n1Zn6iyyQRhqthmCfqGBzWfip1Wx8wEvtrJ"
-        ]
-    }
-}
+#### 签名 & 发送
 
+使用这种方式，我们可以在离线环境下先使用私钥签名好交易，然后把签好名的交易在联网的机器上发出。这是最安全的发送交易的方式，私钥可以完全离线保存，不触网。[Web-Wallet](https://github.com/nebulasio/web-wallet)正是基于[Neb.js](https://github.com/nebulasio/neb.js)采用这种方法发送的交易。
+
+首先，我们使用[Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#signtransactionwithpassphrase)中的`v1/admin/sign`接口给准备发的交易签名，得到交易的二进制数据。
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
+
+{"result":{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}}
 ```
 
-##### 解锁账号
+> 提示：在发送交易时，对于同一个账户，只有当他`Nonce`为N的交易上链后，`Nonce`为N+1的交易才能上链，有严格的顺序，`Nonce`必须严格加1。可以通过[GetAccountState](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate)接口查看最新的Nonce。
 
-当前官方代码中默认keydir中的地址的密码是`passphrase`
+然后，我们将签好名的交易原始数据提交到本地私有链里的星云节点。
 
-```js
-> admin.unlockAccount("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq")
-Unlock account n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq
-Passphrase:
-{
-    "result": {
-        "result": true
-    }
-}
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}'
+
+{"result":{"txhash":"1b8cc3f977256c4d620b7d72f531bc19f10eb13a05ff24a8a792cd5da53a1277","contract_address":""}}⏎
 ```
 
+#### 密码 & 发送
 
-##### 发送交易
+如果你信任一个星云节点帮你保存keystore文件，你可以使用第二种方法发送交易。
 
-在admin.sendTransaction（）中输入要发送出的账号地址、要发送到的账号地址、转账金额、交易编号、GasPrice、GasLimit。注意账号地址前后要加上双引号。
+首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令。
 
-
-```js
-> admin.sendTransaction("n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq", "your_address","10",2, "1000000", "200000")
-{
-    "result": {
-        "contract_address": "",
-        "txhash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d"
-    }
-}
+```bash
+cp /path/to/keystore.json /path/to/keydir/
 ```
 
-##### 查询交易
+然后，我们发送交易的同时，带上我们keystore的密码，在被信任的节点使用[SendTransactionWithPassphrase](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransactionwithpassphrase)接口上一次性完成签名和发送过程。
 
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":2,"gasPrice":"1000000","gasLimit":"2000000"},"passphrase":"passphrase"}'
 
-```js
-> api.getTransactionReceipt("84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d")
-{
-    "result": {
-        "chainId": 100,
-        "contract_address": "",
-        "data": null,
-        "from": "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq",
-        "gas_limit": "200000",
-        "gas_price": "1000000",
-        "gas_used": "20000",
-        "hash": "84d1ed79830566013df68809eb65e3948551ba0c2758e048ff2101aa5665703d",
-        "nonce": "2",
-        "status": 1,
-        "timestamp": "1522341302",
-        "to": "your_address",
-        "type": "binary",
-        "value": "10"
-    }
-}
+{"result":{"txhash":"3cdd38a66c8f399e2f28134e0eb556b292e19d48439f6afde384ca9b60c27010","contract_address":""}}
 ```
 
-##### 查询账号余额情况
+> 提示：因为我们在之前使用`n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`发送了一个`Nonce`为1的交易，所以这里新的交易的`Nonce`应该增加1，变成2再提交。
 
-```js
-> api.getAccountState("your_address")
-{
-    "result": {
-        "balance": "20",
-        "nonce": "0",
-        "type": 87
-    }
-}
+#### 解锁 & 发送
+
+这是最危险的发送交易的方法。除非你完全信任一个星云节点，否则不要使用这种方法来发送交易。
+
+首先，上传你的keystore文件到你信任的星云节点的keydir文件夹下。如果在节点在本地，可以使用如下指令。
+
+```bash
+cp /path/to/keystore.json /path/to/keydir/
 ```
 
-### 通过nebtestkit 测试框架
-[nebtestkit](https://github.com/nebulasio/go-nebulas/tree/develop/nebtestkit) 是一个基于[mocha](https://github.com/mochajs/mocha)的集成测试框架。通过`nebtestkit`可以启动一个或者多个nebulas节点，组件一个完整的私有链或者加入一个已经存在的网络，然后进行转账交易、部署和调用智能合约等。
-关于`nebtestkit`的使用说明可以参考[nebtestkit使用说明](https://github.com/nebulasio/go-nebulas/blob/develop/nebtestkit/README.md), 这里不再赘述。
+然后，使用你的keystore文件的密码，在指定的时间范围来在被信任的节点上使用[Unlock](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#unlockaccount)接口解锁账户。时间单位为纳秒，300000000000为300s。
 
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","passphrase":"passphrase","duration":"300000000000"}'
 
+{"result":{"result":true}}
+```
 
+一旦一个账户在节点上被解锁，任何可以访问该机器[SendTransaction](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransaction)接口的人，都可以直接使用该账户的身份发送交易。
+
+```bash
+> curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":3,"gasPrice":"1000000","gasLimit":"2000000"}'
+
+{"result":{"txhash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","contract_address":""}}⏎
+```
+
+## 交易收据
+
+不论使用的哪一种方法发送交易，我们都会得到两个返回值，`txhash`和`contract_address`。其中`txhash`为交易hash，是一个交易的唯一标识。如果当前交易是一个部署合约的交易，`contract_address`将会是合约地址，调用合约时都会使用这个地址，是合约的唯一标识。我们将在[编写并运行智能合约](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E4%B8%AD%E6%96%87%5D%20Nebulas%20101%20-%2003%20%E7%BC%96%E5%86%99%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6.md)中介绍如何发送部署合约的交易。
+
+使用`txhash`我们可以查看交易收据，知道当前交易的状态。
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf"}'
+
+{"result":{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","chainId":100,"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","value":"1000000000000000000","nonce":"3","timestamp":"1524667888","type":"binary","data":null,"gas_price":"1000000","gas_limit":"2000000","contract_address":"","status":1,"gas_used":"20000"}}⏎
+```
+
+这里的`status`可能有三种状态值，0，1和2。
+
+- **0: 交易失败.** 表示当前交易已经上链，但是执行失败了。可能是因为部署合约或者调用合约参数错误。
+- **1: 交易成功.** 表示当前交易已经上链，而且执行成功了。
+- **2: 交易待定.** 表示当前交易还没有上链。可能是因为当前交易还没有被打包；如果长时间处于当前状态，可能是因为当前交易的发送者账户的余额不够支付上链手续费。
+
+### 复查接受者账户余额
+
+我们复查一下接受者账户上的钱是否已经到账了。
+
+```bash
+> curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
+
+{"result":{"balance":"3000000000000000000","nonce":"0","type":87}}
+```
+
+我们用三种方式分别发送了一笔转账，每笔转一个NAS，所以这里看到接受者账户中已经有了3个NAS，即3000000000000000000个代币。
+
+### 下一章
+
+ [编写并运行智能合约](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)

@@ -12,8 +12,6 @@ Nebulas provides three methods to send transactions：
 
 Here is an introduction to sending a transaction in Nebulas through the three methods above and verifying whether the transaction is successful.
 
----
-
 ## Prepare Accounts
 
 In Nebulas, each address represents an unique account.
@@ -40,8 +38,6 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 The keystore file of the new wallet will be located in `$GOPATH/src/github.com/nebulasio/go-nebulas/keydir/`
 
----
-
 ## Start the Nodes
 
 ### Start Seed Node
@@ -67,8 +63,6 @@ Secondly, start a miner node connecting to the seed node. This node will generat
 > In current context, we have to wait for 315(=15*21) seconds to get a new block because there is only one miner among 21 miners defined in `conf/default/genesis.conf` working now.
 
 Once a new block minted by the miner, the mining reward will be added to the coinbase wallet address used in `conf/example/miner.conf` which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
-
----
 
 ## Interact with Nodes
 
@@ -182,8 +176,6 @@ After unlocking the account, everyone is able to send any transaction directly w
 
 {"result":{"txhash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","contract_address":""}}⏎
 ```
-
----
 
 ## Transaction Receipt
 
