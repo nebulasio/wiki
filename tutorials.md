@@ -29,7 +29,7 @@ Here is all you need to dive into Nebulas.
     - [智能合约存储区介绍](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B中文%5D%20Nebulas%20101%20-%2004%20智能合约存储区.md)
     - [通过RPC接口与星云链交互](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B中文%5D%20Nebulas%20101%20-%2005%20通过RPC接口与星云链交互.md)
 
-### Wallet
+## Wallet
 
 - Web Wallet: https://github.com/nebulasio/web-wallet
   - English
@@ -47,15 +47,15 @@ Here is all you need to dive into Nebulas.
     - [钱包教程|星云Web钱包教程5：查看交易状态](https://blog.nebulas.io/2018/04/28/check-tx-status/)
     - [钱包教程|星云Web钱包教程6：部署智能合约](https://blog.nebulas.io/2018/04/28/deploy-a-smart-contract/)
 
-### DApp
+## DApp
 
 - Web SDK: https://github.com/nebulasio/neb.js
 - Smart Contract: https://github.com/nebulasio/wiki/blob/master/smart_contract.md
 - Standard Protocol:
   - NRC20: https://github.com/nebulasio/wiki/blob/master/NRC20.md
 - Community:
-  - Demo DApp: https://github.com/15010159959/super-dictionary
-  - Chrome Extension: https://github.com/ChengOrangeJu/WebExtensionWallet
+  - Demo DApp: https://github.com/15010159959/super-dictionary (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano), [Kurry](https://github.com/15010159959))
+  - Chrome Extension: https://github.com/ChengOrangeJu/WebExtensionWallet (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano))
 
 ## Contribution
 
