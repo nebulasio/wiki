@@ -140,25 +140,6 @@ function approveEvent: function(status, from, spender, value)
 - [NRC20.js](https://github.com/nebulasio/go-nebulas/blob/master/nf/nvm/test/NRC20.js)
 
 ```js
-
-// Copyright (C) 2017 go-nebulas authors
-//
-// This file is part of the go-nebulas library.
-//
-// the go-nebulas library is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// the go-nebulas library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with the go-nebulas library.  If not, see <http://www.gnu.org/licenses/>.
-//
-
 'use strict';
 
 var Allowed = function (obj) {
@@ -228,7 +209,7 @@ StandardToken.prototype = {
     init: function (name, symbol, decimals, totalSupply) {
         this._name = name;
         this._symbol = symbol;
-        this._decimals = decimals | 0;
+        this._decimals = decimals || 0;
         this._totalSupply = new BigNumber(totalSupply).mul(new BigNumber(10).pow(decimals));
 
         var from = Blockchain.transaction.from;
@@ -369,6 +350,5 @@ StandardToken.prototype = {
 };
 
 module.exports = StandardToken;
-
 
 ```
