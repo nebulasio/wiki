@@ -197,6 +197,61 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
+##### Iterate Map 
+In  contract, map does't support iterator. if you need to iterate the map, you can use the following way: define two map, arrayMap, dataMap, arrayMap with a strictly increasing counter as key, dataMap with data key as key. 
+
+```js
+"use strict";
+
+var SampleContract = function () {
+   LocalContractStorage.defineMapProperty(this, "arrayMap");
+   LocalContractStorage.defineMapProperty(this, "dataMap");
+   LocalContractStorage.defineProperty(this, "size");
+};
+
+SampleContract.prototype = {
+    init: function () {
+        this.size = 0;
+    },
+    
+    set: function (key, value) {
+        var index = this.size;
+        this.arrayMap.set(index, key);
+        this.dataMap.set(key, value);
+        this.size +=1;
+    },
+    
+    get: function (key) {
+        return this.dataMap.get(key);
+    },
+
+    len:function(){
+      return this.size;
+    },
+    
+    iterate: function(limit, offset){
+        limit = parseInt(limit);
+        offset = parseInt(offset);
+        if(offset>this.size){
+           throw new Error("offset is not valid");
+        }
+        var number = offset+limit;
+        if(number > this.size){
+          number = this.size;
+        }
+        var result  = "";
+        for(var i=offset;i<number;i++){
+            var key = this.arrayMap.get(i);
+            var object = this.dataMap.get(key);
+            result += "index:"+i+" key:"+ key + " value:" +object+"_";
+        }
+        return result;
+    }
+    
+};
+
+module.exports = SampleContract;
+```
 ### Next step: Tutorial 5
 
  [Interacting with Nebulas by RPC API](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
