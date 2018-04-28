@@ -181,4 +181,62 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
+##### Map数据遍历
+
+在智能合约中如果需要遍历map集合，可以采用如下方式：定义两个map,分别是arrayMap,dataMap，arrayMap采用严格递增的计数器作为key,dataMap采用data的key作为key,详细参见set方法。遍历实现参见forEach,先遍历arrayMap,得到dataKey,再对dataMap遍历。Tip：由于Map遍历性能开销比较大，不建议对大数据量map进行遍历，建议按照limit,offset形式进行遍历，否者可能会由于数据过多，导致调用超时。
+
+```js
+##### 遍历map数据
+"use strict";
+
+var SampleContract = function () {
+   LocalContractStorage.defineMapProperty(this, "arrayMap");
+   LocalContractStorage.defineMapProperty(this, "dataMap");
+   LocalContractStorage.defineProperty(this, "size");
+};
+
+SampleContract.prototype = {
+    init: function () {
+        this.size = 0;
+    },
+    
+    set: function (key, value) {
+        var index = this.size;
+        this.arrayMap.set(index, key);
+        this.dataMap.set(key, value);
+        this.size +=1;
+    },
+    
+    get: function (key) {
+        return this.dataMap.get(key);
+    },
+
+    len:function(){
+      return this.size;
+    },
+    
+    forEach: function(limit, offset){
+        limit = parseInt(limit);
+        offset = parseInt(offset);
+        if(offset>this.size){
+           throw new Error("offset is not valid");
+        }
+        var number = offset+limit;
+        if(number > this.size){
+          number = this.size;
+        }
+        var result  = "";
+        for(var i=offset;i<number;i++){
+            var key = this.arrayMap.get(i);
+            var object = this.dataMap.get(key);
+            result += "index:"+i+" key:"+ key + " value:" +object+"_";
+        }
+        return result;
+    }
+    
+};
+
+module.exports = SampleContract;
+```
+
 
