@@ -342,5 +342,5 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 
 ### 下一章
 
-[在星云链上发送交易](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+[在星云链上发送交易](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B中文%5D%20Nebulas%20101%20-%2002%20发送交易.md)
 
