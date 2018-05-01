@@ -202,4 +202,4 @@ cp /path/to/keystore.json /path/to/keydir/
 
 ### 下一章
 
- [编写并运行智能合约](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
+ [编写并运行智能合约](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B中文%5D%20Nebulas%20101%20-%2003%20编写智能合约.md)
