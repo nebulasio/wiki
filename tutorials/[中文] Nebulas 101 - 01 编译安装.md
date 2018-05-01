@@ -58,6 +58,9 @@ cd $GOPATH/src/github.com/nebulasio
 # 下载源码
 git clone https://github.com/nebulasio/go-nebulas.git
 
+# 进入项目目录
+cd go-nebulas
+
 # 切换到最稳定的master分支
 git checkout master
 ```
