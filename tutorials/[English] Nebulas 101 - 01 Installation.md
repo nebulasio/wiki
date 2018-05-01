@@ -63,7 +63,7 @@ cd $GOPATH/src/github.com/nebulasio
 git clone https://github.com/nebulasio/go-nebulas.git
 
 # enter repository
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd go-nebulas
 
 # master branch is most stable
 git checkout master
