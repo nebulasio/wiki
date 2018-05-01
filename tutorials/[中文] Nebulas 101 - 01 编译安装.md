@@ -218,7 +218,7 @@ token_distribution [
 # 网络配置
 network {
   # 对于全网第一个节点，不需要配置seed
-  # 否则，其他节点启东市需要配置seed，seed节点将会把网络中其他节点的路由信息同步给刚启动的节点
+  # 否则，其他节点启动时需要配置seed，seed节点将会把网络中其他节点的路由信息同步给刚启动的节点
   # 可以配置多个seed, ["...", "..."]
   seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
 
