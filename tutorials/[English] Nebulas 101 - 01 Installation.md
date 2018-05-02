@@ -86,7 +86,7 @@ apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2
 * Install rocksdb by source code:
 ```bash
 git clone https://github.com/facebook/rocksdb.git
-cd rocksdb & make shared_lib && make install-shared
+cd rocksdb && make shared_lib && make install-shared
 ```
 
 * **Linux - Centos**
