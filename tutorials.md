@@ -56,7 +56,7 @@ Here is all you need to dive into Nebulas.
 
 ## Community Tools
 
-- Nebulearn: https://nebulearn.com/official-docs/go-nebulas
+- Nebulearn: https://nebulearn.com/official-docs/go-nebulas (thanks to [Tehjr](https://github.com/HermantNET))
 - Demo DApp: https://github.com/15010159959/super-dictionary (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano), [Kurry](https://github.com/15010159959))
 - Chrome Extension: https://github.com/ChengOrangeJu/WebExtensionWallet (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano))
 
