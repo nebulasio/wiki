@@ -1,6 +1,6 @@
 # Nebulas 101 - 03 Write and run a smart contract
 
-[YouTube Tutorial](https://www.youtube.com/watch?v=0ut_RcFyQGM)
+[YouTube Tutorial](https://www.youtube.com/watch?v=98iW0WvajVU&index=2&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
 
 Through this tutorial we will learn how to write, deploy, and execute smart contracts in Nebulas.
 
