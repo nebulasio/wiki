@@ -352,7 +352,7 @@ tips:
 
 ### accept (support only in testnet)
 this method is aimed to make it possible to send a binary transfer to a contract account.As the `to` is a smart contact address, the smart contract has declared a function `accept()` and it excutes correctly,the transfer will  succeed.If the Tx is a non-binary Tx,it will be treated as a normal function.
-```is
+```js
 "use strict";
 var DepositeContent = function (text) {
  if(text){
