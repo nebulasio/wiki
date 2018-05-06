@@ -303,7 +303,7 @@ Event.Trigger(topic, obj);
 
 You can see the example in `SampleContract` before.
 
-### random
+### random (support only in testnet)
 * MATH.random(),return a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1.
 * MATH.random.seed(string),if needed,you can use this method to set the random seed.
 ```js
@@ -328,7 +328,7 @@ return arr[parseInt(subscript)];
 module.exports = BankVaultContract;
 ```
 
-### date
+### date (support only in testnet)
 ```
 "use strict";
 var BankVaultContract = function () {};
@@ -349,7 +349,7 @@ tips:
 * getXXX return the result of getUTCXXX.
 
 
-### accept
+### accept (support only in testnet)
 this method is aimed to make it possible to send a binary transfer to a contract account.As the `to` is a smart contact address, the smart contract has declared a function `accept()` and it excutes correctly,the transfer will  succeed.If the Tx is a non-binary Tx,it will be treated as a normal function.
 ```
 "use strict";
