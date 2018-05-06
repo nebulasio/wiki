@@ -87,7 +87,7 @@ git checkout master
 * 下载源码并编译安装
     ```bash
     git clone https://github.com/facebook/rocksdb.git
-    cd rocksdb & make shared_lib && make install-shared
+    cd rocksdb && make shared_lib && make install-shared
     ```
 
 ##### Centos
@@ -100,7 +100,7 @@ git checkout master
 * 下载源码并编译安装
     ```bash
     git clone https://github.com/facebook/rocksdb.git
-    cd rocksdb & make shared_lib && make install-shared
+    cd rocksdb && make shared_lib && make install-shared
     ```
 
 ### 安装Go依赖库
