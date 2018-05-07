@@ -213,7 +213,7 @@ properties:
 
 - `block`: current block for contract execution
 	- `timestamp`: block timestamp
-	- 'seed': random seed
+	- `seed`: random seed
 	- `height`: block height
 - `transaction`: current transaction for contract execution
 	- `hash`: transaction hash
@@ -304,28 +304,62 @@ Event.Trigger(topic, obj);
 You can see the example in `SampleContract` before.
 
 ### Math.random (support only in testnet)
-* MATH.random(),return a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1.
-* MATH.random.seed(string),if needed,you can use this method to set the random seed.
+* `MATH.random()` returns a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1. The typical usage is:
+
 ```js
 "use strict";
+
 var BankVaultContract = function () {};
+
 BankVaultContract.prototype = {
-init: function () {
-},
-game:function(subscript,user_input){
-var arr =[1,2,3,4,5,6,7,8,9,10,11,12,13];
-for(var i = 0;i < arr.length; i++){
-  MATH.random.seed(user_input);
-  var rand = parseInt(Math.random()*arr.length);
-  var t = arr[rand];
-  arr[rand] =arr[i];
-  arr[i] = t;
-}
-return arr[parseInt(subscript)];
-},
 
+	init: function () {},
 
+	game: function(subscript){
+	
+		var arr =[1,2,3,4,5,6,7,8,9,10,11,12,13];
+
+		for(var i = 0;i < arr.length; i++){
+			var rand = parseInt(Math.random()*arr.length);
+			var t = arr[rand];
+			arr[rand] =arr[i];
+			arr[i] = t;
+		}
+
+		return arr[parseInt(subscript)];
+	},
 };
+module.exports = BankVaultContract;
+```
+
+* `MATH.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **string**.
+```js
+"use strict";
+
+var BankVaultContract = function () {};
+
+BankVaultContract.prototype = {
+
+	init: function () {},
+	
+	game:function(subscript, myseed){
+	
+		var arr =[1,2,3,4,5,6,7,8,9,10,11,12,13];
+	
+		for(var i = 0;i < arr.length; i++){
+		
+			// reset random seed with `myseed`
+			MATH.random.seed(myseed);
+
+			var rand = parseInt(Math.random()*arr.length);
+			var t = arr[rand];
+			arr[rand] =arr[i];
+			arr[i] = t;
+		}
+		return arr[parseInt(subscript)];
+	},
+};
+
 module.exports = BankVaultContract;
 ```
 
