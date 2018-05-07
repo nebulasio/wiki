@@ -304,7 +304,7 @@ Event.Trigger(topic, obj);
 You can see the example in `SampleContract` before.
 
 ### Math.random (support only in testnet)
-* `MATH.random()` returns a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1. The typical usage is:
+* `Math.random()` returns a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1. The typical usage is:
 
 ```js
 "use strict";
@@ -332,7 +332,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-* `MATH.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **string**.
+* `Math.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **string**.
 ```js
 "use strict";
 
@@ -345,11 +345,15 @@ BankVaultContract.prototype = {
 	game:function(subscript, myseed){
 	
 		var arr =[1,2,3,4,5,6,7,8,9,10,11,12,13];
+		
+		console.log(Math.random());
 	
 		for(var i = 0;i < arr.length; i++){
 		
-			// reset random seed with `myseed`
-			MATH.random.seed(myseed);
+			if (i == 8) {
+				// reset random seed with `myseed`
+				Math.random.seed(myseed);
+			}
 
 			var rand = parseInt(Math.random()*arr.length);
 			var t = arr[rand];
@@ -366,83 +370,86 @@ module.exports = BankVaultContract;
 ### Date (support only in testnet)
 ```js
 "use strict";
-var BankVaultContract = function () {};
-BankVaultContract.prototype = {
-init: function () {
-},
-test:function(){
-var d = new Date();
-return d.toString();
-}
 
+var BankVaultContract = function () {};
+
+BankVaultContract.prototype = {
+	init: function () {},
+	
+	test: function(){
+		var d = new Date();
+		return d.toString();
+	}
 };
+
 module.exports = BankVaultContract;
 ```
-tips:
-* unsupported methods：toDateString(),toTimeString(),getTimezoneOffset(),toLocaleXXX().
-* `new Date()`/`Date.now()` method return the timestamp of the current block.
-* `getXXX` return the result of `getUTCXXX`.
+Tips:
+* Unsupported methods：`toDateString()`, `toTimeString()`, `getTimezoneOffset()`, `toLocaleXXX()`.
+* `new Date()`/`Date.now()` returns the timestamp of current block in milliseconds.
+* `getXXX` returns the result of `getUTCXXX`.
 
 
 ### accept (support only in testnet)
-this method is aimed to make it possible to send a binary transfer to a contract account.As the `to` is a smart contact address, the smart contract has declared a function `accept()` and it excutes correctly,the transfer will succeed.If the Tx is a non-binary Tx,it will be treated as a normal function.
+this method is aimed to make it possible to send a binary transfer to a contract account. As the `to` is a smart contact address, which has declared a function `accept()` and it excutes correctly, the transfer will succeed. If the Tx is a non-binary Tx,it will be treated as a normal function.
 ```js
 "use strict";
 var DepositeContent = function (text) {
- if(text){
-        var o = JSON.parse(text);
-        this.balance = new BigNumber(o.balance);//余额信息
-        this.address = o.address;
- }else{
-        this.balance = new BigNumber(0);
-        this.address = "";
+	if(text){
+        	var o = JSON.parse(text);
+        	this.balance = new BigNumber(o.balance);//余额信息
+        	this.address = o.address;
+	}else{
+        	this.balance = new BigNumber(0);
+        	this.address = "";
         }
 };
 
 DepositeContent.prototype = {
- toString: function () {
-  return JSON.stringify(this);
- }
+	toString: function () {
+  		return JSON.stringify(this);
+	}
 };
+
 var BankVaultContract = function () {
-LocalContractStorage.defineMapProperty(this, "bankVault", {
- parse: function (text) {
-  return new DepositeContent(text);
- },
- stringify: function (o) {
-  return o.toString();
- }
-});
+	LocalContractStorage.defineMapProperty(this, "bankVault", {
+ 		parse: function (text) {
+  			return new DepositeContent(text);
+ 		},
+ 		stringify: function (o) {
+  			return o.toString();
+ 		}
+	});
 };
+
 BankVaultContract.prototype = {
+	init: function () {},
 
-init: function () {
-},
+	save: function () {
+  		var from = Blockchain.transaction.from;
+  		var value = Blockchain.transaction.value;
+  		value = new BigNumber(value);
+  		var orig_deposit = this.bankVault.get(from);
+  		if (orig_deposit) {
+    			value = value.plus(orig_deposit.balance);
+  		}
+		
+  		var deposit = new DepositeContent();
+  		deposit.balance = new BigNumber(value);
+  		deposit.address = from;
+  		this.bankVault.put(from, deposit);
+	},
 
-save: function () {
-  var from = Blockchain.transaction.from;
-  var value = Blockchain.transaction.value;
-  value = new BigNumber(value);
-  var orig_deposit = this.bankVault.get(from);
-  if (orig_deposit) {
-    value = value.plus(orig_deposit.balance);
-  }
-  var deposit = new DepositeContent();
-  deposit.balance = new BigNumber(value);
-  deposit.address = from;
-  this.bankVault.put(from, deposit);
-},
-
-accept:function(){
-this.save();
-Event.Trigger("transfer", {
-     Transfer: {
-       from: Blockchain.transaction.from,
-       to: Blockchain.transaction.to,
-       value: Blockchain.transaction.value,
-     }
-   });
-}
+	accept:function(){
+		this.save();
+		Event.Trigger("transfer", {
+			Transfer: {
+				from: Blockchain.transaction.from,
+				to: Blockchain.transaction.to,
+				value: Blockchain.transaction.value,
+			}
+   		});
+	}
 
 };
 module.exports = BankVaultContract;
