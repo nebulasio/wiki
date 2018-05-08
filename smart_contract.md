@@ -303,7 +303,7 @@ Event.Trigger(topic, obj);
 
 You can see the example in `SampleContract` before.
 
-### Math.random (support only in testnet)
+### Math.random 
 * `Math.random()` returns a floating-point, pseudo-random number in the range from 0 inclusive up to but not including 1. The typical usage is:
 
 ```js
@@ -367,7 +367,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-### Date (support only in testnet)
+### Date 
 ```js
 "use strict";
 
@@ -390,7 +390,7 @@ Tips:
 * `getXXX` returns the result of `getUTCXXX`.
 
 
-### accept (support only in testnet)
+### accept
 this method is aimed to make it possible to send a binary transfer to a contract account. As the `to` is a smart contact address, which has declared a function `accept()` and it excutes correctly, the transfer will succeed. If the Tx is a non-binary Tx,it will be treated as a normal function.
 ```js
 "use strict";
