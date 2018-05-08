@@ -71,6 +71,7 @@ Or, there is error form grpc, repose will carry the error message
 * [GetBlockByHash](#getblockbyhash)
 * [GetBlockByHeight](#getblockbyheight)
 * [GetTransactionReceipt](#gettransactionreceipt)
+* [GetTransactionByContract](#gettransactionbycontract)
 * [GetGasPrice](#getgasprice)
 * [EstimateGas](#estimategas)
 * [GetEventsByHash](#geteventsbyhash)
@@ -514,6 +515,22 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
     }
 }
 ```
+***
+
+#### GetTransactionByContract
+Get transactionReceipt info by contract address. If contract not exists or packaged on chain, a not found error will be returned.
+
+| Protocol | Method | API |
+|----------|--------|-----|
+| gRpc |  | GetTransactionByContract |
+| HTTP | POST |  /v1/user/getTransactionByContract |
+
+###### Parameters
+`address` Hex string of contract account address.
+
+###### Returns
+The result is the same as that of [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md/#gettransactionbycontract)
+
 ***
 
 #### Subscribe
