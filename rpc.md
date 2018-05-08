@@ -525,11 +525,39 @@ Get transactionReceipt info by contract address. If contract not exists or packa
 | gRpc |  | GetTransactionByContract |
 | HTTP | POST |  /v1/user/getTransactionByContract |
 
-###### Parameters
+##### Parameters
 `address` Hex string of contract account address.
 
-###### Returns
+##### Returns
 The result is the same as that of [GetTransactionReceipt](https://github.com/nebulasio/wiki/blob/master/rpc.md/#gettransactionbycontract)
+
+##### HTTP Example
+```
+// Request
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionByContract -d '{"address":"n1sqDHGjYtX6rMqFoq5Tow3s3LqF4ZxBvE3"}'
+
+// Result
+{
+    "result":{
+        "hash":"c5a45a789278f5cce9e95e8f31c1962567f58844456fed7a6eb9afcb764ca6a3",
+        "chainId":100,
+        "from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+        "to":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3",
+        "value":"0",
+        "nonce":"1",
+        "timestamp":"1521964742",
+        "type":"deploy",
+        "data":"eyJTb3VyY2VUeXBlIjoianMiLCJTb3VyY2UiOiJcInVzZSBzdHJpY3RcIjtcblxudmFyIENvbnRyYWN0ID0gZnVuY3VuY3Rpb24oKSB7XG5cbiAgICAgICAgRXZlbnQuVHJpZ2dlcih......UmFuZG9tMlwiOiByMTIsXG4gImRlZmF1bHRTZWVkUmFuZG9tM1wiOiByMTMsXG4gICAgICAgICAgICBcInVzZXJTZWVkUmFuZG9tXCI6IHIyXG4gICAgICAgIH0pO1xuICAgIH1cbn07XG5cbm1vZHVsZS5leHBvcnRzID0gQ29udHJhY3Q7IiwiQXJncyI6IiJ9",
+        "gas_price":"1000000",
+        "gas_limit":"20000",
+        "contract_address":"n1sqDHGjYtX6rMqFoq5Tow3s3LqF4ZxBvE3",
+        "status":1,
+        "gas_used":"20000",
+        "execute_error":"",
+        "execute_result":"\"\""
+    }
+}
+```
 
 ***
 
