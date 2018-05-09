@@ -111,11 +111,11 @@ module.exports = SampleContract;
 
 Explanation:
 
-Mixin.UNPAYABLE,Mixin.PAYABLE,Mixin.POSITIVE ,Mixin.UNPOSITIVE  are  permission control function。The permission control function as follows:
-* Mixin.UNPAYABLE:  check the transaction sent value, if value is less than 0 return true, otherwise returns false
-* Mixin.UNPAYABLE : check the transaction sent value, if value is greater than 0 return true, otherwise returns false
-* Mixin.UNPOSITIVE ：output log UNPOSITIVE
-* Mixin.POSITIVE ：output log POSITIVE
+Mixin.UNPAYABLE,Mixin.PAYABLE,Mixin.POSITIVE ,Mixin.UNPOSITIVE  are  permission control functions。The permission control functions as follows:
+* Mixin.UNPAYABLE: check the transaction sent value, if value is less than 0 return true, otherwise returns false
+* Mixin.PAYABLE: check the transaction sent value, if value is greater than 0 return true, otherwise returns false
+* Mixin.UNPOSITIVE: output log UNPOSITIVE
+* Mixin.POSITIVE: output log POSITIVE
 
 Implement permission control in Mixin.decorator：
 
