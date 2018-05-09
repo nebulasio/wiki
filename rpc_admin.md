@@ -316,6 +316,13 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 
 `gas_limit` gasLimit sending with this transaction.
 
+`type` transaction payload type. If the type is specified, the transaction type is determined and the corresponding parameter needs to be passed in, otherwise the transaction type is determined according to the contract and binary data.  [optional]
+
+- type enum:
+	- `binary`: normal transaction with binary 
+	- `deploy`: deploy smart contract 
+	- `call`: call smart contract function
+
 `contract` transaction contract object for deploy/call smart contract. [optional]
 
 * Sub properties:
