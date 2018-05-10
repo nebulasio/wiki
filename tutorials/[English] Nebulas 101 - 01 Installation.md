@@ -98,7 +98,7 @@ yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc
 * Install rocksdb by source code:
 ```bash
 git clone https://github.com/facebook/rocksdb.git
-cd rocksdb & make shared_lib && make install-shared
+cd rocksdb && make shared_lib && make install-shared
 ```
 
 ### Install Go Dependencies
