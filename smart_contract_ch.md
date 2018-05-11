@@ -10,6 +10,8 @@ Chrome V8是一个由Chromium开发的广受欢迎的JavaScript执行引擎，�
 ## 执行模型
 智能合约的执行模型如下图:
 
+![Smart Contract Execution Model](resources/smart_contract_execution_model.png "Smart Contract Execution Model")
+
 合约执行步骤：
 *  打包合约代码和相关参数到本次Transaction中，部署合约到星云链。
 *  合约的执行分为两个阶段：
@@ -17,13 +19,13 @@ Chrome V8是一个由Chromium开发的广受欢迎的JavaScript执行引擎，�
      * 执行阶段：生成可执行代码并运行。
 
 ## 合约
-Nebulas中的合约与面向对象语言中的类相似，包含状态变量和可以修改这些变量的函数。
+Nebulas中的合约与面向对象语言中的类相似，包含状态变量和可以修改变量的函数。
 
 
 ### 编写合约
 合约必须是JavaScript或TypeScript中的原型对象或类。
 
-合约必须包含一个init函数，只会在部署时执行。 以_开头的函数是私有的，用户无法直接调用。 其他都是公有的，用户可直接调用。
+合约必须包含一个init函数，只会在部署合约时执行。 以_开头的函数是私有的，用户无法直接调用。 其他都是公有的，用户可直接调用。
 
 由于合约是在Chrome V8中执行的，因此所有实例变量都在内存中，所以将它们全部保存为[state trie](https://github.com/nebulasio/wiki/blob/master/merkle_trie.md)并不明智。 在Nebulas中，我们提供```LocalContractStorage```和```GlobalContractStorage```对象来帮助开发人员定义需要保存的状态字段。 这些字段应该在合约构造函数中定义。
 
@@ -62,7 +64,7 @@ class Rectangle {
 ### 函数可见性
 在JavaScript中，没有函数可见性，原型对象中定义的所有函数都是公有的。
 
-在Nebulas中，我们定义了```public```和```private```两种可见性：
+在Nebulas中，我们定义了```public```和```private```两种可见性：
 
 * ```public```
 除init函数外，其他函数名与正则表达式 ```^[a-zA-Z$][A-Za-z0-9_$]*$``` 匹配的所有函数都是公有的。公有函数用户可直接调用。
@@ -179,7 +181,7 @@ value.plus(1);
 ```
 
 ### Blockchain
-`Blockchain` 为合约提供了一个对象，该对象可以取得当前合约所在的块和Transaction信息，此外该对象提供了transfer方法用于从合约中转出nas，提供了verifyAddress用于地址校验。
+`Blockchain`为合约提供了一个对象，该对象可以取得当前合约所在的块和Transaction信息，此外该对象提供了transfer方法用于从合约中转出nas，提供了verifyAddress用于地址校验。
 
 Blockchain API:
 
