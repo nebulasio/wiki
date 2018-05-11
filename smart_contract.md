@@ -1,4 +1,4 @@
-# Smart Contract
+# Smart Contract （[中文版链接](https://github.com/nebulasio/wiki/blob/master/smart_contract_ch.md)）
 
 ## Languages
 

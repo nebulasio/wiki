@@ -76,8 +76,7 @@ class Rectangle {
 
 ## 全局对象
 ### console
-```console```模块提供了一个简单的调试控制台，与Web浏览器提供的JavaScript控制台机制类似。
-全局控制台可以在不调用```require('console')```的情况下使用。
+```console```模块提供了一个简单的调试控制台，与Web浏览器提供的JavaScript控制台机制类似。全局控制台可以在不调用```require('console')```的情况下使用。
 
 #### console.info([...args])
 * ```...args <any>```
@@ -100,7 +99,7 @@ console.info() 方法是```console.log()```的别名.
 在```error```级别输出```args```到Nebulas Logger.
 
 ### LocalContractStorage
-```LocalContractStorage```模块提供基于状态树的存储功能。 它仅接受字符串键值对。并且所有数据都存储到与当前合约地址关联的私有状态树中，只有合约可以访问它们。
+```LocalContractStorage```模块提供基于状态树的存储功能。它仅接受字符串键值对。并且所有数据都存储到与当前合约地址关联的私有状态树中，只有合约可以访问它们。
 
 ```typescript
 interface Descriptor {
@@ -283,9 +282,7 @@ module.exports = SampleContract;
 
 
 ### Event
-`Event`模块记录合约中的执行事件。记录的事件存储在链上的事件树中，事件可在`FetchEvents`方法中通过执行事件的哈希来获取。所有合约事件topic都会加上前缀`chain.contract.`作为最终存储的topic。
-你可以在之前的`SampleContract`智能合约中看到相关的使用样例。
-
+`Event`模块记录合约中的执行事件。记录的事件存储在链上的事件树中，事件可在`FetchEvents`方法中通过执行事件的哈希来获取。所有合约事件topic都会加上前缀`chain.contract.`作为最终存储的topic。你可以在之前的`SampleContract`智能合约中看到相关的使用样例。
 
 ### Math.random (当前仅在测试网支持)
 * `Math.random()`返回一个浮点伪随机数，范围从0到1，但不包含1。典型用法是：
@@ -371,7 +368,7 @@ module.exports = BankVaultContract;
 提醒：
 * 不支持的方法：`toDateString()`, `toTimeString()`, `getTimezoneOffset()`, `toLocaleXXX()`。
 * `new Date()`/`Date.now()`返回当前块的时间戳，单位为毫秒。
-* `getXXX` 返回`getUTCXXX`的结果。
+* `getXXX`返回`getUTCXXX`的结果。
 
 
 ### accept(当前仅在测试网支持) 
