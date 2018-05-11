@@ -282,7 +282,16 @@ module.exports = SampleContract;
 
 
 ### Event
-`Event`模块记录合约中的执行事件。记录的事件存储在链上的事件树中，事件可在`FetchEvents`方法中通过执行事件的哈希来获取。所有合约事件topic都会加上前缀`chain.contract.`作为最终存储的topic。你可以在之前的`SampleContract`智能合约中看到相关的使用样例。
+`Event`模块记录合约中的执行事件。记录的事件存储在链上的事件树中。用户可以使用[`GetEventsByHash`](https://github.com/nebulasio/wiki/blob/master/rpc.md#geteventsbyhash)通过当前交易哈希来获取该事件。所有合约事件的topic都会在合约代码中指定的topic前加上前缀`chain.contract.`作为最终存储的topic。
+
+```js
+Event.Trigger(topic, obj);
+```
+
+ - `topic`: user-defined topic
+ - `obj`: JSON object
+
+你可以在刚才的`SampleContract`智能合约例子中看到相关的使用样例。
 
 ### Math.random (当前仅在测试网支持)
 * `Math.random()`返回一个浮点伪随机数，范围从0到1，但不包含1。典型用法是：
