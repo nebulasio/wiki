@@ -1,7 +1,7 @@
 # 智能合约
 
 ## 智能合约语言
-Nebulas 支持两种智能合约语言：
+Nebulas支持两种智能合约语言：
 * JavaScript
 * TypeScript
 
@@ -25,9 +25,9 @@ Nebulas中的合约与面向对象语言中的类相似，包含状态变量和�
 ### 编写合约
 合约必须是JavaScript或TypeScript中的原型对象或类。
 
-合约必须包含一个init函数，只会在部署合约时执行。 以_开头的函数是私有的，用户无法直接调用。 其他都是公有的，用户可直接调用。
+合约必须包含一个init函数，只会在部署合约时执行。以_开头的函数是私有的，用户无法直接调用。其他都是公有的，用户可直接调用。
 
-由于合约是在Chrome V8中执行的，因此所有实例变量都在内存中，所以将它们全部保存为[state trie](https://github.com/nebulasio/wiki/blob/master/merkle_trie.md)并不明智。 在Nebulas中，我们提供```LocalContractStorage```和```GlobalContractStorage```对象来帮助开发人员定义需要保存的状态字段。 这些字段应该在合约构造函数中定义。
+由于合约是在Chrome V8中执行的，因此所有实例变量都在内存中，所以将它们全部保存为[state trie](https://github.com/nebulasio/wiki/blob/master/merkle_trie.md)并不明智。在Nebulas中，我们提供```LocalContractStorage```和```GlobalContractStorage```对象来帮助开发人员定义需要保存的状态字段。这些字段应该在合约构造函数中定义。
 
 下面是一个简单的合约例子：
 ```javascript
@@ -70,14 +70,14 @@ class Rectangle {
 除init函数外，其他函数名与正则表达式 ```^[a-zA-Z$][A-Za-z0-9_$]*$``` 匹配的所有函数都是公有的。公有函数用户可直接调用。
 
 * ```private```
-函数名以```_```开头的函数都是私有的。 私有函数只能通过公有函数调用。
+函数名以```_```开头的函数都是私有的。私有函数只能通过公有函数调用。
 
 
 
 ## 全局对象
 ### console
-```console``` 模块提供了一个简单的调试控制台，与Web浏览器提供的JavaScript控制台机制类似。
-全局控制台可以在不调用 ```require('console')``` 的情况下使用。
+```console```模块提供了一个简单的调试控制台，与Web浏览器提供的JavaScript控制台机制类似。
+全局控制台可以在不调用```require('console')```的情况下使用。
 
 #### console.info([...args])
 * ```...args <any>```
@@ -85,7 +85,7 @@ console.info() 方法是```console.log()```的别名.
 
 #### console.log([...args])
 * ```...args <any>```
-在```info```级别输出```args```到 Nebulas Logger.
+在```info```级别输出```args```到Nebulas Logger.
 
 #### console.debug([...args])
 * ```...args <any>```
@@ -93,14 +93,14 @@ console.info() 方法是```console.log()```的别名.
 
 #### console.warn([...args])
 * ```...args <any>```
-在```warn```级别输出```args``` 到Nebulas Logger.
+在```warn```级别输出```args```到Nebulas Logger.
 
 #### console.error([...args])
 * ```...args <any>```
 在```error```级别输出```args```到Nebulas Logger.
 
 ### LocalContractStorage
-```LocalContractStorage```模块提供基于状态树的存储功能。 它仅接受字符串键值对。 并且所有数据都存储到与当前合约地址关联的私有状态树中，只有合约可以访问它们。
+```LocalContractStorage```模块提供基于状态树的存储功能。 它仅接受字符串键值对。并且所有数据都存储到与当前合约地址关联的私有状态树中，只有合约可以访问它们。
 
 ```typescript
 interface Descriptor {
@@ -172,7 +172,7 @@ interface StorageMap {
 ```
 
 ### BigNumber
-`BigNumber`模块使用 [bignumber.js](https://github.com/MikeMcl/bignumber.js)，这是一个用于任意精度十进制和非十进制算术的JavaScript库。 合约可以直接使用`BigNumber`来处理transaction值。
+`BigNumber`模块使用[bignumber.js](https://github.com/MikeMcl/bignumber.js)，这是一个用于任意精度十进制和非十进制算术的JavaScript库。合约可以直接使用`BigNumber`来处理transaction值。
 ```js
 
 var value = new BigNumber(0);
@@ -212,7 +212,7 @@ properties:
     - `from`: 交易发送地址
     - `to`: 交易目的地址
     - `value`: 交易金额, 一个BigNumber对象
-    - `nonce`: 交易 nonce
+    - `nonce`: 交易nonce
     - `timestamp`: 交易时间戳
     - `gasPrice`: gas出价, 一个BigNumber对象
     - `gasLimit`: gas上限值, 一个BigNumber对象
@@ -283,13 +283,12 @@ module.exports = SampleContract;
 
 
 ### Event
-`Event` 模块记录合约中的执行事件。记录的事件存储在链上的事件树中，事件可在`FetchEvents`方法中通过执行事件的哈希来获取。所有合约事件topic都会加上前缀`chain.contract.`作为最终存储的topic。
-
+`Event`模块记录合约中的执行事件。记录的事件存储在链上的事件树中，事件可在`FetchEvents`方法中通过执行事件的哈希来获取。所有合约事件topic都会加上前缀`chain.contract.`作为最终存储的topic。
 你可以在之前的`SampleContract`智能合约中看到相关的使用样例。
 
 
 ### Math.random (当前仅在测试网支持)
-* `Math.random()` 返回一个浮点伪随机数，范围从0到1，但不包含1。典型用法是：
+* `Math.random()`返回一个浮点伪随机数，范围从0到1，但不包含1。典型用法是：
 
 ```js
 "use strict";
@@ -317,7 +316,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-* `Math.random.seed(myseed)` 可以使用此方法重置随机种子。 参数`myseed` 必须是 **string**。
+* `Math.random.seed(myseed)`可以使用此方法重置随机种子。参数`myseed`必须是 **string**。
 ```js
 "use strict";
 
@@ -371,7 +370,7 @@ module.exports = BankVaultContract;
 
 提醒：
 * 不支持的方法：`toDateString()`, `toTimeString()`, `getTimezoneOffset()`, `toLocaleXXX()`。
-* `new Date()`/`Date.now()` 返回当前块的时间戳，单位为毫秒。
+* `new Date()`/`Date.now()`返回当前块的时间戳，单位为毫秒。
 * `getXXX` 返回`getUTCXXX`的结果。
 
 
