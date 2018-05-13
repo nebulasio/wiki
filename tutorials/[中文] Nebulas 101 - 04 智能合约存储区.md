@@ -107,7 +107,7 @@ var SampleContract = function () {
 
     // SampleContract的`value`属性为存储属性，对`value`的读写会存储到链上，
     // 此处的`descriptor`自定义实现，存储时直接转为字符串，读取时获得Bignumber对象
-    LocalContractStorage.defineMapProperty(this, "value", {
+    LocalContractStorage.defineProperty(this, "value", {
         stringify: function (obj) {
             return obj.toString();
         },
