@@ -293,7 +293,7 @@ Event.Trigger(topic, obj);
 
 你可以在刚才的`SampleContract`智能合约例子中看到相关的使用样例。
 
-### Math.random (当前仅在测试网支持)
+### Math.random 
 * `Math.random()`返回一个浮点伪随机数，范围从0到1，但不包含1。典型用法是：
 
 ```js
@@ -380,7 +380,7 @@ module.exports = BankVaultContract;
 * `getXXX`返回`getUTCXXX`的结果。
 
 
-### accept(当前仅在测试网支持) 
+### accept
 该方法支持普通转账及转账到合约地址。`to`是智能合约地址，普通转账能成功的前提是合约声明了函数`accept()`，且该函数执行成功。 如果该转账是非普通转账，则它将被视为普通函数调用。
 
 ```js
