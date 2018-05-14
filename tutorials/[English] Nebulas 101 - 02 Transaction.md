@@ -1,6 +1,6 @@
 # Nebulas 101 - 02 Sending Transactions on Nebulas
 
-[Youtube Tutorial](https://www.youtube.com/watch?v=_Njq8LX2r-4)
+[Youtube Tutorial](https://www.youtube.com/watch?v=-44tVVR6ETo&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R&index=1)
 
 > For this portion of the tutorial we will pick up where we left off in the [Installation tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md).
 
