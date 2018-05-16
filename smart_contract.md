@@ -180,7 +180,7 @@ interface StorageMap {
 
 ### BigNumber
 
-The `BigNumber` module use the [bignumber.js](https://github.com/MikeMcl/bignumber.js), a JavaScript library for arbitrary-precision decimal and non-decimal arithmetic. The contract can use `BigNumber` directly to handle the value of the transaction and other values transfer.
+The `BigNumber` module use the [bignumber.js](https://github.com/MikeMcl/bignumber.js)(v4.1.0), a JavaScript library for arbitrary-precision decimal and non-decimal arithmetic. The contract can use `BigNumber` directly to handle the value of the transaction and other values transfer.
 
 ```js
 

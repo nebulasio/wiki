@@ -171,7 +171,7 @@ interface StorageMap {
 ```
 
 ### BigNumber
-`BigNumber`模块使用[bignumber.js](https://github.com/MikeMcl/bignumber.js)，这是一个用于任意精度十进制和非十进制算术的JavaScript库。合约可以直接使用`BigNumber`来处理transaction值。
+`BigNumber`模块使用[bignumber.js](https://github.com/MikeMcl/bignumber.js)(v4.1.0)，这是一个用于任意精度十进制和非十进制算术的JavaScript库。合约可以直接使用`BigNumber`来处理transaction值。
 ```js
 
 var value = new BigNumber(0);
