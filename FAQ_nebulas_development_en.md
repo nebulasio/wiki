@@ -1,19 +1,5 @@
-## Questions about Intensive Program
-
-##### Q: A brief introduction about Nebula incentive program?
-
->  From 00:00 on May 7th, 2018 to 00:00 on July 2nd, 2018, all developers who successfully submit DApp on the main net of the Nebulas and corresponding promoters can obtain NAS bounties. Weekly Excellent Application Award 10,000 NAS, Monthly 20,000 NAS! Promoter Monthly Award 10,000 NAS! The total award amount is 460,000 NAS. See details
-     Https://blog.nebulas.io/2018/05/02/official-interpretation-of-nebulas-incentive-program-implementation-details-season-1/
-
-##### Q. Why start the Nebulas Incentive Program?
-
-> A: Nebulas is committed to speeding up the development of a sustainable and healthy next-generation public blockchain ecosystem. To accomplish this, the Nebulas Foundation is encouraging developers to continue to develop more and better decentralized apps (DApps) on the Nebulas mainnet blockchain. In the spirit of letting everyone benefit from the fairness in decentralized collaboration, the Nebulas Foundation has initiated the first season of the Nebulas Incentive Program, welcoming global developers and promoters who recognized the power of blockchain and share similar values with Nebulas.
-
-##### Q: More FAQ about Nebulas Incentive Program.
-> A: Find it here: https://medium.com/nebulasio/nebulas-incentive-program-q-a-e48159815ab7
 
 ## Questions about setting up environment
-
 
 ##### Q:  How to start my node in local environment?
 
@@ -61,8 +47,57 @@ https://github.com/nebulasio/go-nebulas/issues/109
      +  http_cors: ["*"]
      }
 
+## Developing Related Questions
 
-### Frequently used links:
+##### Q: Where to get a quick start
+
+> The official launch of the tutorial  provide a step-by-step guide for the nebula fans on how to develop their own DApp on the Nebula. See official blog:
+
+> https://medium.com/nebulasio/how-to-build-a-dapp-on-nebulas-part-1-da4eaf9399bc
+> https://medium.com/nebulasio/how-to-build-a-dapp-on-nebulas-part-2-5424789f7417
+
+##### Q: How to use wallet to interact with Nebulas?
+> A: For basic tutorials, see the official feature release introduction 
+> https://github.com/nebulasio/web-wallet 
+
+##### Q: How to query the content of the deployed contract?
+
+> A: The  status can be found in web-wallet or https://explorer.nebulas.io/#/ via the transaction hash returned when deploying contract.
+
+##### Q: Can the deployed contract be upgraded directly or support data migration to a new contract?
+
+> A: No, you need to redeploy the smart contract.
+
+##### Q: Does the contract need to consume gas, and what is the lower limit?
+
+> A: Gas must be consumed when the contract is deployed or called. The consumption of gas in the development of the Nebulas is not expensive, and the gaslimit range is [20000, 50000000000]. Gasprice defaults to 10^wei. Note that 1NAS=1^18wei, the actual consumption is very low.
+
+##### Q: How to check the transaction history of my account?
+> A: Enter your account address at https://explorer.nebulas.io/#/
+
+##### Q: Why does the transaction I send have been pending?
+> A: The usual reason is that you have entered too big nonce when sending transactions. Nonce is executed sequentially. You can query the current state of the account (getAccontState) to ensure that the nonce you send is continuous.
+
+##### Q: Why can't I find out the contract I deployed?
+> A: There are usually two possibilities. The first is a deployment failure. You can query the completion status in web-wallet or https://explorer.nebulas.io/#/ by returning the transaction hash. The second situation is that you accidentally set up the wrong network and mistakenly testnet/mainnet
+
+##### Q: Can I inquire about the content of the contract through the contract address?
+> A: The query status of the current contract is queried by the transaction hash. The official has completed the function of querying through the contract address today and will be online soon. Please look forward to it.
+
+##### Q: What if my contract has a bug and I want to fix it?
+> A: Redeploy a contract. Point your DApp interface request to the new contract.
+
+##### Q: How to apply nas tokens when testing on the test network?
+> A: https://testnet.nebulas.io/claim/
+
+##### Q: Where will console.log be printed in smart contract?
+> A: Currently printed in the background log of the neb node. If there is a need to print logs for local test, please check the documentation to start the node locally.
+
+##### Q: Considering that users may have concerns about uploading private keys, how can you easily develop DApps on the web?
+> A: A Chrome-Extension wallet from community enthusiasts could be helpful (https://github.com/ChengOrangeJu/WebExtensionWallet). The wallet provides functions such as send transactions / import wallet / call contract method / query transaction status, which would reduce the workload of web developers significantly when developing DApps.
+
+
+## Frequently used links:
 
 Test Network: https://testnet.nebulas.io
 
