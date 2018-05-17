@@ -228,13 +228,13 @@ properties:
 	- params:
 		- `address`: nebulas address to receive NAS
 		- `value`: transfer value, a BigNumber object
-	- return:
-		- `0`: transfer success
-		- `1`: transfer failed   
+	- return (boolean value):
+		- `true`: transfer success
+		- `false`: transfer failed   
 - `verifyAddress(address)`: verify address
 	- params:
 		- `address`: address need to check
-	- return:
+	- return (number value):
 		- `1`: address is valid
 		- `0`: address is invalid 
 

@@ -219,13 +219,13 @@ properties:
     - 参数:
         - `address`: 接收NAS的nebulas地址
         - `value`: 交易金额，一个BigNumber对象
-    - 返回值:
-        - `0`: 交易成功
-        - `1`: 交易失败   
+    - 返回值(布尔型):
+        - `true`: 交易成功
+        - `false`: 交易失败   
 - `verifyAddress(address)`: 该函数校验地址
     - 参数:
         - `address`: 需要校验的地址
-    - 返回值:
+    - 返回值(数字型):
         - `1`: 地址合法
         - `0`: 地址非法
 
