@@ -103,7 +103,7 @@ defineProperties(obj, descriptorMap);
 var SampleContract = function () {
     // SampleContract的`size`属性为存储属性，对`size`的读写会存储到链上，
     // 此处的`descriptor`设置为null，将使用默认的JSON.stringify()和JSON.parse()
-    LocalContractStorage.defineMapProperty(this, "size", null);
+    LocalContractStorage.defineProperty(this, "size", null);
 
     // SampleContract的`value`属性为存储属性，对`value`的读写会存储到链上，
     // 此处的`descriptor`自定义实现，存储时直接转为字符串，读取时获得Bignumber对象
