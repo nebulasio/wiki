@@ -218,7 +218,7 @@ properties:
 - `transfer(address, value)`: 该函数将来自合约中的NAS发送到目的地址
     - 参数:
         - `address`: 接收NAS的nebulas地址
-        - `value`: 交易金额，一个BigNumber对象
+        - `value`: 交易金额，一个BigNumber对象；单位为wei，所以只能是整数，用小数会失败。
     - 返回值(布尔型):
         - `true`: 交易成功
         - `false`: 交易失败   

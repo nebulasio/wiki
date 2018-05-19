@@ -490,6 +490,10 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 
 `gas_used` transaction gas used
 
+`execute_error` the execute error of this transaction
+
+`execute_result` return value of the smart-contract function
+
 ###### HTTP Example
 ```
 // Request
@@ -511,7 +515,9 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
         "gas_limit":"20000",
         "contract_address":"",
         "status":1,
-        "gas_used":"20000"
+        "gas_used":"20000",
+        "execute_error":"",
+        "execute_result":"\"\""
     }
 }
 ```

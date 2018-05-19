@@ -227,7 +227,7 @@ properties:
 - `transfer(address, value)`: transfer NAS from contract to address
 	- params:
 		- `address`: nebulas address to receive NAS
-		- `value`: transfer value, a BigNumber object
+		- `value`: transfer value, a BigNumber object. The unit is wei, only integer value is valid.
 	- return (boolean value):
 		- `true`: transfer success
 		- `false`: transfer failed   
