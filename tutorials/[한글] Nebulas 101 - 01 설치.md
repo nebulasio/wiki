@@ -2,11 +2,11 @@
 
 [유튜브 튜토리얼 링크](https://www.youtube.com/watch?v=qtjss2LzSI4&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
 
-네뷸러스에 대한 프로젝트 코드(https://nebulas.io/)는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 여러분은 로컬에서 프라이빗 체인을 컴파일하기 위해 네뷸러스 소스 코드를 다운로드 할 수 있습니다.
+[네뷸러스](https://nebulas.io/)에 대한 프로젝트 코드는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 여러분은 로컬에서 프라이빗 블록체인을 컴파일하기 위해 네뷸러스 소스 코드를 다운로드할 수 있습니다.
 
-네뷸러스에 대해 더 알고 싶으시면 [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf)를 읽어보세요.
+네뷸러스에 대해 더 알고 싶으면 [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf)를 읽어보세요.
 
-만약 좀 더 기술적으로 알아보고 싶으시다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃허브 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
+만약 좀 더 기술적으로 알아보고 싶다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃허브 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
 
 > 네뷸러스는 아직까지는 맥과 리눅스에서만 동작합니다. 곧 윈도우 버전도 배포될 예정입니다.
 
@@ -30,7 +30,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 알림: GOPATH는 여러분이 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, 당신의 go 프로젝트는 GOPATH 디렉토리에 위치해야 합니다.
+> 유의사항: GOPATH는 여러분이 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, 당신의 go 프로젝트는 GOPATH 디렉토리에 위치해야 합니다.
 
 ### Linux
 
@@ -133,14 +133,14 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make dep
 ```
 
-> `make dep`은 꽤 많은 의존성 모듈을 다운로드하기 때문에 처음 다운로드하는 경우라면 시간이 좀 걸릴수 있습니다. 몇몇 의존성 모듈은 다운로드가 실패할 수 있는데 이 경우에는 압축된 의존성 모듈 파일을  [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리로 압축을 풀면 됩니다.
+> `make dep`은 꽤 많은 의존성 모듈을 다운로드하기 때문에 처음 다운로드하는 경우라면 시간이 좀 걸릴 수 있습니다. 몇몇 의존성 모듈은 다운로드가 실패할 수 있는데 이 경우에는 압축된 의존성 모듈 파일을  [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리에서 압축을 풀면 됩니다.
 > ```bash
 > vendor.tar.gz
 > MD5: c2c1ff9311332f90e11fb81b48ca0984
 > ```
 
-네뷸러스의 NVM (네뷸러스 가상 머신)은 V8 자바스크립트 엔진에 의존합니다.
-우리는 맥/리눅스용 v8 의존성 모듈을 개발했고 다음 명령어로 v8 디펜던시를 설치합니다.
+네뷸러스의 NVM(네뷸러스 가상 머신)은 V8 자바스크립트 엔진에 의존합니다.
+우리는 맥/리눅스용 v8 의존성 모듈을 개발했고 다음 명령어로 v8 의존성 패키지를 설치합니다.
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
@@ -149,7 +149,7 @@ make deploy-v8
 
 ### Neb 빌드하기
 
-Golang 의존성 모듈과 V8 의존성 패키지들을 설치한 후에 네뷸러스를 위한 실행 파일을 빌드할 수 있습니다.
+Golang 의존성 모듈과 V8 의존성 패키지를 설치한 후에 네뷸러스를 위한 실행 파일을 빌드할 수 있습니다.
 
 프로젝트 루트 디렉토리에서 빌드하세요:
 
@@ -165,7 +165,7 @@ make build
 
 ### 제너시스 블록
 
-새로운 네뷸러스 체인을 시작하기 전에, 먼저 제너시스 블록에 대한 설정을 해야 합니다.
+새로운 네뷸러스 블록체인을 시작하기 전에, 먼저 제너시스 블록에 대한 설정을 해야 합니다.
 
 #### 제너시스 블록 설정
 
@@ -314,7 +314,6 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 노드가 시작한 후, 시드 노드와의 연결이 성공했다면, `logs/miner/neb.log`에서 다음 로그를 볼 수 있을 것입니다:
 ![node start](resources/101-01-node-start.png)
 
-> Note: You can start many nodes locally. Please make sure the ports in your node configurations won't conflict with each other.
 > 유의사항: 당신은 많은 노드를 로컬에서 시작할 수 있습니다. 노드 설정에 있는 포트가 서로 충돌이 나지 않도록 하세요.
 
 ### 다음 단계: 튜토리얼 2
