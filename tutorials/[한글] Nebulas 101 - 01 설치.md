@@ -1,224 +1,198 @@
-{\rtf1\ansi\ansicpg949\deff0\nouicompat\deflang1033\deflangfe1042{\fonttbl{\f0\fnil\fcharset129 \'b1\'bc\'b8\'b2;}}
-{\*\generator Riched20 10.0.17134}\viewkind4\uc1 
-\pard\f0\fs22\lang0 # Nebulas 101 - 01 \lang1042\'c4\'c4\'c6\'c4\'c0\'cf\'b0\'fa \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'bc\'b3\'c4\'a1\par
-\par
-[\'c0\'af\'c5\'f5\'ba\'ea \'c6\'a9\'c5\'e4\'b8\'ae\'be\'f3 \'b8\'b5\'c5\'a9](https://www.youtube.com/watch?v=qtjss2LzSI4&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)\par
-\par
-\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'bf\'a1 \'b4\'eb\'c7\'d1 \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae \'c4\'da\'b5\'e5(https://nebulas.io/)\'b4\'c2 \'bf\'a9\'b7\'af\'b0\'a1\'c1\'f6 \'b9\'f6\'c1\'af\'c0\'b8\'b7\'ce \'b9\'e8\'c6\'f7\'b5\'c7\'b0\'ed \'c0\'d6\'b0\'ed \'b7\'ce\'c4\'c3\'bf\'a1\'bc\'ad\'c0\'c7 \'b5\'bf\'c0\'db\'c0\'bb \'c0\'a7\'c7\'d8 \'c5\'d7\'bd\'ba\'c6\'ae\'c7\'cf\'b0\'ed \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9. \'bf\'a9\'b7\'af\'ba\'d0\'c0\'ba \'c7\'c1\'b6\'f3\'c0\'cc\'ba\'f8 \'c3\'bc\'c0\'ce\'c0\'bb \'c4\'c4\'c6\'c4\'c0\'cf \'c7\'cf\'b1\'e2\'c0\'a7\'c7\'d8 \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'bc\'d2\'bd\'ba \'c4\'da\'b5\'e5\'b8\'a6 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5 \'c7\'d2 \'bc\'f6 \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9.\par
-\par
+# Nebulas 101 - 01 컴파일과 네뷸러스 설치
 
-\pard\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'bf\'a1 \'b4\'eb\'c7\'d8 \'b4\'f5 \'be\'cb\'b0\'ed \'bd\'cd\'c0\'b8\'bd\'c3\'b8\'e9 [Non-Technical White Paper]\'b8\'a6 \'c0\'d0\'be\'ee\'ba\'b8\'bc\'bc\'bf\'e4.(https://nebulas.io/docs/NebulasWhitepaper.pdf).\par
-\par
-\'b8\'b8\'be\'e0 \'c1\'bb \'b4\'f5 \'b1\'e2\'bc\'fa\'c0\'fb\'c0\'b8\'b7\'ce \'be\'cb\'be\'c6\'ba\'b8\'b0\'ed \'bd\'cd\'c0\'b8\'bd\'c3\'b4\'d9\'b8\'e9 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)\'bf\'cd \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'b1\'ea\'c7\'e3\'ba\'ea \'c4\'da\'b5\'e5\'b8\'a6 \'c0\'d0\'be\'ee\'ba\'b8\'bc\'bc\'bf\'e4. (https://github.com/nebulasio/go-nebulas)\par
-\par
->\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'b4\'c2 \'be\'c6\'c1\'f7\'b1\'ee\'c1\'f6\'b4\'c2 \'b8\'c6\'b0\'fa \'b8\'ae\'b4\'aa\'bd\'ba\'bf\'a1\'bc\'ad\'b8\'b8 \'b5\'bf\'c0\'db\'c7\'d5\'b4\'cf\'b4\'d9. \'b0\'f0 \'c0\'a9\'b5\'b5\'bf\'ec\'b9\'f6\'c1\'af\'b5\'b5 \'b9\'e8\'c6\'f7\'b5\'c9 \'bf\'b9\'c1\'a4\'c0\'d4\'b4\'cf\'b4\'d9.\par
-\par
+[유투브 튜토리얼 링크](https://www.youtube.com/watch?v=qtjss2LzSI4&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
 
-\pard\lang0 ## Golang \lang1042\'c8\'af\'b0\'e6\par
-\lang0\par
-\lang1042\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'b4\'c2 Golang\'c0\'bb \'c5\'eb\'c7\'d8 \'bd\'c3\'c7\'e0\'b5\'c7\'b0\'ed \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9.\par
-\par
+네뷸러스에 대한 프로젝트 코드(https://nebulas.io/)는 여러가지 버젼으로 배포되고 있고 로컬에서의 동작을 위해 테스트하고 있습니다. 여러분은 프라이빗 체인을 컴파일 하기위해 네뷸러스 소스 코드를 다운로드 할 수 있습니다.
 
-\pard | Components | Version | Description |\par
-|----------|-------------|-------------|\par
-|[Golang](https://golang.org) | >= 1.9.2| The Go Programming Language |\par
-\par
-### \'b8\'c6 OSX\par
-\par
-\'b8\'c6\'bf\'a1\'bc\'ad golang\'c0\'bb \'bc\'b3\'c4\'a1\'c7\'cf\'b1\'e2 \'c0\'a7\'c7\'d8 [Homebrew](https://brew.sh/)\'b8\'a6 \'c3\'df\'c3\'b5\'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-```bash\par
-# install\par
-go\'b8\'a6 \'bc\'b3\'c4\'a1\'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-# \'c8\'af\'b0\'e6 \'ba\'af\'bc\'f6\par
-export GOPATH=/path/to/workspace\par
-```\par
-\par
-> \'be\'cb\'b8\'b2:GOPATH\'b4\'c2 \'bf\'a9\'b7\'af\'ba\'d0\'c0\'cc \'c1\'f7\'c1\'a2 \'c1\'a4\'c7\'d2 \'bc\'f6 \'c0\'d6\'b4\'c2 \'b7\'ce\'c4\'c3 golang \'b5\'f0\'b7\'ba\'c5\'e4\'b8\'ae\'c0\'d4\'b4\'cf\'b4\'d9. GOPATH\'b8\'a6 \'bc\'b3\'c1\'a4\'c7\'d1 \'c8\'c4, \'b4\'e7\'bd\'c5\'c0\'c7 go \'c7\'c1\'b7\'ce\'c1\'a7\'c6\'ae\'b4\'c2 \'b1\'d7 GOPATH \'b5\'f0\'b7\'ba\'c5\'e4\'b8\'ae\'bf\'a1 \'c0\'fa\'c0\'e5\'b5\'c7\'be\'ee\'be\'df \'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-### Linux\par
-\par
-```bash\par
-# \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\par
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz\par
-\par
-# \'c3\'df\'c3\'e2\par
-tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz\par
-\par
-# \'c8\'af\'b0\'e6\'ba\'af\'bc\'f6\par
-export PATH=$PATH:/usr/local/go/bin\par
-export GOPATH=/path/to/workspace\par
-```\par
-\par
-## \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'c4\'c4\'c6\'c4\'c0\'cf\par
-\par
-### \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\par
-\par
-\'b4\'d9\'c0\'bd \'b8\'ed\'b7\'c9\'be\'ee\'b7\'ce \'bc\'d2\'bd\'ba \'c4\'da\'b5\'e5\'b8\'a6 \'ba\'b9\'bb\'e7\'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-```bash\par
-# \'c0\'db\'be\'f7\'bf\'b5\'be\'f7 \'c1\'f8\'c0\'d4\par
-mkdir -p $GOPATH/src/github.com/nebulasio\par
-cd $GOPATH/src/github.com/nebulasio\par
-\par
-# \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\par
-git clone https://github.com/nebulasio/go-nebulas.git\par
-\par
-# \'c0\'fa\'c0\'e5\'bc\'d2 \'c1\'f8\'c0\'d4\par
-cd go-nebulas\par
-\par
-# \'b8\'b6\'bd\'ba\'c5\'cd \'ba\'ea\'b7\'a3\'c4\'a1\'b4\'c2 \'b0\'a1\'c0\'e5 \'be\'c8\'c1\'a4\'c0\'fb\'c0\'d4\'b4\'cf\'b4\'d9\par
-git checkout master\par
-```\par
-\par
-### RocksDB \'bc\'b3\'c4\'a1\'c7\'cf\'b1\'e2\par
-\par
-* **OS X**:\par
-* Install rocksdb via [Homebrew](https://brew.sh/)\par
-```bash\par
-brew install rocksdb\par
-```\par
-\par
-* **Linux - Ubuntu**\par
-* Install Dependencies\par
-```bash\par
-apt-get update\par
-apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev\par
-```\par
-* Install rocksdb by source code:\par
-```bash\par
-git clone https://github.com/facebook/rocksdb.git\par
-cd rocksdb && make shared_lib && make install-shared\par
-```\par
-\par
-* **Linux - Centos**\par
-* Install Dependencies\par
-```bash\par
-yum -y install epel-release && yum -y update\par
-yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel\par
-```\par
-* Install rocksdb by source code:\par
-```bash\par
-git clone https://github.com/facebook/rocksdb.git\par
-cd rocksdb && make shared_lib && make install-shared\par
-```\par
-\par
-### Go \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3 \'bc\'b3\'c4\'a1\'c7\'cf\'b1\'e2\par
-\par
-Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep).\par
-\par
-| Components | Version | Description |\par
-|----------|-------------|-------------|\par
-[Dep](https://github.com/golang/dep) | >= 0.3.1 | Dep is a dependency management tool for Go. |\par
-\par
-#### Dep \'bc\'b3\'c4\'a1\'c7\'cf\'b1\'e2\par
-\par
-* **Mac OSX**\par
-* Install Dep via [Homebrew](https://brew.sh/)\par
-```bash\par
-brew install dep\par
-brew upgrade dep\par
-```\par
-\par
-* **Linux**\par
-* Install dep\par
-```bash\par
-cd /usr/local/bin/\par
-wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64\par
-ln -s dep-linux-amd64 dep\par
-```\par
-\par
-#### \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\'c7\'cf\'b1\'e2\par
-\par
-Go-Nebulas\'bf\'a1 \'b4\'eb\'c7\'d1 \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b8\'a6 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\'c7\'cf\'b1\'e2 \'c0\'a7\'c7\'d8 \'b7\'e7\'c6\'ae \'b5\'f0\'b7\'ba\'c5\'e4\'b8\'ae\'b8\'a6 \'ba\'af\'b0\'e6\'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-```bash\par
-cd $GOPATH/src/github.com/nebulasio/go-nebulas\par
-make dep\par
-```\par
-\par
-> `make dep`\'c0\'ba \'b2\'cf \'b8\'b9\'c0\'ba \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b8\'a6 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\'c7\'cf\'b1\'e2 \'b6\'a7\'b9\'ae\'bf\'a1 \'c3\'b3\'c0\'bd \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5 \'c7\'cf\'b4\'c2 \'b0\'e6\'bf\'ec\'b6\'f3\'b8\'e9 \'bd\'c3\'b0\'a3\'c0\'cc \'c1\'bb \'b0\'c9\'b8\'b1\'bc\'f6 \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9. \'b8\'ee\'b8\'ee \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b4\'c2 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\'b0\'a1 \'be\'c8 \'b5\'c9\'bc\'f6 \'c0\'d6\'b4\'c2\'b5\'a5 \'c0\'cc \'b0\'e6\'bf\'ec\'bf\'a1\'b4\'c2 \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3 \'be\'d0\'c3\'e0\'c6\'c4\'c0\'cf\'c0\'bb  (http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)\'bf\'a1\'bc\'ad \'c1\'f7\'c1\'a2 \'b4\'d9\'bf\'ee\'b7\'ce\'b5\'e5\'c7\'cf\'b0\'ed \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'b7\'e7\'c6\'ae \'b5\'f0\'b7\'ba\'c5\'e4\'b8\'ae\'b7\'ce \'be\'d0\'c3\'e0\'c0\'bb \'c7\'ae\'b8\'e9 \'b5\'cb\'b4\'cf\'b4\'d9.\par
-> ```bash\par
-> vendor.tar.gz\par
-> MD5: c2c1ff9311332f90e11fb81b48ca0984\par
-> ```\par
-\par
-\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'c0\'c7 NVM (\'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'b0\'a1\'bb\'f3 \'b8\'d3\'bd\'c5)\'c0\'ba V8 \'c0\'da\'b9\'d9\'bd\'ba\'c5\'a9\'b8\'b3\'c6\'ae \'bf\'a3\'c1\'f8\'c0\'b8\'b7\'ce \'b1\'b8\'b5\'bf\'b5\'cb\'b4\'cf\'b4\'d9.\par
-\'bf\'ec\'b8\'ae\'b4\'c2 \'b8\'c6/\'b8\'ae\'b4\'aa\'bd\'ba\'bf\'eb v8 \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b8\'a6 \'b0\'b3\'b9\'df\'c7\'cf\'b0\'ed \'c0\'d6\'b0\'ed \'b4\'d9\'c0\'bd \'b8\'ed\'b7\'c9\'be\'ee\'b7\'ce v8 \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b8\'a6 \'bc\'b3\'c4\'a1\'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-```bash\par
-cd $GOPATH/src/github.com/nebulasio/go-nebulas\par
-make deploy-v8\par
-```\par
-\par
-### Neb \'b1\'b8\'bc\'ba\'c7\'cf\'b1\'e2\par
-\par
-Golang \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'bf\'cd  V8 \'b5\'f0\'c6\'e6\'b4\'f8\'bd\'c3\'b8\'a6 \'bc\'b3\'c4\'a1 \'c8\'c4\'bf\'a1 \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba\'bf\'a1 \'b4\'eb\'c7\'d1 \'bd\'c7\'c7\'e0 \'c6\'c4\'c0\'cf\'c0\'bb \'b8\'b8\'b5\'e9 \'bc\'f6 \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9.\par
-\par
-```bash\par
-cd $GOPATH/src/github.com/nebulasio/go-nebulas\par
-make build\par
-```\par
-\par
-\'b1\'b8\'bc\'ba\'c0\'cc \'b3\'a1\'b3\'aa\'b0\'ed \'b3\'aa\'b8\'e9 \'b7\'e7\'c6\'ae \'b5\'f0\'b7\'ba\'c5\'e4\'b8\'ae \'b3\'bb\'bf\'a1  `neb` \'bd\'c7\'c7\'e0\'c6\'c4\'c0\'cf\'c0\'cc \'c0\'d6\'c0\'bb \'b0\'cd\'c0\'d4\'b4\'cf\'b4\'d9.\par
-![make build](resources/101-01-make-build.png)\par
-\par
-## NEB \'bd\'c3\'c0\'db\'c7\'cf\'b1\'e2\par
-\par
-### \'c1\'a6\'b3\'ca\'bd\'c3\'bd\'ba \'ba\'ed\'b7\'cf\par
-\par
-\'bb\'f5\'b7\'ce\'bf\'ee \'b3\'d7\'ba\'e6\'b7\'af\'bd\'ba \'c3\'bc\'c0\'ce\'c0\'bb \'bd\'c3\'c0\'db\'c7\'cf\'b1\'e2 \'c0\'fc\'bf\'a1, \'b8\'d5\'c0\'fa \'c1\'a6\'b3\'ca\'bd\'c3\'bd\'ba \'ba\'ed\'b7\'cf\'bf\'a1 \'b4\'eb\'c7\'d1 \'bc\'b3\'c1\'a4\'c0\'bb \'c7\'d8\'be\'df \'c7\'d5\'b4\'cf\'b4\'d9.\par
-\par
-#### \'c1\'a6\'b3\'ca\'bd\'c3\'bd\'ba \'ba\'ed\'b7\'cf \'bc\'b3\'c1\'a4\par
-\par
-```protobuf\par
-# Neb genesis text file. Scheme is defined in core/pb/genesis.proto.\par
-\par
-meta \{\par
-# Chain identity\par
-chain_id: 100\par
-\}\par
-\par
-consensus \{\par
-dpos \{\par
-# Initial dynasty, including all initial miners\par
-dynasty: [\par
-[ miner address ],\par
-...\par
-]\par
-\}\par
-\}\par
-\par
-# \'c3\'b9 \'c5\'e4\'c5\'ab\'c0\'c7 \'bc\'b1\'b9\'e8\'ba\'d0(Pre-allocation)\par
-token_distribution [\par
-\{\par
-address: [ allocation address ]\par
-value: [ amount of allocation tokens ]\par
-\},\par
-...\par
-]\par
-```\par
-\par
-genesis.conf\'c0\'c7 \'bf\'b9\'bd\'c3\'b4\'c2 `conf/default/genesis.conf`\'bf\'a1 \'c0\'d6\'bd\'c0\'b4\'cf\'b4\'d9.\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
-\par
+네뷸러스에 대해 더 알고 싶으시면 [Non-Technical White Paper]를 읽어보세요.(https://nebulas.io/docs/NebulasWhitepaper.pdf).
 
-\pard\lang0\par
+만약 좀 더 기술적으로 알아보고 싶으시다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 깃허브 코드를 읽어보세요. (https://github.com/nebulasio/go-nebulas)
+
+>네뷸러스는 아직까지는 맥과 리눅스에서만 동작합니다. 곧 윈도우버젼도 배포될 예정입니다.
+
+## Golang 환경
+
+네뷸러스는 Golang을 통해 시행되고 있습니다.
+
+| Components | Version | Description |
+|----------|-------------|-------------|
+|[Golang](https://golang.org) | >= 1.9.2| The Go Programming Language |
+
+### 맥 OSX
+
+맥에서 golang을 설치하기 위해 [Homebrew](https://brew.sh/)를 추천합니다.
+
+```bash
+# install
+go를 설치합니다.
+
+# 환경 변수
+export GOPATH=/path/to/workspace
+```
+
+> 알림:GOPATH는 여러분이 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, 당신의 go 프로젝트는 그 GOPATH 디렉토리에 저장되어야 합니다.
+
+### Linux
+
+```bash
+# 다운로드
+wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+
+# 추출
+tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+
+# 환경변수
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=/path/to/workspace
+```
+
+## 네뷸러스 컴파일
+
+### 다운로드
+
+다음 명령어로 소스 코드를 복사합니다.
+
+```bash
+# 작업영업 진입
+mkdir -p $GOPATH/src/github.com/nebulasio
+cd $GOPATH/src/github.com/nebulasio
+
+# 다운로드
+git clone https://github.com/nebulasio/go-nebulas.git
+
+# 저장소 진입
+cd go-nebulas
+
+# 마스터 브랜치는 가장 안정적입니다
+git checkout master
+```
+
+### RocksDB 설치하기
+
+* **OS X**:
+* Install rocksdb via [Homebrew](https://brew.sh/)
+```bash
+brew install rocksdb
+```
+
+* **Linux - Ubuntu**
+* Install Dependencies
+```bash
+apt-get update
+apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev
+```
+* Install rocksdb by source code:
+```bash
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb && make shared_lib && make install-shared
+```
+
+* **Linux - Centos**
+* Install Dependencies
+```bash
+yum -y install epel-release && yum -y update
+yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel
+```
+* Install rocksdb by source code:
+```bash
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb && make shared_lib && make install-shared
+```
+
+### Go 디펜던시 설치하기
+
+Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep).
+
+| Components | Version | Description |
+|----------|-------------|-------------|
+[Dep](https://github.com/golang/dep) | >= 0.3.1 | Dep is a dependency management tool for Go. |
+
+#### Dep 설치하기
+
+* **Mac OSX**
+* Install Dep via [Homebrew](https://brew.sh/)
+```bash
+brew install dep
+brew upgrade dep
+```
+
+* **Linux**
+* Install dep
+```bash
+cd /usr/local/bin/
+wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
+ln -s dep-linux-amd64 dep
+```
+
+#### 디펜던시 다운로드하기
+
+Go-Nebulas에 대한 디펜던시를 다운로드하기 위해 루트 디렉토리를 변경합니다.
+
+```bash
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+make dep
+```
+
+> `make dep`은 꽤 많은 디펜던시를 다운로드하기 때문에 처음 다운로드 하는 경우라면 시간이 좀 걸릴수 있습니다. 몇몇 디펜던시는 다운로드가 안 될수 있는데 이 경우에는 디펜던시 압축파일을  (http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리로 압축을 풀면 됩니다.
+> ```bash
+> vendor.tar.gz
+> MD5: c2c1ff9311332f90e11fb81b48ca0984
+> ```
+
+네뷸러스의 NVM (네뷸러스 가상 머신)은 V8 자바스크립트 엔진으로 구동됩니다.
+우리는 맥/리눅스용 v8 디펜던시를 개발하고 있고 다음 명령어로 v8 디펜던시를 설치합니다.
+
+```bash
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+make deploy-v8
+```
+
+### Neb 구성하기
+
+Golang 디펜던시와  V8 디펜던시를 설치 후에 네뷸러스에 대한 실행 파일을 만들 수 있습니다.
+
+```bash
+cd $GOPATH/src/github.com/nebulasio/go-nebulas
+make build
+```
+
+구성이 끝나고 나면 루트 디렉토리 내에  `neb` 실행파일이 있을 것입니다.
+![make build](resources/101-01-make-build.png)
+
+## NEB 시작하기
+
+### 제너시스 블록
+
+새로운 네뷸러스 체인을 시작하기 전에, 먼저 제너시스 블록에 대한 설정을 해야 합니다.
+
+#### 제너시스 블록 설정
+
+```protobuf
+# Neb genesis text file. Scheme is defined in core/pb/genesis.proto.
+
+meta {
+# Chain identity
+chain_id: 100
 }
- 
+
+consensus {
+dpos {
+# Initial dynasty, including all initial miners
+dynasty: [
+[ miner address ],
+...
+]
+}
+}
+
+# 첫 토큰의 선배분(Pre-allocation)
+token_distribution [
+{
+address: [ allocation address ]
+value: [ amount of allocation tokens ]
+},
+...
+]
+```
+
+genesis.conf의 예시는 `conf/default/genesis.conf`에 있습니다.
