@@ -32,7 +32,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> Notice:GOPATH is a local golang working directory which could be decided by youself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
+> Notice: GOPATH is a local golang working directory which could be decided by youself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
 
 ### Linux
 
