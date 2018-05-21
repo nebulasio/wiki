@@ -235,7 +235,8 @@ properties:
 	- params:
 		- `address`: address need to check
 	- return (number value):
-		- `1`: address is valid
+		- `87`: user wallet address
+		- `88`: smart-contract address
 		- `0`: address is invalid 
 
 Example to use:
