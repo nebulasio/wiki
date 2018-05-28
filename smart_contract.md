@@ -456,7 +456,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-### Call between contracts
+### Call between contracts（be coming soon）
 
 We provide a simple method in a smart contract to call another contract, the following example shows that how proxyKvStore provide service by using the contract kvStore.
 
