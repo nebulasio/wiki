@@ -447,7 +447,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 ### 合约间调用
-
+
 我们在智能合约中提供了一个简单的方法来调用另一个智能合约，下面的示例展示了proxyKvStore如何使用合约kvStore提供服务。
 
 proxyKvStore.js:
@@ -588,13 +588,13 @@ var contractInterface = {
     },
 }
 ```
-然后， 使用这个接口和kvStore的合约地址创建一个合约对象：
+然后， 使用这个接口和kvStore的合约地址创建一个合约对象：
 
 ```js
 var kvStore  = new Blockchain.Contract(address, contractInterface);
 ```
 
-随后我们就可以通过这个对象来调用kvStore这个智能合约：
+随后我们就可以通过这个对象来调用kvStore这个智能合约：
 ```js
 kvStore.value(2000000000000000000).save(key, value);
 ```
@@ -610,6 +610,6 @@ kvStore.value(2000000000000000000).call('save', JSON.stringify(args));
 
 'value'函数决定了多少nas会被从调用者智能合约转到被调用调用的智能合约。这个函数不是必须的，缺省值是0.
 
-值的一提的是，在被调用合约的执行环境中，Blockchain.from 是调用合约的地址，Blockchain.value的值则是由调用合约执行的'value'函数的参数决定。
+值的一提的是，在被调用合约的执行环境中，Blockchain.from 是调用合约的地址，Blockchain.value的值则是由调用合约执行的'value'函数的参数决定。
 
 
