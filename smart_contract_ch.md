@@ -578,7 +578,7 @@ kvStore.prototype = {
 module.exports = kvStore;
 ```
 
-在上面的例子中，为了使用kvStore.js， 我们首先需要定义一个接口:
+在上面的例子中，为了使用kvStore.js， 我们首先需要定义一个接口:
 
 ```js
 var contractInterface = {
