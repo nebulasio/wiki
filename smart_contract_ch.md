@@ -446,7 +446,7 @@ BankVaultContract.prototype = {
 };
 module.exports = BankVaultContract;
 ```
-### 合约间调用
+### 合约间调用（即将上线）
 
 我们在智能合约中提供了一个简单的方法来调用另一个智能合约，下面的示例展示了proxyKvStore如何使用合约kvStore提供服务。
 
