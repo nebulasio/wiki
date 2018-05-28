@@ -446,6 +446,170 @@ BankVaultContract.prototype = {
 };
 module.exports = BankVaultContract;
 ```
+### 合约间调用
+
+我们在智能合约中提供了一个简单的方法来调用另一个智能合约，下面的示例展示了proxyKvStore如何使用合约kvStore提供服务。
 
+proxyKvStore.js:
+```js
+"use strict"
+
+var proxyKvStore = function() {
+};
+
+var contractInterface = {
+    save: function(key value) {
+    },
+    get: function(key) {
+    },
+}
+
+
+proxyKvStore.prototype = {
+    init: function() {
+        //
+    },
+
+
+    save: function(address, key, value) {
+
+        var kvStore  = new Blockchain.Contract(address, contractInterface);
+        kvStore.value(20000000000000000).save(key, value);
+    },
+
+
+    saveByCall: function(address, key, value) {
+
+        var kvStore  = new Blockchain.Contract(address, contractInterface);
+
+        var args = new Array();
+        args[0] = key;
+        args[1] = value;
+        kvStore.value(20000000000000000).call('save', JSON.stringify(args));
+    },
+
+
+    get: function(address, key) {
+        var kvStore = new Blockchain.Contract(address, contractInterface);
+        return kvStore.get(key)
+    },
+}
+
+module.exports = proxyKvStore;
+```
+kvStore.js:
+
+```js
+"use strict";
+
+var item = function(text) {
+  if (text) {
+    var obj = JSON.parse(text);
+    this.key = obj.key;
+    this.value = obj.value;
+    this.author = obj.text;
+  } else {
+      this.key = "";
+      this.author = "";
+      this.value = "";
+  }
+};
+
+item.prototype = {
+  toString: function () {
+    return JSON.stringify(this);
+  }
+};
+
+var kvStore = function () {
+    LocalContractStorage.defineMapProperty(this, "repo", {
+        parse: function (text) {
+            return new item(text);
+        },
+        stringify: function (o) {
+            return o.toString();
+        }
+    });
+};
+
+kvStore.prototype = {
+    init: function () {
+        // todo
+    },
+
+    save: function (key, value) {
+        console.log("reach child contract");
+
+        key = key.trim();
+        value = value.trim();
+        if (key === "" || value === ""){
+            throw new Error("empty key / value");
+        }
+        if (value.length > 128 || key.length > 128){
+            throw new Error("key / value exceed limit length")
+        }
+
+        var from = Blockchain.transaction.from;
+        var item = this.repo.get(key);
+    
+        if (item){
+            throw new Error("value has been taken");
+        }
+
+        item = new item();
+        item.author = from;
+        item.key = key;
+        item.value = value;
+        this.repo.put(key, item);
+    },
+
+    get: function (key) {
+        key = key.trim();
+        if ( key === "" ) {
+            throw new Error("empty key")
+        }
+        return this.repo.get(key);
+    }, 
+
+    throwErr: function() {
+        throw("err for test");
+    }
+};
+module.exports = kvStore;
+```
+
+在上面的例子中，为了使用kvStore.js， 我们首先需要定义一个接口:
+
+```js
+var contractInterface = {
+    save: function(key, value) {
+    },
+    get: function(key) {
+    },
+}
+```
+然后， 使用这个接口和kvStore的合约地址创建一个合约对象：
+
+```js
+var kvStore  = new Blockchain.Contract(address, contractInterface);
+```
+
+随后我们就可以通过这个对象来调用kvStore这个智能合约：
+```js
+kvStore.value(2000000000000000000).save(key, value);
+```
+或者：
+```js
+kvStore.save(key, value);
+```
+也可以使用这种和sendRawTransaction RPC风格一致的调用方法：
+
+```js
+kvStore.value(2000000000000000000).call('save', JSON.stringify(args));
+```
+
+'value'函数决定了多少nas会被从调用者智能合约转到被调用调用的智能合约。这个函数不是必须的，缺省值是0.
+
+值的一提的是，在被调用合约的执行环境中，Blockchain.from 是调用合约的地址，Blockchain.value的值则是由调用合约执行的'value'函数的参数决定。
 
 
