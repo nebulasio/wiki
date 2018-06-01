@@ -277,9 +277,11 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-   "result": "0",
-   "execute_err": "insufficient balance",
-   estimate_gas: "22208"
+   "result": {
+       "result": "0",
+       "execute_err": "insufficient balance",
+       "estimate_gas": "22208"
+   }
 }
 ```
 ***
@@ -673,8 +675,10 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "gas":"20000",
-    "err":""
+    "result": {
+        "gas":"20000",
+        "err":""
+    }
 }
 ```
 ***
