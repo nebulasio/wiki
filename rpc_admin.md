@@ -179,7 +179,7 @@ UnlockAccount unlock account with passphrase. After the default unlock time, the
 
 `passphrase` UnLock account passphrase.
 
-`duration` Unlock accoutn duration.
+`duration` Unlock accout duration. The unit is ns (10e-9 s).
 
 ###### Returns
 `result` UnLock account result, unit is ns.
@@ -301,7 +301,7 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  SendTransaction |
-| HTTP | POST |  /v1/user/transaction |
+| HTTP | POST |  /v1/admin/transaction |
 
 ###### Parameters
 `from` Hex string of the sender account addresss.
@@ -391,9 +391,10 @@ SignHash sign the hash of a message.
 ###### Parameters
 `address` Sign address
 
-`hash`  A sha3256 hash of the message
+`hash`  A sha3256 hash of the message, base64 encoded.
 
-`alg` Sign algorithm
+`alg`  Sign algorithm
+- `1` SECP256K1
 
 
 ###### Returns
