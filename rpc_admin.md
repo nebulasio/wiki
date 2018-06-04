@@ -308,7 +308,7 @@ Send the transaction. Parameters `from`, `to`, `value`, `nonce`, `gasPrice` and 
 
 `to` Hex string of the receiver account addresss.
 
-`value` Amount of value sending with this transaction.
+`value` Amount of value sending with this transaction. The unit is Wei (10^-18 NAS).
 
 `nonce` Transaction nonce.
 
