@@ -2,7 +2,6 @@
 
 [유튜브 튜토리얼](https://www.youtube.com/watch?v=-44tVVR6ETo&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R&index=1)
 
-> For this portion of the tutorial we will pick up where we left off in the [Installation tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md).
 > 튜토리얼의 이 부분에서는 우리가 [설치 튜토리얼](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)에서 멈췄던 부분부터 살펴보겠습니다.
 
 네뷸러스는 트랜잭션을 전송하는 방법 3가지를 제공합니다:
@@ -21,7 +20,6 @@
 
 ### 보내는 사람
 
-Here we will use the coinbase account in the `conf/example/miner.conf`, which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` as the sender. As the miner's coinbase account, it will receive some tokens as the mining reward. Then we could send these tokens to another account later.
 여기서 우리는 `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`를 전송자 주소로써 `conf/example/miner.conf`에 있는 코인베이스 계정을 사용할 것입니다. 채굴자의 코인베이스 계정으로써, 채굴 보상으로써 토큰을 받을 것입니다. 그 때, 우리는 이 토큰을 다른 주소로 보낼 수 있습니다.
 
 ### 받는 사람
