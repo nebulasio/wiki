@@ -54,19 +54,19 @@ Secondly, start a miner node connecting to the seed node. This node will generat
 
 ```bash
 ./neb -c conf/example/miner.conf
-``` 
+```
 
 > **How long a new block will be minted?**
-> 
+>
 > In Nebulas, DPoS is chosen as the temporary consensus algorithm before Proof-of-Devotion(PoD, described in [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)) is ready. In this consensus algorithm, each miner will mint new block one by one every 15 seconds.
-> 
+>
 > In current context, we have to wait for 315(=15*21) seconds to get a new block because there is only one miner among 21 miners defined in `conf/default/genesis.conf` working now.
 
 Once a new block minted by the miner, the mining reward will be added to the coinbase wallet address used in `conf/example/miner.conf` which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
 
 ## Interact with Nodes
 
-Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction in three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)). 
+Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction in three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)).
 
 > The Nebulas HTTP Lisenter is defined in the node configuration. The default port of our seed node is `8685`.
 
@@ -195,7 +195,7 @@ The `status` fields may be 0, 1 or 2.
 
 ### Double Check
 
-Let's double check the receiver's balance. 
+Let's double check the receiver's balance.
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
@@ -204,6 +204,13 @@ Let's double check the receiver's balance.
 ```
 
 Here you should see a balance that is the total of all the successful transfers that you executed.
+
+### Troubleshooting Step 02
+
+In case your machine cannot resolve `http://localhost` using the `curl` command, ensure your /etc/hosts file contains the following:
+```bash
+::1             localhost
+```
 
 ### Next step: Tutorial 3
 
