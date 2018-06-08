@@ -319,4 +319,4 @@ Después de comenzar el nodo, si los conexiones con nodo semilla tiene éxito, t
 
 ### Próximo Paso: Tutorial 2
 
-[Enviando Transacciones en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+[Enviando Transacciones en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%20%2002%20Transacciones.md)

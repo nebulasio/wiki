@@ -1,6 +1,6 @@
 # Nebulas 101 - 02 Envío de Transacciones en Nebulas
 
-> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [Instalacion tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md).
+> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [Instalacion tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%20%2002%20Transacciones.md).
 
 Nebulas proporciona tres métodos a enviar transacciones:
 
@@ -222,5 +222,3 @@ Si tu maquina no puede resolver `http://localhost` con el comando `curl`, verifi
 ```
 
 ### Próximo Paso: Tutorial 3
-
- [Escribir y ejecutar smart contract con JavaScript](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
