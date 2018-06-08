@@ -32,7 +32,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> Notice:GOPATH is a local golang working directory which could be decided by youself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
+> Notice:GOPATH is a local golang working directory which could be decided by yourself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
 
 ### Linux
 
@@ -322,4 +322,3 @@ After the node starts, if the connection with the seed node is successful, you c
 ### Next step: Tutorial 2
 
 [Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
-
