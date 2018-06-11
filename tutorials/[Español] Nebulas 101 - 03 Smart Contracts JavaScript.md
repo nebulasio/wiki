@@ -1,6 +1,6 @@
 la dire# Nebulas 101 - 03 Escribe y ejecuta un smart contrato
 
-Con este tutorial nos podems aprender como escribir, desplegar, y ejecuta ejecutar smart contratos en Nebulas.
+Con este tutorial nos podems aprender como escribir, desplegar, y ejecutar smart contratos en Nebulas.
 
 ## Preparación
 
