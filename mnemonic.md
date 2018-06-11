@@ -6,7 +6,7 @@ Accoding to the BIP-39, the mnemonic code is another form of private key. So we 
 
 The Nebulas's mnemonic official path is [```m/44'/2718'/0'/0/0```](https://github.com/satoshilabs/slips/blob/master/slip-0044.md). Accoding to the BIP-44, the different block chain's mnemonic path should have the different ```"Coin type"``` (Path level is:```m / purpose' / coin_type' / account' / change / address_index```).
 
-We choose the ```2718``` as Nebulas's ```Coin type```, which is from the [Euler's number](https://en.wikipedia.org/wiki/E_(mathematical_constant)). The number ```e``` is a mathematical constant, approximately equal to <b>2.71828</b>, which appears in many different settings throughout mathematics. So we chosse 2718 hope that Nebulas can be go on forever.
+We choose the ```2718``` as Nebulas's ```Coin type```, which is from the [Euler's number](https://en.wikipedia.org/wiki/E_(mathematical_constant)). The number ```e``` is a magic mathematical constant, approximately equal to <b>2.71828</b>, which is considered as the most beautiful number. 
 
 
 ## References
