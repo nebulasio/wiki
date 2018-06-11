@@ -303,7 +303,7 @@ Execute the smart contract takeout() method:
 ```
 
 > **Verify the execution of the contract method `takeout` is successful**
-> In the execution of the above contract method `save`, we save 100 NAS into the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we'll withdrawn 50 NAS from the 100 NAS. The balance of the smart contract should be 50 NAS now.
+> In the execution of the abov**e contract method `save`, we save 100 wei(10^-18 NAS) into the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we'll withdrawn 50 wei from the 100 wei. The balance of the smart contract should be 50 wei now.
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
