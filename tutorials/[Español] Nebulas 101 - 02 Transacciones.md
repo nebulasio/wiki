@@ -1,6 +1,6 @@
 # Nebulas 101 - 02 Envío de Transacciones en Nebulas
 
-> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [Instalacion tutorial](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%20%2002%20Transacciones.md).
+> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [01 Instalacciones ](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%2001%20Instalacioncciones.md).
 
 Nebulas proporciona tres métodos a enviar transacciones:
 
@@ -92,8 +92,8 @@ Obtener el estado de cuenta del remintente `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`
 ```
 
 > **Aviso**
-> Typo es usado para verificar si esta cuenta es un smart contract cuenta. `88` significa
-cuenta de smart contract y `87` signfiica una cuenta sin-contract.
+> Typo es usado para verificar si esta cuenta es un smart contrato cuenta. `88` significa
+cuenta de smart contrato y `87` signfiica una cuenta sin-contrato.
 
 Así es como nos vemos, el receptor ha recompensado algunos tokens para minar nuevos bloques.
 
@@ -222,3 +222,5 @@ Si tu maquina no puede resolver `http://localhost` con el comando `curl`, verifi
 ```
 
 ### Próximo Paso: Tutorial 3
+
+[Smart Contratos Javascript en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20Javascript.md)
