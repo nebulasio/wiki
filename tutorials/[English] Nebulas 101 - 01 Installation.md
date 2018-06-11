@@ -10,11 +10,11 @@ To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](http
 
 To learn about the technology, please read the Nebulas [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf) and the Nebulas [github code](https://github.com/nebulasio/go-nebulas).
 
-> Nebulas can only runs on Mac and Linux at this stage. The Windows version will be coming soon.
+> Nebulas can only run on Mac and Linux at this stage. The Windows version is coming soon.
 
 ## Golang Environment
 
-Nebulas is implemented in Golang now.
+Currently, Nebulas is implemented in Golang.
 
 | Components | Version | Description |
 |----------|-------------|-------------|
@@ -32,7 +32,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> Notice:GOPATH is a local golang working directory which could be decided by youself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
+> Notice: GOPATH is a local golang working directory which could be decided by yourself. After GOPATH is configured, your go projects need to be placed in the GOPATH directory.
 
 ### Linux
 
@@ -52,7 +52,7 @@ export GOPATH=/path/to/workspace
 
 ### Download
 
-Clone source code with the following commands.
+Clone the source code with the following commands.
 
 ```bash
 # enter workspace
@@ -65,7 +65,7 @@ git clone https://github.com/nebulasio/go-nebulas.git
 # enter repository
 cd go-nebulas
 
-# master branch is most stable
+# master branch is the most stable
 git checkout master
 ```
 
@@ -103,7 +103,7 @@ cd rocksdb && make shared_lib && make install-shared
 
 ### Install Go Dependencies
 
-Go dependencies in Go-Nebulas is managed by [Dep](https://github.com/golang/dep).
+Go dependencies in Go-Nebulas are managed by [Dep](https://github.com/golang/dep).
 
 | Components | Version | Description |
 |----------|-------------|-------------|
@@ -150,7 +150,7 @@ make deploy-v8
 
 ### Build Neb
 
-You can now build the executable for Nebulas after golang dependencies and V8 dependency packages is installed.
+You can now build the executable for Nebulas after golang dependencies and V8 dependency packages have been installed.
 
 Build under the project root directory:
 
@@ -159,7 +159,7 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make build
 ```
 
-Once the building is completeï¼Œthere will be a executable file `neb` generated under the root directory.
+Once the building is complete¼There will be an executable file `neb` generated under the root directory.
 ![make build](resources/101-01-make-build.png)
 
 
@@ -213,10 +213,10 @@ Before getting a neb node started, we have to define the configuration of this n
 # Network Configuration
 network {
 # For the first node in a new Nebulas chain, `seed` is not need.
-# Otherwise, every node need some seed nodes to introduce it into the Nebulas chain.
+# Otherwise, every node needs some seed nodes to introduce it to the Nebulas chain.
 # seed: ["/ip4/127.0.0.1/tcp/8680/ipfs/QmP7HDFcYmJL12Ez4ZNVCKjKedfE7f48f1LAkUc3Whz4jP"]
 
-# P2p network service host. support mutiple ip and ports.
+# P2p network service host. Support multiple ip and ports.
 listen: ["0.0.0.0:8680"]
 
 # The private key is used to generate a node ID. If you don't use the private key, the node will generate a new node ID.
@@ -243,10 +243,10 @@ signature_ciphers: ["ECC_SECP256K1"]
 # Miner address
 miner: "n1SAQy3ix1pZj8MPzNeVqpAmu1nCVqb5w8c"
 
-# Coinbase address, all mining reward received by the above miner will be send to this address
+# Coinbase address, all mining rewards received by the above miner will be sent to this address
 coinbase: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
 
-# The passphrase to miner's keystore file
+# The passphrase to the miner's keystore file
 passphrase: "passphrase"
 }
 
@@ -294,9 +294,9 @@ A lot of examples can be found in `$GOPATH/src/github.com/nebulasio/go-nebulas/c
 
 ## Run Nodes
 
-> The Nebulas chain you are running at this point is private and is different with official Testnet and Mainnet.
+> The Nebulas chain you are running at this point is private and is different from the official Testnet and Mainnet.
 
-Start your first Nebulas node with the following commands.
+Start your first Nebulas node with the following commands:
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
@@ -307,7 +307,7 @@ After starting, the following should be visible in the terminal:
 ![seed node start](resources/101-01-seed-node-start.png)
 
 By default, the node using `conf/default/config.conf` won't mine new blocks.
-Start your first Nebulas mining node with another commands.
+Start your first Nebulas mining node with these commands:
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
@@ -322,4 +322,5 @@ After the node starts, if the connection with the seed node is successful, you c
 ### Next step: Tutorial 2
 
 [Sending Transactions on Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+
 
