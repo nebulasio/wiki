@@ -75,7 +75,7 @@ Nebulas proporciona desarrolladores con HTTP API, gRPC API y CLI para interactua
 
 En el primero, verificar el saldo del remintente antes de enviar la transacción.
 
-### Verificar Estado Cuenta
+### Verificar Estado de Cuenta
 
 Obtener el estado de cuenta del remintente `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` con `/v1/user/accountstate` en API Module usando `curl`.
 
@@ -178,7 +178,7 @@ La unidad del duración es sugundos nanos (300000000000=300s).
 {"result":{"result":true}}
 ```
 
-Despues desbloquear de la cuenta, todo el mundo puede enviar cualquier transacción directamente entre el duraction en este nodo sin autorización.
+Despues desbloquear de la cuenta, todo el mundo puede enviar cualquier transacción directamente entre el duración en este nodo sin autorización.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":3,"gasPrice":"1000000","gasLimit":"2000000"}'
@@ -188,7 +188,7 @@ Despues desbloquear de la cuenta, todo el mundo puede enviar cualquier transacci
 
 ## Recibo de la Transacción
 
-Nos obtenemos un `txhash` en tres métodos después de enviar una transacción exitoas.
+Nos obtenemos un `txhash` en tres métodos después de enviar una transacción exitosa.
  El valor de `txhash` puede ser utilizado para consultar el estado la transacción.
 
 ```bash
@@ -223,4 +223,4 @@ Si tu maquina no puede resolver `http://localhost` con el comando `curl`, verifi
 
 ### Próximo Paso: Tutorial 3
 
-[Smart Contratos Javascript en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20Javascript.md)
+[Smart Contratos Javascript en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspa%C3%B1ol%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20Javascript.md)

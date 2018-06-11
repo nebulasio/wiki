@@ -357,7 +357,7 @@ LLama el smart contrato método `balanceOf`:
 {"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"84\"}","execute_err":"","estimate_gas":"20209"}}
 ```
 
-### Troubleshooting Paso 03
+### Solución de problem Paso 03
 El codigo de Web-wallet está configurado a escuchar puero 8080. Si tienes conflicto con este puerto, tienes que cambiar el puerto por modificar `server.listen(8080)` en el archivo `server.js`.
 
 ### Próximo Paso: Tutorial 4
