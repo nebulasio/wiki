@@ -8,7 +8,7 @@ The remote access to the Nebulas chain is implemented by [gRPC](https://grpc.io)
 
 ## API
 
-We've implemented RPC server and HTTP sercer to provide API service in Go-Nebulas.
+We've implemented RPC server and HTTP server to provide API service in Go-Nebulas.
 
 ### Modules
 
@@ -39,11 +39,11 @@ rpc {
 
 #### HTTP
 
-Here is some examples to invoke HTTP interfaces using `curl`.
+Here are some examples to invoke HTTP interfaces using `curl`.
 
 ##### GetNebState
 
-We can invoke `GetNebState` in API module to fetch the current state of local Nebulas node, including chain identity, tail block, protocl version and so on.
+We can invoke `GetNebState` in API module to fetch the current state of local Nebulas node, including chain identity, tail block, protocol version and so on.
 
 ```bash
 > curl -i -H Accept:application/json -X GET http://localhost:8685/v1/user/nebstate
@@ -65,7 +65,7 @@ We can invoke `UnlockAccount` in Admin module to unlock an account in memory. Al
 
 RPC server is implemented with [GRPC](https://grpc.io/). The serialization of GPRC is based on [Protocol Buffers](https://github.com/google/protobuf). You can find all rpc protobuf files in [Nebulas RPC Protobuf Folder](https://github.com/nebulasio/go-nebulas/tree/develop/rpc/pb).
 
-Here is some examples to invoke rpc interfaces using `golang`.
+Here are some examples to invoke rpc interfaces using `golang`.
 
 ##### GetNebState
 
@@ -137,3 +137,4 @@ Nice job! Let's join official Testnet or Mainnet to enjoy Nebulas now!
 
  [Join to Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
  [Join to Mainnet](https://github.com/nebulasio/wiki/blob/master/mainnet.md)
+
