@@ -1,43 +1,41 @@
-# Nebulas 101 - 03 Write and run a smart contract
+la dire# Nebulas 101 - 03 Escribe y ejecuta un smart contrato
 
-[YouTube Tutorial](https://www.youtube.com/watch?v=98iW0WvajVU&index=2&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
+Con este tutorial nos podems aprender como escribir, desplegar, y ejecuta ejecutar smart contratos en Nebulas.
 
-Through this tutorial we will learn how to write, deploy, and execute smart contracts in Nebulas.
+## Preparación
 
-## Preparation
+Antes de entrar el smart contrato, primero repasa la lección anterior. [02 Transacciones](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%2002%20Transacciones.md).
 
-Before entering the smart contract, first review the previously learned content:
+1. Instalar, compilar, y lanzar aplicación neb
+2. Crea un cartera dirección, configura coinbase, y comienca minar
+3. Consulta de información de neb nodo, cartera y saldo
+4. Envia una transacción y verificar la transacción estaba con exito
 
-1. Install, compile and start neb application
-2. Create a wallet address, setup coinbase, and start mining
-3. Query neb node information, wallet address and balance
-4. Send a transaction and verify the transaction was successful
+Si tienes dudas sobre el contenido encima, debes ir atras a lección anterior.
+Vamos hacerlo. Nos vamos aprender y usar smart contratos atraves los siguientes pasos:
 
-If who have doubts about the above content you should go back to the previous chapters.
-So lets do this. We will learn and use smart contracts through the following steps:
+1. Escribe un smart contrato
+2. Desplaga el smart contrato usando command-line o web-wallet
+3. Llama el smart contrato, y verifica los resultados de la ejecución del contrato.
 
-1. Write a smart contract
-2. Deploy the smart contract (via command-line or web-wallet)
-3. Call the smart contract, and verify the contract execution results
+## Escribe un smart contrato
 
-## Write a smart contract
+Como Ethereum, Nebulas implementa NVM virtual maquina para ejecutar smart contratos, y la implementación de NVM utiliza la máquina de Javascript V8, entonces para el desarrollo actual, podemos escribir los smart contratos usando Javascript y TypeScript.
 
-Like Ethereum, Nebulas implements NVM virtual machines to run smart contracts, and the NVM implementation uses the JavaScript V8 engine, so for the current development we can write smart contracts using JavaScript and TypeScript.
+Escribe breves especificaciones de un smart contrato:
 
-Write a brief specification of a smart contract:
+1. El codigo de smart contrato debe ser un objeto prototipe.
+2. El codigo de smart contrato debe tener un método init(), este método sea solamente ejecutado un vez durante desplegamento.
+3. Los métodos pirvados en en smart contrato debe tener el prefijo _ , y el método privado no puede ser llamado directamente afuera el contrato mismo.
 
-1. The Smart contract code must be a Prototype object;
-2. The Smart contract code must have a init() method, this method will only be executed once during deployment;
-3. The private methods in Smart contract must be prefixed with _ , and the private method cannot be a be directly called outside of the contract;
+Abajo nos usamos Javascript para escribir el primero smart contrato: banco seguro
+Este smart contrato necesita cumplir con los siguientes funciones:
 
-Below we use JavaScript to write the first smart contract: bank safe.
-This smart contract needs to fulfill the following functions:
+1. El usuario puede salvar diñero de este banco seguro.
+2. Los usuarios pueden retirar diñero de este banco seguro.
+3. Los usuaros pueden consultar el saldo de este banco seguro.
 
-1. The user can save money from this bank safe.
-2. Users can withdraw money from this bank safe.
-3. Users can check the balance in the bank safe.
-
-Smart contract example:
+Ejemplo smart contrato:
 
 ```js
 'use strict';
@@ -70,7 +68,7 @@ var BankVaultContract = function () {
   });
 };
 
-// save value to contract, only after height of block, users can takeout
+// salva el valor a contrato, solamente despues la altura de bloque, usuarios pueden retirar
 BankVaultContract.prototype = {
   init: function () {
     //TODO:
@@ -141,20 +139,23 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-As you can see from the smart contract example above, `BankVaultContract` is a prototype object that has an init() method. It satisfies the most basic specification for writing smart contracts that we have described before.
-BankVaultContract implements two other methods:
+Como puedes ver de este ejemplo de smart contrato encima, `BankVaultContract` es un objeto prototipo que
+tiene un método init(). Eso satisiface la especificacion más basico para escribir smart contratos que nos describimos antes.
 
-- save(): The user can save money to the bank safe by calling the save() method;
-- takeout(): Users can withdraw money from bank safe by calling takeout() method;
-- balanceOf(): The user can check the balance with the bank vault by calling the balanceOf() method;
+BankVaultContract implementa dos otros métodos:
 
-The contract code above uses the built-in `Blockchain` object and the built-in `BigNumber()` method. Let's break down the parsing contract code line by line:
+- save(): El usuario puede salvar diñero a el banco llamando el método save();
+- takeout(): Los usuarios pueden retirar diñero de banco por llamar el método takeout();
+- balanceOf(): El usuario pueden consultar el saldo de banco por llamar el método balanceOf();
+
+El contrato encima usa el objeto `Blockchain` integrado y el método `BigNumber()` integrado.
+Analicemos el análisis sintáctico de codigo de contrato línea por línea.
 
 **save():**
 
 ```js
 
-// Deposit the amount into the safe
+// Deposite la cantidad en la caja fuerta.
 
 save: function (height) {
   var from = Blockchain.transaction.from;
@@ -211,32 +212,33 @@ takeout: function (value) {
 },
 ```
 
-## Deploy smart contracts using command line
+## Desplegar smart contrato usando línea de comando (cli)
 
-See next section to deploy using Web Wallet. The above describes how to write a smart contract in Nebulas, and now we need to deploy the smart contract to the chain.
-Earlier, we have introduced how to make a transaction in Nebulas, and we used the sendTransaction() interface to initiate a transfer. Deploying a smart contract in Nebulas is actually achieved by sending a transaction by calling the sendTransaction() interface, just with different parameters.
+Arriba describe cómo escribir smart contrato en Nebulas, y ahora nos tenemos que desplegar el smart contrato a la cadena.
+Anteriormente, habíamos introducido como hacer una transacción en Nebulas, y nos usamos interfaz sendTransaction() a iniciar una tranferencia.
+Despliegue de un smart contrato en Nebulas se en realidad logra por enviar una transacción por llamar la interfaz sendTransaction(), pero com parámetros diferentes.
 
 ```js
 // transaction - from, to, value, nonce, gasPrice, gasLimit, contract
 sendTransactionWithPassphrase(transaction, passphrase)
 ```
 
-We have a convention that if `from` and `to` are the same address, `contract` is not null and `binary` is null, we assume that we are deploying a smart contract.
+Nos tenemos una convención si `from` y `to` son la misma dirección, `contract` no es null y `binary` es null, nos suponemos que estamos implementando un contrato.
 
-- `from`: the creator's address
-- `to`: the creator's address
-- `value`: it should be `"0"` when deploying the contract;
-- `nonce`: it should be 1 more than the current nonce in the creator's account state, which can ben obtained via [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate).
-- `gasPrice`: The gasPrice used to deploy the smart contract, which can be obtained via [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice), or using default values: `"1000000"`;
-- `gasLimit`: The gasLimit for deploying the contract. You can get the estimated gas consumption for the deployment via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and cannot use the default value. And you could also set a larger value. The actual gas consumption is decided by the deployment execution.
-- `contract`: the contract information, the parameters passed in when the contract is deployed
-  - `source`: contract code
-  - `sourceType`: Contract code type, `js` and `ts` (corresponding to javaScript and typeScript code)
-  - `args`: parameters for the contract initialization method. Use empty string if there is no parameter, and use JSON array if there is a parameter.
+- `from`: la dirección del creador
+- `to`: la dirección del creador
+- `value`: debe ser `"0"` durante el despliegue;
+- `nonce`: debe ser 1 mas que el actual nonce en el estado de la cuenta del creador, que puede ser obtenido por [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate).
+- `gasPrice`: El gasPrice usa para desplegar el smart contrato, que pudes obtener por  [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice), o usando valores predeterminadas: `"1000000"`;
+- `gasLimit`: El gasLimit para desplegar un contrato. Puedes estimar el consumo de gas por  [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas). Tambien puedes asignar un valor mas grande. El consumo de gas actual es decidado por el ejecución del desplegar.
+- `contract`: el información del contrato, los parametros pasados en el contrato.
+  - `source`: código de contract
+  - `sourceType`: código de tipo, `js` and `ts` (javaScript y typeScript)
+  - `args`: parametros para el método inicialzación. Usa cadenas vacías si no hay parametros, usa JSON array si hay paremetros.
 
-Detailed Interface Documentation [API](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransactionwithpassphrase).
+Documentación Interfaz detallada  [API](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md#sendtransactionwithpassphrase).
 
-Example of deploying a smart contract using curl:
+Ejemplo de despelegar un smart contrato usando curl:
 
 ```bash
 
@@ -244,13 +246,16 @@ Example of deploying a smart contract using curl:
 
 {"result":{"txhash":"aaebb86d15ca30b86834efb600f82cbcaf2d7aaffbe4f2c8e70de53cbed17889","contract_address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}}
 ```
+El valor de retorno para desplegar un smart contrato es la hash dirección de la transacción `txhash` y la dirección de desplegar del contrato `contract_address`.
+El valor del retorno no garantiza el éxito del desplegar del contrato, porque el `sendTransaction()` es un proceso asincrónico, que necesita ser empacado por el minero.
+Como la transferida transacción anterior, la transferida no llega en tiempo real, lo depende on el velocidad de empacdo del minero.
+Por lo tanto necesitamos esperar para un poco (1 minuto), después tu puedes verificar si el contrato es desplegado exitoso por consultar la dirección de contrato o llamar este smart contrato.
 
-The return value for deploying a smart contract is the transaction's hash address `txhash` and the contract's deployment address `contract_address`.
-Get the return value does not guarantee the successful deployment of the contract, because the sendTransaction () is an asynchronous process, which need to be packaged by the miner. Just as the previous transfer transaction, the transfer does not arrive in real time, it depends on the speed of the miner packing. Therefore we need to wait for a while (about 1 minute), then you can verify whether the contract is deployed successfully by querying the contract address or calling this smart contract.
 
-> **Verify the deployment of the contract is successful**
+> **Verificar el desplegado del contrato con éxito**
 >
-> Check the receipt of the deploy transaction via [`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt) to verify whether the contract has been deployed successfully.
+> Consulte el recibo del desplegado transacción por
+ [`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt) to verify whether the contract has been deployed successfully.
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"aaebb86d15ca30b86834efb600f82cbcaf2d7aaffbe4f2c8e70de53cbed17889"}'
 >
@@ -264,39 +269,39 @@ Alternatively to sending your smart contract code using the curl command, you ca
 
 - `git clone https://github.com/nebulasio/web-wallet`
 - `cd web-wallet && node server.js`
-- open `127.0.0.1:8080/contract.html`
+- abra `127.0.0.1:8080/contract.html`
 
-In the screenshot below you can see the steps to deploy your smart contract code:
-- Select network for deployment (local, testnet, mainnet)
-- Select `Deploy` section
-- Paste your code in the code input box
-- Select your wallet file, default location is the `keydir` directory
-- Unlock your wallet with the passphrase you created
-- To get gas for your wallet on the testnet visit (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
-- Click the `Test` or `Submit` button
+En la captura de pantalla abajo puedes ver los pasos para desplegar su código de smart contrato:
+- Seleccione el red para el despliegue (local, testnet, mainnet)
+- Seleccione sección `Deploy`
+- Pegue su código en input caja
+- Seleccione su archivo de cartera, ubicación predeterminada es `keydir`
+- Desbloquee su cartera con el contraseña que has creado
+- Para obtener gas para usar su cartera en testnet visita  (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
+- Clic el `Test` o `Submit` botón
 
-![Deploy contract using web wallet](resources/101-03-deploy_contract_webwallet.png)
+![Despliegue contrato usando Web wallet](resources/101-03-deploy_contract_webwallet.png)
 
-## Execute Smart Contract Method
+## Executa Método Smart Contrato
 
-The way to execute a smart contract method in Nebulas is also straightforward, using the sendTransactionWithPassphrase() method to invoke the smart contract method directly.
+La manera para ejecutar un método de smart contrato en Nebulas es fácil, usando el método `sendTransactionWithPassphrase` a invocarlo directament.
 
 ```js
 // transaction - from, to, value, nonce, gasPrice, gasLimit, contract
 sendTransactionWithPassphrase(transaction, passphrase)
 ```
 
-- `from`: the user's account address
-- `to`: the smart contract address
-- `value`: The amount of money used to transfer by smart contract.
-- `nonce`: it should be 1 more than the current nonce in the creator's account state, which can ben obtained via [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate).
-- `gasPrice`: The gasPrice used to deploy the smart contract, which can be obtained via [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice), or using default values `"1000000"`;
-- `gasLimit`: The gasLimit for deploying the contract. You can get the estimated gas consumption for the deployment via [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), and cannot use the default value. And you could also set a larger value. The actual gas consumption is decided by the deployment execution.
-- `contract`: the contract information, the parameters passed in when the contract is deployed
-  - `function`:the contract method to be called
-  - `args`: parameters for the contract initialization method. Use empty string if there is no parameter, and use JSON array if there is a parameter.
+- `from`: la cuenta del usuario
+- `to`: la dirección del smart contrato
+- `value`: La cantidad de diñero usado para transferencia por el smart contrato.
+- `nonce`: debe ser 1 o mas que el actual nonce en el estado de la cuenta del creador, que puede ser obtenido por  [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate).
+- `gasPrice`: El gasPrice usado para desplegar el smart contrato, puede ser obtenido por [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice), o usando valores defectos  `"1000000"`;
+- `gasLimit`: El gasLimit para desplegar el contrato. Tu puedes estimar el consumo de gas para el despliegue por  [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas), y no puede usar el valor defecto. También puedes asignar un valor mas grande. El actual consumo de gas es decide por el despliegue de ejecución.
+- `contract`: la información de contrato, los parametros passados dentro cuando el contrato es desplegado
+  - `function`: el método de contrato a para llamar
+  - `args`: parametros para el método inicialzación de contrato. Usa cuerda vacía cuando no hay parametros, y usa array JSON se hay un parametro.
 
-For example, execute save() method of the smart contract:
+Por ejemplo, ejecuta método save() del smart contrato:
 
 ```bash
 > curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -H 'Content-Type: application/json' -d '{"transaction":{"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM", "value":"100","nonce":1,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"save","args":"[0]"}}, "passphrase": "passphrase"}'
@@ -304,16 +309,16 @@ For example, execute save() method of the smart contract:
 {"result":{"txhash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84","contract_address":""}}
 ```
 
-> **Verify the execution of the contract method `save` is successful**
-> Executing a contract method is actually submitting a transaction on chain as well. We can verify the result through checking the receipt of the transaction via [`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt).
+> **Verificar la ejecución del método de contrato `save` es con éxito**
+> Haciendo la ejecución del método también es en realidad enviando una transacción en cadena. Nos podemos verificar los resultados atraves de consultar los recibos de la transacción con [`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt).
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84"}'
 >
 > {"result":{"hash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84","chainId":100,"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM","value":"100","nonce":"1","timestamp":"1524712532","type":"call","data":"eyJGdW5jdGlvbiI6InNhdmUiLCJBcmdzIjoiWzBdIn0=","gas_price":"1000000","gas_limit":"2000000","contract_address":"","status":1,"gas_used":"20361"}}
 > ```
-> As shown above, the status of the transaction becomes 1. It means the contract method has been executed successfully.
+> Como se muestra arriba, el estado de la transacción se convierte 1. Significa que el método de contrato ha sido ejecutado con éxito.
 
-Execute the smart contract takeout() method:
+Ejecuta el método `takeout` de smart contrato:
 
 ```bash
 > curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -H 'Content-Type: application/json' -d '{"transaction":{"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}, "passphrase": "passphrase"}'
@@ -321,36 +326,38 @@ Execute the smart contract takeout() method:
 {"result":{"txhash":"46a307e9beb21f52992a7512f3705fe58ee6c1887122a1b52f5ce5fd5f536a91","contract_address":""}}
 ```
 
-> **Verify the execution of the contract method `takeout` is successful**
-> In the execution of the abov**e contract method `save`, we save 100 wei(10^-18 NAS) into the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we'll withdrawn 50 wei from the 100 wei. The balance of the smart contract should be 50 wei now.
+> **Verifica el ejecución del método de contrato `takeout` es exitoso.
+> En el ejecución del método de contrato `save` arriba, nos salvamos 100 NAS en el smart contrato  `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Usando el método de contrato `takout`, nos retiramos 50 NAS de el 100 NAS.
+El saldo del smart contrato debe ser 50 NAS ahora.
+
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
 > {"result":{"balance":"50","nonce":"0","type":88}}
 > ```
-> The result is as expected.
+> Los resultos como esperados.
 
-## Query Smart Contract Data
+## Consultar Dato de Smart Contrato
 
-In a smart contract, the execution of some methods won't change anything on chain. These methods are designed to help us query data in readonly mode from blockchains. In Nebulas, we provide an API `call` for users to execute these readonly methods.
+En un smart contrato, la ejecución de algunos métodos no se cambiará en la cadena.  Estes métodos son diseñados para ayudarnos a consultar datos en modo ready-only de blockchains. En Nebulas, nos proporcionamos un API `call` para usuarios a ejecutar estes métodos read-only.
 
 ```js
 // transaction - from, to, value, nonce, gasPrice, gasLimit, contract
 call(from, to, value, nonce, gasPrice, gasLimit, contract)
 ```
 
-The parameters of `call` is the same as the parameters of executing a contract method .
+Los parametros de `call` son los mismos como los parametros de executar un método contrato.
 
-Call the smart contract method `balanceOf`:
+
+LLama el smart contrato método `balanceOf`:
 
 ```bash
 > curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/user/call -H 'Content-Type: application/json' -d '{"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":""}}'
 
 {"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"84\"}","execute_err":"","estimate_gas":"20209"}}
 ```
-### Troubleshooting Step 03
-The Web-wallet code is configured to listen on port 8080. If you have a port conflict, you will need to change the port by modifying `server.listen(8080)` in the file `server.js`
 
-### Next step: Tutorial 4
+### Troubleshooting Paso 03
+El codigo de Web-wallet está configurado a escuchar puero 8080. Si tienes conflicto con este puerto, tienes que cambiar el puerto por modificar `server.listen(8080)` en el archivo `server.js`.
 
- [Smart Contract Storage](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2004%20Smart%20Contract%20Storage.md)
+### Próximo Paso: Tutorial 4
