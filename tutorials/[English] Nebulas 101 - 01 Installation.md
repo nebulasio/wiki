@@ -10,7 +10,7 @@ To learn about Nebulas, please read the Nebulas [Non-Technical White Paper](http
 
 To learn about the technology, please read the Nebulas [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf) and the Nebulas [github code](https://github.com/nebulasio/go-nebulas).
 
-> Nebulas can only run on Mac and Linux at this stage. The Windows version is be coming soon.
+> Nebulas can only run on Mac and Linux at this stage. The Windows version is coming soon.
 
 ## Golang Environment
 
