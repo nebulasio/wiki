@@ -34,7 +34,7 @@ Return the p2p node info.
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  NodeInfo |
-| HTTP | GET |  /v1/user/nodeinfo |
+| HTTP | GET |  /v1/admin/nodeinfo |
 
 ###### Parameters
 none

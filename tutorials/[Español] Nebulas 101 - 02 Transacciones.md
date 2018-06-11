@@ -1,6 +1,6 @@
 # Nebulas 101 - 02 Envío de Transacciones en Nebulas
 
-> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [01 Instalacciones ](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%2001%20Instalacioncciones.md).
+> Para este porcion del tutorial nos siguemos donde lo dejamos en el parte [01 Instalacciones ](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspa%C3%B1ol%5D%20Nebulas%20101%20-%2001%20Instalacion.md)
 
 Nebulas proporciona tres métodos a enviar transacciones:
 
@@ -8,7 +8,7 @@ Nebulas proporciona tres métodos a enviar transacciones:
 2. Enviar con contraseña
 3. Desbloquear & Enviar  
 
-Aqui es un introducción para enviar una transaccion en Nebulas atraves los tres métodos encima y verificando si es exitoso.
+Aqui es un introducción para enviar una transacción en Nebulas atraves los tres métodos encima y verificando si es exitoso.
 
 ## Preparar Cuentas
 

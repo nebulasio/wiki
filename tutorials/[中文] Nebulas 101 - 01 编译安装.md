@@ -156,6 +156,8 @@ make dep
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make deploy-v8
 ```
+> 提示：linux环境下如果报错类似"/usr/local/lib/libv8.so: undefined reference to ** ",是因为/user/local/lib/不在你动态库索引内，
+ 只需要到/etc/ld.so.conf.d/下添加文件，xxxx.conf即可，文件内容为/user/local/lib. 然后执行sudo ldconfig使改动生效
 
 ### 编译可执行文件
 

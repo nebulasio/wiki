@@ -50,7 +50,7 @@ export GOPATH=/directorio/de/trabajo
 
 ### Descargar
 
-Clona el código fuente con los siguintes comandos.
+Clona el código fuente con los siguientes comandos.
 
 ```bash
 # entra espaciotrabajo
@@ -60,7 +60,7 @@ cd $GOPATH/src/github.com/nebulasio
 # descargar
 git clone https://github.com/nebulasio/go-nebulas.git
 
-# entrar repositorio
+# entra repositorio
 cd go-nebulas
 
 # master branch esta más etable.
@@ -198,13 +198,13 @@ value: [ amount of allocation tokens ]
 ]
 ```
 
-Un ejemplo genesis.conf esta ubicado en `conf/default/genesis.conf`.
+Un ejemplo genesis.conf está ubicado en `conf/default/genesis.conf`.
 
 ### Configuracion
 
 Antes lanzando un nodo, hay que definir el configuracion de este nodo.
 
-#### Neb Node Configuracion
+#### Nodo Neb Configuración
 
 ```protobuf
 # Neb configuration text file. Scheme is defined in neblet/pb/config.proto:Config.
@@ -294,7 +294,7 @@ Muchos ejemplos se encuentra aqui `$GOPATH/src/github.com/nebulasio/go-nebulas/c
 
 > La Nebulas cadena que esta funcionando en este momento es privado y diferente entre testnet oficíal y el mainnet.
 
-Lanca su primero nodo Nebulas con los siguintes comandos.
+Lanca su primero nodo Nebulas con los siguientes comandos.
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
@@ -319,4 +319,4 @@ Después de comenzar el nodo, si los conexiones con nodo semilla tiene éxito, t
 
 ### Próximo Paso: Tutorial 2
 
-[Enviando Transacciones en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspañol%5D%20Nebulas%20101%20-%20%2002%20Transacciones.md)
+[Enviando Transacciones en Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspa%C3%B1ol%5D%20Nebulas%20101%20-%2002%20Transacciones.md)
