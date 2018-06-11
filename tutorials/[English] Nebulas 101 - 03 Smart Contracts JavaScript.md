@@ -295,7 +295,7 @@ For example, execute the save() method of the smart contract:
 > ```
 > As shown above, the status of the transaction becomes 1. It means the contract method has been executed successfully.
 
-Execute the smart contract’s takeout() method:
+Execute the smart contractÂ’s takeout() method:
 
 ```bash
 > curl -i -H 'Accept: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -H 'Content-Type: application/json' -d '{"transaction":{"from":"n1LkDi2gGMqPrjYcczUiweyP4RxTB6Go1qS","to":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM", "value":"0","nonce":2,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"takeout","args":"[50]"}}, "passphrase": "passphrase"}'
@@ -303,8 +303,8 @@ Execute the smart contract’s takeout() method:
 {"result":{"txhash":"46a307e9beb21f52992a7512f3705fe58ee6c1887122a1b52f5ce5fd5f536a91","contract_address":""}}
 ```
 
-> **Verify if the execution of the contract’s method `takeout` was successful**
-> In the execution of the above contract method `save`, we deposited 100 NAS to the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we will withdraw 50 NAS from 100 NAS. The balance of the smart contract should be 50 NAS now.
+> **Verify if the execution of the contract's method `takeout` was successful**
+> In the execution of the above contract method `save`, we deposited 100 wei (10^-18 NAS) to the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we will withdraw 50 wei from 100 wei. The balance of the smart contract should be 50 wei now.
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
