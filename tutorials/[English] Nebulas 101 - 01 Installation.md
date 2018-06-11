@@ -159,7 +159,7 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make build
 ```
 
-Once the building is complete，there will be a executable file `neb` generated under the root directory.
+Once the building is complete，there will be an executable file `neb` generated under the root directory.
 ![make build](resources/101-01-make-build.png)
 
 
