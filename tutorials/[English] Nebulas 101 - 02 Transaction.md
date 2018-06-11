@@ -56,6 +56,7 @@ Secondly, start a miner node connecting to the seed node. This node will generat
 ./neb -c conf/example/miner.conf
 ```
 
+<<<<<<< HEAD
 <<<<<<< c7256dcfda7a584d97247088ed33f60964ce28f8
 > **How long a new block will be minted?**
 >
@@ -63,22 +64,31 @@ Secondly, start a miner node connecting to the seed node. This node will generat
 >
 > In current context, we have to wait for 315(=15*21) seconds to get a new block because there is only one miner among 21 miners defined in `conf/default/genesis.conf` working now.
 =======
+=======
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 > **How long until a new block will be minted?**
 > 
 > In Nebulas, DPoS is chosen as the temporary consensus algorithm before Proof-of-Devotion(PoD, described in [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)) is ready. In this consensus algorithm, each miner will mint a new block every 15 seconds.
 > 
 > In current context, we have to wait 315(=15*21) seconds to get a new block because there is only 1 miner working, among the 21 miners defined in `conf/default/genesis.conf`.
+<<<<<<< HEAD
 >>>>>>> fixes typos, grammar, and beautifies the docs
+=======
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 
 Once a new block has been minted by the miner, the mining reward will be added to the coinbase wallet address used in `conf/example/miner.conf`, which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
 
 ## Interacting with Nodes
 
+<<<<<<< HEAD
 <<<<<<< c7256dcfda7a584d97247088ed33f60964ce28f8
 Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction in three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)).
 =======
 Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction using three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)). 
 >>>>>>> fixes typos, grammar, and beautifies the docs
+=======
+Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction using three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)). 
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 
 > The Nebulas HTTP Listener is defined in the node configuration. The default port of our seed node is `8685`.
 
@@ -207,11 +217,15 @@ The `status` fields may be 0, 1 or 2.
 
 ### Double Check
 
+<<<<<<< HEAD
 <<<<<<< c7256dcfda7a584d97247088ed33f60964ce28f8
 Let's double check the receiver's balance.
 =======
 Let's double check the recipient's balance. 
 >>>>>>> fixes typos, grammar, and beautifies the docs
+=======
+Let's double check the recipient's balance. 
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
@@ -220,6 +234,7 @@ Let's double check the recipient's balance.
 ```
 
 Here you should see a balance that is the total of all the successful transfers that you have executed.
+<<<<<<< HEAD
 
 ### Troubleshooting Step 02
 
@@ -227,6 +242,8 @@ In case your machine cannot resolve `http://localhost` using the `curl` command,
 ```bash
 ::1             localhost
 ```
+=======
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 
 ### Next step: Tutorial 3
 

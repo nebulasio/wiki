@@ -32,11 +32,15 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
+<<<<<<< HEAD
 <<<<<<< c7256dcfda7a584d97247088ed33f60964ce28f8
 > Notice:GOPATH is a local golang working directory which could be decided by yourself. After GOPATH is configured, your go projects need to be placed in GOPATH directory.
 =======
 > Notice: GOPATH is a local golang working directory which could be decided by yourself. After GOPATH is configured, your go projects need to be placed in the GOPATH directory.
 >>>>>>> fixes typos, grammar, and beautifies the docs
+=======
+> Notice: GOPATH is a local golang working directory which could be decided by yourself. After GOPATH is configured, your go projects need to be placed in the GOPATH directory.
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
 
 ### Linux
 
@@ -330,4 +334,7 @@ After the node starts, if the connection with the seed node is successful, you c
 =======
 
 
+<<<<<<< HEAD
 >>>>>>> fixes typos, grammar, and beautifies the docs
+=======
+>>>>>>> e7608a0196fd73e8674dbcfd8bafb4228a4465cd
