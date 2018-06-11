@@ -137,4 +137,3 @@ Bom trabalho! Vamos juntar-nos à Testnet ou Mainnet oficial para desfrutar de N
 
  [Join to Testnet](https://github.com/nebulasio/wiki/blob/master/testnet.md)
  [Join to Mainnet](https://github.com/nebulasio/wiki/blob/master/mainnet.md)
-

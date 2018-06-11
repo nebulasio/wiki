@@ -323,5 +323,3 @@ Depois do nó iniciar, se a conexão com o nó semente suceder, irá ver o segui
 ### Próximo passo: Tutorial 2
 
 [Envio de Transações com Nebulas](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BPortugues%5D%20Nebulas%20101%20-%2002%20Transacao.md)
-
-
