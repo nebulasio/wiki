@@ -95,7 +95,9 @@ Return the state of the neb.
 none
 
 ###### Returns
-`chain_id` Block chain id
+`chain_id` Block chain id，
+* `1` : mainnet
+- `1001` : testnet
 
 `tail` Current neb tail hash
 
@@ -638,7 +640,7 @@ none
 `gas_price` gas price. The unit is 10^-18 NAS.
 
 ##### HTTP Example
-```js
+```sh
 // Request
 curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/getGasPrice
 
