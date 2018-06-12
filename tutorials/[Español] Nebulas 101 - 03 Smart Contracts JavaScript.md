@@ -1,6 +1,6 @@
 la dire# Nebulas 101 - 03 Escribe y ejecuta un smart contrato
 
-Con este tutorial nos podems aprender como escribir, desplegar, y ejecuta ejecutar smart contratos en Nebulas.
+Con este tutorial nos podems aprender como escribir, desplegar, y ejecutar smart contratos en Nebulas.
 
 ## Preparación
 
@@ -357,7 +357,9 @@ LLama el smart contrato método `balanceOf`:
 {"result":{"result":"{\"balance\":\"50\",\"expiryHeight\":\"84\"}","execute_err":"","estimate_gas":"20209"}}
 ```
 
-### Troubleshooting Paso 03
+### Solución de problem Paso 03
 El codigo de Web-wallet está configurado a escuchar puero 8080. Si tienes conflicto con este puerto, tienes que cambiar el puerto por modificar `server.listen(8080)` en el archivo `server.js`.
 
 ### Próximo Paso: Tutorial 4
+
+ [Smart Contract Storage](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEspa%C3%B1ol%5D%20Nebulas%20101%20-%2004%20Smart%20Contract%20Storage.md)
