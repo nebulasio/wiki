@@ -1,45 +1,45 @@
-# Nebulas 101 - 04 Smart Contract Storage
+# Nebulas 101 - 04 Almacenaje de Smart Contract
 
-[YouTube Tutorial](https://www.youtube.com/watch?v=Ofs4AyRaSlw)
+Anteriormente nos cubrimos cómo escribir smart contratos y cómo implementarlos en el Nebulas.
 
-Earlier we covered how to write smart contracts and how to deploy and invoke smart contracts in the Nebulas.
+Ahora les presentamos en detalle el almacenaje del smart contrato. Smart contratos de Nebulas proporcian en-chain capacidades de almacenja de datos. Similar al tradicional systema de clave-valor almacenaje (eg: redis), smart contratos se pueden almacenar en Nebulas por pagando gas.
 
-Now we introduce in detail the storage of the smart contract. Nebulas smart contracts provide on-chain data storage capabilities. Similar to the traditional key-value storage system (eg: redis), smart contracts can be stored on the Nebulas by paying with (gas).
 
 ## LocalContractStorage
 
-Nebulas' Smart Contract environment has built-in storage object `LocalContractStorage`, which can store numbers, strings, and JavaScript objects. The stored data can only be used in smart contracts. Other contracts are not able to read the stored data.
+El ambiante de smart contrato de Nebulas ha integrado objeto almacenaje `LocalContractStorage`,  que  puede guardar numeros, cuerdas, y objetos de Javascript. Los datos almacenados solo puden usarse en smart contratos. Otros contratos no pueden leer los datos almacenados.
 
-### Basics
 
-The `LocalContractStorage` API includes `set`, `get` and `del`, which allow you to store, read, and delete data. Storage can be numbers, strings, and objects.
+### Basicos
 
-#### Storing `LocalContractStorage` Data:
+`LocalContractStorage` API incluye `set`, `get` y `del`, que permite almancenar, leer, y eliminar datos. Almacenaje puede ser numeros, cuerdas y objetos..
+
+#### Almancene `LocalContractStorage` Datos:
 
 ```js
-// store data. The data will be stored as JSON strings
+// almacene dato. Los datos se almacenarán como JSON cuerdas.
 LocalContractStorage.put(key, value);
 // Or
 LocalContractStorage.set(key, value);
 ```
 
-#### Reading `LocalContractStorage` Data:
+#### Leyendo `LocalContractStorage` Datos:
 
 ```js
-// get the value from key
+// obtene el valor de clave
 LocalContractStorage.get(key);
 ```
 
-#### Deleting `LocalContractStorage` Data:
+#### Eliminar `LocalContractStorage` Datos:
 
 ```js
-// delete data, data can not be read after deletion
+// eliminar datos, los datos no se pueden leer despues de la elminación.
 LocalContractStorage.del(key);
 // Or
 LocalContractStorage.delete(key);
 ```
 
-Examples:
+Ejemplos:
 
 ```js
 'use strict';
@@ -75,15 +75,15 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-### Advanced
+### Avanzado
 
-In addition to the basic `set`, `get`, and `del` methods, `LocalContractStorage` also provides methods to bind properties of smart contracts. We could read and write bound properties directly without invoking `LocalContractStorage` interfaces to `get` and `set`.
+Además de los métodos basicos  `set`, `get`, and `del`, `LocalContractStorage` también proporciona métodos para enlazar propiedades de smart contratos. Podemos leer y escribir binding propiedades sin directamente invocar `LocalContractStorage` interfaz para `get` y `set.`
 
-#### Binding Properties
+#### Binding propiedades
 
-Object instance, field name and descriptor should be provided to bind properties.
+Object instance, field name y descriptor se debe proporcionar para bind propiedades.
 
-##### Binding Interface
+##### Bind Interfaz
 
 ```js
 // define a object property named `fieldname` to `obj` with descriptor.
@@ -97,18 +97,18 @@ defineProperty(obj, fieldName, descriptor);
 defineProperties(obj, descriptorMap);
 ```
 
-Here is an example to bind properties in a smart contract.
+Ahí es un ejemplo para unir esteas propiedades en un smart contrato.
 
 ```js
 'use strict';
 
 var SampleContract = function () {
-    // The SampleContract `size` property is a storage property. Reads and writes to `size` will be stored on the chain.
-    // The `descriptor` is set to null here, the default JSON.stringify() and JSON.parse() will be used.
+    // El SampleContract `size` propiedad es un almacenaje propiedad. Lee y escribe a `size` se almencará en la cadena.
+    // El `descriptor` es null ahí, la predeterminada JSON.stringify() y JSON.parse() serán usados.
     LocalContractStorage.defineMapProperty(this, "size");
 
     // The SampleContract `value` property is a storage property. Reads and writes to `value` will be stored on the chain.
-    // Here is a custom `descriptor` implementation, stored as a string, and returning Bignumber object during parsing. 
+    // Here is a custom `descriptor` implementation, stored as a string, and returning Bignumber object during parsing.
     LocalContractStorage.defineMapProperty(this, "value", {
         stringify: function (obj) {
             return obj.toString();
@@ -127,7 +127,7 @@ var SampleContract = function () {
 module.exports = SampleContract;
 ```
 
-Then, we can read and write these properties directly as per the following example.
+Despues, podems leer y escribir estes propiedades directamente como el siguiente ejemplo:
 
 ```js
 SampleContract.prototype = {
@@ -151,7 +151,8 @@ SampleContract.prototype = {
 
 #### Binding Map Properties
 
-What's more, `LocalContractStorage` also provides methods to bind map properties. Here is an example to bind map properties and use them in a smart contract.
+`LocalContractStorage` también proporciona métodos para bind map propiedades.
+Ahí es un ejemplo para bind map propiedades y usarlos en el smart contrato.
 
 ```js
 'use strict';
@@ -198,8 +199,7 @@ module.exports = SampleContract;
 ```
 
 ##### Iterate Map
-
-In contract, map does not support iterators. if you need to iterate the map, you can use the following way: define two maps, arrayMap, and dataMap. arrayMap with a strictly increasing counter as key, dataMap with data key as key. 
+En contrato, map no apoya iterators. Si necesitas iterate map, se necesitas iterate el map, puedes usar esta manera: define two maps, arrayMap, y dataMap. arrayMap con subindo contador como key, dataMap with data key como key.
 
 ```js
 "use strict";
@@ -214,14 +214,14 @@ SampleContract.prototype = {
     init: function() {
         this.size = 0;
     },
-    
+
     set: function (key, value) {
         var index = this.size;
         this.arrayMap.set(index, key);
         this.dataMap.set(key, value);
         this.size +=1;
     },
-    
+
     get: function (key) {
         return this.dataMap.get(key);
     },
@@ -229,7 +229,7 @@ SampleContract.prototype = {
     len:function(){
       return this.size;
     },
-    
+
     iterate: function(limit, offset){
         limit = parseInt(limit);
         offset = parseInt(offset);
@@ -248,11 +248,8 @@ SampleContract.prototype = {
         }
         return result;
     }
-    
+
 };
 
 module.exports = SampleContract;
 ```
-### Next step: Tutorial 5
-
- [Interacting with Nebulas by RPC API](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
