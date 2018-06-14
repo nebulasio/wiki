@@ -48,17 +48,23 @@ Here is all you need to dive into Nebulas.
     - [钱包教程|星云Web钱包教程6：部署智能合约](https://blog.nebulas.io/2018/04/28/deploy-a-smart-contract/)
 
 ## DApp
-
-- Web SDK: https://github.com/nebulasio/neb.js
+- Javascript SDK: https://github.com/nebulasio/neb.js
+- Java SDK: https://github.com/nebulasio/neb.java
+- PHP SDK: https://github.com/nebulasio/neb.php
+- Python SDK: https://github.com/nebulasio/neb.py
+- Web NebPay SDK: https://github.com/nebulasio/nebPay
+- Android NebPay SDK: https://github.com/nebulasio/neb.android
+- IOS NebPay SDK: https://github.com/nebulasio/neb.iOS
+- Chrome Extension: https://github.com/nebulasio/WebExtensionWallet
 - Smart Contract: https://github.com/nebulasio/wiki/blob/master/smart_contract.md
 - Standard Protocol:
   - NRC20: https://github.com/nebulasio/wiki/blob/master/NRC20.md
+  - NRC721: https://github.com/nebulasio/wiki/blob/master/NRC721.md
 
 ## Community Tools
-
 - Nebulearn: https://nebulearn.com/official-docs/go-nebulas (thanks to [Tehjr](https://github.com/HermantNET))
-- Demo DApp: https://github.com/15010159959/super-dictionary (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano), [Kurry](https://github.com/15010159959))
-- Chrome Extension: https://github.com/ChengOrangeJu/WebExtensionWallet (thanks to [ChengOrangeJu](https://github.com/ChengOrangeJu), [yupnano](https://github.com/yupnano))
+- Nebulas&React: https://woniesong92.github.io/nebulasguide/ (thanks to [Howon](https://woniesong92.github.io/))
+- Debug Tools: https://tool.forfunapp.com/#/tutorial (thanks to [xiwangzishi](https://github.com/xiwangzishi))
 
 ## Contribution
 
