@@ -249,18 +249,18 @@ properties:
 		- `87`: user wallet address
 		- `88`: smart-contract address
 		- `0`: address is invalid 
-- `getAccountState(address)`: get account's balance and nonce
+- `getAccountState(address)`（testnet): get account's balance and nonce
 	- params:
 		- `address`: whose address you want to get
 	- return (JSON object):
 		- `balance`: account's balance
 		- `nonce`: account's nonce
-- `getPreBlockHash(offset)`: get a previous block's hash
+- `getPreBlockHash(offset)`（testnet): get a previous block's hash
 	- params:
 		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
 	- return(string value):
 		- `hash`: block hash
-- `getPreBlockSeed(offset)`: get a previous block's hash
+- `getPreBlockSeed(offset)`（testnet): get a previous block's hash
 	- params:
 		- `offset`: same as the one in Blockchain.getPreBlockHash()
 	- return(string value):
