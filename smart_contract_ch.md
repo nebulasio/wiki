@@ -240,18 +240,18 @@ properties:
         - `87`: 用户钱包地址
         - `88`: 合约地址
         - `0`: 地址非法
-- `getAccountState(address)`: 获取账户的余额和nonce
+- `getAccountState(address)`（testnet): 获取账户的余额和nonce
 	- 参数:
 		- `address`: 想要获取余额的地址
 	- 返回值 (JSON 对象):
 		- `balance`: 账户的余额
 		- `nonce`: 账户的nonce
-- `getPreBlockHash(offset)`: 得到之前的块的哈希
+- `getPreBlockHash(offset)`（testnet): 得到之前的块的哈希
 	- 参数:
 		- `offset`: 想要查询的块的高度和当前高度的偏移量。这个参数必须是整型，且大于0，小于当前高度。如果offset为1，表示上一个区块。
 	- 返回值(string 类型):
 		- `hash`: 区块哈希
-- `getPreBlockSeed(offset)`: 获取先前区块的随机种子
+- `getPreBlockSeed(offset)`（testnet): 获取先前区块的随机种子
 	- 参数:
 		- `offset`: 和 Blockchain.getPreBlockHash() 中参数类似
 	- 返回值(string 类型):
