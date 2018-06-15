@@ -257,7 +257,7 @@ properties:
 		- `nonce`: account's nonce
 - `getPreBlockHash(offset)`: get a previous block's hash
 	- params:
-		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
+		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
 	- return(string value):
 		- `hash`: block hash
 - `getPreBlockSeed(offset)`: get a previous block's hash
