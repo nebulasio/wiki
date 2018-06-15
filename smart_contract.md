@@ -208,6 +208,15 @@ Blockchain.transfer(address, value);
 // verify address
 Blockchain.verifyAddress(address);
 
+// get accout state
+Blockchain.getAccountState(address);
+
+// get previous block's hash
+Blockchain.getPreBlockHash(offset);
+
+// get previous block's random seed
+Blockchain.getPreBlockSeed(offset);
+
 ```
 properties:
 
@@ -240,7 +249,22 @@ properties:
 		- `87`: user wallet address
 		- `88`: smart-contract address
 		- `0`: address is invalid 
-
+- `getAccountState(address)`: get account's balance and nonce
+	- params:
+		- `address`: whose address you want to get
+	- return (JSON object):
+		- `balance`: account's balance
+		- `nonce`: account's nonce
+- `getPreBlockHash(offset)`: get a previous block's hash
+	- params:
+		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
+	- return(string value):
+		- `hash`: block hash
+- `getPreBlockSeed(offset)`: get a previous block's hash
+	- params:
+		- `offset`: same as the one in Blockchain.getPreBlockHash()
+	- return(string value):
+		- `seed`: block random seed
 Example to use:
 
 ```js
@@ -285,7 +309,19 @@ SampleContract.prototype = {
     verifyAddress: function (address) {
     	 var result = Blockchain.verifyAddress(address);
         console.log("verifyAddress result:", result);
-    }
+    },
+	getAccountState: function (address) {
+		var state = Blockchain.getAccountState(address);
+		console.log("getAccountState result:", state);
+	},
+	getPreBlockHash: function (offset) {
+		var hash = Blockchain.getPreBlockHash(offset);
+		console.log("getPreBlockHash result", hash);
+	},
+	getPreBlockSeed: function (offset) {
+		var seed = Blockchain.getPreBlockSeed(offset);
+		console.log("getPreBlockSeed result", seed);
+	}
 };
 
 module.exports = SampleContract;
