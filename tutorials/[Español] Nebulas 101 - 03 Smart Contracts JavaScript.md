@@ -212,9 +212,30 @@ takeout: function (value) {
 },
 ```
 
-## Desplegar smart contrato usando línea de comando (cli)
+## Desplegar smart contrato usando web wallet
 
 Arriba describe cómo escribir smart contrato en Nebulas, y ahora nos tenemos que desplegar el smart contrato a la cadena.
+
+Alternativamente a enviar su smart codigo de contrato usando comando curl, tu puedes copiar y pegar el código en la interfaz de web localmente. Primero tu necesitas clonar el repositorio `https://github.com/nebulasio/web-wallet` fuera `go-nebulas`. Despues necesitas ejecutar `node server.js` en terminal. Este permite abrir su browser como Chrome a ver la interfaz de web-wallet funcionando en  `127.0.0.1:8080/contract.html`. Los pasos exactos:
+
+- `git clone https://github.com/nebulasio/web-wallet`
+- `cd web-wallet && node server.js`
+- abra `127.0.0.1:8080/contract.html`
+
+En la captura de pantalla abajo puedes ver los pasos para desplegar su código de smart contrato:
+- Seleccione el red para el despliegue (local, testnet, mainnet)
+- Seleccione sección `Deploy`
+- Pegue su código en input caja
+- Seleccione su archivo de cartera, ubicación predeterminada es `keydir`
+- Desbloquee su cartera con el contraseña que has creado
+- Para obtener gas para usar su cartera en testnet visita  (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
+- Clic el `Test` o `Submit` botón
+
+![Despliegue contrato usando Web wallet](resources/101-03-deploy_contract_webwallet.png)
+
+
+## Desplegar smart contrato usando línea de comando (cli)
+
 Anteriormente, habíamos introducido como hacer una transacción en Nebulas, y nos usamos interfaz sendTransaction() a iniciar una tranferencia.
 Despliegue de un smart contrato en Nebulas se en realidad logra por enviar una transacción por llamar la interfaz sendTransaction(), pero com parámetros diferentes.
 
@@ -261,26 +282,8 @@ Por lo tanto necesitamos esperar para un poco (1 minuto), después tu puedes ver
 >
 > {"result":{"hash":"aaebb86d15ca30b86834efb600f82cbcaf2d7aaffbe4f2c8e70de53cbed17889","chainId":100,"from":"n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so","to":"n1H4MYms9F55ehcvygwWE71J8tJC4CRr2so","value":"0","nonce":"1","timestamp":"1524711841","type":"deploy","data":"eyJTb3VyY2VUeXBlIjoianMiLCJTb3VyY2UiOiJcInVzZSBzdHJpY3RcIjt2YXIgRGVwb3NpdGVDb250ZW50PWZ1bmN0aW9uKHRleHQpe2lmKHRleHQpe3ZhciBvPUpTT04ucGFyc2UodGV4dCk7dGhpcy5iYWxhbmNlPW5ldyBCaWdOdW1iZXIoby5iYWxhbmNlKTt0aGlzLmV4cGlyeUhlaWdodD1uZXcgQmlnTnVtYmVyKG8uZXhwaXJ5SGVpZ2h0KTt9ZWxzZXt0aGlzLmJhbGFuY2U9bmV3IEJpZ051bWJlcigwKTt0aGlzLmV4cGlyeUhlaWdodD1uZXcgQmlnTnVtYmVyKDApO319O0RlcG9zaXRlQ29udGVudC5wcm90b3R5cGU9e3RvU3RyaW5nOmZ1bmN0aW9uKCl7cmV0dXJuIEpTT04uc3RyaW5naWZ5KHRoaXMpO319O3ZhciBCYW5rVmF1bHRDb250cmFjdD1mdW5jdGlvbigpe0xvY2FsQ29udHJhY3RTdG9yYWdlLmRlZmluZU1hcFByb3BlcnR5KHRoaXMsXCJiYW5rVmF1bHRcIix7cGFyc2U6ZnVuY3Rpb24odGV4dCl7cmV0dXJuIG5ldyBEZXBvc2l0ZUNvbnRlbnQodGV4dCk7fSxzdHJpbmdpZnk6ZnVuY3Rpb24obyl7cmV0dXJuIG8udG9TdHJpbmcoKTt9fSk7fTtCYW5rVmF1bHRDb250cmFjdC5wcm90b3R5cGU9e2luaXQ6ZnVuY3Rpb24oKXt9LHNhdmU6ZnVuY3Rpb24oaGVpZ2h0KXt2YXIgZnJvbT1CbG9ja2NoYWluLnRyYW5zYWN0aW9uLmZyb207dmFyIHZhbHVlPUJsb2NrY2hhaW4udHJhbnNhY3Rpb24udmFsdWU7dmFyIGJrX2hlaWdodD1uZXcgQmlnTnVtYmVyKEJsb2NrY2hhaW4uYmxvY2suaGVpZ2h0KTt2YXIgb3JpZ19kZXBvc2l0PXRoaXMuYmFua1ZhdWx0LmdldChmcm9tKTtpZihvcmlnX2RlcG9zaXQpe3ZhbHVlPXZhbHVlLnBsdXMob3JpZ19kZXBvc2l0LmJhbGFuY2UpO30gdmFyIGRlcG9zaXQ9bmV3IERlcG9zaXRlQ29udGVudCgpO2RlcG9zaXQuYmFsYW5jZT12YWx1ZTtkZXBvc2l0LmV4cGlyeUhlaWdodD1ia19oZWlnaHQucGx1cyhoZWlnaHQpO3RoaXMuYmFua1ZhdWx0LnB1dChmcm9tLGRlcG9zaXQpO30sdGFrZW91dDpmdW5jdGlvbih2YWx1ZSl7dmFyIGZyb209QmxvY2tjaGFpbi50cmFuc2FjdGlvbi5mcm9tO3ZhciBia19oZWlnaHQ9bmV3IEJpZ051bWJlcihCbG9ja2NoYWluLmJsb2NrLmhlaWdodCk7dmFyIGFtb3VudD1uZXcgQmlnTnVtYmVyKHZhbHVlKTt2YXIgZGVwb3NpdD10aGlzLmJhbmtWYXVsdC5nZXQoZnJvbSk7aWYoIWRlcG9zaXQpe3Rocm93IG5ldyBFcnJvcihcIk5vIGRlcG9zaXQgYmVmb3JlLlwiKTt9IGlmKGJrX2hlaWdodC5sdChkZXBvc2l0LmV4cGlyeUhlaWdodCkpe3Rocm93IG5ldyBFcnJvcihcIkNhbiBub3QgdGFrZW91dCBiZWZvcmUgZXhwaXJ5SGVpZ2h0LlwiKTt9IGlmKGFtb3VudC5ndChkZXBvc2l0LmJhbGFuY2UpKXt0aHJvdyBuZXcgRXJyb3IoXCJJbnN1ZmZpY2llbnQgYmFsYW5jZS5cIik7fSB2YXIgcmVzdWx0PUJsb2NrY2hhaW4udHJhbnNmZXIoZnJvbSxhbW91bnQpO2lmKCFyZXN1bHQpe3Rocm93IG5ldyBFcnJvcihcInRyYW5zZmVyIGZhaWxlZC5cIik7fSBFdmVudC5UcmlnZ2VyKFwiQmFua1ZhdWx0XCIse1RyYW5zZmVyOntmcm9tOkJsb2NrY2hhaW4udHJhbnNhY3Rpb24udG8sdG86ZnJvbSx2YWx1ZTphbW91bnQudG9TdHJpbmcoKX19KTtkZXBvc2l0LmJhbGFuY2U9ZGVwb3NpdC5iYWxhbmNlLnN1YihhbW91bnQpO3RoaXMuYmFua1ZhdWx0LnB1dChmcm9tLGRlcG9zaXQpO30sYmFsYW5jZU9mOmZ1bmN0aW9uKCl7dmFyIGZyb209QmxvY2tjaGFpbi50cmFuc2FjdGlvbi5mcm9tO3JldHVybiB0aGlzLmJhbmtWYXVsdC5nZXQoZnJvbSk7fSx2ZXJpZnlBZGRyZXNzOmZ1bmN0aW9uKGFkZHJlc3Mpe3ZhciByZXN1bHQ9QmxvY2tjaGFpbi52ZXJpZnlBZGRyZXNzKGFkZHJlc3MpO3JldHVybnt2YWxpZDpyZXN1bHQ9PTA/ZmFsc2U6dHJ1ZX07fX07bW9kdWxlLmV4cG9ydHM9QmFua1ZhdWx0Q29udHJhY3Q7IiwiQXJncyI6IiJ9","gas_price":"1000000","gas_limit":"2000000","contract_address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM","status":1,"gas_used":"22016"}}
 > ```
-> As shown above, the status of the deploy transaction becomes 1. It means the contract has been deployed successfully.
+> Como aparece encima, el estado de la transacción de despliegue seria 1. Eso significa el contracto se ha implementado con éxito.
 
-## Deploy smart contracts using web wallet
-
-Alternatively to sending your smart contract code using the curl command, you can copy and paste the code into a web interface locally. First you will need the interface web-wallet so clone the repo `https://github.com/nebulasio/web-wallet` outside your `go-nebulas` repo. Then you will need to run `node server.js` in a terminal window. This will allow you to open your browser to see the web-wallet interface running on `127.0.0.1:8080/contract.html`. Here are the exact steps:
-
-- `git clone https://github.com/nebulasio/web-wallet`
-- `cd web-wallet && node server.js`
-- abra `127.0.0.1:8080/contract.html`
-
-En la captura de pantalla abajo puedes ver los pasos para desplegar su código de smart contrato:
-- Seleccione el red para el despliegue (local, testnet, mainnet)
-- Seleccione sección `Deploy`
-- Pegue su código en input caja
-- Seleccione su archivo de cartera, ubicación predeterminada es `keydir`
-- Desbloquee su cartera con el contraseña que has creado
-- Para obtener gas para usar su cartera en testnet visita  (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
-- Clic el `Test` o `Submit` botón
-
-![Despliegue contrato usando Web wallet](resources/101-03-deploy_contract_webwallet.png)
 
 ## Executa Método Smart Contrato
 
