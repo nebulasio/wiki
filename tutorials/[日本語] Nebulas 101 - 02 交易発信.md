@@ -2,7 +2,7 @@
 
 [Youtube チュートリアル](https://www.youtube.com/watch?v=-44tVVR6ETo&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R&index=1)
 
-> このチュートリアルの部分には、上の章[コンパイルとインストール](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)[***link need to update]に続く。
+> このチュートリアルの部分には、上の章[コンパイルとインストール](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)[link need to update]に続く。
 
 Nebulasは三つの交易発信方法を提供する:
 
@@ -207,4 +207,4 @@ Nebulasノードを信頼するならば、キーストアファイルをそれ�
 
 ### 次の章: チュートリアル 3
 
- [JavaScriptでスマートコントラクトを作って走る](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)[***link need to update]
+ [JavaScriptでスマートコントラクトを作って走る](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)[link need to update]
