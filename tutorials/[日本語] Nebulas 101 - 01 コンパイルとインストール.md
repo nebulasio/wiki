@@ -306,7 +306,7 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 起動した後、以下のようなテキストはターミナルに見えるはず:
 ![seed node start](resources/101-01-seed-node-start.png)
 
-基本的に、`conf/default/config.conf`を使用するノードは新たなブロックを送らない。別のコマンドで初期のNebulasマイニングノードを起動する。
+基本的に、`conf/default/config.conf`を使用するノードは新たなブロックを送らない。別のコマンドで初期のNebulasマイニングノードを起動する。
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
