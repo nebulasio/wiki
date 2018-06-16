@@ -32,7 +32,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 注意:GOPATHはローカルgolang作業ディレクトリで、自分でカスタマイズできる。GOPATH配置できたあと、goプロジェクトはGOPATHディレクトリに置くべきです。
+> 注意:GOPATHはローカルgolang作業ディレクトリで、自分でカスタマイズできる。GOPATH配置できたあと、goプロジェクトはGOPATHディレクトリに置くべきです。
 
 ### Linux
 
@@ -83,7 +83,7 @@ brew install rocksdb
 apt-get update
 apt-get -y install build-essential libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev
 ```
-* ソースコードでrocksdbをインストールする:
+* ソースコードでrocksdbをインストールする:
 ```bash
 git clone https://github.com/facebook/rocksdb.git
 cd rocksdb && make shared_lib && make install-shared
@@ -95,7 +95,7 @@ cd rocksdb && make shared_lib && make install-shared
 yum -y install epel-release && yum -y update
 yum -y install gflags-devel snappy-devel zlib-devel bzip2-devel gcc-c++  libstdc++-devel
 ```
-* ソースコードでrocksdbをインストールする:
+* ソースコードでrocksdbをインストールする:
 ```bash
 git clone https://github.com/facebook/rocksdb.git
 cd rocksdb && make shared_lib && make install-shared
@@ -152,7 +152,7 @@ make deploy-v8
 
 golangの依存とV8の依存パッケージがインストールできたら、Nebulasの執行を立てることができる。
 
-プロジェクトルートディレクトリに作る:
+プロジェクトルートディレクトリに作る:
 
 ```bash
 cd  $GOPATH/src/github.com/nebulasio/go-nebulas
