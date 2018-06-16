@@ -208,6 +208,15 @@ Blockchain.transfer(address, value);
 // verify address
 Blockchain.verifyAddress(address);
 
+// get accout state
+Blockchain.getAccountState(address);
+
+// get previous block's hash
+Blockchain.getPreBlockHash(offset);
+
+// get previous block's random seed
+Blockchain.getPreBlockSeed(offset);
+
 ```
 properties:
 
@@ -228,6 +237,8 @@ properties:
 	- params:
 		- `address`: nebulas address to receive NAS
 		- `value`: transfer value, a BigNumber object. The unit is wei, only integer value is valid.
+
+        **NOTE: since v1.0.5(testnet), `Uint` is the recommended type for `value`**
 	- return (boolean value):
 		- `true`: transfer success
 		- `false`: transfer failed   
@@ -238,7 +249,22 @@ properties:
 		- `87`: user wallet address
 		- `88`: smart-contract address
 		- `0`: address is invalid 
-
+- `getAccountState(address)`（testnet): get account's balance and nonce
+	- params:
+		- `address`: whose address you want to get
+	- return (JSON object):
+		- `balance`: account's balance
+		- `nonce`: account's nonce
+- `getPreBlockHash(offset)`（testnet): get a previous block's hash
+	- params:
+		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
+	- return(string value):
+		- `hash`: block hash
+- `getPreBlockSeed(offset)`（testnet): get a previous block's hash
+	- params:
+		- `offset`: same as the one in Blockchain.getPreBlockHash()
+	- return(string value):
+		- `seed`: block random seed
 Example to use:
 
 ```js
@@ -283,7 +309,19 @@ SampleContract.prototype = {
     verifyAddress: function (address) {
     	 var result = Blockchain.verifyAddress(address);
         console.log("verifyAddress result:", result);
-    }
+    },
+	getAccountState: function (address) {
+		var state = Blockchain.getAccountState(address);
+		console.log("getAccountState result:", state);
+	},
+	getPreBlockHash: function (offset) {
+		var hash = Blockchain.getPreBlockHash(offset);
+		console.log("getPreBlockHash result", hash);
+	},
+	getPreBlockSeed: function (offset) {
+		var seed = Blockchain.getPreBlockSeed(offset);
+		console.log("getPreBlockSeed result", seed);
+	}
 };
 
 module.exports = SampleContract;
@@ -333,7 +371,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-* `Math.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **string**.
+* `Math.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **non empty string**.
 ```js
 "use strict";
 
@@ -369,6 +407,7 @@ module.exports = BankVaultContract;
 ```
 
 ### Date 
+Since Nebulas v1.0.5(testnet), all standardized APIs are available. Note that the timezone is fixed to "UTC+0" and locale to "en-US".
 ```js
 "use strict";
 
@@ -386,9 +425,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 Tips:
-* Unsupported methods：`toDateString()`, `toTimeString()`, `getTimezoneOffset()`, `toLocaleXXX()`.
 * `new Date()`/`Date.now()` returns the timestamp of current block in milliseconds.
-* `getXXX` returns the result of `getUTCXXX`.
 
 
 ### accept
@@ -454,4 +491,218 @@ BankVaultContract.prototype = {
 
 };
 module.exports = BankVaultContract;
+```
+
+### Uint (since v1.0.5, testnet)
+
+The `Uint` encapsulates 4 unsigned integer types based on bignumber.js, i.e., `Uint64`, `Uint128`, `Uint256`, `Uint512`.
+
+Static properties:
+
+- `MaxValue`: an instance for the maximum value of specific uint type
+
+Instance APIs:
+
+- `div(o)`: __/__
+    - params:
+        - `o`: divisor, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `pow(o)`: __^__
+    - params:
+        - `o`: exponent, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `minus(o)`: __-__
+    - params:
+        - `o`: subtractor, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `mod(o)`: __%__
+    - params:
+        - `o`: modulo, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `mul(o)`: __*__
+    - params:
+        - `o`: multiplier, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `plus(o)`: __+__
+    - params:
+        - `o`: addend, must be the same type with `this`
+    - return: arithmetic result of the same type with `this`
+
+- `cmp(o)`
+    - params:
+        - `o`: must be the same type with `this`
+    - return:
+        - `1`: `this` > `o`
+        - `0`: `this` = `o`
+        - `-1`: `this` < `o`
+
+- `isZero()`
+    - return:
+        - `true`: `this` is 0
+        - `false`: `this` is not 0
+
+- `toString(base)`: convert `this` to string value
+    - params:
+        - `base`: 2 ~ 64, default 10
+
+Example:
+
+```js
+'use strict';
+
+var Uint64 = Uint.Uint64;
+// var Uint128 = Uint.Uint128;
+// var Uint256 = Uint.Uint256;
+// var Uint512 = Uint.Uint512;
+
+var Contract = function() {};
+
+Contract.prototype = {
+    init: function() {},
+
+    testUint64: function() {
+        var a  = new Uint64(7);
+        var b = new Uint64("2");
+
+        return {
+            'a+b': a.plus(b).toString(10),  // 9
+            'a-b': a.minus(b).toString(10), // 5
+            'a*b': a.mul(b).toString(10),   // 14
+            'a/b': a.div(b).toString(10),   // 3
+            'a%b': a.mod(b).toString(10),   // 1
+            'a^b': a.pow(b).toString(10),   // 49
+            'a>b': a.cmp(b) == 1,           // true
+            'a==0': a.isZero(),             // false
+            'a': a.toString(),              // 7
+            'MaxUint64': Uint64.MaxValue.toString(16), // ffffffffffffffff
+        };
+    }
+};
+
+module.exports = Contract;
+```
+
+### require (since v1.0.5, testnet)
+
+The `require` function is used to explicitly load third-party libraries those Nebulas NVM doesn't load at startup. 
+
+Available libraries are:
+
+* `crypto.js`
+
+The typical usage is:
+    
+```js
+    var crypto = require('crypto.js');
+    ...
+```
+
+
+### crypto (since v1.0.5, testnet)
+
+The `crypto` provides several frequently-used cryptographic hash functions. This module need to be explicitly required.
+
+APIs:
+
+- `sha256(str)`
+    - param:
+        - `str`: any string, case-sensitive
+    - return: 
+        - hexadecimal hash string, 64 chars
+
+- `sha3256(str)`
+    - param:
+        - `str`: any string, case-sensitive
+    - return: 
+        - hexadecimal hash string, 64 chars
+
+- `ripemd160(str)`
+    - param:
+        - `str`: any string, case-sensitive
+    - return: 
+        - hexadecimal hash string, 40 chars
+
+- `md5(str)`
+    - param:
+        - `str`: any string, case-sensitive
+    - return: 
+        - hexadecimal hash string, 32 chars
+
+- `base64(str)`
+    - param:
+        - `str`: any string, case-sensitive
+    - return: 
+        - base64 string
+
+- `recoverAddress(alg, hash, sign)`: recover signer address from public key
+    - param:
+        - `alg`: signature algorithm, only one value __`1`__, indicating secp256k1
+        - `hash`: input message, hex string, 64 chars
+        - `sign`: signature, computed with signer's private key on `hash`
+    - return: 
+        - Nebulas address string, or `null` if failed.
+
+Example:
+```js
+'use strict';
+
+// explicitly require
+var crypto = require('crypto.js');
+
+var Contract = function() {};
+
+Contract.prototype = {
+    init: function() {},
+
+    sha256: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "a32d6d686968192663b9c9e21e6a3ba1ba9b2e288470c2f98b790256530933e0"
+        return crypto.sha256(str);
+    },
+
+    sha3256: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "564733f9f3e139b925cfb1e7e50ba8581e9107b13e4213f2e4708d9c284be75b"
+        return crypto.sha3256(str);
+    },
+
+    ripemd160: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "4236aa9974eb7b9ddb0f7a7ed06d4bf3d9c0e386"
+        return crypto.ripemd160(str);
+    },
+
+    md5: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "9954125a33a380c3117269cff93f76a7"
+        return crypto.md5(str);
+    },
+
+    base64: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "TmVidWxhcyBpcyBhIG5leHQgZ2VuZXJhdGlvbiBwdWJsaWMgYmxvY2tjaGFpbiwgYWltaW5nIGZvciBhIGNvbnRpbnVvdXNseSBpbXByb3ZpbmcgZWNvc3lzdGVtLg=="
+        return crypto.base64(str);
+    },
+
+    recoverAddress: function(alg, hash, sign) {
+        // alg = 1
+        // hash = '564733f9f3e139b925cfb1e7e50ba8581e9107b13e4213f2e4708d9c284be75b'
+        // sign = 'd80e282d165f8c05d8581133df7af3c7c41d51ec7cd8470c18b84a31b9af6a9d1da876ab28a88b0226707744679d4e180691aca6bdef5827622396751a0670c101'
+
+        // return 'n1F8QbdnhqpPXDPFT2c9a581tpia8iuF7o2'
+        return crypto.recoverAddress(alg, hash, sign);
+    }
+};
+
+module.exports = Contract;
 ```

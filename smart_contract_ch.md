@@ -198,6 +198,15 @@ Blockchain.transfer(address, value);
 // verify address
 Blockchain.verifyAddress(address);
 
+// get accout state
+Blockchain.getAccountState(address);
+
+// get previous block's hash
+Blockchain.getPreBlockHash(offset);
+
+// get previous block's random seed
+Blockchain.getPreBlockSeed(offset);
+
 ```
 
 properties:
@@ -219,6 +228,8 @@ properties:
     - 参数:
         - `address`: 接收NAS的nebulas地址
         - `value`: 交易金额，一个BigNumber对象；单位为wei，所以只能是整数，用小数会失败。
+
+        **NOTE: 从版本1.0.5(testnet)开始, `value`推荐使用`Uint`类型值。**
     - 返回值(布尔型):
         - `true`: 交易成功
         - `false`: 交易失败   
@@ -229,6 +240,22 @@ properties:
         - `87`: 用户钱包地址
         - `88`: 合约地址
         - `0`: 地址非法
+- `getAccountState(address)`（testnet): 获取账户的余额和nonce
+	- 参数:
+		- `address`: 想要获取余额的地址
+	- 返回值 (JSON 对象):
+		- `balance`: 账户的余额
+		- `nonce`: 账户的nonce
+- `getPreBlockHash(offset)`（testnet): 得到之前的块的哈希
+	- 参数:
+		- `offset`: 想要查询的块的高度和当前高度的偏移量。这个参数必须是整型，且大于0，小于当前高度。如果offset为1，表示上一个区块。
+	- 返回值(string 类型):
+		- `hash`: 区块哈希
+- `getPreBlockSeed(offset)`（testnet): 获取先前区块的随机种子
+	- 参数:
+		- `offset`: 和 Blockchain.getPreBlockHash() 中参数类似
+	- 返回值(string 类型):
+		- `seed`: 区块的随机种子
 
 使用样例:
 
@@ -274,7 +301,19 @@ SampleContract.prototype = {
     verifyAddress: function (address) {
          var result = Blockchain.verifyAddress(address);
         console.log("verifyAddress result:", result);
-    }
+    },
+	getAccountState: function (address) {
+		var state = Blockchain.getAccountState(address);
+		console.log("getAccountState result:", state);
+	},
+	getPreBlockHash: function (offset) {
+		var hash = Blockchain.getPreBlockHash(offset);
+		console.log("getPreBlockHash result", hash);
+	},
+	getPreBlockSeed: function (offset) {
+		var seed = Blockchain.getPreBlockSeed(offset);
+		console.log("getPreBlockSeed result", seed);
+	}
 };
 
 module.exports = SampleContract;
@@ -358,6 +397,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 ### Date 
+从`1.0.5`(testnet)版本开始，所有标准API均可使用。Date对象的Timezone固定为`UTC+0`，Locale固定为`en-US`。
 ```js
 "use strict";
 
@@ -376,10 +416,7 @@ module.exports = BankVaultContract;
 ```
 
 提醒：
-* 不支持的方法：`toDateString()`, `toTimeString()`, `getTimezoneOffset()`, `toLocaleXXX()`。
 * `new Date()`/`Date.now()`返回当前块的时间戳，单位为毫秒。
-* `getXXX`返回`getUTCXXX`的结果。
-
 
 ### accept
 该方法支持普通转账及转账到合约地址。`to`是智能合约地址，普通转账能成功的前提是合约声明了函数`accept()`，且该函数执行成功。 如果该转账是非普通转账，则它将被视为普通函数调用。
@@ -447,3 +484,214 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
+### Uint (v1.0.5版本开始支持, testnet)
+
+`Uint`库基于bignumber.js封装了4种无符号整型：`Uint64`、`Uint128`、`Uint256`、`Uint512`。
+
+静态属性：
+
+- `MaxValue`: 实例对象，表示具体类型的最大有效值
+
+实例方法:
+
+- `div(o)`：求商
+    - 参数:
+        - `o`: 除数, 类型必须和被除数一致
+    - 返回：运算结果，类型同被除数
+
+- `pow(o)`：幂
+    - 参数:
+        - `o`: 指数, 类型必须和底数一致
+    - 返回：运算结果，类型同底数
+
+- `minus(o)`：减
+    - 参数:
+        - `o`: 减数, 类型必须和被减数一致
+    - 返回：运算结果，类型同被减数
+
+- `mod(o)`：取模
+    - 参数:
+        - `o`: 模数, 类型必须和被模数一致
+    - 返回：运算结果，类型同被模数
+
+- `mul(o)`：乘
+    - 参数:
+        - `o`: 乘数, 类型必须和被乘数一致
+    - 返回：运算结果，类型同被乘数
+
+- `plus(o)`：加
+    - 参数:
+        - `o`: 加数, 类型必须和被加数一致
+    - 返回：运算结果，类型同被加数
+
+- `cmp(o)`：大小比较
+    - 参数:
+        - `o`: 类型必须和`this`一致
+    - 返回值:
+        - `1`: `this` 大于 `o`
+        - `0`: `this` 等于 `o`
+        - `-1`: `this` 小于 `o`
+
+- `isZero()`：零值判断
+    - 返回值:
+        - `true`: `this` 为 0
+        - `false`: `this` 不为 0
+
+- `toString(base)`:  以字符形式输出`this`值
+    - 参数:
+        - `base`: 以2 ~ 64进制格式输出, 默认10进制
+
+使用示例：
+
+```js
+'use strict';
+
+var Uint64 = Uint.Uint64;
+// var Uint128 = Uint.Uint128;
+// var Uint256 = Uint.Uint256;
+// var Uint512 = Uint.Uint512;
+
+var Contract = function() {};
+
+Contract.prototype = {
+    init: function() {},
+
+    testUint64: function() {
+        var a  = new Uint64(7);
+        var b = new Uint64("2");
+
+        return {
+            'a+b': a.plus(b).toString(10),  // 9
+            'a-b': a.minus(b).toString(10), // 5
+            'a*b': a.mul(b).toString(10),   // 14
+            'a/b': a.div(b).toString(10),   // 3
+            'a%b': a.mod(b).toString(10),   // 1
+            'a^b': a.pow(b).toString(10),   // 49
+            'a>b': a.cmp(b) == 1,           // true
+            'a==0': a.isZero(),             // false
+            'a': a.toString(),              // 7
+            'MaxUint64': Uint64.MaxValue.toString(16), // ffffffffffffffff
+        };
+    }
+};
+
+module.exports = Contract;
+```
+### require (v1.0.5版本开始支持, testnet)
+
+`require`用于加载那些NVM启动时没有装载的第三方库. 
+
+当前可用的第三方库有:
+
+* `crypto.js`
+
+典型用法:
+    
+```js
+    var crypto = require('crypto.js');
+    ...
+```
+
+### crypto (v1.0.5版本开始支持, testnet)
+
+`crypto`库提供了常用的哈希函数，需要在合约中使用`require`显式加载。
+
+APIs:
+
+- `sha256(str)`
+    - 参数:
+        - `str`: 大小写敏感字符串
+    - 返回值: 
+        - 16进制字符串, 长度64
+
+- `sha3256(str)`
+    - 参数:
+        - `str`: 大小写敏感字符串
+    - 返回值: 
+        - 16进制字符串, 长度64
+
+- `ripemd160(str)`
+    - 参数:
+        - `str`: 大小写敏感字符串
+    - 返回值: 
+        - 16进制字符串, 长度40
+
+- `md5(str)`
+    - 参数:
+        - `str`: 大小写敏感字符串
+    - 返回值: 
+        - 16进制字符串, 长度32
+
+- `base64(str)`
+    - 参数:
+        - `str`: 大小写敏感字符串
+    - 返回值: 
+        - base64编码字符串
+
+- `recoverAddress(alg, hash, sign)`: 使用公钥数据解码出签名钱包地址
+    - 参数:
+        - `alg`: 使用的签名算法，当前只有一个有效值`1`，表示使用的是secp256k1
+        - `hash`: 被签名数据，为长度64的16进制字符串
+        - `sign`: 使用私钥对`hash`签名得到的16进制字符串
+    - 返回值: 
+        - 星云钱包地址，如果失败返回`null`
+
+使用示例:
+```js
+'use strict';
+
+// explicitly require
+var crypto = require('crypto.js');
+
+var Contract = function() {};
+
+Contract.prototype = {
+    init: function() {},
+
+    sha256: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "a32d6d686968192663b9c9e21e6a3ba1ba9b2e288470c2f98b790256530933e0"
+        return crypto.sha256(str);
+    },
+
+    sha3256: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "564733f9f3e139b925cfb1e7e50ba8581e9107b13e4213f2e4708d9c284be75b"
+        return crypto.sha3256(str);
+    },
+
+    ripemd160: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "4236aa9974eb7b9ddb0f7a7ed06d4bf3d9c0e386"
+        return crypto.ripemd160(str);
+    },
+
+    md5: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "9954125a33a380c3117269cff93f76a7"
+        return crypto.md5(str);
+    },
+
+    base64: function(str) {
+        // str='Nebulas is a next generation public blockchain, aiming for a continuously improving ecosystem.'
+
+        // return "TmVidWxhcyBpcyBhIG5leHQgZ2VuZXJhdGlvbiBwdWJsaWMgYmxvY2tjaGFpbiwgYWltaW5nIGZvciBhIGNvbnRpbnVvdXNseSBpbXByb3ZpbmcgZWNvc3lzdGVtLg=="
+        return crypto.base64(str);
+    },
+
+    recoverAddress: function(alg, hash, sign) {
+        // alg = 1
+        // hash = '564733f9f3e139b925cfb1e7e50ba8581e9107b13e4213f2e4708d9c284be75b'
+        // sign = 'd80e282d165f8c05d8581133df7af3c7c41d51ec7cd8470c18b84a31b9af6a9d1da876ab28a88b0226707744679d4e180691aca6bdef5827622396751a0670c101'
+
+        // return 'n1F8QbdnhqpPXDPFT2c9a581tpia8iuF7o2'
+        return crypto.recoverAddress(alg, hash, sign);
+    }
+};
+
+module.exports = Contract;
+```
