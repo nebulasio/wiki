@@ -236,9 +236,7 @@ properties:
 - `transfer(address, value)`: transfer NAS from contract to address
 	- params:
 		- `address`: nebulas address to receive NAS
-		- `value`: transfer value, a BigNumber object. The unit is wei, only integer value is valid.
-
-        **NOTE: since v1.0.5(testnet), `Uint` is the recommended type for `value`**
+		- `value`: transfer value, a BigNumber/**Uint(recommended)** object. The unit is wei, only integer value is valid.
 	- return (boolean value):
 		- `true`: transfer success
 		- `false`: transfer failed   
@@ -249,18 +247,18 @@ properties:
 		- `87`: user wallet address
 		- `88`: smart-contract address
 		- `0`: address is invalid 
-- `getAccountState(address)`（testnet): get account's balance and nonce
+- `getAccountState(address)`: get account's balance and nonce
 	- params:
 		- `address`: whose address you want to get
 	- return (JSON object):
 		- `balance`: account's balance
 		- `nonce`: account's nonce
-- `getPreBlockHash(offset)`（testnet): get a previous block's hash
+- `getPreBlockHash(offset)`: get a previous block's hash
 	- params:
 		- `offset`: the offset between the block and current block. This param should be an integer larger then 0 and less than current height. eg: If you want to get the hash of the previous block just before current block, the offset should be set as 1.
 	- return(string value):
 		- `hash`: block hash
-- `getPreBlockSeed(offset)`（testnet): get a previous block's hash
+- `getPreBlockSeed(offset)`: get a previous block's seed
 	- params:
 		- `offset`: same as the one in Blockchain.getPreBlockHash()
 	- return(string value):
@@ -407,7 +405,7 @@ module.exports = BankVaultContract;
 ```
 
 ### Date 
-Since Nebulas v1.0.5(testnet), all standardized APIs are available. Note that the timezone is fixed to "UTC+0" and locale to "en-US".
+All standardized APIs are available. Note that the timezone is fixed to "UTC+0" and locale to "en-US".
 ```js
 "use strict";
 
@@ -493,7 +491,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-### Uint (since v1.0.5, testnet)
+### Uint
 
 The `Uint` encapsulates 4 unsigned integer types based on bignumber.js, i.e., `Uint64`, `Uint128`, `Uint256`, `Uint512`.
 
@@ -587,7 +585,7 @@ Contract.prototype = {
 module.exports = Contract;
 ```
 
-### require (since v1.0.5, testnet)
+### require
 
 The `require` function is used to explicitly load third-party libraries those Nebulas NVM doesn't load at startup. 
 
@@ -603,7 +601,7 @@ The typical usage is:
 ```
 
 
-### crypto (since v1.0.5, testnet)
+### crypto
 
 The `crypto` provides several frequently-used cryptographic hash functions. This module need to be explicitly required.
 

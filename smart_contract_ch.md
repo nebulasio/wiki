@@ -227,9 +227,7 @@ properties:
 - `transfer(address, value)`: 该函数将来自合约中的NAS发送到目的地址
     - 参数:
         - `address`: 接收NAS的nebulas地址
-        - `value`: 交易金额，一个BigNumber对象；单位为wei，所以只能是整数，用小数会失败。
-
-        **NOTE: 从版本1.0.5(testnet)开始, `value`推荐使用`Uint`类型值。**
+        - `value`: 交易金额，一个BigNumber/Uint(推荐使用)对象；单位为wei，所以只能是整数，用小数会失败。
     - 返回值(布尔型):
         - `true`: 交易成功
         - `false`: 交易失败   
@@ -397,7 +395,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 ### Date 
-从`1.0.5`(testnet)版本开始，所有标准API均可使用。Date对象的Timezone固定为`UTC+0`，Locale固定为`en-US`。
+所有标准API均可使用。Date对象的Timezone固定为`UTC+0`，Locale固定为`en-US`。
 ```js
 "use strict";
 
@@ -484,7 +482,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-### Uint (v1.0.5版本开始支持, testnet)
+### Uint
 
 `Uint`库基于bignumber.js封装了4种无符号整型：`Uint64`、`Uint128`、`Uint256`、`Uint512`。
 
@@ -577,7 +575,7 @@ Contract.prototype = {
 
 module.exports = Contract;
 ```
-### require (v1.0.5版本开始支持, testnet)
+### require
 
 `require`用于加载那些NVM启动时没有装载的第三方库. 
 
@@ -592,7 +590,7 @@ module.exports = Contract;
     ...
 ```
 
-### crypto (v1.0.5版本开始支持, testnet)
+### crypto
 
 `crypto`库提供了常用的哈希函数，需要在合约中使用`require`显式加载。
 
