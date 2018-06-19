@@ -2,9 +2,9 @@
 
 [YouTube チュートリアル](https://www.youtube.com/watch?v=Ofs4AyRaSlw)
 
-前にNebulasでスマートコントラクトをどう書くか、配備するかと呼び出すかをカバーした。
+前にNebulasでスマートコントラクトをどう書くか、配備するかと呼び出すかをカバーした。
 
-今スマートコントラクトのメモリを詳しく紹介する。Nebulasのスマートコントラクトはオンチェーンデータストレージ機能を提供している。伝統的なキー-値ストレージシステム(例: redis)に似ていて、(gas)を払うことを通じて、スマートコントラクトがNebulasに保存されることができる。
+今スマートコントラクトのメモリを詳しく紹介する。Nebulasのスマートコントラクトはオンチェーンデータストレージ機能を提供している。伝統的なキー-値ストレージシステム(例: redis)に似ていて、(gas)を払うことを通じて、スマートコントラクトがNebulasに保存されることができる。
 
 ## ローカルコントラクトストレージ
 
@@ -12,12 +12,12 @@ Nebulasのスマートコントラクト環境はストレージオブジェク�
 
 ### 基礎
 
-`LocalContractStorage`のAPIは `set`、`get`と`del`を含めている。これによってデータの保存、読み取りと削除が可能である。ストレージには数字、文字列とオブジェクトが使用できる。
+`LocalContractStorage`のAPIは `set`、`get`と`del`を含めている。これによってデータの保存、読み取りと削除が可能である。ストレージには数字、文字列とオブジェクトが使用できる。
 
 #### `LocalContractStorage` データを保存する:
 
 ```js
-// データを保存。データがJSON文字列に保存される
+// データを保存。データがJSON文字列に保存される
 LocalContractStorage.put(key, value);
 // もしくは
 LocalContractStorage.set(key, value);
@@ -26,14 +26,14 @@ LocalContractStorage.set(key, value);
 #### `LocalContractStorage` データを読み取る:
 
 ```js
-// キーから値を取得する
+// キーから値を取得する
 LocalContractStorage.get(key);
 ```
 
 #### `LocalContractStorage` データを削除する:
 
 ```js
-// データを削除、削除したのデータが読み取られることができない
+// データを削除、削除したのデータが読み取られることができない
 LocalContractStorage.del(key);
 // もしくは
 LocalContractStorage.delete(key);
@@ -55,7 +55,7 @@ SampleContract.prototype = {
         LocalContractStorage.set("name",name);
         // ナンバー(値)を保存
         LocalContractStorage.set("value", value);
-        // オブジェクトを保存
+        // オブジェクトを保存
         LocalContractStorage.set("obj", {name:name, value:value});
     },
     get: function () {
@@ -75,29 +75,29 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-### 高級
+### 高級
 
-基礎の`set`、`get`と`del`方法に加えて、`LocalContractStorage` はスマートコントラクトのプロパティーをバインドする方法も提供する。`LocalContractStorage` インターフェースを呼び出して`get`と`set`を無しに、直接にバインドしたプロパティーを読み取ると書くことができる。
+基礎の`set`、`get`と`del`方法に加えて、`LocalContractStorage` はスマートコントラクトのプロパティーをバインドする方法も提供する。`LocalContractStorage` インターフェースを呼び出して`get`と`set`を無しに、直接にバインドしたプロパティーを読み取ると書くことができる。
 
 #### バインディングプロパティー
 
-オブジェクトインスタンス、フィールド名と記述子がプロパティーをバインドすることに提供されるすべき。
+オブジェクトインスタンス、フィールド名と記述子がプロパティーをバインドすることに提供されるすべき。
 
 ##### バインディングインターフェース
 
 ```js
-// オブジェクトプロパティーを定義して記述子で`fieldname`から`obj`に名をつく。
+// オブジェクトプロパティーを定義して記述子で`fieldname`から`obj`に名をつく。
 // デフォルトdescriptorは JSON.parse/JSON.stringify記述子。
-// これをリターンする。
+// これをリターンする。
 defineProperty(obj, fieldName, descriptor);
 
 // `props`から`obj`にオブジェクトプロパティーを定義する。
 // デフォルトdescriptorは JSON.parse/JSON.stringify記述子。
-// これをリターンする。
+// これをリターンする。
 defineProperties(obj, descriptorMap);
 ```
 
-ここは一つの例としてプロパティーをスマートコントラクトにバインドする。
+ここは一つの例としてプロパティーをスマートコントラクトにバインドする。
 
 ```js
 'use strict';
@@ -108,7 +108,7 @@ var SampleContract = function () {
     LocalContractStorage.defineMapProperty(this, "size");
 
     // SampleContractの`value`プロパティーはストレージプロパティー。`value`に読み取ると書くことがチェーンに保存される。
-    // ここにはカスタマイズ`descriptor`の実装。文字列に保存され、解析中にはビッグナンバーオブジェクトをリターンする。
+    // ここにはカスタマイズ`descriptor`の実装。文字列に保存され、解析中にはビッグナンバーオブジェクトをリターンする。
     LocalContractStorage.defineMapProperty(this, "value", {
         stringify: function (obj) {
             return obj.toString();
@@ -117,7 +117,7 @@ var SampleContract = function () {
             return new BigNumber(str);
         }
     });
-    // SampleContractの多数のプロパティーがバッチでストレージプロパティーに設置されている。対応する記述子はデフォルトでJSONシリアライゼーションを使用する。
+    // SampleContractの多数のプロパティーがバッチでストレージプロパティーに設置されている。対応する記述子はデフォルトでJSONシリアライゼーションを使用する。
     LocalContractStorage.defineProperties(this, {
         name: null,
         count: null
@@ -127,11 +127,11 @@ var SampleContract = function () {
 module.exports = SampleContract;
 ```
 
-次いで、以下の例のように、これらのプロパティーを直接に読み取ると書くことができる。
+次いで、以下の例のように、これらのプロパティーを直接に読み取ると書くことができる。
 
 ```js
 SampleContract.prototype = {
-    // コントラクトを初めに配備するときに使用する。最初配備するあと、もう一度使用することはできない
+    // コントラクトを初めに配備するときに使用する。最初配備するあと、もう一度使用することはできない
     init: function (name, count, size, value) {
         // コントラクトを配備するときにデータをチェーンに保存する
         this.name = name;
@@ -140,7 +140,7 @@ SampleContract.prototype = {
         this.value = value;
     },
     testStorage: function (balance) {
-        // 値はチェーン上のストレージデータから読み取られる。そして記述子によって自動的にビッグナンバーセットに変換される
+        // 値はチェーン上のストレージデータから読み取られる。そして記述子によって自動的にビッグナンバーセットに変換される
         var amount = this.value.plus(new BigNumber(2));
         if (amount.lessThan(new BigNumber(balance))) {
             return 0
@@ -149,18 +149,18 @@ SampleContract.prototype = {
 };
 ```
 
-#### マッププロパティーをバインディングする
+#### マッププロパティーをバインディングする
 
-その上に、 `LocalContractStorage` はマッププロパティーをバインドする方法も提供する。ここは一つの例としてマッププロパティーをバインドしてスマートコントラクトに使用する。
+その上に、 `LocalContractStorage` はマッププロパティーをバインドする方法も提供する。ここは一つの例としてマッププロパティーをバインドしてスマートコントラクトに使用する。
 
 ```js
 'use strict';
 
 var SampleContract = function () {
-    // `SampleContract`のプロパティーを`userMap`にセットする。`userMap`を使用してマップデータをチェーンに保存することができる
+    // `SampleContract`のプロパティーを`userMap`にセットする。`userMap`を使用してマップデータをチェーンに保存することができる
     LocalContractStorage.defineMapProperty(this, "userMap");
 
-    // `SampleContract`のプロパティーを`userBalanceMap`にセットして、ストレージ関数とシリアル化の読み取る関数をカスタマイズに定義する。
+    // `SampleContract`のプロパティーを`userBalanceMap`にセットして、ストレージ関数とシリアル化の読み取る関数をカスタマイズに定義する。
     LocalContractStorage.defineMapProperty(this, "userBalanceMap", {
         stringify: function (obj) {
             return obj.toString();
@@ -183,7 +183,7 @@ SampleContract.prototype = {
     testStorage: function () {
         // userMapにデータを保存してチェーン上にデータをシリアライズする
         this.userMap.set("robin","1");
-        // userBalanceMapにデータを保存してカスタマイズシリアル化関数を使用してデータをチェーン上にセーブする 
+        // userBalanceMapにデータを保存してカスタマイズシリアル化関数を使用してデータをチェーン上にセーブする 
         this.userBalanceMap.set("robin",new BigNumber(1));
     },
     testRead: function () {
@@ -197,9 +197,9 @@ SampleContract.prototype = {
 module.exports = SampleContract;
 ```
 
-##### 繰り返しのマップ
+##### 繰り返しのマップ
 
-コンタクトでのマップはイテレートを対応しない。マップを往復処理する必要があれば、以下の方法を使用する: 二つのマップarrayMapとdataMapを定義する。厳密に増加しているキーとするカウンターarrayMapとキーとするデータキーdataMap。
+コンタクトでのマップはイテレートを対応しない。マップを往復処理する必要があれば、以下の方法を使用する: 二つのマップarrayMapとdataMapを定義する。厳密に増加しているキーとするカウンターarrayMapとキーとするデータキーdataMap。
 
 ```js
 "use strict";
@@ -253,6 +253,6 @@ SampleContract.prototype = {
 
 module.exports = SampleContract;
 ```
-### 次の章: チュートリアル 5
+### 次の章: チュートリアル 5
 
  [RPC APIを通じてNebulasに接続](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
