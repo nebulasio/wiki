@@ -104,7 +104,7 @@ cd rocksdb && make shared_lib && make install-shared
 
 ### Instalação Dependências Go
 
-As dependências do Go em Go-Nebulas são gerenciadas por [Dep](https://github.com/golang/dep).
+As dependências do Go em Go-Nebulas são geridas por [Dep](https://github.com/golang/dep).
 
 | Componentes | Versão | Descrição |
 |----------|-------------|-------------|
