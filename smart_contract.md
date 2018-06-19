@@ -236,9 +236,7 @@ properties:
 - `transfer(address, value)`: transfer NAS from contract to address
 	- params:
 		- `address`: nebulas address to receive NAS
-		- `value`: transfer value, a BigNumber object. The unit is wei, only integer value is valid.
-
-        **NOTE: since v1.0.5(testnet), `Uint` is the recommended type for `value`**
+		- `value`: transfer value, a BigNumber/**Uint(recommended)** object. The unit is wei, only integer value is valid.
 	- return (boolean value):
 		- `true`: transfer success
 		- `false`: transfer failed   
@@ -407,7 +405,7 @@ module.exports = BankVaultContract;
 ```
 
 ### Date 
-Since Nebulas v1.0.5(testnet), all standardized APIs are available. Note that the timezone is fixed to "UTC+0" and locale to "en-US".
+All standardized APIs are available. Note that the timezone is fixed to "UTC+0" and locale to "en-US".
 ```js
 "use strict";
 
@@ -493,7 +491,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-### Uint (since v1.0.5, testnet)
+### Uint
 
 The `Uint` encapsulates 4 unsigned integer types based on bignumber.js, i.e., `Uint64`, `Uint128`, `Uint256`, `Uint512`.
 
@@ -587,7 +585,7 @@ Contract.prototype = {
 module.exports = Contract;
 ```
 
-### require (since v1.0.5, testnet)
+### require
 
 The `require` function is used to explicitly load third-party libraries those Nebulas NVM doesn't load at startup. 
 
@@ -603,7 +601,7 @@ The typical usage is:
 ```
 
 
-### crypto (since v1.0.5, testnet)
+### crypto
 
 The `crypto` provides several frequently-used cryptographic hash functions. This module need to be explicitly required.
 
