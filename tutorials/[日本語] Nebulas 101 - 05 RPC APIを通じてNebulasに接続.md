@@ -8,7 +8,7 @@ Nebulasチェーンのリモートアクセスは[gRPC](https://grpc.io)に実�
 
 ## API
 
-RPCサーバーとHTTPサーバーを実装してGo-NebulasでAPIサービスを提供する。
+RPCサーバーとHTTPサーバーを実装してGo-NebulasでAPIサービスを提供する。
 
 ### モジュール
 
@@ -39,7 +39,7 @@ rpc {
 
 #### HTTP
 
-ここは`curl`を使用してHTTPインターフェースを呼び出すの例。
+ここは`curl`を使用してHTTPインターフェースを呼び出すの例。
 
 ##### GetNebState
 
