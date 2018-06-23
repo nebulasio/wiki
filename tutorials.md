@@ -23,9 +23,8 @@ Here is all you need to dive into Nebulas.
 - IOS NebPay SDK: https://github.com/nebulasio/neb.iOS
 
 #### Standard Token
-- Standard Protocol:
-  - NRC20: https://github.com/nebulasio/wiki/blob/master/NRC20.md
-  - NRC721: https://github.com/nebulasio/wiki/blob/master/NRC721.md
+- NRC20: https://github.com/nebulasio/wiki/blob/master/NRC20.md
+- NRC721: https://github.com/nebulasio/wiki/blob/master/NRC721.md
 
 ## Community Tools
 - Nebulearn: https://nebulearn.com/official-docs/go-nebulas (thanks to [Tehjr](https://github.com/HermantNET))
