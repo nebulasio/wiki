@@ -10,6 +10,9 @@ Here is all you need to dive into Nebulas.
 
 ## DApp
 - Tutorials: https://github.com/nebulasio/wiki/blob/master/assets/dapp-hackthon.pdf
+- Chrome Extension(Similar as MetaMask): https://github.com/nebulasio/WebExtensionWallet
+- Smart Contract: https://github.com/nebulasio/wiki/blob/master/smart_contract.md
+
 - Javascript SDK: https://github.com/nebulasio/neb.js
 - Java SDK: https://github.com/nebulasio/neb.java
 - PHP SDK: https://github.com/nebulasio/neb.php
@@ -17,8 +20,7 @@ Here is all you need to dive into Nebulas.
 - Web NebPay SDK: https://github.com/nebulasio/nebPay
 - Android NebPay SDK: https://github.com/nebulasio/neb.android
 - IOS NebPay SDK: https://github.com/nebulasio/neb.iOS
-- Chrome Extension: https://github.com/nebulasio/WebExtensionWallet
-- Smart Contract: https://github.com/nebulasio/wiki/blob/master/smart_contract.md
+
 - Standard Protocol:
   - NRC20: https://github.com/nebulasio/wiki/blob/master/NRC20.md
   - NRC721: https://github.com/nebulasio/wiki/blob/master/NRC721.md
