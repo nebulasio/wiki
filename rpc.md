@@ -498,6 +498,8 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 
 `execute_result` return value of the smart-contract function
 
+**Note:** the data length of `execute_result` is limited to 255 Bytes, if you want to receive a large return value from you smart-contract, please use  api `call` instead.
+
 ###### HTTP Example
 ```
 // Request
@@ -573,6 +575,9 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 #### Subscribe
 Return  the subscribed events of transaction & block. The request is a keep-alive connection.
+
+**Note** that `subscribe` doesn't guarantee all the new events will be received successfully, it depends on the network condition, please run a local node to use `subscribe` api. 
+
 
 | Protocol | Method | API |
 |----------|--------|-----|
