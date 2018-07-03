@@ -95,7 +95,9 @@ Return the state of the neb.
 none
 
 ###### Returns
-`chain_id` Block chain id
+`chain_id` Block chain id，
+* `1` : mainnet
+- `1001` : testnet
 
 `tail` Current neb tail hash
 
@@ -277,9 +279,11 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-   "result": "0",
-   "execute_err": "insufficient balance",
-   estimate_gas: "22208"
+   "result": {
+       "result": "0",
+       "execute_err": "insufficient balance",
+       "estimate_gas": "22208"
+   }
 }
 ```
 ***
@@ -347,7 +351,7 @@ See [LatestIrreversibleBlock](#latestirreversibleblock) response.
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", "full_fill_transaction":"true"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", "full_fill_transaction":true}'
 
 // Result
 {
@@ -494,6 +498,8 @@ Get transactionReceipt info by tansaction hash. If the transaction     not submi
 
 `execute_result` return value of the smart-contract function
 
+**Note:** the data length of `execute_result` is limited to 255 Bytes, if you want to receive a large return value from you smart-contract, please use  api `call` instead.
+
 ###### HTTP Example
 ```
 // Request
@@ -570,6 +576,9 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 #### Subscribe
 Return  the subscribed events of transaction & block. The request is a keep-alive connection.
 
+**Note** that `subscribe` doesn't guarantee all the new events will be received successfully, it depends on the network condition, please run a local node to use `subscribe` api. 
+
+
 | Protocol | Method | API |
 |----------|--------|-----|
 | gRpc |  |  Subscribe |
@@ -636,7 +645,7 @@ none
 `gas_price` gas price. The unit is 10^-18 NAS.
 
 ##### HTTP Example
-```js
+```sh
 // Request
 curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user/getGasPrice
 
@@ -673,8 +682,10 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
 
 // Result
 {
-    "gas":"20000",
-    "err":""
+    "result": {
+        "gas":"20000",
+        "err":""
+    }
 }
 ```
 ***

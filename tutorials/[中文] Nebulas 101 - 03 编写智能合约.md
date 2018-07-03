@@ -303,7 +303,7 @@ takeout: function (value) {
 
 > **验证智能合约的方法`takeout`是否执行成功**
 >
-> 在上面save方法的执行中，我们在合约`n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`中存了100NAS。此时，我们执行`takeout`函数，从中取出50NAS。合约里应该还有50NAS。我们检测下合约账户的余额来验证`takeout`方法执行是否成功。
+> 在上面save方法的执行中，我们在合约`n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`中存了100 wei(10^-18 NAS)。此时，我们执行`takeout`函数，从中取出50 wei。合约里应该还有50 wei。我们检测下合约账户的余额来验证`takeout`方法执行是否成功。
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
