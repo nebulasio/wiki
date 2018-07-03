@@ -42,39 +42,39 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 ### 시드노드 시작하기
 
-Firstly, start a seed node as the first node in local private chain.
+먼저, 로컬 체인에 첫 번째 노드인 시드 노드를 시작합니다.
 
 ```bash
 ./neb -c conf/default/config.conf
 ```
 
-### Start Miner Node
+### 마이너노드 시작하기
 
-Secondly, start a miner node connecting to the seed node. This node will generate new blocks in local private chain.
+다음으로, 시드노드와 연결되어 있는 마이너노드를 시작합니다. 이 노드는 로컬 체인에서 새 블록을 생성할 것입니다.
 
 ```bash
 ./neb -c conf/example/miner.conf
 ``` 
 
-> **How long a new block will be minted?**
+> **새 블록이 채굴되는데 얼마나 걸릴까?**
 > 
-> In Nebulas, DPoS is chosen as the temporary consensus algorithm before Proof-of-Devotion(PoD, described in [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)) is ready. In this consensus algorithm, each miner will mint new block one by one every 15 seconds.
+> 네뷸러스에서, DPoS가 기여도 증명 합의 알고리즘([기술백서](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)에서 설명되어 있는 PoD)이 준비되기 전에 임시 합의 알고리즘으로 채택되었습니다. 이 합의 알고리즘에서, 각 채굴자들은 매 15초마다 한 블록을 채굴합니다.
 > 
-> In current context, we have to wait for 315(=15*21) seconds to get a new block because there is only one miner among 21 miners defined in `conf/default/genesis.conf` working now.
+> 현재 맥락에서, 우리는 새 블록을 얻기까지 315(=15*21)초를 기다려야 합니다. 왜냐하면 지금 작동하고 있는 `conf/default/genesis.conf`에서 정의된 21명의 채굴자 중에 오직 한 명의 마이너만 존재하기 때문입니다.
 
-Once a new block minted by the miner, the mining reward will be added to the coinbase wallet address used in `conf/example/miner.conf` which is `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`.
+새 블록이 마이너에 의해 채굴되면, 채굴 보상은 `conf/example/miner.conf`에서 사용되고 있는 코인베이스 지갑 주소 `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`에 지급될 것입니다.
 
-## Interact with Nodes
+## 노드와 상호작용하기
 
-Nebulas provides developers with HTTP API, gRPC API and CLI to interact with the running nodes. Here, we will share how to send a transaction in three methods with HTTP API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin Module](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)). 
+네뷸러스는 작동하고 있는 노드와 상호작용하게 하기 위해 개발자들에게 HTTP API, gRPC API 그리고 CLI를 제공합니다. 여기, 우리는 HTTP API를 사용하여 트랜잭션을 전송하는 방법 세 가지를 볼 수 있습니다 ([API 모듈](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin 모듈](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)).
 
-> The Nebulas HTTP Lisenter is defined in the node configuration. The default port of our seed node is `8685`.
+> 네뷸러스 HTTP 리스너는 노드 설정에 정의되어있습니다. 시드노드의 기본 포트는 `8685`입니다.
 
-At first, check the sender's balance before sending a transaction.
+먼저, 트랜잭션을 전송하기 전에 전송하는 사람의 잔액을 체크합니다.
 
-### Check Account State
+### 주소 상태 체크
 
-Fetch the state of sender's account `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` with `/v1/user/accountstate` in API Module using `curl`.
+`curl`을 사용하여 API 모듈에 있는 `/v1/user/accountstate`로 전송자의 주소인 `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`의 상태를 가져옵니다.
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"}'
@@ -88,12 +88,12 @@ Fetch the state of sender's account `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE` with `
 }
 ```
 
-> **Note**
-> Type is used to check if this account is a smart contract account. `88` represents smart contract account and `87` means a non-contract account.
+> **주의사항**
+> 타입은 주소가 스마트 컨트랙트 주소인지 체크할 때 사용합니다. `88`은 스마트 컨트랙트 주소를 나타내고, `87`은 일반 주소를 나타냅니다.
 
-As we see, the receiver has been rewarded some tokens for mining new blocks.
+우리가 보았듯이, 받는 사람은 새 블록을 채굴함으로써 일정량의 토큰을 보상받습니다.
 
-Then let's check the receiver's account state.
+그럼 받는 사람의 주소 상태를 체크하겠습니다.
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"your_address"}'
@@ -108,17 +108,17 @@ Then let's check the receiver's account state.
 }
 ```
 
-The new account doesn't have tokens as expected.
+새 주소는 예상한대로 토큰을 가지고 있지 않습니다.
 
-### Send a Transaction
+### 트랜잭션 전송하기
 
-Now let’s send a transaction in three methods to transfer some tokens from the sender to the receiver!
+세 가지 방법으로 일정량의 토큰을 전송하는 트랜잭션을 전송해보겠습니다.
 
-#### Sign & Send
+#### 서명 & 전송
 
-In this way, we can sign a transaction in an offline environment and then submit it to another online node. This is the safest method for everyone to submit a transaction without exposing your own private key to the Internet. 
+이 방법은, 오프라인 환경에서 트랜잭션에 서명할 수 있고 또다른 온라인 노드에 그 트랜잭션을 제출할 수 있습니다. 이것은 인터넷에 자신의 프라이빗 키를 노출시키지 않고 트랜잭션을 보내는 안전한 방법입니다.
 
-First, sign the transaction to get raw data.
+먼저, 정제되지 않은 데이터를 얻기 위해 트랜잭션에 서명합니다.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/sign -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}, "passphrase":"passphrase"}'
@@ -126,10 +126,10 @@ First, sign the transaction to get raw data.
 {"result":{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}}
 ```
 
-> **Note**
-> Nonce is an very important attribute in a transaction. It's designed to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack). For a given account, only after its transaction with nonce N is accepted, will its transaction with nonce N+1 be processed. Thus, we have to check the latest nonce of the account on chain before preparing a new transaction.
+> **주의사항**
+논스는 트랜잭션에서 매우 중요한 속성입니다. 이것은 [리플레이 어택](https://en.wikipedia.org/wiki/Replay_attack)을 막기 위해 설계되었습니다. 주어진 주소에 대해서, 논스 N을 가지고 있는 트랜잭션이 승인된 후에, 논스 N+1이 된 트랜잭션이 진행될 것입니다. 그러므로, 새 트랜잭션을 준비하기 전에 체인에서 주소의 가장 최신 논스를 체크해야 합니다.
 
-Then, send the raw data to an online Nebulas node.
+그 때, 온라인 네뷸러스 노드에 정제되지 않은 데이터를 보냅니다.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/rawtransaction -d '{"data":"CiAbjMP5dyVsTWILfXL1MbwZ8Q6xOgX/JKinks1dpToSdxIaGVcH+WT/SVMkY18ix7SG4F1+Z8evXJoA35caGhlXbip8PupTNxwV4SRM87r798jXWADXpWngIhAAAAAAAAAAAA3gtrOnZAAAKAEwuKuC1wU6CAoGYmluYXJ5QGRKEAAAAAAAAAAAAAAAAAAPQkBSEAAAAAAAAAAAAAAAAAAehIBYAWJBVVuRHWSNY1e3bigbVKd9i6ci4f1LruDC7AUtXDLirHlsmTDZXqjSMGLio1ziTmxYJiLj+Jht5RoZxFKqFncOIQA="}'
@@ -137,13 +137,13 @@ Then, send the raw data to an online Nebulas node.
 {"result":{"txhash":"1b8cc3f977256c4d620b7d72f531bc19f10eb13a05ff24a8a792cd5da53a1277","contract_address":""}}⏎
 ```
 
-#### Send with Passphrase
+#### 비밀번호와 함께 전송하기
 
-If you trust a Nebulas node so much that you can delegate your keystore files to it, the second method is a good fit for you.
+키스토어 파일을 위임할 수 있을 정도로 네뷸러스 노드를 신뢰한다면, 두 번째 방법이 좋은 방법이 될 것입니다.
 
-First, upload your keystore files to the keydir folders in the trusted Nebulas node.
+첫 번째로, 키스토어 파일을 믿을 수 있는 네뷸러스 노드에 있는 keydir 폴더에 업로드합니다.
 
-Then, send the transaction with your passphrase.
+그 때, 비밀번호와 함께 트랜잭션을 전송합니다.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transactionWithPassphrase -d '{"transaction":{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":2,"gasPrice":"1000000","gasLimit":"2000000"},"passphrase":"passphrase"}'
@@ -151,17 +151,17 @@ Then, send the transaction with your passphrase.
 {"result":{"txhash":"3cdd38a66c8f399e2f28134e0eb556b292e19d48439f6afde384ca9b60c27010","contract_address":""}}
 ```
 
-> **Note**
-> Because we have sent a transaction with nonce 1 from the account `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`, new transaction with same `from` should be increased by 1, namely 2.
+> **주의사항**
+> 주소 `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`로부터 논스 1의 트랜잭션을 전송했기 때문에, 같은 `from`의 새로운 트랜잭션은 1이 증가한 2가 됩니다.
 
-#### Unlock & Send
+#### 잠금해제 & 전송
 
-This is the most dangerous method. You probably shouldn’t use it unless you have complete trust in the receiving Nebulas node.
+이것은 가장 위험한 방법입니다. 네뷸러스 노드를 받음에 있어서 신뢰를 완성시키지 않았다면 이 방법을 사용하지 말아야할 것입니다.
 
-First, upload your keystore files to the keydir folders in the trusted Nebulas node.
+먼저, 신뢰된 네뷸러스 노드의 keydir 폴더에 키스토어 파일을 업로드합니다.
 
-Then unlock your accounts with your passphrase for a given duration in the node.
-The unit of the duration is nano seconds (300000000000=300s).
+그 때, 노드에서 주어진 시간동안 비밀번호와 함께 주소는 언락합니다.
+시간의 단위는 나노세컨드입니다 (300000000000=300s).
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","passphrase":"passphrase","duration":"300000000000"}'
@@ -169,7 +169,7 @@ The unit of the duration is nano seconds (300000000000=300s).
 {"result":{"result":true}}
 ```
 
-After unlocking the account, everyone is able to send any transaction directly within the duration in that node without your authorization.
+주소를 잠금해제한 후에, 아무나 권한 없이 그 노드에서 일정기간동안 직접적으로 어떤 트랜잭션이라도 전송할 수 있다.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/transaction -d '{"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5", "value":"1000000000000000000","nonce":3,"gasPrice":"1000000","gasLimit":"2000000"}'
@@ -177,9 +177,9 @@ After unlocking the account, everyone is able to send any transaction directly w
 {"result":{"txhash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","contract_address":""}}⏎
 ```
 
-## Transaction Receipt
+## 트랜잭션 영수증
 
-We'll get a `txhash` in three methods after sending a transaction successfully. The `txhash` value can be used to query the transaction status.
+세 가지 방법으로 성공적으로 트랜잭션을 전송한 후에 `txhash`를 얻을 것입니다. `txhash` 값은 트랜잭션 상태를 쿼리하는데 사용될 수 있습니다.
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf"}'
@@ -187,15 +187,15 @@ We'll get a `txhash` in three methods after sending a transaction successfully. 
 {"result":{"hash":"8d69dea784f0edfb2ee678c464d99e155bca04b3d7e6cdba6c5c189f731110cf","chainId":100,"from":"n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE","to":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","value":"1000000000000000000","nonce":"3","timestamp":"1524667888","type":"binary","data":null,"gas_price":"1000000","gas_limit":"2000000","contract_address":"","status":1,"gas_used":"20000"}}⏎
 ```
 
-The `status` fields may be 0, 1 or 2.
+`status` 필드는 0, 1 혹은 2가 될 수 있습니다.
 
-- **0: Failed.** It means the transaction has been submitted on chain but its execution failed.
-- **1: Successful.** It means the transaction has been submitted on chain and its execution successeed.
-- **2: Pending.** It means the transaction hasn't been packed into a block.
+- **0: 실패.** 트랜잭션이 체인에 제출되었지만 실행이 실패했음을 의미합니다.
+- **1: 성공.** 트랜잭션이 체인에 제출되었고 실행이 성공했음을 의미합니다.
+- **2: 대기.** 트랜잭션이 블록에 제출되지 않았음을 의미합니다.
 
-### Double Check
+### 이중 체크
 
-Let's double check the receiver's balance. 
+받은 사람의 잔액을 이중 체크합니다.
 
 ```bash
 > curl -i -H Accept:application/json -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5"}'
@@ -203,8 +203,8 @@ Let's double check the receiver's balance.
 {"result":{"balance":"3000000000000000000","nonce":"0","type":87}}
 ```
 
-Here you should see a balance that is the total of all the successful transfers that you executed.
+여기에서 실행한 모든 성공적인 전송의 합계를 볼 수 있습니다.
 
-### Next step: Tutorial 3
+### 다음 단계: 튜토리얼 3
 
- [Write and run a smart contract with JavaScript](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
+ [자바스크립트로 스마트 컨트랙트 작성 및 실행하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)
