@@ -256,4 +256,4 @@ module.exports = SampleContract;
 ```
 ### 다음 단계: 튜토리얼 5
 
- [RPC API로 네뷸러스와 상호작용하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
+ [RPC API로 Nebulas와 상호작용하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
