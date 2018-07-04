@@ -247,7 +247,7 @@ Example of deploying a smart contract using curl:
 ```
 
 The return value for deploying a smart contract is the transaction's hash address `txhash`, and the contract's deployment address is `contract_address`.
-Getting the return value does not guarantee a successful deployment of the contract, because sendTransaction () is an asynchronous process, which needs to be packaged by the miner. Just as the previous transfer transaction, the transfer does not arrive in real time, it depends on the speed of the miner packing. Therefore we need to wait for a while (about 1 minute), then you can verify whether the contract was deployed successfully by querying the contract address or calling this smart contract.
+Getting the return value does not guarantee a successful deployment of the contract, because sendTransaction() is an asynchronous process, which needs to be packaged by the miner. Just as the previous transfer transaction, the transfer does not arrive in real time, it depends on the speed of the miner packing. Therefore we need to wait for a while (about 1 minute), then you can verify whether the contract was deployed successfully by querying the contract address or calling this smart contract.
 
 > **Verify if the deployment of the contract was successful**
 >
@@ -273,7 +273,7 @@ In the screenshot below, you can see the steps for deploying your smart contract
 - Paste your contract code in the input box.
 - Select your wallet file located in the directory `keydir`
 - Unlock your wallet with the passphrase you created
-- To botain gas for your webwalleton the testnet visit (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
+- To obtain gas for your web-wallet on the testnet visit (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
 - Click the `Test` or `Submit` button
 
 ![Deploy contract using Web wallet](resources/101-03-deploy_contract_webwallet.png)
