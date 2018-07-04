@@ -52,7 +52,7 @@ SampleContract.prototype = {
     },
     set: function (name, value) {
         // Storing a string
-        LocalContractStorage.set("name",name);
+        LocalContractStorage.set("name", name);
         // Storing a number (value)
         LocalContractStorage.set("value", value);
         // Storing an objects
