@@ -30,7 +30,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 유의사항: GOPATH는 여러분이 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, 당신의 go 프로젝트는 GOPATH 디렉토리에 위치해야 합니다.
+> 유의사항: GOPATH는 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, go 프로젝트는 GOPATH 디렉토리에 위치해야 합니다.
 
 ### Linux
 
