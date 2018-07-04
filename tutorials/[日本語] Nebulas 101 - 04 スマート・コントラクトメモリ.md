@@ -255,4 +255,4 @@ module.exports = SampleContract;
 ```
 ### 次の章: チュートリアル 5
 
- [RPC APIを通じてNebulasに接続](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2005%20Interacting%20with%20Nebulas%20by%20RPC%20API.md)
+ [RPC APIを通じてNebulasに接続](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E6%97%A5%E6%9C%AC%E8%AA%9E%5D%20Nebulas%20101%20-%2005%20RPC%20API%E3%82%92%E9%80%9A%E3%81%98%E3%81%A6Nebulas%E3%81%AB%E6%8E%A5%E7%B6%9A.md)
