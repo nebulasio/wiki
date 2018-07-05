@@ -2,11 +2,11 @@
 
 [유튜브 튜토리얼 링크](https://www.youtube.com/watch?v=qtjss2LzSI4&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
 
-[네뷸러스](https://nebulas.io/) 프로젝트 코드는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 로컬에서 프라이빗 체인을 컴파일하기 위해 네뷸러스 소스 코드를 설치할 수 있습니다.
+[네뷸러스](https://nebulas.io/) 프로젝트 코드는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 로컬에서 프라이빗 체인을 컴파일하기 위해 네뷸러스 소스코드를 설치할 수 있습니다.
 
-네뷸러스에 대해 더 알고 싶으면 [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf)를 읽어보세요.
+네뷸러스에 대해 더 알고 싶으면 [일반 백서](https://nebulas.io/docs/NebulasWhitepaper.pdf)를 읽어보세요.
 
-좀 더 기술적으로 알아보고 싶다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃헙 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
+좀 더 기술적으로 알아보고 싶다면 [기술 백서](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃헙 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
 
 > 네뷸러스는 아직 맥과 리눅스에서만 동작합니다. 곧 윈도우 버전도 배포될 예정입니다.
 

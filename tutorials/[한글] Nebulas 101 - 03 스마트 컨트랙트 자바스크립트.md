@@ -70,7 +70,7 @@ var BankVaultContract = function () {
   });
 };
 
-// save value to contract, only after height of block, users can withdraw
+// 컨트랙트에 돈을 저장합니다. 유저는 블록 높이 이후에 인출할 수 있습니다.
 BankVaultContract.prototype = {
   init: function () {
     //TODO:
@@ -354,4 +354,4 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ### 다음 단계: 튜토리얼 4
 
- [스마트 컨트랙트 저장소](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2004%20스마트컨트랙트%20저장소.md)
+ [스마트 컨트랙트 저장소](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2004%20스마트%20컨트랙트%20저장소.md)

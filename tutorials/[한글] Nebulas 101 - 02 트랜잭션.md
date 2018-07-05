@@ -60,7 +60,7 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 > 
 > 네뷸러스에서, DPoS가 기여도 증명 합의 알고리즘([기술백서](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)에서 설명되어 있는 PoD)이 준비되기 전에 임시 합의 알고리즘으로 채택되었습니다. 이 합의 알고리즘에서, 각 채굴자들은 매 15초마다 한 블록을 채굴합니다.
 > 
-> 현재 맥락에서, 우리는 새 블록을 얻기까지 315(=15*21)초를 기다려야 합니다. 왜냐하면 지금 작동하고 있는 `conf/default/genesis.conf`에서 정의된 21명의 채굴자 중에 오직 한 명의 마이너만 존재하기 때문입니다.
+> 현재 맥락에서, 새 블록을 얻기까지 315(=15*21)초를 기다려야 합니다. 왜냐하면 지금 작동하고 있는 `conf/default/genesis.conf`에서 정의된 21명의 채굴자 중에 오직 한 명의 마이너만 존재하기 때문입니다.
 
 새 블록이 마이너에 의해 채굴되면, 채굴 보상은 `conf/example/miner.conf`에서 사용되고 있는 코인베이스 지갑 주소 `n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE`에 지급될 것입니다.
 
@@ -207,4 +207,4 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 ### 다음 단계: 튜토리얼 3
 
- [자바스크립트로 스마트 컨트랙트 작성 및 실행하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2003%20스마트컨트랙트%20자바스크립트.md)
+ [자바스크립트로 스마트 컨트랙트 작성 및 실행하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2003%20스마트%20컨트랙트%20자바스크립트.md)

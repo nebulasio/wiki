@@ -151,7 +151,7 @@ SampleContract.prototype = {
 
 #### 맵 프로퍼티 바인딩
 
-게다가, `LocalContractStorage`는 맵 프로퍼티를 바인딩하는 메소드를 제공합니다. 맵 프로퍼티를 바인딩하고 스마트 컨트랙트에서 그것을 사용하는 예제입니다.
+게다가, `LocalContractStorage`는 맵 프로퍼티를 바인딩하는 메소드를 제공합니다. 맵 프로퍼티를 바인딩하고 스마트 컨트랙트에서 사용하는 예제입니다.
 
 ```js
 'use strict';

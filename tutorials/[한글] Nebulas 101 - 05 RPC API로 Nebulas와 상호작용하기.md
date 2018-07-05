@@ -129,7 +129,7 @@ if err != nil {
 더 많은 인터페이스를 보고 싶으면 공식 문서를 참조해주세요:
 
 - [API 모듈](https://github.com/nebulasio/wiki/blob/master/rpc.md)
-- [Admin 모듈](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md).
+- [Admin 모듈](https://github.com/nebulasio/wiki/blob/master/rpc_admin.md)
 
 ### 다음
 
