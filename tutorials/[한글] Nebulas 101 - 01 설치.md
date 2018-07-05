@@ -2,17 +2,17 @@
 
 [유튜브 튜토리얼 링크](https://www.youtube.com/watch?v=qtjss2LzSI4&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R)
 
-[네뷸러스](https://nebulas.io/)에 대한 프로젝트 코드는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 여러분은 로컬에서 프라이빗 블록체인을 컴파일하기 위해 네뷸러스 소스 코드를 다운로드할 수 있습니다.
+[네뷸러스](https://nebulas.io/) 프로젝트 코드는 여러가지 버전으로 배포되었고 로컬에서의 실행을 위해 테스트되었습니다. 로컬에서 프라이빗 체인을 컴파일하기 위해 네뷸러스 소스 코드를 설치할 수 있습니다.
 
 네뷸러스에 대해 더 알고 싶으면 [Non-Technical White Paper](https://nebulas.io/docs/NebulasWhitepaper.pdf)를 읽어보세요.
 
-만약 좀 더 기술적으로 알아보고 싶다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃허브 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
+좀 더 기술적으로 알아보고 싶다면 [Technical White Paper](https://nebulas.io/docs/NebulasTechnicalWhitepaper.pdf)와 네뷸러스 [깃헙 코드](https://github.com/nebulasio/go-nebulas)를 읽어보세요.
 
-> 네뷸러스는 아직까지는 맥과 리눅스에서만 동작합니다. 곧 윈도우 버전도 배포될 예정입니다.
+> 네뷸러스는 아직 맥과 리눅스에서만 동작합니다. 곧 윈도우 버전도 배포될 예정입니다.
 
 ## Golang 환경
 
-네뷸러스는 Golang로 구현되었습니다.
+네뷸러스는 Golang으로 구현되었습니다.
 
 | Components | Version | Description |
 |----------|-------------|-------------|
@@ -30,7 +30,7 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 유의사항: GOPATH는 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, go 프로젝트는 GOPATH 디렉토리에 위치해야 합니다.
+> 유의사항: GOPATH는 직접 정할 수 있는 로컬 golang 디렉토리입니다. GOPATH를 설정한 후, go 프로젝트는 GOPATH 디렉토리에 있어야 합니다.
 
 ### Linux
 
@@ -50,7 +50,7 @@ export GOPATH=/path/to/workspace
 
 ### 다운로드
 
-다음 명령어로 소스 코드를 클론합니다.
+다음 명령어로 소스코드를 클론합니다.
 
 ```bash
 # 작업영역 진입
@@ -133,7 +133,7 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make dep
 ```
 
-> `make dep`은 꽤 많은 의존성 모듈을 다운로드하기 때문에 처음 다운로드하는 경우라면 시간이 좀 걸릴 수 있습니다. 몇몇 의존성 모듈은 다운로드가 실패할 수 있는데 이 경우에는 압축된 의존성 모듈 파일을  [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리에서 압축을 풀면 됩니다.
+> `make dep`은 꽤 많은 의존성 모듈을 다운로드하기 때문에 처음 다운로드하는 경우 시간이 걸릴 수 있습니다. 몇몇 의존성 모듈은 다운로드가 실패할 수 있는데 이 경우에는 압축된 의존성 모듈 파일을 [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리에서 압축을 풀면 됩니다.
 > ```bash
 > vendor.tar.gz
 > MD5: c2c1ff9311332f90e11fb81b48ca0984
@@ -165,7 +165,7 @@ make build
 
 ### 제너시스 블록
 
-새로운 네뷸러스 블록체인을 시작하기 전에, 먼저 제너시스 블록에 대한 설정을 해야 합니다.
+새로운 네뷸러스 블록체인을 시작하기 전에, 먼저 제너시스 블록의 구성을 정의해야 합니다.
 
 #### 제너시스 블록 설정
 
@@ -201,7 +201,7 @@ genesis.conf의 많은 예시는 `conf/default/genesis.conf`에 있습니다.
 
 ### 설정
 
-neb 노드를 시작하기 전에, 이 노드의 설정을 정의해야 합니다.
+neb 노드를 시작하기 전에, 이 노드의 구성을 정의해야 합니다.
 
 #### Neb 노드 설정
 
@@ -304,7 +304,7 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 시작한 후, 다음과 같이 터미널에서 보여야 합니다:
 ![seed node start](resources/101-01-seed-node-start.png)
 
-기본으로, `conf/default/config.conf`를 사용하는 노드는 새 블럭을 채굴하지 않을 것입니다. 다른 명령어로 첫 네뷸러스 마이닝 노드를 시작하세요.
+기본적으로, `conf/default/config.conf`를 사용하는 노드는 새 블럭을 채굴하지 않을 것입니다. 아래 명령어로 첫 네뷸러스 마이닝 노드를 시작하세요.
 
 ```bash
 cd $GOPATH/src/github.com/nebulasio/go-nebulas
