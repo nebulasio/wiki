@@ -4,7 +4,7 @@
 
 네뷸러스 체인 노드는 RPC를 통해 원격으로 접근하고 제어할 수 있습니다. 네뷸러스 체인은 노드 정보와 주소 잔액을 얻고, 트랜잭션을 전송하고 스마트 컨트랙트를 배포하기 위한 일련의 API를 제공합니다.
 
-[gRPC](https://grpc.io)에 의해서 네뷸러스 체인의 원격 접근은 구현됩니다. 또한 프록시 ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway))를 통해 HTTP에 의해 접근될 수 있습니다. HTTP 접근은 gRPC 인터페이스와 같은 매개변수를 가진 RESTful에 의해 구현된 인터페이스입니다.
+[gRPC](https://grpc.io)에 의해 네뷸러스 체인의 원격 접근이 구현됩니다. 또한 프록시 ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway))를 통해 HTTP에 의해 접근될 수 있습니다. HTTP 접근은 gRPC 인터페이스와 같은 매개변수를 가진 RESTful에 의해 구현된 인터페이스입니다.
 
 ## API
 
@@ -53,7 +53,7 @@ rpc {
 
 ##### UnlockAccount
 
-메모리에서 주소를 잠금해제하기 위해 Admin 모듈에서 `UnlockAccount`를 호출할 수 있습니다. 모든 잠금해제된 주소들은 비밀번호 없이 직접 트랜잭션을 전송하는데 사용될 수 있습니다.
+메모리에서 주소를 언락하기 위해 Admin 모듈에서 `UnlockAccount`를 호출할 수 있습니다. 모든 언락된 주소들은 비밀번호 없이 직접 트랜잭션을 전송하는데 사용될 수 있습니다.
 
 ```bash
 > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/admin/account/unlock -d '{"address":"n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz", "passphrase": "passphrase"}'
@@ -97,7 +97,7 @@ if err != nil {
 
 ##### LockAccount
 
-주소 `n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz`는 위 HTTP 요청을 통해 `v1/admin/account/unlock`을 호출한 후 잠금해제됩니다. 다시 잠금하기 위해 Admin 모듈에서 `LockAccount`를 호출할 수 있습니다.
+주소 `n1NrMKTYESZRCwPFDLFKiKREzZKaN1nhQvz`는 위 HTTP 요청을 통해 `v1/admin/account/unlock`을 호출한 후 언락됩니다. 다시 잠금하기 위해 Admin 모듈에서 `LockAccount`를 호출할 수 있습니다.
 
 ```go
 import(
@@ -133,7 +133,7 @@ if err != nil {
 
 ### 다음
 
-잘하셨습니다! 네뷸러스를 즐기기 위해 공식 테스트넷 혹은 메인넷에 참여해주세요!
+수고하셨습니다! 네뷸러스를 즐기기 위해 공식 테스트넷 혹은 메인넷에 참여해주세요!
 
  [테스트넷 참여](https://github.com/nebulasio/wiki/blob/master/testnet.md)
  [메인넷 참여](https://github.com/nebulasio/wiki/blob/master/mainnet.md)
