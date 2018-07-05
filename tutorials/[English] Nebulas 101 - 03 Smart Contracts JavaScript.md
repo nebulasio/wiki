@@ -273,7 +273,7 @@ In the screenshot below, you can see the steps for deploying your smart contract
 - Paste your contract code in the input box.
 - Select your wallet file located in the directory `keydir`
 - Unlock your wallet with the passphrase you created
-- To obtain gas for your web-wallet on the testnet visit (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
+- To obtain gas for your web-wallet on the testnet visit [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/)
 - Click the `Test` or `Submit` button
 
 ![Deploy contract using Web wallet](resources/101-03-deploy_contract_webwallet.png)

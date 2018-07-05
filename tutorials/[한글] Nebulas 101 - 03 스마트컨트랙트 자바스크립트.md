@@ -14,7 +14,7 @@
 4. 트랜잭션을 전송하고 트랜잭션 전송이 성공했는지 확인합니다.
 
 위 내용에 의구심이 든다면 이전의 관련된 챕터를 다시 읽어야 합니다.
-다음 단계를 따라 스마트 컨트랙을 사용하는 법을 배울 것입니다.
+다음 단계를 따라 스마트 컨트랙트를 사용하는 법을 배울 것입니다.
 
 1. 스마트 컨트랙트를 작성합니다.
 2. 커맨드라인 혹은 웹 지갑을 사용하여 스마트 컨트랙트를 배포합니다.
@@ -212,7 +212,7 @@ takeout: function (value) {
 
 ## 커맨드라인을 사용하여 스마트 컨트랙트 배포하기
 
-위에서 네뷸러스 안에서 스마트 컨트랙트를 어떻게 작성하는지 설명했습니다. 그리고나서 체인에 스마트 컨트랙트를 배포하는 것이 필요합니다. 먼저, 네뷸러스에서 트랜잭션을 어떻게 만드는지 알아봤고, 트랜잭션을 전송하기 위해 `sendTransaction()` 인터페이스를 사용했습니다. 네뷸러스 안에서 스마트 컨트랙트를 배포하는 것은 단지 다른 매개변수로 `sendTransaction()` 인터페이스를 호출함으로써 트랜잭션을 전송할 수 있습니다.
+위에서 네뷸러스 안에서 스마트 컨트랙트를 어떻게 작성하는지 설명했습니다. 그리고나서 체인에 스마트 컨트랙트를 배포해야 합니다. 먼저, 네뷸러스에서 트랜잭션을 어떻게 만드는지 알아봤고, 트랜잭션을 전송하기 위해 `sendTransaction()` 인터페이스를 사용했습니다. 네뷸러스 안에서 스마트 컨트랙트를 배포하는 것은 단지 다른 매개변수로 `sendTransaction()` 인터페이스를 호출하는 것으로 트랜잭션을 전송할 수 있습니다.
 
 ```js
 // transaction - from, to, value, nonce, gasPrice, gasLimit, contract
@@ -226,7 +226,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 - `value`: 컨트랙트를 배포할 때, `"0"`이 되어야 합니다.
 - `nonce`: 생성자의 주소 상태의 현재 논스에서 1이 더 큰 값입니다. 논스는 [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate)에서 얻을 수 있습니다.
 - `gasPrice`: gasPrice는 스마트 컨트랙트를 배포할 때 사용합니다. gasPrice는 [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice)에서 얻을 수 있습니다. 혹은 기본값으로 `"1000000"`을 사용합니다.
-- `gasLimit`: 스컨트랙트 배포를 위한 gasLimit. [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)에서 추정되는 가스 소비를 얻을 수 있고, 기본값을 사용할 수 없습니다. 또한 큰 값으로 설정할 수 있습니다. 실제 가스 소비는 배포가 실행되면서 결정됩니다.
+- `gasLimit`: 스마트 컨트랙트 배포를 위한 gasLimit. [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)에서 추정되는 가스 소비를 얻을 수 있고, 기본값을 사용할 수 없습니다. 또한 큰 값으로 설정할 수 있습니다. 실제 가스 소비는 배포가 실행되면서 결정됩니다.
 - `contract`: 컨트랙트 정보. 매개변수는 컨트랙트가 배포될 때 전달됩니다.
   - `source`: 컨트랙트 코드
   - `sourceType`: 컨트랙트 코드 타입, `js`와 `ts` (자바스크립트와 타입스크립트 코드가 각각 해당됩니다)
@@ -246,7 +246,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 ```
 
 스마트 컨트랙트를 배포하는 반환값은 트랜잭션의 해쉬 주소인 `txhash`이고, 컨트랙트 배포 주소는 `contract_address`입니다.
-반환값을 얻는 것은 컨트랙트가 성공적으로 배포되었다는 것을 보장하지 않습니다. 왜냐하면 `sendTransaction()`가 비동기 과정이기 때문에 채굴자에게 모아져야 합니다. 이전의 전송 트랜잭션으로써, 그 전소은 실시간으로 도착하지 않습니다. 이것은 채굴자의 packing 속도에 의존합니다. 따라서 잠시 기다려야 합니다 (약 1분), 그리고나서 컨트랙트 주소를 쿼리하고 스마트 컨트랙트를 호출함으로써 컨트랙트가 성공적으로 배포되었는지 확인할 수 있습니다.
+반환값을 얻는 것은 컨트랙트가 성공적으로 배포되었다는 것을 보장하지 않습니다. 왜냐하면 `sendTransaction()`가 비동기 과정이기 때문에 채굴자에게 패키징되어야합니다. 이전의 전송 트랜잭션으로써, 그 전송은 실시간으로 도착하지 않습니다. 이것은 채굴자의 패키징 속도에 의존합니다. 따라서 잠시 기다려야 합니다 (약 1분), 그리고나서 컨트랙트 주소를 쿼리하고 스마트 컨트랙트를 호출하는 것으로 컨트랙트가 성공적으로 배포되었는지 확인할 수 있습니다.
 
 > **컨트랙트 배포가 성공했는지 확인하기**
 >
@@ -272,8 +272,8 @@ sendTransactionWithPassphrase(transaction, passphrase)
 - `Contract`를 클릭하고 메뉴에서 `Deploy`를 클릭합니다.
 - 입력칸에 컨트랙트 코드를 붙혀넣습니다.
 - `keydir` 디렉토리 안에 위치한 지갑 파일을 선택합니다.
-- 생성한 비밀번호로 지갑을 잠금해제합니다.
-- 웹 지갑에서 가스를 얻고 싶으면 (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]를 방문하세요.
+- 생성한 비밀번호로 지갑을 언락합니다.
+- 웹 지갑에서 가스를 얻고 싶으면 [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/)를 방문하세요.
 - `Test` 혹은 `Submit` 버튼을 클릭하세요.
 
 ![웹 지갑을 사용하여 컨트랙트 배포하기](resources/101-03-deploy_contract_webwallet.png)
@@ -293,7 +293,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 - `value`: 스마트 컨트랙트에 전송할 때 사용되는 돈의 양
 - `nonce`: 생성자의 주소 상태의 현재 논스에서 1이 더 큰 값입니다. 논스는 [`GetAccountState`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getaccountstate)에서 얻을 수 있습니다.
 - `gasPrice`: gasPrice는 스마트 컨트랙트를 배포할 때 사용합니다. gasPrice는 [`GetGasPrice`](https://github.com/nebulasio/wiki/blob/master/rpc.md#getgasprice)에서 얻을 수 있습니다. 혹은 기본값으로 `"1000000"`을 사용합니다.
-- `gasLimit`: 스컨트랙트 배포를 위한 gasLimit. [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)에서 추정되는 가스 소비를 얻을 수 있고, 기본값을 사용할 수 없습니다. 또한 큰 값으로 설정할 수 있습니다. 실제 가스 소비는 배포가 실행되면서 결정됩니다.
+- `gasLimit`: 스마트 컨트랙트 배포를 위한 gasLimit. [`EstimateGas`](https://github.com/nebulasio/wiki/blob/master/rpc.md#estimateGas)에서 추정되는 가스 소비를 얻을 수 있고, 기본값을 사용할 수 없습니다. 또한 큰 값으로 설정할 수 있습니다. 실제 가스 소비는 배포가 실행되면서 결정됩니다.
 - `contract`: 컨트랙트 정보. 매개변수는 컨트랙트가 배포될 때 전달됩니다.
   - `function`: 호출되는 컨트랙트 메소드
   - `args`: 컨트랙트 생성 메소드를 위한 매개변수. 매개변수가 없다면 빈 문자열을 사용하고 매개변수가 있다면 하나의 JSON 배열을 사용합니다.
@@ -324,7 +324,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 ```
 
 > **컨트랙트 메소드 `takeout`의 실행이 성공했다는 것 확인하기**
-> In the execution of the above contract method `save`, we deposited 100 wei (10^-18 NAS) to the smart contract `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`. Using the contract method `takeout`, we will withdraw 50 wei from 100 wei. The balance of the smart contract should be 50 wei now.
+> 위 컨트랙트 `save` 메소드에서, 스마트 컨트랙트 `n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM`에 100 wei (10^-18 NAS)를 입금했습니다. 컨트랙트 `takeout` 메소드를 사용해서, 100 wei에서 50 wei를 인출할 것입니다. 스마트 컨트랙트의 잔액은 50 wei이 되어야 합니다.
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/accountstate -d '{"address":"n1rVLTRxQEXscTgThmbTnn2NqdWFEKwpYUM"}'
 >
@@ -354,4 +354,4 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ### 다음 단계: 튜토리얼 4
 
- [스마트 컨트랙트 저장소](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2004%20Smart%20Contract%20Storage.md)
+ [스마트 컨트랙트 저장소](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2004%20스마트컨트랙트%20저장소.md)

@@ -228,7 +228,7 @@ En la captura de pantalla abajo puedes ver los pasos para desplegar su código d
 - Pegue su código en input caja
 - Seleccione su archivo de cartera, ubicación predeterminada es `keydir`
 - Desbloquee su cartera con el contraseña que has creado
-- Para obtener gas para usar su cartera en testnet visita  (https://testnet.nebulas.io/claim/)[https://testnet.nebulas.io/claim/]
+- Para obtener gas para usar su cartera en testnet visita [https://testnet.nebulas.io/claim/](https://testnet.nebulas.io/claim/)
 - Clic el `Test` o `Submit` botón
 
 ![Despliegue contrato usando Web wallet](resources/101-03-deploy_contract_webwallet.png)
