@@ -318,5 +318,5 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 
 ### 다음 단계: 튜토리얼 2
 
-[네뷸러스에서 트랜잭션 전송하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2002%20Transaction.md)
+[네뷸러스에서 트랜잭션 전송하기](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B한글%5D%20Nebulas%20101%20-%2002%20트랜잭션.md.md)
 
