@@ -160,7 +160,7 @@ var SampleContract = function () {
     // Set `SampleContract`'s property to `userMap`. Map data then can be stored onto the chain using `userMap`
     LocalContractStorage.defineMapProperty(this, "userMap");
 
-    // Set `SampleContract`'s property to `userBalanceMap`, and custom define the storing and serializtion reading functions.
+    // Set `SampleContract`'s property to `userBalanceMap`, and custom define the storing and serialization reading functions.
     LocalContractStorage.defineMapProperty(this, "userBalanceMap", {
         stringify: function (obj) {
             return obj.toString();

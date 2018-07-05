@@ -30,7 +30,6 @@ LocalContractStorage.set(key, value);
 LocalContractStorage.get(key);
 ```
 
-#### Deleting `LocalContractStorage` Data:
 #### `LocalContractStorage` 데이터 삭제:
 
 ```js
@@ -82,19 +81,19 @@ module.exports = SampleContract;
 
 #### 프로퍼티 바인딩
 
-객체 인스턴스, 필드 이름과 descripter는 프로퍼티를 바인딩하기 위해 제공되야 합니다.
+객체 인스턴스, 필드 이름과 descripter는 프로퍼티를 바인딩하기 위해 제공되어야 합니다.
 
 ##### 인터페이스 바인딩
 
 ```js
-// define a object property named `fieldname` to `obj` with descriptor.
-// default descriptor is JSON.parse/JSON.stringify descriptor.
-// return this.
+// `descriptor`와 함께 `fieldname` 객체 프로퍼티를 `obj`에 정의하세요.
+// 기본 `descriptor`는 JSON.parse/JSON.stringify descriptor입니다.
+// this를 반환합니다.
 defineProperty(obj, fieldName, descriptor);
 
-// define object properties to `obj` from `props`.
-// default descriptor is JSON.parse/JSON.stringify descriptor.
-// return this.
+// `props`로부터 객체 프로퍼티를 `obj`에 정의하세요.
+// 기본 `descriptor`는 JSON.parse/JSON.stringify descriptor입니다.
+// this를 반환합니다.
 defineProperties(obj, descriptorMap);
 ```
 
@@ -104,12 +103,12 @@ defineProperties(obj, descriptorMap);
 'use strict';
 
 var SampleContract = function () {
-    // The SampleContract `size` property is a storage property. Reads and writes to `size` will be stored on the chain.
-    // The `descriptor` is set to null here, the default JSON.stringify() and JSON.parse() will be used.
+    // SampleContract `size` 프로퍼티는 저장소 프로퍼티입니다. `size`를 읽고 쓰는 것은 체인에 저장됩니다.
+    // `descriptor`는 null로 설정했고, 기본으로 `JSON.stringify()`와 `JSON.parse()`가 사용됩니다.
     LocalContractStorage.defineMapProperty(this, "size");
 
-    // The SampleContract `value` property is a storage property. Reads and writes to `value` will be stored on the chain.
-    // Here is a custom `descriptor` implementation, stored as a string, and returning Bignumber object during parsing. 
+    // SampleContract `value` 프로퍼티는 저장소 프로퍼티입니다. `value`를 읽고 쓰는 것은 체인에 저장됩니다.
+    // 커스텀으로 `descriptor`를 구현한 것입니다. 문자열로 저장하고 `BigNumber` 객체로 반환합니다.
     LocalContractStorage.defineMapProperty(this, "value", {
         stringify: function (obj) {
             return obj.toString();
@@ -118,7 +117,7 @@ var SampleContract = function () {
             return new BigNumber(str);
         }
     });
-    // Multiple properties of SampleContract are set as storage properties in batches, and the corresponding descriptors use JSON serialization by default
+    // SampleContract의 여러 프로퍼티는 배치의 저장소 프로퍼티로 설정되며, 해당 descriptors는 기본적으로 JSON 직렬화를 사용합니다.
     LocalContractStorage.defineProperties(this, {
         name: null,
         count: null
@@ -132,16 +131,16 @@ module.exports = SampleContract;
 
 ```js
 SampleContract.prototype = {
-    // Used when the contract first deploys, can not be used a second time after the first deployment
+    // 컨트랙트 처음 배포할 때 사용됩니다. 두 번은 사용될 수 없습니다.
     init: function (name, count, size, value) {
-        // Store the data on the chain when deploying the contract
+        // 컨트랙트가 배포될 때 체인에서 데이터가 저장됩니다.
         this.name = name;
         this.count = count;
         this.size = size;
         this.value = value;
     },
     testStorage: function (balance) {
-        // value will be read from the storage data on the chain, and automatically converted to Bignumber set according to the descriptor
+        // value는 체인에서 저장소 데이터로부터 불러옵니다. descriptor에 따라서 BigNumber로 자동으로 변환됩니다.
         var amount = this.value.plus(new BigNumber(2));
         if (amount.lessThan(new BigNumber(balance))) {
             return 0
@@ -158,10 +157,10 @@ SampleContract.prototype = {
 'use strict';
 
 var SampleContract = function () {
-    // Set `SampleContract`'s property to `userMap`. Map data then can be stored onto the chain using `userMap`
+    // `SampleContract`의 속성을 `userMap`으로 설정합니다. 맵 데이터는 `userMap`을 사용하여 체인에 저장됩니다.
     LocalContractStorage.defineMapProperty(this, "userMap");
 
-    // Set `SampleContract`'s property to `userBalanceMap`, and custom define the storing and serializtion reading functions.
+    // `SampleContract`의 속성을 `userBalance`로 설정합니다. 커스텀으로 함수를 읽고 저장하는 직렬화를 정의합니다. 
     LocalContractStorage.defineMapProperty(this, "userBalanceMap", {
         stringify: function (obj) {
             return obj.toString();
@@ -172,6 +171,7 @@ var SampleContract = function () {
     });
 
     // Set `SampleContract`'s properties to multiple map batches
+    // `SampleContract`의 속성을 여러 맵 배치로 설정합니다.
     LocalContractStorage.defineMapProperties(this,{
         key1Map: null,
         key2Map: null
@@ -182,13 +182,13 @@ SampleContract.prototype = {
     init: function () {
     },
     testStorage: function () {
-        // Store the data in userMap and serialize the data onto the chain
+        // `userMap`에 데이터를 저장하고 체인에서 데이터를 직렬화입니다.
         this.userMap.set("robin","1");
-        // Store the data in userBalanceMap and save the data onto the chain using a custom serialization function
+        // `userBalanceMap`에 커스텀 직렬화 함수를 사용하여 체인에 데이터를 저장합니다.
         this.userBalanceMap.set("robin",new BigNumber(1));
     },
     testRead: function () {
-        // Read and store data
+        // 데이터 읽고 쓰기
         var balance = this.userBalanceMap.get("robin");
         this.key1Map.set("robin", balance.toString());
         this.key2Map.set("robin", balance.toString());
