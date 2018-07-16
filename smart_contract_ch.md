@@ -213,7 +213,7 @@ properties:
 
 - `block`: 合约执行的当前块
     - `timestamp`: 块时间戳
-    - `seed`: 随机数种子
+    - `seed`: 随机数种子,从1.1.0开始返回`""`
     - `height`: 块高度
 - `transaction`: 合约执行的当前Transaction
     - `hash`: 交易哈希
@@ -360,7 +360,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-* `Math.random.seed(myseed)`可以使用此方法重置随机种子。参数`myseed`必须是 **string**。
+* `Math.random.seed(myseed)`可以使用此方法重置随机种子。参数`myseed`必须是 **string**。**注意** 从1.1.0开始此方法被移除。
 ```js
 "use strict";
 
