@@ -704,3 +704,136 @@ Contract.prototype = {
 
 module.exports = Contract;
 ```
+
+### Call between contracts（since 1.1.0, testnet）
+
+We provide a simple method in a smart contract to call another contract, the following example shows that how proxyKvStore provide service by using the contract kvStore.
+
+proxyKvStore.js:
+```js
+"use strict"
+
+var proxyKvStore = function() {
+};
+
+proxyKvStore.prototype = {
+    init: function() {
+        //
+    },
+
+
+    save: function(address, key, value) {
+
+        var kvStore  = new Blockchain.Contract(address);
+        kvStore.value(20000000000000000).call("save", key, value);
+    },
+
+    get: function(address, key) {
+        var kvStore = new Blockchain.Contract(address);
+        return kvStore.call("get", key)
+    },
+}
+
+module.exports = proxyKvStore;
+```
+kvStore.js:
+
+```js
+"use strict";
+
+var item = function(text) {
+  if (text) {
+    var obj = JSON.parse(text);
+    this.key = obj.key;
+    this.value = obj.value;
+    this.author = obj.text;
+  } else {
+      this.key = "";
+      this.author = "";
+      this.value = "";
+  }
+};
+
+item.prototype = {
+  toString: function () {
+    return JSON.stringify(this);
+  }
+};
+
+var kvStore = function () {
+    LocalContractStorage.defineMapProperty(this, "repo", {
+        parse: function (text) {
+            return new item(text);
+        },
+        stringify: function (o) {
+            return o.toString();
+        }
+    });
+};
+
+kvStore.prototype = {
+    init: function () {
+        // todo
+    },
+
+    save: function (key, value) {
+        console.log("reach child contract");
+
+        key = key.trim();
+        value = value.trim();
+        if (key === "" || value === ""){
+            throw new Error("empty key / value");
+        }
+        if (value.length > 128 || key.length > 128){
+            throw new Error("key / value exceed limit length")
+        }
+
+        var from = Blockchain.transaction.from;
+        var item = this.repo.get(key);
+    
+        if (item){
+            throw new Error("value has been taken");
+        }
+
+        item = new item();
+        item.author = from;
+        item.key = key;
+        item.value = value;
+        this.repo.put(key, item);
+    },
+
+    get: function (key) {
+        key = key.trim();
+        if ( key === "" ) {
+            throw new Error("empty key")
+        }
+        return this.repo.get(key);
+    }, 
+
+    throwErr: function() {
+        throw("err for test");
+    }
+};
+module.exports = kvStore;
+```
+
+In the example, to use KvStore, we first create a contract object with the address of the contract you want to call:
+
+```js
+var kvStore  = new Blockchain.Contract(address);
+```
+
+After that, we can call function in KvStore.js thought this object:
+```js
+kvStore.value(2000000000000000000).call("save", key, value);
+```
+or
+```js
+kvStore.call("save", key, value);
+```
+
+the 'value' function decides how much nas will be transfered to callee contract. It is not necessary， and the default value is 0.
+
+It should be noted that in the execution environment of the callee contract, Blockchain.from returns the address of the caller contract, and Blockchain.value is determined by the parameter of the 'value' function executed by the caller contract.
+
+If the callee contract throw a error, the caller contract can not catch it, and all modified data will be rolled back.
