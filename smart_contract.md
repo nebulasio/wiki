@@ -222,7 +222,7 @@ properties:
 
 - `block`: current block for contract execution
 	- `timestamp`: block timestamp
-	- `seed`: random seed
+	- `seed`: random seed, return `""` since v1.1.0.
 	- `height`: block height
 - `transaction`: current transaction for contract execution
 	- `hash`: transaction hash
@@ -369,7 +369,7 @@ BankVaultContract.prototype = {
 module.exports = BankVaultContract;
 ```
 
-* `Math.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **non empty string**.
+* `Math.random.seed(myseed)` if needed, you can use this method to reset random seed. The argument `myseed` must be a **non empty string**. **NOTE** This method will be removed since v1.1.0.
 ```js
 "use strict";
 
