@@ -341,7 +341,7 @@ Get block header info by the block hash.
 | HTTP | POST |  /v1/user/getBlockByHash |
 
 ###### Parameters
-`hash` Hex string of transaction hash.
+`hash` Hex string of block hash.
 
 `full_fill_transaction` If true it returns the full transaction objects, if false only the hashes of the transactions.
 
@@ -351,7 +351,7 @@ See [LatestIrreversibleBlock](#latestirreversibleblock) response.
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"00000658397a90df6459b8e7e63ad3f4ce8f0a40b8803ff2f29c611b2e0190b8", "full_fill_transaction":true}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getBlockByHash -d '{"hash":"c4a51d6241db372c1b8720e62c04426bd587e1f31054b7d04a3509f48ee58e9f", "full_fill_transaction":true}'
 
 // Result
 {
