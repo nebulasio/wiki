@@ -707,7 +707,7 @@ module.exports = Contract;
 
 ### Call between contracts（since 1.1.0, testnet）
 
-We provide a simple method in a smart contract to call another contract, the following example shows that how proxyKvStore provide service by using the contract kvStore.
+We provide a simple method in a smart contract to call another contract, the following example shows that how proxyKvStore provides service by using the contract kvStore.
 
 proxyKvStore.js:
 ```js
@@ -823,7 +823,7 @@ In the example, to use KvStore, we first create a contract object with the addre
 var kvStore  = new Blockchain.Contract(address);
 ```
 
-After that, we can call function in KvStore.js thought this object:
+After that, we can call function in KvStore.js through this object.
 ```js
 kvStore.value(2000000000000000000).call("save", key, value);
 ```
@@ -832,11 +832,11 @@ or
 kvStore.call("save", key, value);
 ```
 
-the 'value' function decides how much nas will be transfered to callee contract. It is not necessary， and the default value is 0.
+The 'value' function decides how much NAS will be transfered to the called contract. It is not necessary, and the default value is 0.
 
-It should be noted that in the execution environment of the callee contract, Blockchain.from returns the address of the caller contract, and Blockchain.value is determined by the parameter of the 'value' function executed by the caller contract.
+It should be noted that in the execution environment of the called contract, Blockchain.from is the address of the calling contract, and Blockchain.value is determined by the parameter of the 'value' function executed by the calling contract.
 
-If the callee contract throw a error, the caller contract can not catch it, and all modified data will be rolled back.
+If the called contract has an throw error, the calling contract cannot catch it, and all modified data will be rolled back.
 
 Label:
 
