@@ -46,7 +46,7 @@ go install -ldflags="-s" github.com/derekparker/delve/cmd/dlv
 codesign -s "dlv-cert"  /Users/xxx/go-delve/bin/dlv
 ```
 
-然后cp /Users/liuwb/go-delve/bin/dlv/usr/local/bin/，把编译好的dlv拷贝进/usr/local/bin目录，替换之前有bug的dlv debugger。输入命令dlv version，如果能正常运行，显示版本号，说明dlv已经被加入到PATH。
+然后cp /Users/xxx/go-delve/bin/dlv /usr/local/bin/，把编译好的dlv拷贝进/usr/local/bin目录，替换之前有bug的dlv debugger。输入命令dlv version，如果能正常运行，显示版本号，说明dlv已经被加入到PATH。
 
 ##### 在 Ubuntu 上安装Delve
 对于Ubuntu系统，可以直接使用下面的指令安装Delve：
