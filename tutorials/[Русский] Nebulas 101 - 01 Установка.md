@@ -175,13 +175,13 @@ make build
 # Текстовый файл neb genesis. Расположен в core / pb / genesis.proto.
 
 meta {
-# Chain identity
+# Идентификатор сети
 chain_id: 100
 }
 
 consensus {
 dpos {
-# Initial dynasty, including all initial miners
+# Назначение первых майнеров
 dynasty: [
 [ miner address ],
 ...
@@ -189,11 +189,11 @@ dynasty: [
 }
 }
 
-# Pre-allocation of initial tokens
+# Первичное распределение токенов
 token_distribution [
 {
-address: [ allocation address ]
-value: [ amount of allocation tokens ]
+address: [ адрес распределения ]
+value: [ количество распределяемых токенов ]
 },
 ...
 ]
