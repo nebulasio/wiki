@@ -427,7 +427,8 @@ Tips:
 
 
 ### accept
-this method is aimed to make it possible to send a binary transfer to a contract account. As the `to` is a smart contact address, which has declared a function `accept()` and it excutes correctly, the transfer will succeed. If the Tx is a non-binary Tx,it will be treated as a normal function.
+this method is aimed to make it possible to send a binary transfer to a contract account. As the `to` is a smart contact address, which has declared a function `accept()` and it executes correctly, the transfer will succeed. If the Tx is a non-binary Tx, it will be treated as a normal function.
+Note: If smartContract_1 use blockchain.transfer to smartContract_2's address, the accept function in smartContract_2 will not be invoked.  
 ```js
 "use strict";
 var DepositeContent = function (text) {
