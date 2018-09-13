@@ -418,6 +418,7 @@ module.exports = BankVaultContract;
 
 ### accept
 该方法支持普通转账及转账到合约地址。`to`是智能合约地址，普通转账能成功的前提是合约声明了函数`accept()`，且该函数执行成功。 如果该转账是非普通转账，则它将被视为普通函数调用。
+注：不用合约间用blockchain.transfer转账不会触发accept函数
 
 ```js
 "use strict";
