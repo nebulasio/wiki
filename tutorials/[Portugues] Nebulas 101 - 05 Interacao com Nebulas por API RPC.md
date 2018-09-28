@@ -2,7 +2,7 @@
 
 [Tutorial YouTube](https://www.youtube.com/watch?v=to3tkwFjVXo)
 
-A chain de nós Nebulas pode ser acedida e controlada remotamente através de RPC. A chain de Nebulas fornece uma série de APIs para obter informação dos nós, balanço de contas, envio de transações, e implantação de chamadas de smart contracts.
+A chain de nós Nebulas pode ser acedida e controlada remotamente através de RPC. A chain de Nebulas fornece uma série de APIs para obter informação dos nós, balanço de contas, envio de transações, e implementação de chamadas de smart contracts.
 
 O acesso remoto à chain de Nebulas é implementado por [gRPC](https://grpc.io), e pode também ser acedido através de HTTP por um proxy ([grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)). Acesso HTTP é uma interface implementada por RESTful, com os mesmos parâmetros de uma interface gRPC.
 

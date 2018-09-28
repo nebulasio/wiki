@@ -2,7 +2,7 @@
 
 [Tutorial YouTube](https://www.youtube.com/watch?v=Ofs4AyRaSlw)
 
-Antes discutiu-se como escrever smart contracts e como os implantar e invocar na Nebulas.
+Antes discutiu-se como escrever smart contracts e como os implementar e invocar na Nebulas.
 
 Agora vamos introduzir em detalhe o armazenamento de um smart contract. Os “contractos inteligentes” de Nebulas fornecem capacidades de armazenamento de dados on-chain (na blockchain). Semelhantes ao sistema de armazenamento key-value tradicional (ex: redis), smart contracts podem ser armazenados em Nebulas ao pagar com gás (gas).
 
@@ -131,9 +131,9 @@ Depois, pode ler e escrever essas propriedades directamente como o seguinte exem
 
 ```js
 SampleContract.prototype = {
- // Usado quando o contracto é implantado inicialmente, e não pode ser usado uma segunda vez
+ // Usado quando o contracto é implementado inicialmente, e não pode ser usado uma segunda vez
  init: function (name, count, size, value) {
- // Armazena os dados na chain ao implantar o contracto
+ // Armazena os dados na chain ao implementar o contracto
  this.name = name;
  this.count = count;
  this.size = size;
