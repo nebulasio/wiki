@@ -34,6 +34,15 @@ Please check the [`template.conf`](resources/conf/template.conf) to find more de
 seed:["/ip4/52.2.205.12/tcp/8680/ipfs/QmQK7W8wrByJ6So7rf84sZzKBxMYmc1i4a7JZsne93ysz5","/ip4/52.56.55.238/tcp/8680/ipfs/QmVy9AHxBpd1iTvECDR7fvdZnqXeDhnxkZJrKsyuHNYKAh","/ip4/13.251.33.39/tcp/8680/ipfs/QmVm5CECJdPAHmzJWN2X7tP335L5LguGb9QLQ78riA9gw3"]
 ```
 
+### Synchronization
+
+Since Nebulas mainnet is running there for certain period of time, it will take quite some time to sync all the mainnet data from scratch. 
+
+For developers' convenience, we provided a data package, which already includes the data of more than 1 million blocks, you can download the package directly by following [`this link`](https://s3-us-west-1.amazonaws.com/develop-center/mainnet/data.db.tar.gz).
+
+> Please note that, the data package should be put under the same path of "data.db" as specified in your `config.conf` file.
+
+
 ### API List
 
 Main Endpoint:
