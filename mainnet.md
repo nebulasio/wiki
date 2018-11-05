@@ -40,7 +40,7 @@ Since Nebulas mainnet is running there for certain period of time, it will take 
 
 For developers' convenience, we provided a data package, which already includes the data of more than 1 million blocks, you can download the package directly by following [`this link`](https://s3-us-west-1.amazonaws.com/develop-center/mainnet/data.db.tar.gz).
 
-> Please note that, the data package should be put under the same path of "data.db" as specified in your `config.conf` file.
+> Please note that, the data package should be put under the same path of "datadir" as specified in your `config.conf` file.
 
 
 ### API List
