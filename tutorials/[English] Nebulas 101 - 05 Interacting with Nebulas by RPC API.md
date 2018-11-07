@@ -18,7 +18,7 @@ All interfaces are divided into two modules: API and Admin.
 - Admin: Provides interfaces that are related to the user's private key.
 
 It's recommended for all Nebulas nodes to open API module for public users and Admin module for authorized users.
-Node: (The admin api on Nebulas testnet & mainnet doesn't support remote call)
+Note: (The admin api on Nebulas testnet & mainnet doesn't support remote call)
 
 ### Configuration
 
