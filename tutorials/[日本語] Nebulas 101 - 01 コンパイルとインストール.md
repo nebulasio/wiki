@@ -135,10 +135,10 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make dep
 ```
 
-> `make dep` がたくさんの依存をダウンロードする。はじめの時は、長い時間をかかるかもしれない。いくつかの依頼をダウンロード失敗の可能性もある。もしダウンロードできないなら、直接にdep [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz) が生成するジップした依存ファイルをダウンロードして、nebulasのルートディレクトリに抽出することができる。
+> `make dep` がたくさんの依存をダウンロードする。はじめの時は、長い時間をかかるかもしれない。いくつかの依頼をダウンロード失敗の可能性もある。もしダウンロードできないなら、直接にdep [vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor.tar.gz) が生成するジップした依存ファイルをダウンロードして、nebulasのルートディレクトリに抽出することができる。
 > ```bash
 > vendor.tar.gz
-> MD5: c2c1ff9311332f90e11fb81b48ca0984
+> MD5: a8ff50c9c01c67e37300a062edf7949d
 > ```
 
 NebulasのNVM (Nebulas Virtual Machine) はV8のJavaScriptエンジンを依頼する。v8の依存はもうMac/Linuxで構築されている。以下のコマンドを運行してインストールする。

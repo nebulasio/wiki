@@ -133,11 +133,11 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make dep
 ```
 
-> `make dep` descarga mucho dependencias. Puede tomar largo tiempo para descargar el primero vez. Algunas dependencias se pueden fallar a descargar. Si no puedes descargar algunas, tu puedes descargar directamente los archivos zip generado por dep. [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz) y extraerlos a el directorio de Nebulas.
+> `make dep` descarga mucho dependencias. Puede tomar largo tiempo para descargar el primero vez. Algunas dependencias se pueden fallar a descargar. Si no puedes descargar algunas, tu puedes descargar directamente los archivos zip generado por dep. [vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor.tar.gz) y extraerlos a el directorio de Nebulas.
 
 > ```bash
 > vendor.tar.gz
-> MD5: c2c1ff9311332f90e11fb81b48ca0984
+> MD5: a8ff50c9c01c67e37300a062edf7949d
 > ```
 
 Nebulas de NVM (Nebulas Virtual Machine) depende del V8 JavaScript máquina. Podemos construir las dependencias de V8 para Mac/Linux con los siguientes comandos:
