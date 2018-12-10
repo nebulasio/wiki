@@ -1,2 +1,2 @@
-# wiki
+# wiki (DEPRECATED)
 The Nebulas Wiki
