@@ -34,6 +34,17 @@ Please check the [`template.conf`](resources/conf/template.conf) to find more de
 seed:["/ip4/52.60.150.236/tcp/8680/ipfs/QmVJikqWQst13QsgdCLBjgcSWwpAAdZjoExGdvK3r2CNhv"]
 ```
 
+#### Synchronization
+
+Since Nebulas testnet is running there for certain period of time, it will take quite some time to sync all the testnet data from scratch. 
+
+For developers' convenience, we provided a offline data package, which already includes the data of more than 1.2 million blocks, you can download the package directly by following either link below (choose whichever is faster for you):
+- [`download from AWS s3`](https://s3-us-west-1.amazonaws.com/develop-center/testnet/data.db.tar.gz)
+- [`download from Nebulas server`](https://datapackage.nebulas.io/testnet/data.db.tar.gz)
+
+> Please note that, the data package should be put under the same path of "datadir" as specified in your `config.conf` file.
+
+
 #### API List
 
 Test Endpoint:
