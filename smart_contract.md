@@ -773,9 +773,7 @@ var kvStore = function () {
 };
 
 kvStore.prototype = {
-    init: function () {
-        // todo
-    },
+    init: function () {},
 
     save: function (key, value) {
         console.log("reach child contract");
@@ -833,7 +831,7 @@ or
 kvStore.call("save", key, value);
 ```
 
-The 'value' function decides how much NAS will be transfered to the called contract. It is not necessary, and the default value is 0.
+The 'value' function decides how much NAS will be transfered to the called contract. However, it is optional, the default value is 0.
 
 It should be noted that in the execution environment of the called contract, Blockchain.from is the address of the calling contract, and Blockchain.value is determined by the parameter of the 'value' function executed by the calling contract.
 
