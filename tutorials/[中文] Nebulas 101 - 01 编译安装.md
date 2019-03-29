@@ -141,9 +141,9 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 make dep
 ```
 
-> 提示: `make dep`将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包[vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor.tar.gz)。可以使用下列指令通过压缩包来安装GO依赖库。
+> 提示: `make dep`将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包[vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor/vendor.tar.gz)。可以使用下列指令通过压缩包来安装GO依赖库。
 > ```bash
-> wget https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor.tar.gz
+> wget https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor/vendor.tar.gz
 > cd $GOPATH/src/github.com/nebulasio/go-nebulas
 > tar zxf vendor.tar.gz
 > ```
