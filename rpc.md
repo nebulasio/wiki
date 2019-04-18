@@ -150,6 +150,10 @@ Return the state of the account. Balance and nonce of the given address will be 
 
 `type` The type of address, 87 stands for normal address and 88 stands for contract address
 
+`height` Current height of blockchain
+
+`pending` pending transactions of address in Tx pool
+
 ###### HTTP Example
 ```
 // Request
@@ -161,6 +165,8 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
         "balance":"9489999998980000000000"
         "nonce":51
         "type":87
+	"height":"100",
+        "pending":"0"
     }
 }
 ```
