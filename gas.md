@@ -105,7 +105,7 @@ In nebulas, the transaction pool of each node has a minimum and maximum `gasPric
 Transaction pool gasPrice and gasLimit configuration:
 
 - `gasPrice`
-	- minimum: The minimum gasPrice can be set in the configuration file. If the minimum value is not configured, the default value is `1000000`(10^6).
+	- minimum: The minimum gasPrice can be set in the configuration file. If the minimum value is not configured, the default value is `20000000000`(2*10^10).
 	- maximum: The maximum gasPrice is `1000000000000`(10^12), transaction pool's maximum configuration and transaction's `gasPrice` can't be overflow.
 
 - `gasLimit`	
