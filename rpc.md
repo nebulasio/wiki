@@ -281,7 +281,7 @@ The parameters of the `call` method is the same as the [SendTransaction](https:/
 ###### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/call -d '{"from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3","to":"n1mL2WCZyRi1oELEugfCZoNAW3dt8QpHtJw","value":"0","nonce":3,"gasPrice":"1000000","gasLimit":"2000000","contract":{"function":"transferValue","args":"[500]"}}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/call -d '{"from":"n1Z6SbjLuAEXfhX1UJvXT6BB5osWYxVg3F3","to":"n1mL2WCZyRi1oELEugfCZoNAW3dt8QpHtJw","value":"0","nonce":3,"gasPrice":"20000000000","gasLimit":"2000000","contract":{"function":"transferValue","args":"[500]"}}'
 
 // Result
 {
@@ -623,7 +623,7 @@ curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/use
                  \"nonce\":6,
                  \"value\":\"0\",
                  \"timestamp\":1522215320,
-                 \"gasprice\": \"1000000\", 
+                 \"gasprice\": \"20000000000\", 
                  \"gaslimit\":\"20000000\",
                  \"type\":\"deploy\"}"
     }
@@ -658,7 +658,7 @@ curl -i -H 'Content-Type: application/json' -X GET http://localhost:8685/v1/user
 // Result
 {
     "result":{
-        "gas_price":"1000000"
+        "gas_price":"20000000000"
     }
 }
 ```
@@ -684,7 +684,7 @@ The parameters of the `EstimateGas` method is the same as the
 ##### HTTP Example
 ```
 // Request
-curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", "value":"1000000000000000000","nonce":1,"gasPrice":"1000000","gasLimit":"2000000"}'
+curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/estimateGas -d '{"from":"n1QZMXSZtW7BUerroSms4axNfyBGyFGkrh5","to":"n1SAeQRVn33bamxN4ehWUT7JGdxipwn8b17", "value":"1000000000000000000","nonce":1,"gasPrice":"20000000000","gasLimit":"2000000"}'
 
 // Result
 {
