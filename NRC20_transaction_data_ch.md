@@ -44,12 +44,12 @@ data数据base64解析
 }
 ```
 
-NRC20转账
+*NRC20转账参数说明*
 
 - Func: transfer
 - Args: 交易参数，数组json序列化字符串
 	- addr: 交易转账接受地址
-	- value: 交易金额，目前接受参数只支持数据字符串。
+	- value: 交易金额，目前接受参数只支持数据字符串。金额单位为wei。不同代币的decimal可能不同，eg:1ATP=10^18wei,1NAX=10^9wei. 
 
 ####数据说明
 
@@ -134,6 +134,27 @@ curl -i -H 'Content-Type: application/json' -X POST https://mainnet.nebulas.io/v
 	- tx data数据解析第二个参数
 - 查询地址NRC20余额
 	- 调用合约的`balanceOf`方法查询
+
+```
+查询NRC20余额
+// Request
+curl -i -H 'Content-Type: application/json' -X POST https://mainnet.nebulas.io/v1/user/call -d '{"from":"n1TDfPQiqQzPSrHV9ZYG5GuRwqKscHN6Gg9","to":"n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ","value":"0","nonce":3,"gasPrice":"20000000000","gasLimit":"2000000","contract":{"function":"balanceOf","args":"[\"n1HeCZvsdms9178DDK1B62Ptc7Kd2XvAgsE\"]"}}'
+
+// Result
+{
+    "result":{
+        "result":""101092028483092"",//result为代币余额，单位为wei,需要JSON.parse解析
+        "execute_err":"",
+        "estimate_gas":"20353"
+    }
+}
+``` 
+
+	
+## eg:NRC20代币合约
+
+- ATP:[n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39](https://explorer.nebulas.io/#/token/n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39)
+- NAX:[n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ](https://explorer.nebulas.io/#/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ)
 
 **[附NRC20标准说明](https://github.com/nebulasio/wiki/blob/master/NRC20.md)**
  
