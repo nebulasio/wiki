@@ -1,4 +1,4 @@
-﻿
+
 
 # Nebulas 101 - 01 Compilação e Instalação de Nebulas
 
@@ -19,7 +19,7 @@ Para já, Nebulas está implementado em Golang.
 
 | Componentes | Versão | Descrição |
 |----------|-------------|-------------|
-|[Golang](https://golang.org) | >= 1.9.2| A Linguagem De Programação Go |
+|[Golang](https://golang.org) | >= 1.12| A Linguagem De Programação Go |
 
 ### Mac OSX
 
@@ -39,10 +39,10 @@ export GOPATH=/caminho/para/areadetrabalho
 
 ```bash
 # download
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
 
 # extração
-tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
 
 # variáveis do ambiente de trabalho
 export PATH=$PATH:/usr/local/go/bin
@@ -57,8 +57,7 @@ Clone o código fonte com os seguintes comandos:
 
 ```bash
 # entra na área de trabalho
-mkdir -p $GOPATH/src/github.com/nebulasio
-cd $GOPATH/src/github.com/nebulasio
+cd workspace
 
 # descarrega
 git clone https://github.com/nebulasio/go-nebulas.git
@@ -300,7 +299,7 @@ Muitos exemplos podem ser encontrados em `$GOPATH/src/github.com/nebulasio/go-ne
 Activa o teu primeiro nó Nebulas com os seguintes comandos:
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 ./neb -c conf/default/config.conf
 ```
 
@@ -311,7 +310,7 @@ Por padrão, o nó que usa `conf/default/config.conf` não irá minerar novos bl
 Activa o teu primeiro nó de mineração Nebulas com os próximos comandos:
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 ./neb -c conf/example/miner.conf
 ```
 

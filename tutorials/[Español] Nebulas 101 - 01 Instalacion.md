@@ -16,7 +16,7 @@ Nebulas está implementado en Golango ahora.
 
 | Componentes | Version | Descripción |
 |----------|-------------|-------------|
-|[Golang](https://golang.org) | >= 1.9.2| Lenguaje de programación el Go |
+|[Golang](https://golang.org) | >= 1.12| Lenguaje de programación el Go |
 
 ### Mac OSX
 
@@ -36,10 +36,10 @@ export GOPATH=/directorio/de/trabajo
 
 ```bash
 # descargar
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
 
 # extraer
-tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
 
 # environment variables
 export PATH=$PATH:/usr/local/go/bin
@@ -54,8 +54,7 @@ Clona el código fuente con los siguientes comandos.
 
 ```bash
 # entra espaciotrabajo
-mkdir -p $GOPATH/src/github.com/nebulasio
-cd $GOPATH/src/github.com/nebulasio
+cd workspace
 
 # descargar
 git clone https://github.com/nebulasio/go-nebulas.git
@@ -99,53 +98,12 @@ git clone https://github.com/facebook/rocksdb.git
 cd rocksdb && make shared_lib && make install-shared
 ```
 
-### Instalar Go Dependencias
-
-Go dependencias en Go-Nebulas son manejado por [Dep](https://github.com/golang/dep).
-
-| Componentes | Versiones | Descripción |
-|----------|-------------|-------------|
-[Dep](https://github.com/golang/dep) | >= 0.3.1 | Dep es un gestión de dependecia para Go. |
-
-#### Instalar Dep
-
-* **Mac OSX**
-* Instalar Dep via [Homebrew](https://brew.sh/)
-```bash
-brew install dep
-brew upgrade dep
-```
-
-* **Linux**
-* Instalar dep
-```bash
-cd /usr/local/bin/
-wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
-ln -s dep-linux-amd64 dep
-```
-
-#### Descargar Dependencias
-
-Cambiar a el directorio raíz de el proyecto a descargar las dependencias para Go-Nebulas:  
-
-```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make dep
-```
-
-> `make dep` descarga mucho dependencias. Puede tomar largo tiempo para descargar el primero vez. Algunas dependencias se pueden fallar a descargar. Si no puedes descargar algunas, tu puedes descargar directamente los archivos zip generado por dep. [vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor.tar.gz) y extraerlos a el directorio de Nebulas.
-
-> ```bash
-> vendor.tar.gz
-> MD5: a8ff50c9c01c67e37300a062edf7949d
-> ```
-
 Nebulas de NVM (Nebulas Virtual Machine) depende del V8 JavaScript máquina. Podemos construir las dependencias de V8 para Mac/Linux con los siguientes comandos:
 
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make deploy-v8
+cd workspace/go-nebulas
+source setup.sh
 ```
 
 ### Construir Neb
@@ -154,7 +112,7 @@ Ahora tu puedes construir el ejecutable para Nebulas despues dependencies de gol
 Construir bajo el directorio raíz del proyecto:
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 make build
 ```
 
@@ -297,7 +255,7 @@ Muchos ejemplos se encuentra aqui `$GOPATH/src/github.com/nebulasio/go-nebulas/c
 Lanca su primero nodo Nebulas con los siguientes comandos.
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 ./neb -c conf/default/config.conf
 ```
 
@@ -308,7 +266,7 @@ Por defecto, el nodo usando `conf/default/config.conf` no minará nuevos bloques
 Comienca su primera mineriá con un otro comando.
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 ./neb -c conf/example/miner.conf
 ```
 

@@ -16,7 +16,7 @@
 
 | Components | Version | Description |
 |----------|-------------|-------------|
-|[Golang](https://golang.org) | >= 1.9.2| The Go Programming Language |
+|[Golang](https://golang.org) | >= 1.12| The Go Programming Language |
 
 ### 맥 OSX
 
@@ -36,10 +36,10 @@ export GOPATH=/path/to/workspace
 
 ```bash
 # 다운로드
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
 
 # 압축 해제
-tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
 
 # 환경변수
 export PATH=$PATH:/usr/local/go/bin
@@ -54,8 +54,7 @@ export GOPATH=/path/to/workspace
 
 ```bash
 # 작업영역 진입
-mkdir -p $GOPATH/src/github.com/nebulasio
-cd $GOPATH/src/github.com/nebulasio
+cd workspace
 
 # 다운로드
 git clone https://github.com/nebulasio/go-nebulas.git
@@ -99,52 +98,12 @@ git clone https://github.com/facebook/rocksdb.git
 cd rocksdb && make shared_lib && make install-shared
 ```
 
-### Go 의존성 모듈 설치하기
-
-Go-Nebulas의 Go 의존성 모듈은 [Dep](https://github.com/golang/dep)에 의해 관리됩니다.
-
-| Components | Version | Description |
-|----------|-------------|-------------|
-[Dep](https://github.com/golang/dep) | >= 0.3.1 | Dep is a dependency management tool for Go. |
-
-#### Dep 설치하기
-
-* **Mac OSX**
-* [Homebrew](https://brew.sh/)를 통해 Dep 설치하기
-```bash
-brew install dep
-brew upgrade dep
-```
-
-* **Linux**
-* dep 설치하기
-```bash
-cd /usr/local/bin/
-wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
-ln -s dep-linux-amd64 dep
-```
-
-#### 의존성 모듈 다운로드하기
-
-Go-Nebulas의 의존성 모듈을 다운로드하기 위해 프로젝트의 루트 디렉토리로 들어갑니다.
-
-```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make dep
-```
-
-> `make dep`은 꽤 많은 의존성 모듈을 다운로드하기 때문에 처음 다운로드하는 경우 시간이 걸릴 수 있습니다. 몇몇 의존성 모듈은 다운로드가 실패할 수 있는데 이 경우에는 압축된 의존성 모듈 파일을 [vendor.tar.gz](http://ory7cn4fx.bkt.clouddn.com/vendor.tar.gz)에서 직접 다운로드하고 네뷸러스 루트 디렉토리에서 압축을 풀면 됩니다.
-> ```bash
-> vendor.tar.gz
-> MD5: c2c1ff9311332f90e11fb81b48ca0984
-> ```
-
 네뷸러스의 NVM(네뷸러스 가상 머신)은 V8 자바스크립트 엔진에 의존합니다.
 맥/리눅스용 v8 의존성 모듈이 개발되었고 다음 명령어로 v8 의존성 패키지를 설치합니다.
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make deploy-v8
+cd workspace/go-nebulas
+source setup.sh
 ```
 
 ### Neb 빌드하기
@@ -154,7 +113,7 @@ Golang 의존성 모듈과 V8 의존성 패키지를 설치한 후에 네뷸러�
 프로젝트 루트 디렉토리에서 빌드하세요:
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 make build
 ```
 

@@ -12,7 +12,7 @@
 
 | Components | Version | Description |
 |----------|-------------|-------------|
-|[Golang](https://golang.org) | >= 1.9.2| The Go Programming Language |
+|[Golang](https://golang.org) | >= 1.12| The Go Programming Language |
 
 我们会分别介绍Mac OSX和Linux两种系统下golang环境的搭建。
 
@@ -28,16 +28,14 @@ brew install go
 export GOPATH=/path/to/workspace
 ```
 
-> 提示: 在golang的开发中，GOPATH是必须的，它指定了我们使用golang开发的工作空间。所有的源码都应放在GOPATH之下。
-
 ### Linux
 
 ```bash
 # download
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
 
 # extract
-tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
 
 # environment variables
 export PATH=$PATH:/usr/local/go/bin
@@ -52,8 +50,7 @@ export GOPATH=/path/to/workspace
 
 ```bash
 # 进入工作目录
-mkdir -p $GOPATH/src/github.com/nebulasio
-cd $GOPATH/src/github.com/nebulasio
+cd workspace
 
 # 下载源码
 git clone https://github.com/nebulasio/go-nebulas.git
@@ -103,68 +100,21 @@ git checkout master
     cd rocksdb && make shared_lib && make install-shared
     ```
 
-### 安装Go依赖库
-
-在Go-Nebulas中，Go的三方库都通过[Dep](https://github.com/golang/dep)来做管理。
-
-| Components | Version | Description |
-|----------|-------------|-------------|
-[Dep](https://github.com/golang/dep) | >= 0.3.1 | Dep is a dependency management tool for Go. |
-
-#### 安装Dep工具
-
-我们同样分别介绍Mac OSX和Linux下Dep的安装方法。
-
-##### Mac OSX
-
-* 通过[Homebrew](https://brew.sh/)直接安装并升级Dep
-    ```bash
-    brew install dep
-    brew upgrade dep
-    ```
-
-##### Linux
-
-* 通过源码来安装Dep
-    ```bash
-    cd /usr/local/bin/
-    wget https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64
-    ln -s dep-linux-amd64 dep
-    ```
-
-#### 下载Go三方库
-
-我们切换到Go-Nebulas项目根目录，然后使用Dep来下载三方库。
-
-```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make dep
-```
-
-> 提示: `make dep`将会下载很多依赖库。在部分地区，这个过程可能比较耗时。所以，我们提供了依赖库的压缩包[vendor.tar.gz](https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor/vendor.tar.gz)。可以使用下列指令通过压缩包来安装GO依赖库。
-> ```bash
-> wget https://s3-us-west-1.amazonaws.com/develop-center/setup/vendor/vendor.tar.gz
-> cd $GOPATH/src/github.com/nebulasio/go-nebulas
-> tar zxf vendor.tar.gz
-> ```
-
 ### 安装Chrome V8依赖库
 
 星云虚拟机目前依赖于Chrome的V8引擎，为了大家使用方便，我们已经为Mac OSX和Linux编译好了V8的动态库。运行如下指令就可以完成安装。
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
-make deploy-v8
+cd workspace/go-nebulas
+source setup.sh
 ```
-> 提示：linux环境下如果报错类似"/usr/local/lib/libv8.so: undefined reference to ** ",是因为/user/local/lib/不在你动态库索引内，
- 只需要到/etc/ld.so.conf.d/下添加文件，xxxx.conf即可，文件内容为/user/local/lib. 然后执行sudo ldconfig使改动生效
 
 ### 编译可执行文件
 
 完成所有上述依赖库的安装后，现在我们可以进入Go-Nebulas根目录编译星云链的可执行文件了。
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 make build
 ```
 
@@ -306,7 +256,7 @@ stats {
 
 ```
 
-A lot of examples can be found in `$GOPATH/src/github.com/nebulasio/go-nebulas/conf/`
+A lot of examples can be found in `workspace/go-nebulas/conf/`
 
 ### 启动星云链
 
@@ -315,7 +265,7 @@ A lot of examples can be found in `$GOPATH/src/github.com/nebulasio/go-nebulas/c
 启动你的第一个星云节点。
 
 ```bash
-cd $GOPATH/src/github.com/nebulasio/go-nebulas
+cd workspace/go-nebulas
 ./neb -c conf/default/config.conf
 ```
 
@@ -344,7 +294,6 @@ cd $GOPATH/src/github.com/nebulasio/go-nebulas
 
 ![finish sync](resources/101-01-mint.png)
 
-> 提示: 目前的DPoS共识算法，会有21个节点轮流出块。由于我们只启动了21个矿工节点中的一个矿工节点，所以每隔15*21s才出一个块。你可以启动更多的矿工节点，填补的空缺。但是需要注意，多个节点间的端口号不要相互冲突了。
 
 ### 下一章
 
