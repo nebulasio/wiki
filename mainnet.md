@@ -10,7 +10,11 @@ https://github.com/nebulasio/go-nebulas/tree/master
 
 ### Configuration
 
-The Mainnet configuration files are in folder [`mainnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/mainnet/conf), including
+The Mainnet configuration files are in folder [`mainnet/conf`](https://github.com/nebulasio/go-nebulas/tree/master/mainnet/conf). The mainnet node can be started using this configuration:
+
+```
+./neb -c mainnet/conf/config.conf
+```
 
 ### genesis.conf
 
@@ -34,6 +38,36 @@ Please check the [`template.conf`](resources/conf/template.conf) to find more de
 seed:["/ip4/52.76.103.107/tcp/8680/ipfs/Qmbi1NVTYHkeuST2wS3B3aHiTLHDajHZpoZk5EDpAXt9H2","/ip4/52.56.55.238/tcp/8680/ipfs/QmVy9AHxBpd1iTvECDR7fvdZnqXeDhnxkZJrKsyuHNYKAh","/ip4/34.198.52.191/tcp/8680/ipfs/QmQK7W8wrByJ6So7rf84sZzKBxMYmc1i4a7JZsne93ysz5"]
 ```
 
+#### Miner config 
+Nodes can participate in mining and share rewards after signing up for mining. The miner node needs to turn on the mine switch and configure both the miner address and reward address(coinbase).
+
+miner config example:
+
+```
+chain {
+  # mainnet chainID
+  chain_id: 1
+  # mainnet datadir, should be different with private chain
+  datadir: "mainnet/data.db"
+  keydir: "keydir"
+  # mainnet genesis.conf
+  genesis: "mainnet/conf/genesis.conf"
+  # mainnet dynasty.conf
+  dynasty: "mainnet/conf/dynasty.conf"
+  
+  # start mine
+  start_mine: true
+  # receive the mining award, must change to your address
+  coinbase: "n1XkoVVjswb5Gek3rRufqjKNpwrDdsnQ7Hq"
+  # block signature address, needs to be placed in the node's configuration `keydir`. Also make sure that the address is the node address at the time of registration
+  miner: "n1FF1nz6tarkDVwWQkMnnwFPuPKUaQTdptE"
+  # 
+  passphrase: "passphrase"
+
+  signature_ciphers: ["ECC_SECP256K1"]
+}
+```
+
 ### Synchronization
 
 Since Nebulas mainnet is running there for certain period of time, it will take quite some time to sync all the mainnet data from scratch. 
@@ -43,7 +77,6 @@ For developers' convenience, we provided a offline data package, which already i
 - [`download from Aliyun oss`](http://develop-center.oss-cn-zhangjiakou.aliyuncs.com/data/mainnet/data.db.tar.gz)
 
 > Please note that, the data package should be put under the same path of "datadir" as specified in your `config.conf` file.
-
 
 ### API List
 
