@@ -69,7 +69,7 @@ chain {
 Since Nebulas testnet is running there for certain period of time, it will take quite some time to sync all the testnet data from scratch. 
 
 For developers' convenience, we provided a offline data package, which already includes the data of more than 1.2 million blocks, you can download the package directly by following either link below (choose whichever is faster for you):
-- [`download from AWS s3`](https://s3-us-west-1.amazonaws.com/develop-center/testnet/data.db.tar)
+- [`download from AWS s3`](https://develop-center.s3-us-west-1.amazonaws.com/data/testnet/data.db.tar)
 - [`download from Aliyun oss`](http://develop-center.oss-cn-zhangjiakou.aliyuncs.com/data/testnet/data.db.tar)
 
 > Please note that, the data package should be put under the same path of "datadir" as specified in your `config.conf` file.
