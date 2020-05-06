@@ -2,7 +2,7 @@
 
 [Youtube チュートリアル](https://www.youtube.com/watch?v=-44tVVR6ETo&list=PLFipfN18ZQwsW1_dge4w7dfsVNdNZZ37R&index=1)
 
-> このチュートリアルの部分には、上の章[コンパイルとインストール](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2001%20Installation.md)[link need to update]に続く。
+> このチュートリアルの部分には、上の章[コンパイルとインストール](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E6%97%A5%E6%9C%AC%E8%AA%9E%5D%20Nebulas%20101%20-%2001%20%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E3%81%A8%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB.md)に続く。
 
 Nebulasは三つの交易発信方法を提供する:
 
@@ -42,7 +42,7 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 ### シードノードを起動
 
-はじめは、ローカルプライベートチェンにシードノードを最初のノードとして起動する。
+はじめは、ローカルプライベートチェーンにシードノードを最初のノードとして起動する。
 
 ```bash
 ./neb -c conf/default/config.conf
@@ -50,7 +50,7 @@ Address: n1SQe5d1NKHYFMKtJ5sNHPsSPVavGzW71Wy
 
 ### マイナーノードを起動
 
-次いで、マイナーノードを起動してシードノードに連結する。このノードはローカルプライベートチェンに新たなブロックを生成する。
+次いで、マイナーノードを起動してシードノードに連結する。このノードはローカルプライベートチェーンに新たなブロックを生成する。
 
 ```bash
 ./neb -c conf/example/miner.conf
@@ -128,7 +128,7 @@ API ([API Module](https://github.com/nebulasio/wiki/blob/master/rpc.md) | [Admin
 ```
 
 > **注意**
-> ノンスは交易には貴重的な属性を持っている。それは [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) に防止するために設計する。特定のアカウントにすれば、ノンスNの交易がアクセプトしたことに限って、ノンスN+1の交易がプロセスされる。したがって、新しい交易を準備する前に、チェンでアカウントの最新ノンスをチェックしなければならない。
+> ノンスは交易には貴重的な属性を持っている。それは [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) に防止するために設計する。特定のアカウントにすれば、ノンスNの交易がアクセプトしたことに限って、ノンスN+1の交易がプロセスされる。したがって、新しい交易を準備する前に、チェーンでアカウントの最新ノンスをチェックしなければならない。
 
 次いで、生データをオンラインNebulasノードに発送する。
 
@@ -189,8 +189,8 @@ Nebulasノードを信頼するならば、キーストアファイルをそれ�
 
 `status`フィールドは0か1か、または2である。
 
-- **0: 失敗。** この交易はチェンに差し出した、でも実行失敗することを意味する。
-- **1: 成功。** この交易はチェンに差し出した、そして実行成功することを意味する。
+- **0: 失敗。** この交易はチェーンに差し出した、でも実行失敗することを意味する。
+- **1: 成功。** この交易はチェーンに差し出した、そして実行成功することを意味する。
 - **2: ペンディング。** この交易はブロックにパックされていないと意味する。
 
 ### ダブルチェック
@@ -207,4 +207,4 @@ Nebulasノードを信頼するならば、キーストアファイルをそれ�
 
 ### 次の章: チュートリアル 3
 
- [JavaScriptでスマートコントラクトを作って走る](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2003%20Smart%20Contracts%20JavaScript.md)[link need to update]
+ [JavaScriptでスマートコントラクトを作って走る](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E6%97%A5%E6%9C%AC%E8%AA%9E%5D%20Nebulas%20101%20-%2003%20%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E3%83%BB%E3%82%B3%E3%83%B3%E3%83%88%E3%83%A9%E3%82%AF%E3%83%88%E5%89%B5%E4%BD%9C.md)

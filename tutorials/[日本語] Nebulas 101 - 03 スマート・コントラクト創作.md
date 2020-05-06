@@ -212,7 +212,7 @@ takeout: function (value) {
 
 ## スマートコントラクトを配備する
 
-以上はNebulasでどうスマートコントラクトを書くかを説明する。そして今はチェンにスマートコントラクトを配備する必要がある。
+以上はNebulasでどうスマートコントラクトを書くかを説明する。そして今はチェーンにスマートコントラクトを配備する必要がある。
 より前に、Nebulasで交易を行う方法を紹介する。そしてsendTransaction()インターフェースを使用して転送を始める。Nebulasでスマートコントラクトを配備することには、異なるパラメーターでsendTransaction()インターフェースを呼び出して交易を送信することによって実際に達成される。
 
 ```js
@@ -286,7 +286,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 ```
 
 > **コントラクト方法`save`が成功するかを検証する**
-> コントラクトを実行することは実にチェンに交易を差し出すことに同じである。[`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt)を通じて交易のレシートをチェックして結果を検証することができる。
+> コントラクトを実行することは実にチェーンに交易を差し出すことに同じである。[`GetTransactionReceipt`](https://github.com/nebulasio/wiki/blob/master/rpc.md#gettransactionreceipt)を通じて交易のレシートをチェックして結果を検証することができる。
 > ```bash
 > > curl -i -H 'Content-Type: application/json' -X POST http://localhost:8685/v1/user/getTransactionReceipt -d '{"hash":"5337f1051198b8ac57033fec98c7a55e8a001dbd293021ae92564d7528de3f84"}'
 > 
@@ -313,7 +313,7 @@ sendTransactionWithPassphrase(transaction, passphrase)
 
 ## スマートコントラクトデータをクエリする
 
-スマートコントラクトでの一部の方法の実行がチェン上のものを何も変更しない。これらの方法はブロックチェーンから読み取り専用モードでデータをクエリするに役立つで設計されている。NebulasでAPI `call`をユーザーに提供してこれらの読み取り専用の方法を実行する。
+スマートコントラクトでの一部の方法の実行がチェーン上のものを何も変更しない。これらの方法はブロックチェーンから読み取り専用モードでデータをクエリするに役立つで設計されている。NebulasでAPI `call`をユーザーに提供してこれらの読み取り専用の方法を実行する。
 
 ```js
 // transaction - from, to, value,
@@ -333,4 +333,4 @@ call(from, to, value, nonce, gasPrice, gasLimit, contract)
 
 ### 次の章: チュートリアル 4
 
- [スマート・コントラクトメモリ](https://github.com/nebulasio/wiki/blob/master/tutorials/%5BEnglish%5D%20Nebulas%20101%20-%2004%20Smart%20Contract%20Storage.md)
+ [スマート・コントラクトメモリ](https://github.com/nebulasio/wiki/blob/master/tutorials/%5B%E6%97%A5%E6%9C%AC%E8%AA%9E%5D%20Nebulas%20101%20-%2004%20%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E3%83%BB%E3%82%B3%E3%83%B3%E3%83%88%E3%83%A9%E3%82%AF%E3%83%88%E3%83%A1%E3%83%A2%E3%83%AA.md)
